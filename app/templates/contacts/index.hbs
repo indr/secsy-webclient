@@ -1,0 +1,10 @@
+
+{{#link-to "contacts.new"}}Create new contact{{/link-to}}
+
+<ul>
+{{#each model as |contact|}}
+    <li>{{contact.name}} - {{contact.emailAddress}} {{#link-to "contacts.view" contact}}view{{/link-to}} {{#link-to "contacts.edit" contact}}edit{{/link-to}}</li>
+{{/each}}
+</ul>
+
+{{outlet}}

@@ -1,0 +1,23 @@
+<h3>Create contact</h3>
+
+<div>
+    <label>Name</label>
+    {{input type='text' value=name}}
+</div>
+
+<div>
+    <label>Email address</label>
+    {{input type='text' value=emailAddress}}
+</div>
+
+<div>
+    <label>Phone number</label>
+    {{input type='text' value=phoneNumber}}
+</div>
+
+<p>
+    <button {{action 'save' model}}>Save</button>
+    {{#link-to "contacts"}}Back{{/link-to}}
+</p>
+
+{{outlet}}

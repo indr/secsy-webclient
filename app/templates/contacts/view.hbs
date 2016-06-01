@@ -1,0 +1,13 @@
+<h3>View contact</h3>
+
+<p>Name: {{model.name}}</p>
+<p>Email address: {{model.emailAddress}}</p>
+<p>Phone number: {{model.phoneNumber}}</p>
+
+<p>
+    {{#link-to 'contacts.edit' model}}Edit{{/link-to}}
+    <button {{action 'delete' model}}>Delete</button>
+    {{#link-to 'contacts'}}Back{{/link-to}}
+</p>
+
+{{outlet}}
