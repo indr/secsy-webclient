@@ -1,10 +1,18 @@
 
 {{#link-to "contacts.new"}}Create new contact{{/link-to}}
 
+<p>
+    {{input type="text" value=query}}
+</p>
+
+{{#if filtered.length}}
 <ul>
-{{#each model as |contact|}}
+{{#each filtered as |contact|}}
     <li>{{contact.name}} - {{contact.emailAddress}} {{#link-to "contacts.view" contact}}view{{/link-to}} {{#link-to "contacts.edit" contact}}edit{{/link-to}}</li>
 {{/each}}
 </ul>
+{{else}}
+<p>nothing to show</p>
+{{/if}}
 
 {{outlet}}
