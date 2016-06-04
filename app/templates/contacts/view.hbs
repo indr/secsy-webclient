@@ -5,9 +5,8 @@
 <p>Phone number: {{model.phoneNumber}}</p>
 
 <p>
-    {{#link-to 'contacts.edit' model}}Edit{{/link-to}}
-    <button {{action 'delete' model}}>Delete</button>
-    {{#link-to 'contacts'}}Back{{/link-to}}
+    {{#link-to 'contacts.edit' model class="btn btn-primary"}}Edit{{/link-to}}
+    <button {{action 'delete' model}} class="btn btn-default">Delete</button>
 </p>
 
 {{outlet}}
