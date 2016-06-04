@@ -1,9 +1,9 @@
 <h3>{{title}}</h3>
 
-{{#bs-form action="save" formLayout="horizontal"}}
-    {{bs-form-element controlType="text" label="Name" value=model.name}}
-    {{bs-form-element controlType="text" label="Email address" value=model.emailAddress}}
-    {{bs-form-element controlType="text" label="Phone number" value=model.phoneNumber}}
+{{#bs-form action="save" model=model formLayout="horizontal"}}
+    {{bs-form-element controlType="text" label="Name" property="name"}}
+    {{bs-form-element controlType="text" label="Email address" property="emailAddress"}}
+    {{bs-form-element controlType="text" label="Phone number" property="phoneNumber"}}
 
     {{#bs-button type="primary" buttonType="submit"}}Save{{/bs-button}}
     {{#bs-button type="default" action="cancel"}}Cancel{{/bs-button}}
