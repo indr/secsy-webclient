@@ -5,6 +5,12 @@ export default Ember.Route.extend({
         return this.store.findRecord('contact', params.id);
     },
     
+    setupController: function(controller, model) {
+        this._super(controller, model);
+    
+        controller.set('title', 'Edit contact');
+    },
+    
     actions: {
         save() {
             console.log('routes/contacts/edit.js/save()');

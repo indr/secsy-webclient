@@ -7,6 +7,12 @@ export default Ember.Route.extend({
     
     templateName: 'contacts/edit',
     
+    setupController: function(controller, model) {
+        this._super(controller, model);
+    
+        controller.set('title', 'Create contact');
+    },
+    
     actions: {
         save() {
             console.log('routes/contacts/new.js/save()');
