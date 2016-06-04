@@ -1,23 +1,11 @@
-<h3>Edit contact</h3>
+<p>Edit</p>
+{{#bs-form action="save" formLayout="horizontal"}}
+    {{bs-form-element controlType="text" label="Name" value=model.name}}
+    {{bs-form-element controlType="text" label="Email address" value=model.emailAddress}}
+    {{bs-form-element controlType="text" label="Phone number" value=model.phoneNumber}}
 
-<div>
-    <label>Name</label>
-    {{input type='text' value=model.name}}
-</div>
-
-<div>
-    <label>Email address</label>
-    {{input type='text' value=model.emailAddress}}
-</div>
-
-<div>
-    <label>Phone number</label>
-    {{input type='text' value=model.phoneNumber}}
-</div>
-
-<p>
-    <button {{action 'save' model}}>Save</button>
-    {{#link-to "contacts"}}Back{{/link-to}}
-</p>
+    {{#bs-button type="primary" buttonType="submit"}}Save{{/bs-button}}
+    {{#bs-button type="default" action="cancel"}}Cancel{{/bs-button}}
+{{/bs-form}}
 
 {{outlet}}

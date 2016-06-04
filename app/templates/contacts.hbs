@@ -3,17 +3,15 @@
 {{#link-to "contacts.new"}}Create new contact{{/link-to}}
 
 <p>
-    {{input type="text" value=query}}
+    {{bs-input type="text" value=query placeholder="Search..."}}
 </p>
 
-{{#if filtered.length}}
-<ul>
+<ul class="list-group">
 {{#each filtered as |contact|}}
-    <li>{{contact.name}} - {{contact.emailAddress}} {{#link-to "contacts.view" contact}}view{{/link-to}} {{#link-to "contacts.edit" contact}}edit{{/link-to}}</li>
+    <li class="list-group-item">{{contact.name}} - {{contact.emailAddress}} {{#link-to "contacts.view" contact}}view{{/link-to}} {{#link-to "contacts.edit" contact}}edit{{/link-to}}</li>
+{{else}}
+    <li class="list-group-item">No results!</li>
 {{/each}}
 </ul>
-{{else}}
-<p>nothing to show</p>
-{{/if}}
 
 {{outlet}}
