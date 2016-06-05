@@ -3,3 +3,7 @@ product:
   title: 'Hallo Welt!'
   html:
     info: '<strong>{product}</strong> will cost <em>{price, number, USD}</em> if ordered by {deadline, date, time}'
+    
+errors:
+  description: "Dieses Feld"
+  blank: "{description} darf nicht leer sein"
