@@ -1,25 +1,10 @@
 <div class="row">
-  <div class="col-md-4">
-    <div class="row" style="margin-top:20px">
-      <div class="col-xs-10">
-        {{bs-input type="text" value=query class="input-xs-8" placeholder="Search..."}}
-      </div>
-      <div class="col-xs-2">
-        <p>
-          {{#link-to "contacts.new" class="btn btn-default btn-block" }}<span class="glyphicon glyphicon-plus"></span>{{/link-to}}
-        </p>
-      </div>
-    </div>
-
-    <div class="list-group">
-    {{#each filtered as |contact|}}
-      {{#link-to "contacts.view" contact class="list-group-item"}}<strong>{{contact.name}}</strong><br/>{{contact.emailAddress}}<br/>{{contact.phoneNumber}}<br/>{{/link-to}}
-    {{else}}
-      <li class="list-group-item">No results!</li>
-    {{/each}}
-    </div>
+  <div class="col-sm-4">
+    {{contacts-filter query=query}}
+    
+    {{contact-listing model=filtered}}
   </div>
-  <div class="col-md-8">
+  <div class="col-sm-8">
     {{outlet}}
   </div>
 </div>
