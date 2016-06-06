@@ -1,15 +1,14 @@
-<h3>View contact</h3>
+<h3>{{model.name}}</h3>
 
-<p>Name: {{model.name}}</p>
 <p>Email address: {{model.emailAddress}}</p>
 <p>Phone number: {{model.phoneNumber}}</p>
 
-<p>Created: {{model.createdAt}}</p>
-<p>Accessed: {{model.accessedAt}}</p>
+<p>Created: {{format-date model.createdAt}}</p>
+<p>Accessed: {{format-date model.accessedAt year='numeric' month='short' day='numeric' hour='numeric' minute='numeric' second='numeric'}}</p>
 
 <p>
-    {{#link-to 'contacts.edit' model class="btn btn-primary"}}Edit{{/link-to}}
-    <button {{action 'delete' model}} class="btn btn-default">Delete</button>
+    {{#link-to 'contacts.edit' model class="btn btn-primary"}}{{t 'actions.edit'}}{{/link-to}}
+    <button {{action 'delete' model}} class="btn btn-default">{{t 'actions.delete'}}</button>
 </p>
 
 {{outlet}}

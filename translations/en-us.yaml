@@ -3,6 +3,16 @@ product:
   title: 'Hello world!'
   html:
     info: '<strong>{product}</strong> will cost <em>{price, number, USD}</em> if ordered by {deadline, date, time}'
+  
+contact:
+  edit: 'Edit contact'
+  new: 'Create contact'
+  
+actions:
+  cancel: "Cancel"
+  edit: "Edit"
+  delete: "Delete"
+  save: "Save"  
     
 errors:
   description: "This field"

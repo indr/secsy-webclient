@@ -13,14 +13,13 @@
 
     <div class="list-group">
     {{#each filtered as |contact|}}
-      {{#link-to "contacts.view" contact class="list-group-item"}}<strong>{{contact.name}}</strong><br/>{{contact.emailAddress}}<br/><span class="text-muted">{{contact.accessedAt}}</span>{{/link-to}}
+      {{#link-to "contacts.view" contact class="list-group-item"}}<strong>{{contact.name}}</strong><br/>{{contact.emailAddress}}<br/>{{/link-to}}
     {{else}}
       <li class="list-group-item">No results!</li>
     {{/each}}
     </div>
   </div>
   <div class="col-md-8">
-    <h2>{{t 'product.title'}}</h2>
     {{outlet}}
   </div>
 </div>

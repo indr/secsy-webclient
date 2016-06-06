@@ -1,4 +1,4 @@
-<h3>{{title}}</h3>
+<h3>{{t title}}</h3>
 
 {{#bs-form action="save" model=model formLayout="horizontal"}}
     {{bs-form-element controlType="text" label="Name" property="name"}}
@@ -7,8 +7,8 @@
 
     {{#bs-form-group}}
         <div class="col-sm-offset-4 col-sm-8">
-            {{#bs-button type="primary" buttonType="submit"}}Save{{/bs-button}}
-            {{#bs-button type="default" action="cancel"}}Cancel{{/bs-button}}
+            {{#bs-button type="primary" buttonType="submit"}}{{t 'actions.save'}}{{/bs-button}}
+            {{#bs-button type="default" action="cancel"}}{{t 'actions.cancel'}}{{/bs-button}}
         </div>
     {{/bs-form-group}}
 {{/bs-form}}
