@@ -7,6 +7,12 @@ const Validations = buildValidations({
 });
 
 export default Model.extend(Validations, {
+    createdAt: attr('date', {
+      defaultValue() { return new Date(); }
+    }),
+    accessedAt: attr('date', {
+      defaultValue() { return new Date(); }
+    }),
     name: attr(),
     emailAddress: attr(),
     phoneNumber: attr()
