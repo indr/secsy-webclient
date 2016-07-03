@@ -7,15 +7,20 @@ const Validations = buildValidations({
 });
 
 export default Ember.Component.extend(Validations, {
+  session: Ember.inject.service('session'),
+
   username: null,
   password: null,
 
   actions: {
     login() {
       const { username, password } = this.getProperties('username', 'password');
-      console.log('login clicked', username, password);
 
-      this.sendAction('loggedIn');
+      this.get('session').authenticate('authenticator:oauth2', username, password)
+        .catch((reason) => {
+          console.log(reason.error || reason);
+          this.set('errorMessage', reason.error || reason);
+        });
     }
   }
 });

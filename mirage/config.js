@@ -23,12 +23,20 @@ export default function() {
 
     http://www.ember-cli-mirage.com/docs/v0.2.0-beta.7/shorthands/
   */
-    this.namespace = 'api'
-    
-    this.get('/contacts');
-    this.post('/contacts');
-    this.get('/contacts/:id');
-    this.put('/contacts/:id'); // or this.patch
-    this.patch('/contacts/:id');
-    this.del('/contacts/:id');
+  
+  this.namespace = 'api';
+  this.get('/contacts');
+  this.post('/contacts');
+  this.get('/contacts/:id');
+  this.put('/contacts/:id'); // or this.patch
+  this.patch('/contacts/:id');
+  this.del('/contacts/:id');
+
+  // http://stackoverflow.com/questions/30954582/how-to-make-ember-cli-mirage-to-work-with-ember-simple-auth
+  this.namespace = '';
+  this.post('/token', function (db, request) {
+    return {
+      token: '123abc'
+    }
+  });
 }
