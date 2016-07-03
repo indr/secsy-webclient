@@ -53,3 +53,7 @@ errors:
   email: "{description} must be a valid email address"
   phone: "{description} must be a valid phone number"
   url: "{description} must be a valid url"
+
+  # No clue where these two guys are comming from...
+  passwordConfirmation: 'dummy'
+  usernameDescription: 'dummy'
