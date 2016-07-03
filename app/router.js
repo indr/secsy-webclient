@@ -11,6 +11,7 @@ Router.map(function() {
     this.route('view', { path: '/:id'});
     this.route('edit', { path: '/:id/edit'});
   });
+  this.route('login');
 });
 
 export default Router;

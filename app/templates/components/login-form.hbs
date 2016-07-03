@@ -1,0 +1,8 @@
+{{#bs-form action="login" model=this}}
+  {{bs-form-element controlType="text" label="Username" property="username"}}
+  {{bs-form-element controlType="password" label="Password" property="password"}}
+
+  {{#bs-form-group}}
+    {{#bs-button type="primary" buttonType="submit"}}{{t 'actions.login'}}{{/bs-button}}
+  {{/bs-form-group}}
+{{/bs-form}}
