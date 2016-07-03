@@ -3,17 +3,23 @@ product:
   title: 'Hello world!'
   html:
     info: '<strong>{product}</strong> will cost <em>{price, number, USD}</em> if ordered by {deadline, date, time}'
-  
+
+login:
+  title: 'Login'
+  username: 'Username'
+  password: 'Password'
+
 contact:
   edit: 'Edit contact'
   new: 'Create contact'
-  
+
 actions:
   cancel: "Cancel"
-  edit: "Edit"
   delete: "Delete"
-  save: "Save"  
-    
+  edit: "Edit"
+  login: "Login"
+  save: "Save"
+
 errors:
   description: "This field"
   inclusion: "{description} is not included in the list"

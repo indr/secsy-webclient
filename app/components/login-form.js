@@ -1,5 +1,4 @@
 import Ember from 'ember';
-
 import { validator, buildValidations } from 'ember-cp-validations';
 
 const Validations = buildValidations({
@@ -13,7 +12,7 @@ export default Ember.Component.extend(Validations, {
 
   actions: {
     login() {
-      let { username, password } = this.getProperties('username', 'password');
+      const { username, password } = this.getProperties('username', 'password');
       console.log('login clicked', username, password);
 
       this.sendAction('loggedIn');
