@@ -6,24 +6,17 @@ const Validations = buildValidations({
 });
 
 export default Ember.Component.extend(Validations, {
-  session: Ember.inject.service('session'),
-  store: Ember.inject.service('store'),
-
+  addressbook: Ember.inject.service('addressbook'),
   password: null,
 
   actions: {
     decrypt() {
-      // 1. Get contacts
-      // 2. Decrypt
-      // 3. Set decrypted flag
-      // 4. Transition to contacts
-
       const self = this;
+      const addressbook = this.get('addressbook');
       const password = this.get('password');
-      this.get('store').findAll('contact')
-        .then(function (contacts) {
-          console.log('TODO: Decrypting', contacts.get('length'), password);
-          console.log('TODO: Set decrypted flag');
+
+      addressbook.decrypt(password)
+        .then(function () {
           self.sendAction('decrypted');
         });
     }
