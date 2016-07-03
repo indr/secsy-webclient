@@ -1,6 +1,6 @@
 {{#bs-form action="login" model=this}}
-  {{bs-form-element controlType="text" label="t 'login.username'" property="username"}}
-  {{bs-form-element controlType="password" label="Password" property="password"}}
+  {{bs-form-element controlType="text" label=(t 'login.username') property="username"}}
+  {{bs-form-element controlType="password" label=(t 'login.password') property="password"}}
 
   {{#bs-form-group}}
     {{#bs-button type="primary" buttonType="submit"}}{{t 'actions.login'}}{{/bs-button}}
