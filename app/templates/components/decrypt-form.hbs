@@ -1,7 +1,8 @@
 {{#bs-form action="decrypt" model=this}}
-  {{bs-form-element controlType="password" label=(t 'decrypt.password') property="password"}}
+  {{bs-form-element controlType="password" label=(t 'decrypt.passphrase') property="passphrase"}}
 
   {{#bs-form-group}}
     {{#bs-button type="primary" buttonType="submit"}}{{t 'actions.decrypt'}}{{/bs-button}}
+    {{#bs-button type="" buttonType="button" action="generateKeys"}}Generate{{/bs-button}}
   {{/bs-form-group}}
 {{/bs-form}}

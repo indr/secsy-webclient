@@ -11,7 +11,7 @@ login:
 
 decrypt:
   title: 'Decrypt addressbook'
-  password: 'Password'
+  passphrase: 'Passphrase'
 
 contact:
   edit: 'Edit contact'
