@@ -8,7 +8,7 @@ export default Ember.Service.extend({
     this._super(...arguments);
   },
 
-  decrypt(key) {
+  decrypt(/*passphrase*/) {
     const self = this;
     return this.get('store').findAll('contact')
       .then(function (contacts) {
