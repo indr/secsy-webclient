@@ -13,8 +13,13 @@ contact:
   edit: 'Kontakt bearbeiten'
   new: 'Neuer Kontakt'
 
+decrypt:
+  title: 'Addressbuch entschlüsseln'
+  password: 'Passwort'
+
 actions:
   cancel: "Verwerfen"
+  decrypt: "Entschlüsseln"
   delete: "Löschen"
   edit: "Bearbeiten"
   login: "Anmelden"

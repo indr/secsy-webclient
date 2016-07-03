@@ -9,12 +9,17 @@ login:
   username: 'Username'
   password: 'Password'
 
+decrypt:
+  title: 'Decrypt addressbook'
+  password: 'Password'
+
 contact:
   edit: 'Edit contact'
   new: 'Create contact'
 
 actions:
   cancel: "Cancel"
+  decrypt: "Decrypt"
   delete: "Delete"
   edit: "Edit"
   login: "Login"
