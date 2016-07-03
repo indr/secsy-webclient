@@ -1,7 +1,7 @@
 import { Factory, faker } from 'ember-cli-mirage';
 
 export default Factory.extend({
-  encoded(i) {
+  base64(i) {
     const data = {};
     data['created-at'] = new Date();
     data['accessed-at'] = new Date();
