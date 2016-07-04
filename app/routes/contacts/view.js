@@ -5,9 +5,9 @@ export default Ember.Route.extend({
     return this.store.findRecord('contact', params.id);
   },
 
-  afterModel(model/*, transition*/) {
-    model.set('accessedAt', new Date());
-    model.save();
+  afterModel(/*model, transition*/) {
+    //model.set('accessedAt', new Date());
+    //model.save();
   },
 
   actions: {

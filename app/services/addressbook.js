@@ -17,10 +17,8 @@ export default Ember.Service.extend({
     return this.get('store').findAll('contact')
       .then(function (contacts) {
         self.set('contacts', contacts);
-        keychain.close();
       })
       .catch(function () {
-        keychain.close();
       });
   },
 

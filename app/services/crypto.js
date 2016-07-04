@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Service.extend({
   keychain: Ember.inject.service('keychain'),
+  //openpgp: Ember.inject.service('openpgp'),
 
   encrypt(obj) {
     const keychain = this.get('keychain');
