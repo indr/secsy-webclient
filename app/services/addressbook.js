@@ -1,7 +1,6 @@
 import Ember from 'ember';
 
 export default Ember.Service.extend({
-  keychain: Ember.inject.service('keychain'),
   store: Ember.inject.service('store'),
   contacts: null,
 
@@ -10,9 +9,6 @@ export default Ember.Service.extend({
   },
 
   decrypt(passphrase) {
-    const keychain = this.get('keychain');
-    keychain.open(passphrase);
-
     const self = this;
     return this.get('store').findAll('contact')
       .then(function (contacts) {

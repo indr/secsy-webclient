@@ -9,10 +9,6 @@ export default Ember.Route.extend(ApplicationRouteMixin, {
     return this.get('intl').setLocale('en-us');
   },
 
-  sessionAuthenticated() {
-    this.transitionTo('decrypt');
-  },
-
   actions: {
     setLocale(localeName) {
       this.get('intl').setLocale(localeName);
