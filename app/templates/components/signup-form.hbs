@@ -1,0 +1,9 @@
+{{#bs-form action="signup" model=this}}
+  {{bs-form-element controlType="text" label=(t 'signup.emailAddress') property="emailAddress"}}
+  {{bs-form-element controlType="password" label=(t 'signup.password') property="password"}}
+  {{bs-form-element controlType="password" label=(t 'signup.passwordRepeat') property="passwordRepeat"}}
+
+  {{#bs-form-group}}
+    {{#bs-button type="primary" buttonType="submit"}}{{t 'actions.signup'}}{{/bs-button}}
+  {{/bs-form-group}}
+{{/bs-form}}

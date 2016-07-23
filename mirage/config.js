@@ -23,7 +23,7 @@ export default function() {
 
     http://www.ember-cli-mirage.com/docs/v0.2.0-beta.7/shorthands/
   */
-  
+
   this.namespace = 'api';
   this.get('/contacts');
   this.post('/contacts');

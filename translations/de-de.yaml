@@ -9,6 +9,12 @@ login:
   username: 'Benutzername'
   password: 'Passwort'
 
+signup:
+  title: "Registrierung"
+  emailAddress: "E-Mail-Addresse"
+  password: "Passwort"
+  passwordRepeat: "Wiederholung"
+
 contact:
   edit: 'Kontakt bearbeiten'
   new: 'Neuer Kontakt'
@@ -24,6 +30,7 @@ actions:
   edit: "Bearbeiten"
   login: "Anmelden"
   save: "Speichern"
+  signup: "Registrieren"
 
 errors:
   description: "Dieses Feld"

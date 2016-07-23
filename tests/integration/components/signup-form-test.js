@@ -2,7 +2,7 @@ import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import instanceInitializer from '../../../instance-initializers/ember-intl';
 
-moduleForComponent('contact-listing', 'Integration | Component | contact listing', {
+moduleForComponent('signup-form', 'Integration | Component | signup form', {
   integration: true,
   setup() {
     // manually invoke the ember-intl initializer
@@ -16,15 +16,17 @@ test('it renders', function(assert) {
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });
 
-  this.render(hbs`{{contact-listing}}`);
+  this.set('emailAddress', 'user@test.com');
+
+  this.render(hbs`{{signup-form}}`);
 
   assert.notEqual(this.$().text().trim(), '');
 
   // Template block usage:
   this.render(hbs`
-    {{#contact-listing}}
+    {{#signup-form}}
       template block text
-    {{/contact-listing}}
+    {{/signup-form}}
   `);
 
   assert.notEqual(this.$().text().trim(), 'template block text');

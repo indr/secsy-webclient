@@ -1,8 +1,15 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
+import instanceInitializer from '../../../instance-initializers/ember-intl';
 
 moduleForComponent('login-form', 'Integration | Component | login form', {
-  integration: true
+  integration: true,
+  setup() {
+    // manually invoke the ember-intl initializer
+    instanceInitializer.initialize(this);
+    let intl = this.container.lookup('service:intl');
+    intl.setLocale('en-us');
+  }
 });
 
 test('it renders', function(assert) {
@@ -11,7 +18,7 @@ test('it renders', function(assert) {
 
   this.render(hbs`{{login-form}}`);
 
-  assert.equal(this.$().text().trim(), '');
+  assert.notEqual(this.$().text().trim(), '');
 
   // Template block usage:
   this.render(hbs`
@@ -20,5 +27,5 @@ test('it renders', function(assert) {
     {{/login-form}}
   `);
 
-  assert.equal(this.$().text().trim(), 'template block text');
+  assert.notEqual(this.$().text().trim(), 'template block text');
 });

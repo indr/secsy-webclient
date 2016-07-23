@@ -9,6 +9,12 @@ login:
   username: 'Username'
   password: 'Password'
 
+signup:
+  title: "Signup"
+  emailAddress: "Email address"
+  password: "Password"
+  passwordRepeat: "Repeat"
+
 decrypt:
   title: 'Decrypt addressbook'
   passphrase: 'Passphrase'
@@ -24,6 +30,7 @@ actions:
   edit: "Edit"
   login: "Login"
   save: "Save"
+  signup: "Signup"
 
 errors:
   description: "This field"
