@@ -48,4 +48,10 @@ export default function() {
       "why": "unknown-error"
     };
   });
+  this.post('/login', function () {
+    return {
+      "ok": false,
+      "why": "unknown-error"
+    };
+  });
 }

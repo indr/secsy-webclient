@@ -8,6 +8,7 @@ login:
   title: 'Anmelden'
   username: 'Benutzername'
   password: 'Passwort'
+  success: 'Anmeldung erfolgreich!'
 
 signup:
   title: "Registrierung"
@@ -68,6 +69,8 @@ errors:
   phone: "{description} must be a valid phone number"
   url: "{description} must be a valid url"
   nick-exists: "Die E-Mail-Addresse wird bereits verwendet"
+  user-not-found: "Dieser Benutzername ist uns nicht bekannt"
+  invalid-password: "Ungültiges Passwort. Versuchs nochmal."
 
   # No clue where these two guys are comming from...
   passwordConfirmation: 'dummy'
