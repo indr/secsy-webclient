@@ -33,10 +33,9 @@ export default function() {
   this.del('/contacts/:id');
 
   // http://stackoverflow.com/questions/30954582/how-to-make-ember-cli-mirage-to-work-with-ember-simple-auth
-  this.namespace = '';
-  this.post('/token', function (db, request) {
+  this.post('/token', function (/*db, request*/) {
     return {
       token: '123abc'
-    }
+    };
   });
 }
