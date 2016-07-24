@@ -14,6 +14,8 @@ signup:
   emailAddress: "Email address"
   password: "Password"
   passwordRepeat: "Repeat"
+  success: "Welcome aboard!"
+  unknown-error: "Unknown error during sign up."
 
 decrypt:
   title: 'Decrypt addressbook'
@@ -65,3 +67,4 @@ errors:
   email: "{description} must be a valid email address"
   phone: "{description} must be a valid phone number"
   url: "{description} must be a valid url"
+  nick-exists: "Email address is already taken"

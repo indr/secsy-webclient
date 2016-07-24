@@ -38,4 +38,14 @@ export default function() {
       token: '123abc'
     };
   });
+
+
+  // seneca-auth
+  this.namespace = 'auth';
+  this.post('/register', function () {
+    return {
+      "ok": false,
+      "why": "unknown-error"
+    };
+  });
 }
