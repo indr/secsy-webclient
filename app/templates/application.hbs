@@ -29,7 +29,12 @@
 </nav>
 
 <div class="container">
-{{outlet}}
+    <div class="flash-messages-container">
+      {{#each flashMessages.queue as |flash|}}
+        {{flash-message flash=flash}}
+      {{/each}}
+    </div>
+  {{outlet}}
 </div>
 
 <footer class="footer">
