@@ -7,6 +7,10 @@ let App;
 
 Ember.MODEL_FACTORY_INJECTIONS = true;
 
+Ember.RSVP.on('error', function (error) {
+  Ember.Logger.assert(false, error);
+});
+
 App = Ember.Application.extend({
   modulePrefix: config.modulePrefix,
   podModulePrefix: config.podModulePrefix,
