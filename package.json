@@ -1,23 +1,26 @@
 {
-  "name": "addressbook",
-  "version": "0.0.0",
+  "name": "addressbook-web-client",
   "description": "Small description for addressbook goes here",
+  "version": "0.0.0",
+  "license": "GPL-3.0",
   "private": true,
+  "author": "Reto Inderbitzin (https://github.com/indr)",
   "directories": {
     "doc": "doc",
     "test": "tests"
+  },
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/indr/addressbook-web-client"
   },
   "scripts": {
     "build": "ember build",
     "start": "ember server",
     "test": "ember test"
   },
-  "repository": "",
-  "engines": {
-    "node": ">= 0.10.0"
-  },
-  "author": "",
-  "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.2",
     "ember-ajax": "2.4.1",
