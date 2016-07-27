@@ -1,28 +1,37 @@
 import Ember from 'ember';
 import DS from 'ember-data';
+import ApplicationAdapter from './application';
 
-export default DS.RESTAdapter.extend({
-  namespace: 'api',
+export default window.Addressbook.seneca ? seneca() : mirage();
 
-  pathForType: function(modelName) {
-    var decamelized = Ember.String.decamelize(modelName);
-    // return Ember.String.pluralize(decamelized);
-    return decamelized;
-  },
+function mirage() {
+  return ApplicationAdapter.extend({});
+}
 
-  handleResponse(status, headers, payload, requestData) {
-    // console.log('adapters.contact:handleResponse', arguments);
+function seneca() {
+  return DS.RESTAdapter.extend({
+    namespace: 'api',
 
-    if (Ember.isArray(payload)) {
-      payload = {
-        'contacts': payload
-      };
-    } else if (payload['id']) {
-      payload = {
-        'contact': payload
-      };
+    pathForType: function (modelName) {
+      var decamelized = Ember.String.decamelize(modelName);
+      // return Ember.String.pluralize(decamelized);
+      return decamelized;
+    },
+
+    handleResponse(status, headers, payload, requestData) {
+      // console.log('adapters.contact:handleResponse', arguments);
+
+      if (Ember.isArray(payload)) {
+        payload = {
+          'contacts': payload
+        };
+      } else if (payload['id']) {
+        payload = {
+          'contact': payload
+        };
+      }
+
+      return this._super(status, headers, payload, requestData);
     }
-
-    return this._super(status, headers, payload, requestData);
-  }
-});
+  });
+}
