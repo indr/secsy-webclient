@@ -23,7 +23,22 @@ export default Base.extend({
   rejectWithXhr: false,
 
   restore(/*data*/) {
-    return RSVP.reject();
+    return new RSVP.Promise((resolve, reject) => {
+      const authUserEndpoint = '/auth/user';
+      const headers = {};
+      const useXhr = this.get('rejectWithXhr');
+
+      this.makeRequest(authUserEndpoint, headers, 'GET').then((response) => {
+        run(() => {
+          if (!this._validate(response)) {
+            reject(response['why']);
+          }
+          resolve(response['login']);
+        });
+      }, (xhr) => {
+        run(null, reject, useXhr ? xhr : (xhr.responseJSON || xhr.responseText));
+      });
+    });
   },
 
   authenticate(username, password) {
@@ -36,7 +51,7 @@ export default Base.extend({
       const headers = {};
       const useXhr = this.get('rejectWithXhr');
 
-      this.makeRequest(authLoginEndpoint, data, headers).then((response) => {
+      this.makeRequest(authLoginEndpoint, headers, 'POST', data).then((response) => {
         run(() => {
           if (!this._validate(response)) {
             reject(response['why']);
@@ -53,15 +68,15 @@ export default Base.extend({
     return new RSVP.Promise((resolve) => {
       const authLogoutEndpoint = '/auth/logout';
 
-      this.makeRequest(authLogoutEndpoint, {}).then(resolve, resolve);
+      this.makeRequest(authLogoutEndpoint).then(resolve, resolve);
     });
   },
 
-  makeRequest(url, data, headers = {}) {
+  makeRequest(url, headers = {}, type = 'POST', data = null) {
     const options = {
       url,
-      data: JSON.stringify(data),
-      type: 'POST',
+      data: data != null ? JSON.stringify(data) : null,
+      type: type,
       dataType: 'json',
       contentType: 'application/json',
       headers
