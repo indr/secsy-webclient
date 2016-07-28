@@ -20,12 +20,14 @@ export default Ember.Component.extend(Validations, {
 
   actions: {
     signup() {
+      const self = this;
       const {flashMessages, intl} = this.getProperties('flashMessages', 'intl');
       const {emailAddress, password} = this.getProperties('emailAddress', 'password');
 
       this.get('senecaAuth').register(emailAddress, password).then(() => {
         const message = intl.t('signup.success');
         flashMessages.success(message);
+        self.sendAction('signedUp');
       }, (reason) => {
         let message;
         if (intl.exists('errors.' + reason)) {
