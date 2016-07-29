@@ -8,11 +8,10 @@ export default DS.RESTAdapter.extend({
   
   headers: Ember.computed('session.data.authenticated.token', function () {
     var token = this.get('session.data.authenticated.token');
-    if (Ember.isPresent(token)) {
+    if (!Ember.isPresent(token)) {
       return {
         'X-Auth-Token': token
-      }
+      };
     }
-    return {};
   })
 });
