@@ -9,7 +9,7 @@ const {
 } = Ember;
 
 export default Base.extend({
-
+  
   /**
    When authentication fails, the rejection callback is provided with the whole
    XHR object instead of it's response JSON or text.
@@ -21,13 +21,14 @@ export default Base.extend({
    @public
    */
   rejectWithXhr: false,
-
-  restore(/*data*/) {
+  
+  restore(data) {
     return new RSVP.Promise((resolve, reject) => {
       const authUserEndpoint = '/auth/user';
       const headers = {};
+      headers['X-Auth-Token'] = data.token;
       const useXhr = this.get('rejectWithXhr');
-
+      
       this.makeRequest(authUserEndpoint, headers, 'GET').then((response) => {
         run(() => {
           if (!this._validate(response)) {
@@ -40,7 +41,7 @@ export default Base.extend({
       });
     });
   },
-
+  
   authenticate(username, password) {
     return new RSVP.Promise((resolve, reject) => {
       const authLoginEndpoint = '/auth/login';
@@ -50,7 +51,7 @@ export default Base.extend({
       };
       const headers = {};
       const useXhr = this.get('rejectWithXhr');
-
+      
       this.makeRequest(authLoginEndpoint, headers, 'POST', data).then((response) => {
         run(() => {
           if (!this._validate(response)) {
@@ -63,15 +64,17 @@ export default Base.extend({
       });
     });
   },
-
-  invalidate(/*data*/) {
+  
+  invalidate(data) {
     return new RSVP.Promise((resolve) => {
       const authLogoutEndpoint = '/auth/logout';
-
-      this.makeRequest(authLogoutEndpoint).then(resolve, resolve);
+      const headers = {};
+      headers['X-Auth-Token'] = data.token;
+      
+      this.makeRequest(authLogoutEndpoint, headers).then(resolve, resolve);
     });
   },
-
+  
   makeRequest(url, headers = {}, type = 'POST', data = null) {
     const options = {
       url,
@@ -81,14 +84,14 @@ export default Base.extend({
       contentType: 'application/json',
       headers
     };
-
+    
     if (isEmpty(Object.keys(options.headers))) {
       delete options.headers;
     }
-
+    
     return jQuery.ajax(options);
   },
-
+  
   _validate(data) {
     const isOk = () => {
       return !isEmpty(data['ok']) && data['ok'] === true;
