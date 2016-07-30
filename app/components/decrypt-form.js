@@ -6,7 +6,8 @@ const Validations = buildValidations({
 });
 
 export default Ember.Component.extend(Validations, {
-  addressbook: Ember.inject.service('addressbook'),
+  addressbook: Ember.inject.service(),
+  keyring: Ember.inject.service(),
   passphrase: null,
 
   actions: {
@@ -16,8 +17,9 @@ export default Ember.Component.extend(Validations, {
       const passphrase = this.get('passphrase');
 
       addressbook.decrypt(passphrase)
-        .then(function () {
-          self.sendAction('decrypted');
+        .then(() => {
+          const keyring = self.get('keyring');
+          keyring.open(passphrase);
         });
     }
   }
