@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import ENV from 'addressbook/config/environment';
 
 export default Ember.Mixin.create({
   keyring: Ember.inject.service(),
@@ -16,7 +17,7 @@ export default Ember.Mixin.create({
       this.set('keyring.attemptedTransition', null);
     }
     else {
-      this.transitionTo(Ember.ENV.APP.routeAfterDecryption);
+      this.transitionTo(ENV.APP.routeAfterDecryption);
     }
   },
   

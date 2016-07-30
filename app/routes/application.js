@@ -24,9 +24,5 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
     invalidateSession() {
       this.get('session').invalidate();
     }
-  },
-  
-  keyringOpened() {
-    this.transitionTo('contacts');
   }
 });
