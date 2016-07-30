@@ -1,15 +1,10 @@
 import Ember from 'ember';
-import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
+import SimpleAuthApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
+import CustomApplicationRouteMixin from '../mixins/application-route-mixin';
 
-export default Ember.Route.extend(ApplicationRouteMixin, {
+export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplicationRouteMixin, {
   intl: Ember.inject.service(),
   session: Ember.inject.service(),
-  keyring: Ember.inject.service(),
-  
-  init() {
-    this._super(...arguments);
-    this._subscribeToKeyringEvents();
-  },
   
   beforeModel()  {
     this.restoreLocale();
@@ -33,13 +28,5 @@ export default Ember.Route.extend(ApplicationRouteMixin, {
   
   keyringOpened() {
     this.transitionTo('contacts');
-  },
-  
-  _subscribeToKeyringEvents() {
-    this.get('keyring').on('keyringOpened',
-      Ember.run.bind(this, () => {
-        this['keyringOpened'](...arguments);
-      })
-    );
   }
 });
