@@ -59,6 +59,14 @@ export default function () {
       }
     };
   });
+  this.get('/user', function () {
+    return {
+      "ok": true,
+      "login": {
+        "token": "123abc"
+      }
+    };
+  });
   this.post('/logout', function () {
     return {};
   });
