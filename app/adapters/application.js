@@ -7,11 +7,13 @@ export default DS.RESTAdapter.extend({
   namespace: 'api',
   
   headers: Ember.computed('session.data.authenticated.token', function () {
+    const key = 'X-Auth-Token';
     var token = this.get('session.data.authenticated.token');
-    if (!Ember.isPresent(token)) {
-      return {
-        'X-Auth-Token': token
-      };
+    Ember.Logger.info(key, token);
+    if (Ember.isPresent(token)) {
+      const headers = {};
+      headers[key] = token;
+      return headers;
     }
   })
 });
