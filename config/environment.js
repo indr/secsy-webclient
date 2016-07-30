@@ -16,11 +16,13 @@ module.exports = function(environment) {
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
+      decryptionRoute: 'decrypt',
+      routeAfterDecryption: 'contacts'
     }
   };
 
   ENV['ember-simple-auth'] = {
-    routeAfterAuthentication: 'decrypt'
+    routeAfterAuthentication: 'contacts'
   };
 
   if (environment === 'development') {

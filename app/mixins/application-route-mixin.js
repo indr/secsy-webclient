@@ -9,7 +9,15 @@ export default Ember.Mixin.create({
   },
   
   keyringOpened() {
-    // noop
+    const attemptedTransition = this.get('keyring.attemptedTransition');
+    
+    if (attemptedTransition) {
+      attemptedTransition.retry();
+      this.set('keyring.attemptedTransition', null);
+    }
+    else {
+      this.transitionTo(Ember.ENV.APP.routeAfterDecryption);
+    }
   },
   
   _subscribeToKeyringEvents() {
