@@ -2,11 +2,16 @@ import Ember from 'ember';
 import {validator, buildValidations} from 'ember-cp-validations';
 
 const Validations = buildValidations({
-  emailAddress: validator('presence', true),
+  emailAddress: {
+    validators: [
+      validator('presence', true),
+      validator('format', {type: 'email'})
+    ]
+  },
   password: validator('presence', true),
-
-  // TODO: Validate equality
-  passwordRepeat: validator('presence', true)
+  passwordRepeat: validator('confirmation', {
+    on: 'password', messageKey: 'errors.confirmation-password'
+  })
 });
 
 export default Ember.Component.extend(Validations, {

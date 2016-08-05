@@ -6,13 +6,13 @@ product:
 
 login:
   title: 'Anmelden'
-  username: 'Benutzername'
+  username: 'E-Mail-Adresse'
   password: 'Passwort'
   success: 'Anmeldung erfolgreich!'
 
 signup:
   title: "Registrierung"
-  emailAddress: "E-Mail-Addresse"
+  emailAddress: "E-Mail-Adresse"
   password: "Passwort"
   passwordRepeat: "Wiederholung"
   success: "Willkommen an Bord!"
@@ -23,7 +23,7 @@ contact:
   new: 'Neuer Kontakt'
 
 decrypt:
-  title: 'Addressbuch entschlüsseln'
+  title: 'Adressbuch entschlüsseln'
   passphrase: 'Passwort'
 
 actions:
@@ -40,7 +40,8 @@ errors:
   inclusion: "{description} is not included in the list"
   exclusion: "{description} is reserved"
   invalid: "{description} is invalid"
-  confirmation: "{description} doesn't match {on}"
+  confirmation: "{description} stimmt nicht mit {on} überein"
+  confirmation-password: "{description} stimmt nicht mit Passwort überein"
   accepted: "{description} must be accepted"
   empty: "{description} can't be empty"
   blank: "{description} darf nicht leer sein"
@@ -65,13 +66,12 @@ errors:
   even: "{description} must be even"
   positive: "{description} must be positive"
   date: "{description} must be a valid date"
-  email: "{description} must be a valid email address"
+  email: "{description} muss eine gültige E-Mail-Adresse sein"
   phone: "{description} must be a valid phone number"
   url: "{description} must be a valid url"
   nick-exists: "Die E-Mail-Addresse wird bereits verwendet"
-  user-not-found: "Dieser Benutzername ist uns nicht bekannt"
-  invalid-password: "Ungültiges Passwort. Versuchs nochmal."
-
+  user-not-found: "Diese E-Mail-Adresse ist uns nicht bekannt"
+  invalid-password: "Ungültiges Passwort"
   # No clue where these two guys are comming from...
   passwordConfirmation: 'dummy'
   usernameDescription: 'dummy'

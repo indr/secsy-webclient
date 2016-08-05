@@ -6,7 +6,7 @@ product:
 
 login:
   title: 'Login'
-  username: 'Username'
+  username: 'Email address'
   password: 'Password'
   success: 'Login successful!'
 
@@ -41,6 +41,7 @@ errors:
   exclusion: "{description} is reserved"
   invalid: "{description} is invalid"
   confirmation: "{description} doesn't match {on}"
+  confirmation-password: "This field doesn't match password"
   accepted: "{description} must be accepted"
   empty: "{description} can't be empty"
   blank: "{description} can't be blank"
@@ -69,5 +70,5 @@ errors:
   phone: "{description} must be a valid phone number"
   url: "{description} must be a valid url"
   nick-exists: "Email address is already taken"
-  user-not-found: "We don't know that username"
-  invalid-password: "Invalid password. Try again."
+  user-not-found: "We don't know that email address"
+  invalid-password: "Invalid password"

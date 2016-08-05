@@ -2,7 +2,12 @@ import Ember from 'ember';
 import {validator, buildValidations} from 'ember-cp-validations';
 
 const Validations = buildValidations({
-  username: validator('presence', true),
+  emailAddress: {
+    validators: [
+      validator('presence', true),
+      validator('format', {type: 'email'})
+    ]
+  },
   password: validator('presence', true)
 });
 
@@ -10,15 +15,15 @@ export default Ember.Component.extend(Validations, {
   session: Ember.inject.service(),
   intl: Ember.inject.service(),
 
-  username: null,
+  emailAddress: null,
   password: null,
 
   actions: {
     login() {
       const {flashMessages, intl} = this.getProperties('flashMessages', 'intl');
-      const {username, password} = this.getProperties('username', 'password');
+      const {emailAddress, password} = this.getProperties('emailAddress', 'password');
 
-      this.get('session').authenticate('authenticator:seneca', username, password).then(() => {
+      this.get('session').authenticate('authenticator:seneca', emailAddress, password).then(() => {
         const message = intl.t('login.success');
         flashMessages.success(message);
       }, (reason) => {
