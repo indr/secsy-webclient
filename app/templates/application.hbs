@@ -15,14 +15,14 @@
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
               {{#if session.isAuthenticated}}
-                  <li>{{#link-to 'contacts.new'}}New contact{{/link-to}}</li>
+                  <li>{{#link-to 'contacts.new'}}{{t 'contact.new'}}{{/link-to}}</li>
               {{/if}}
             </ul>
             <div class="nav navbar-nav navbar-right">
               {{#if session.isAuthenticated}}
-                  <li><a href="" {{action 'invalidateSession'}}>Logout</a></li>
+                  <li><a href="" {{action 'invalidateSession'}}>{{t 'actions.logout'}}</a></li>
               {{else}}
-                  <li>{{#link-to 'login'}}Login{{/link-to}}</li>
+                  <li>{{#link-to 'login'}}{{t 'actions.login'}}{{/link-to}}</li>
               {{/if}}
             </div>
         </div><!--/.nav-collapse -->

@@ -26,14 +26,21 @@ contact:
   edit: 'Edit contact'
   new: 'Create contact'
 
+contacts:
+  no-results: "Your search did not match any contacts!"
+
 actions:
   cancel: "Cancel"
   decrypt: "Decrypt"
   delete: "Delete"
   edit: "Edit"
   login: "Login"
+  logout: "Logout"
   save: "Save"
   signup: "Signup"
+
+placeholders:
+  query: "Search..."
 
 errors:
   description: "This field"

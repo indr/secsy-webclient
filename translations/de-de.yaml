@@ -22,6 +22,8 @@ contact:
   edit: 'Kontakt bearbeiten'
   new: 'Neuer Kontakt'
 
+contacts:
+  no-results: 'Deine Suche ergab keine Treffer!'
 decrypt:
   title: 'Adressbuch entschlüsseln'
   passphrase: 'Passwort'
@@ -32,8 +34,12 @@ actions:
   delete: "Löschen"
   edit: "Bearbeiten"
   login: "Anmelden"
+  logout: "Abmelden"
   save: "Speichern"
   signup: "Registrieren"
+
+placeholders:
+  query: "Suchen..."
 
 errors:
   description: "Dieses Feld"
