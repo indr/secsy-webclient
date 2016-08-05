@@ -1,31 +1,32 @@
 <nav class="navbar navbar-inverse navbar-fixed-top">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      {{#link-to "index" class="navbar-brand"}}addressbook{{/link-to}}
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+          {{#link-to "index" class="navbar-brand"}}addressbook{{/link-to}}
+        </div>
+
+
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+              {{#if session.isAuthenticated}}
+                  <li>{{#link-to 'contacts.new'}}New contact{{/link-to}}</li>
+              {{/if}}
+            </ul>
+            <div class="nav navbar-nav navbar-right">
+              {{#if session.isAuthenticated}}
+                  <li><a href="" {{action 'invalidateSession'}}>Logout</a></li>
+              {{else}}
+                  <li>{{#link-to 'login'}}Login{{/link-to}}</li>
+              {{/if}}
+            </div>
+        </div><!--/.nav-collapse -->
     </div>
-
-
-    <div id="navbar" class="collapse navbar-collapse">
-      <ul class="nav navbar-nav">
-        <!--
-        <li class="active"><a href="#">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#contact">Contact</a></li>
-        -->
-        {{#if session.isAuthenticated}}
-          <li><a href="" {{action 'invalidateSession'}}>Logout</a></li>
-        {{else}}
-          <li>{{#link-to 'login'}}Login{{/link-to}}</li>
-        {{/if}}
-      </ul>
-    </div><!--/.nav-collapse -->
-  </div>
 </nav>
 
 <div class="container">
@@ -38,7 +39,8 @@
 </div>
 
 <footer class="footer">
-  <div class="container">
-    <p class="text-muted"><a href="" {{action "setLocale" "en-us"}}>English</a> | <a href="" {{action "setLocale" "de-de"}}>Deutsch</a></p>
-  </div>
+    <div class="container">
+        <p class="text-muted"><a href="" {{action "setLocale" "en-us"}}>English</a> | <a
+                href="" {{action "setLocale" "de-de"}}>Deutsch</a></p>
+    </div>
 </footer>

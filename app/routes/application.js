@@ -23,6 +23,10 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
     
     invalidateSession() {
       this.get('session').invalidate();
+    },
+    
+    createContact() {
+      this.transitionTo('contacts/new');
     }
   }
 });
