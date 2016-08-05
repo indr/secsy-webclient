@@ -3,9 +3,8 @@ import {moduleForModel, test} from 'ember-qunit';
 moduleForModel('contact', 'Unit | Serializer | contact', {
   // Specify the other units that are required for this test.
   needs: [
-    'serializer:contact',
     'service:crypto',
-    'validator:presence']
+    'service:keyring']
 });
 
 // Replace this with your real tests.
