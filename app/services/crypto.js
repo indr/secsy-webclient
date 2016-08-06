@@ -34,7 +34,7 @@ export default Ember.Service.extend({
         passwords: '1234',
         armor: true
       };
-      return openpgp.encrypt(options)
+      openpgp.encrypt(options)
         .then((encrypted) => {
           const result = {
             algorithm: 'base64.pgp',

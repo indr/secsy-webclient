@@ -38,10 +38,12 @@ test('async: it encrypts an object', function (assert) {
     b: {b1: 'bar'}
   };
   assert.expect(2);
+  var done = assert.async();
   service.encryptAsync(plain)
     .then((encrypted) => {
-      assert.equal(encrypted.algorithm, 'base64');
+      assert.equal(encrypted.algorithm, 'base64.pgp');
       assert.ok(encrypted.data);
+      done();
     });
 });
 
@@ -51,11 +53,13 @@ test('async: it encrypts and decrypts', function (assert) {
     a: 'foo'
   };
   assert.expect(1);
+  var done = assert.async();
   service.encryptAsync(expected)
     .then((encrypted) => {
       return service.decryptAsync(encrypted);
     })
     .then((actual) => {
       assert.deepEqual(expected, actual);
+      done();
     });
 });
