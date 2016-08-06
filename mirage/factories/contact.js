@@ -3,7 +3,7 @@ import {Factory, faker} from 'ember-cli-mirage';
 export default Factory.extend({
   createdAt: now,
   accessedAt: now,
-  encrypted_: function encrypted() {
+  'encrypted_': function encrypted() {
     var plain = {
       name$: name,
       emailAddress$: function () {
@@ -26,7 +26,10 @@ export default Factory.extend({
       }
     });
     
-    return window.btoa(JSON.stringify(plain));
+    return {
+      algorithm: 'base64',
+      data: window.btoa(JSON.stringify(plain))
+    };
   }
 });
 
