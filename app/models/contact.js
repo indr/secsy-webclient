@@ -15,7 +15,9 @@ export default Model.extend(Validations, {
     }),
     name: attr(),
     emailAddress: attr(),
-    phoneNumber: attr()
+    phoneNumber: attr(),
+    latitude$: attr(),
+    longitude$: attr()
 });
 
 
