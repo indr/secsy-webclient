@@ -3,14 +3,20 @@ import {Factory, faker} from 'ember-cli-mirage';
 export default Factory.extend({
   createdAt: now,
   accessedAt: now,
-  name: name,
-  encrypted: function encrypted() {
+  encrypted_: function encrypted() {
     var plain = {
-      emailAddress: function () {
+      name$: name,
+      emailAddress$: function () {
         return faker.internet.email();
       },
-      phoneNumber: function () {
+      phoneNumber$: function () {
         return faker.phone.phoneNumber();
+      },
+      latitude$: function () {
+        return faker.address.latitude();
+      },
+      longitude$: function () {
+        return faker.address.longitude();
       }
     };
     

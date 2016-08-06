@@ -3,7 +3,7 @@ import attr from 'ember-data/attr';
 import { validator, buildValidations } from 'ember-cp-validations';
 
 const Validations = buildValidations({
-    name: validator('presence', true)
+    name$: validator('presence', true)
 });
 
 export default Model.extend(Validations, {
@@ -13,9 +13,9 @@ export default Model.extend(Validations, {
     accessedAt: attr('date', {
       defaultValue() { return new Date(); }
     }),
-    name: attr(),
-    emailAddress: attr(),
-    phoneNumber: attr(),
+    name$: attr(),
+    emailAddress$: attr(),
+    phoneNumber$: attr(),
     latitude$: attr(),
     longitude$: attr()
 });
