@@ -1,5 +1,9 @@
 import Ember from 'ember';
 
+const {
+  RSVP
+} = Ember;
+
 export default Ember.Service.extend({
   
   /**
@@ -15,6 +19,13 @@ export default Ember.Service.extend({
     };
   },
   
+  encryptAsync(obj) {
+    const self = this;
+    return new RSVP.Promise((resolve) => {
+      resolve(self.encrypt(obj));
+    });
+  },
+  
   /**
    * Decrypts `obj` based on the `algorithm` string.
    *
@@ -27,6 +38,13 @@ export default Ember.Service.extend({
     }
     
     new Error('Unknown algorithm: ', obj.algorithm);
+  },
+  
+  decryptAsync(obj) {
+    const self = this;
+    return new RSVP.Promise((resolve) => {
+      resolve(self.decrypt(obj));
+    });
   },
   
   encodeBase64(obj) {

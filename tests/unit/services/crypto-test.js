@@ -11,7 +11,7 @@ test('it exists', function (assert) {
   assert.ok(service);
 });
 
-test('it encrypts an object', function (assert) {
+test('sync: it encrypts an object', function (assert) {
   const service = this.subject();
   const plain = {
     a: 'foo',
@@ -22,11 +22,40 @@ test('it encrypts an object', function (assert) {
   assert.ok(encrypted.data);
 });
 
-test('it encrypts and decrypts', function (assert) {
+test('sync: it encrypts and decrypts', function (assert) {
   const service = this.subject();
   const expected = {
     a: 'foo'
   };
   const actual = service.decrypt(service.encrypt(expected));
   assert.deepEqual(expected, actual);
+});
+
+test('async: it encrypts an object', function (assert) {
+  const service = this.subject();
+  const plain = {
+    a: 'foo',
+    b: {b1: 'bar'}
+  };
+  assert.expect(2);
+  service.encryptAsync(plain)
+    .then((encrypted) => {
+      assert.equal(encrypted.algorithm, 'base64');
+      assert.ok(encrypted.data);
+    });
+});
+
+test('async: it encrypts and decrypts', function (assert) {
+  const service = this.subject();
+  const expected = {
+    a: 'foo'
+  };
+  assert.expect(1);
+  service.encryptAsync(expected)
+    .then((encrypted) => {
+      return service.decryptAsync(encrypted);
+    })
+    .then((actual) => {
+      assert.deepEqual(expected, actual);
+    });
 });
