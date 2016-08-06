@@ -1,10 +1,17 @@
 import Ember from 'ember';
+import openpgp from 'openpgp';
 
 const {
   RSVP
 } = Ember;
 
 export default Ember.Service.extend({
+  
+  init() {
+    this._super(...arguments);
+    
+    openpgp.initWorker({path: 'assets/openpgp.worker.min.js'});
+  },
   
   /**
    * Encrypts `obj` with default algorithm.
@@ -22,7 +29,19 @@ export default Ember.Service.extend({
   encryptAsync(obj) {
     const self = this;
     return new RSVP.Promise((resolve) => {
-      resolve(self.encrypt(obj));
+      const options = {
+        data: self.encodeBase64(obj),
+        passwords: '1234',
+        armor: true
+      };
+      return openpgp.encrypt(options)
+        .then((encrypted) => {
+          const result = {
+            algorithm: 'base64.pgp',
+            data: encrypted.data
+          };
+          resolve(result);
+        });
     });
   },
   
@@ -42,8 +61,26 @@ export default Ember.Service.extend({
   
   decryptAsync(obj) {
     const self = this;
-    return new RSVP.Promise((resolve) => {
-      resolve(self.decrypt(obj));
+    return new RSVP.Promise((resolve, reject) => {
+      if (obj.algorithm === 'base64') {
+        resolve(self.decodeBase64(obj.data));
+      }
+      else if (obj.algorithm === 'base64.pgp') {
+        const options = {
+          password: '1234',
+          message: openpgp.message.readArmored(obj.data)
+        };
+        openpgp.decrypt(options)
+          .then((message) => {
+            resolve(self.decodeBase64(message.data));
+          })
+          .catch((err) => {
+            reject(err);
+          });
+      }
+      else {
+        reject(new Error('unknown algorithm'));
+      }
     });
   },
   

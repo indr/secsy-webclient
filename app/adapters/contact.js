@@ -59,9 +59,11 @@ export default ApplicationAdapter.extend({
             }));
         }
       }
-      
-      return RSVP.allSettled(promises)
-        .then(resolve(obj));
+     
+      RSVP.allSettled(promises)
+        .then(() => {
+          resolve(obj);
+        });
     });
   },
   
@@ -103,8 +105,10 @@ export default ApplicationAdapter.extend({
         }
       }
       
-      return RSVP.allSettled(promises)
-        .then(resolve(obj));
+      RSVP.allSettled(promises)
+        .then(() => {
+          resolve(obj);
+        });
     });
   }
 });
