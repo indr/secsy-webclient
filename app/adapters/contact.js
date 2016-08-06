@@ -53,7 +53,7 @@ export default ApplicationAdapter.extend({
         
         if (Object.keys(plain).length > 0) {
           const crypto = self.get('crypto');
-          promises.push(crypto.encryptAsync(plain)
+          promises.push(crypto.encrypt(plain)
             .then((encrypted) => {
               obj['encrypted_'] = encrypted;
             }));
@@ -98,7 +98,7 @@ export default ApplicationAdapter.extend({
         
         if (encrypted !== null) {
           const crypto = this.get('crypto');
-          promises.push(crypto.decryptAsync(encrypted)
+          promises.push(crypto.decrypt(encrypted)
             .then((plain) => {
               Ember.assign(obj, plain);
             }));

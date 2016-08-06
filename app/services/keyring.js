@@ -3,6 +3,7 @@ import Ember from 'ember';
 export default Ember.Service.extend(Ember.Evented, {
   session: Ember.inject.service(),
   isOpen: false,
+  passphrase: null,
   attemptedTransition: null,
   
   init() {
@@ -10,9 +11,14 @@ export default Ember.Service.extend(Ember.Evented, {
     this._subscribeToSessionEvents();
   },
   
-  open() {
+  getPassphrase() {
+    return this.passphrase;
+  },
+  
+  open(passphrase) {
     Ember.Logger.info('Opening keyring');
     this.set('isOpen', true);
+    this.passphrase = passphrase;
     this.trigger('keyringOpened', ...arguments);
   },
   

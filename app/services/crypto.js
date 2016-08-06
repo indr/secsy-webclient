@@ -6,6 +6,7 @@ const {
 } = Ember;
 
 export default Ember.Service.extend({
+  keyring: Ember.inject.service(),
   
   init() {
     this._super(...arguments);
@@ -16,22 +17,17 @@ export default Ember.Service.extend({
   /**
    * Encrypts `obj` with default algorithm.
    *
+   * @async
    * @param {Object} obj
    * @returns {{algorithm: string, data: string}}
    */
   encrypt(obj) {
-    return {
-      algorithm: 'base64',
-      data: this.encodeBase64(obj)
-    };
-  },
-  
-  encryptAsync(obj) {
     const self = this;
     return new RSVP.Promise((resolve) => {
+      const passphrase = self.get('keyring').getPassphrase();
       const options = {
         data: self.encodeBase64(obj),
-        passwords: '1234',
+        passwords: passphrase,
         armor: true
       };
       openpgp.encrypt(options)
@@ -48,26 +44,20 @@ export default Ember.Service.extend({
   /**
    * Decrypts `obj` based on the `algorithm` string.
    *
+   * @async
    * @param {{algorithm: string, data: string}} obj
    * @returns {Object}
    */
   decrypt(obj) {
-    if (obj.algorithm === 'base64') {
-      return this.decodeBase64(obj.data);
-    }
-    
-    new Error('Unknown algorithm: ', obj.algorithm);
-  },
-  
-  decryptAsync(obj) {
     const self = this;
     return new RSVP.Promise((resolve, reject) => {
       if (obj.algorithm === 'base64') {
         resolve(self.decodeBase64(obj.data));
       }
       else if (obj.algorithm === 'base64.pgp') {
+        const passphrase = self.get('keyring').getPassphrase();
         const options = {
-          password: '1234',
+          password: passphrase,
           message: openpgp.message.readArmored(obj.data)
         };
         openpgp.decrypt(options)
@@ -75,7 +65,7 @@ export default Ember.Service.extend({
             resolve(self.decodeBase64(message.data));
           })
           .catch((err) => {
-            reject(err);
+            reject(err = '{}\n' ? 'decryption-failed' : err);
           });
       }
       else {

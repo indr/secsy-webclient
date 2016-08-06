@@ -2,44 +2,35 @@ import { moduleFor, test } from 'ember-qunit';
 
 moduleFor('service:crypto', 'Unit | Service | crypto', {
   // Specify the other units that are required for this test.
-  // needs: ['service:foo']
+  needs: [
+    'service:keyring',
+    'service:session'
+  ]
 });
 
-// Replace this with your real tests.
-test('it exists', function (assert) {
-  let service = this.subject();
-  assert.ok(service);
-});
-
-test('sync: it encrypts an object', function (assert) {
+test('it decrypts "base64"', function (assert) {
   const service = this.subject();
-  const plain = {
-    a: 'foo',
-    b: {b1: 'bar'}
-  };
-  const encrypted = service.encrypt(plain);
-  assert.equal(encrypted.algorithm, 'base64');
-  assert.ok(encrypted.data);
+  service.get('keyring').passphrase = '1234';
+  const expected = {'foo': 'bar'};
+  assert.expect(1);
+  var done = assert.async();
+  service.decrypt({algorithm: 'base64', data: 'eyJmb28iOiJiYXIifQ=='})
+    .then((decrypted) => {
+      assert.deepEqual(decrypted, expected);
+      done();
+    });
 });
 
-test('sync: it encrypts and decrypts', function (assert) {
+test('it encrypts an object to base64.pgp', function (assert) {
   const service = this.subject();
-  const expected = {
-    a: 'foo'
-  };
-  const actual = service.decrypt(service.encrypt(expected));
-  assert.deepEqual(expected, actual);
-});
-
-test('async: it encrypts an object', function (assert) {
-  const service = this.subject();
+  service.get('keyring').passphrase = '1234';
   const plain = {
     a: 'foo',
     b: {b1: 'bar'}
   };
   assert.expect(2);
   var done = assert.async();
-  service.encryptAsync(plain)
+  service.encrypt(plain)
     .then((encrypted) => {
       assert.equal(encrypted.algorithm, 'base64.pgp');
       assert.ok(encrypted.data);
@@ -47,19 +38,36 @@ test('async: it encrypts an object', function (assert) {
     });
 });
 
-test('async: it encrypts and decrypts', function (assert) {
+test('it encrypts and decrypts', function (assert) {
   const service = this.subject();
+  service.get('keyring').passphrase = '1234';
   const expected = {
     a: 'foo'
   };
   assert.expect(1);
   var done = assert.async();
-  service.encryptAsync(expected)
+  service.encrypt(expected)
     .then((encrypted) => {
-      return service.decryptAsync(encrypted);
+      return service.decrypt(encrypted);
     })
     .then((actual) => {
       assert.deepEqual(expected, actual);
+      done();
+    });
+});
+
+test('it rejects with wrong passphrase', function (assert) {
+  const service = this.subject();
+  const keyring = service.get('keyring');
+  keyring.passphrase = '1234';
+  const done = assert.async();
+  service.encrypt({a:'b'})
+    .then((encrypted) => {
+      keyring.passphrase = 'wrong';
+      return service.decrypt(encrypted);
+    })
+    .catch((error) => {
+      assert.equal(error, 'decryption-failed');
       done();
     });
 });
