@@ -85,7 +85,7 @@ test('it rejects with wrong passphrase', function (assert) {
 //   const done = assert.async();
 //   sut.generateKey('user@example.com', 'secret passphrase').then((key) => {
 //     assert.equal(key.privateKeyArmored.indexOf('-----BEGIN PGP PRIVATE KEY BLOCK'), 0);
-//     assert.equal(key.publiKeyArmored.indexOf('-----BEGIN PGP PUBLIC KEY BLOCK'), 0);
+//     assert.equal(key.publicKeyArmored.indexOf('-----BEGIN PGP PUBLIC KEY BLOCK'), 0);
 //     done();
 //   }).catch((err) => {
 //     done();

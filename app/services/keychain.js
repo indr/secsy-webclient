@@ -6,6 +6,8 @@ const {
 
 export default Ember.Service.extend(Ember.Evented, {
   session: Ember.inject.service(),
+  store: Ember.inject.service(),
+  
   isOpen: false,
   passphrase: null,
   attemptedTransition: null,
@@ -38,13 +40,17 @@ export default Ember.Service.extend(Ember.Evented, {
    * @param key
    */
   save(key) {
-    return new RSVP.Promise((resolve) => {
-      console.log('saving key (stub)', key);
-      window.setTimeout(() => {
-        console.log('key saved', key);
-        resolve(key)
-      }, 1000 * 2);
-    });
+    const {store, session} = this.getProperties('store', 'session');
+      const userId = session.get('data.authenticated.user');
+      return store.createRecord('public-key', {
+        userId: userId,
+        armored: key.publicKeyArmored
+      }).save().then(() => {
+        return store.createRecord('private-key', {
+          userId: userId,
+          armored: key.privateKeyArmored
+        }).save();
+      });
   },
   
   _subscribeToSessionEvents() {
