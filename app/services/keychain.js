@@ -1,13 +1,13 @@
 import Ember from 'ember';
 
 export default Ember.Service.extend(Ember.Evented, {
+  keystore: Ember.inject.service(),
+  openpgp: Ember.inject.service(),
   session: Ember.inject.service(),
-  store: Ember.inject.service(),
   
-  privateKey: null,
-  publicKey: null,
   isOpen: false,
   passphrase: null,
+  
   attemptedTransition: null,
   
   init() {
@@ -19,69 +19,52 @@ export default Ember.Service.extend(Ember.Evented, {
     return this.passphrase;
   },
   
-  open(passphrase) {
-    Ember.Logger.info('Opening keychain');
+  /**
+   * @param passphrase
+   * @returns {Promise}
+   */
+  open(userId, passphrase) {
     const self = this;
-    return self._loadKeys().then(() => {
+    
+    const keystore = this.get('keystore');
+    
+    return keystore.load(userId).then(() => {
       self.passphrase = passphrase;
       self.set('isOpen', true);
-      self.trigger('keychainOpened', ...arguments);
+      self.trigger('keychainOpened', self);
     });
-  },
-  
-  close() {
-    Ember.Logger.info('Closing keychain');
-    this.publicKey = null;
-    this.privateKey = null;
-    this.set('isOpen', false);
-    this.trigger('keychainClosed', ...arguments);
   },
   
   /**
-   * Uploads a key to the key server and adds the key to the keychain.
-   *
-   * @param key
+   * @returns undefined
    */
-  save(key) {
-    const self = this;
-    const {store, session} = this.getProperties('store', 'session');
-    const userId = session.get('data.authenticated.user');
-    return store.createRecord('public-key', {
-      userId: userId,
-      armored: key.publicKeyArmored
-    }).save().then((publicKey) => {
-      self.publicKey = publicKey;
-      return store.createRecord('private-key', {
-        userId: userId,
-        armored: key.privateKeyArmored
-      }).save().then((privateKey) => {
-        self.privateKey = privateKey;
-      });
-    });
+  close() {
+    Ember.Logger.info('Closing keychain');
+    this.set('isOpen', false);
+    this.trigger('keychainClosed', this);
   },
   
-  _loadKeys() {
+  /**
+   * @param userId
+   * @param emailAddress
+   * @param passphrase
+   * @returns {Promise}
+   */
+  generateKey(userId, emailAddress, passphrase) {
     const self = this;
-    const {store, session} = self.getProperties('store', 'session');
-    const filter = {
-      userId: session.get('data.authenticated.user')
-    };
-    return store.queryRecord('public-key', filter).then((publicKey) => {
-      console.log('publicKey', publicKey);
-      if (!publicKey) {
-        throw new Error('public-key-not-exist');
-      }
-      self.publicKey = publicKey;
-      return store.queryRecord('private-key', filter);
-    }).then((privateKey) => {
-      console.log('privateKey', privateKey);
-      if (!privateKey) {
-        throw new Error('private-key-not-exist');
-      }
-      self.privateKey = privateKey;
+    
+    const openpgp = self.get('openpgp');
+    const keystore = self.get('keystore');
+    
+    return openpgp.generateKey(emailAddress, passphrase).then((key) => {
+      return keystore.save(userId, key);
+    }).then(() => {
+      self.passphrase = passphrase;
+      self.set('isOpen', true);
+      self.trigger('keychainOpened', self);
     });
   },
-  
+ 
   _subscribeToSessionEvents() {
     this.get('session').on('invalidationSucceeded',
       Ember.run.bind(this, () => {

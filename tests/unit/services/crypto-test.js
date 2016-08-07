@@ -5,6 +5,7 @@ moduleFor('service:crypto', 'Unit | Service | crypto', {
   // Specify the other units that are required for this test.
   needs: [
     'service:keychain',
+    'service:keystore',
     'service:openpgp',
     'service:session'
   ],

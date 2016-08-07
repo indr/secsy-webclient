@@ -5,6 +5,8 @@ moduleFor('route:application', 'Unit | Route | application', {
   needs: [
     'service:intl',
     'service:keychain',
+    'service:keystore',
+    'service:openpgp',
     'service:session']
 });
 
