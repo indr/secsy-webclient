@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import openpgp from 'openpgp';
 
 const {
   RSVP
@@ -7,12 +6,8 @@ const {
 
 export default Ember.Service.extend({
   keychain: Ember.inject.service(),
+  openpgp: Ember.inject.service(),
   
-  init() {
-    this._super(...arguments);
-    
-    openpgp.initWorker({path: 'assets/openpgp.worker.min.js'});
-  },
   
   /**
    * Encrypts `obj` with default algorithm.
@@ -22,23 +17,18 @@ export default Ember.Service.extend({
    * @returns {{algorithm: string, data: string}}
    */
   encrypt(obj) {
-    const self = this;
-    return new RSVP.Promise((resolve, reject) => {
-      const passphrase = self.get('keychain').getPassphrase();
-      const options = {
-        data: self.encodeBase64(obj),
-        passwords: passphrase,
-        armor: true
+    const passphrase = this.get('keychain').getPassphrase();
+    const options = {
+      data: this.encodeBase64(obj),
+      passwords: passphrase,
+      armor: true
+    };
+    const openpgp = this.get('openpgp');
+    return openpgp.encrypt(options).then((encrypted) => {
+      return {
+        algorithm: 'base64.pgp',
+        data: encrypted.data
       };
-      openpgp.encrypt(options).then((encrypted) => {
-        const result = {
-          algorithm: 'base64.pgp',
-          data: encrypted.data
-        };
-        resolve(result);
-      }).catch((err) => {
-        reject(err);
-      });
     });
   },
   
@@ -57,6 +47,7 @@ export default Ember.Service.extend({
       }
       else if (obj.algorithm === 'base64.pgp') {
         const passphrase = self.get('keychain').getPassphrase();
+        const openpgp = self.get('openpgp');
         const options = {
           password: passphrase,
           message: openpgp.message.readArmored(obj.data)
@@ -81,14 +72,13 @@ export default Ember.Service.extend({
     return JSON.parse(window.atob(text));
   },
   
-  generateKeyPair(email, passphrase) {
+  // TODO: Move to service:openpgp
+  generateKey(emailAddress, passphrase) {
+    const self = this;
     return new RSVP.Promise((resolve, reject) => {
-      const options = {
-        userIds: [{email}],
-        numBits: 4096,
-        passphrase
-      };
-      openpgp.generateKey(options).then((key) => {
+      const openpgp = self.get('openpgp');
+      
+      openpgp.generateKey(emailAddress, passphrase).then((key) => {
         resolve(key);
       }).catch((err) => {
         reject(err);

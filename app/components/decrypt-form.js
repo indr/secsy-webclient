@@ -6,8 +6,8 @@ const Validations = buildValidations({
 });
 
 export default Ember.Component.extend(Validations, {
-  crypto: Ember.inject.service(),
   keychain: Ember.inject.service(),
+  openpgp: Ember.inject.service(),
   session: Ember.inject.service(),
   
   passphrase: null,
@@ -26,14 +26,16 @@ export default Ember.Component.extend(Validations, {
       const emailAddress = this.get('session.data.authenticated.email');
       const passphrase = this.get('passphrase');
       
-      const crypto = self.get('crypto');
-      crypto.generateKeyPair(emailAddress, passphrase)
-        .then((key) => {
-          console.log('yess', key);
-        })
-        .catch((err) => {
-          console.log('nay', err);
-        });
+      const openpgp = self.get('openpgp');
+      const keychain = self.get('keychain');
+      console.log('Generating key');
+      openpgp.generateKey(emailAddress, passphrase).then((key) => {
+        return keychain.save(key);
+      }).then((key) => {
+        console.log('yess', key);
+      }).catch((err) => {
+        console.log('nay', err);
+      });
     }
   }
 });

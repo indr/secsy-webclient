@@ -5,6 +5,7 @@ moduleFor('service:crypto', 'Unit | Service | crypto', {
   // Specify the other units that are required for this test.
   needs: [
     'service:keychain',
+    'service:openpgp',
     'service:session'
   ],
   
@@ -77,12 +78,12 @@ test('it rejects with wrong passphrase', function (assert) {
 });
 
 //  very slow...
-// test('generateKeyPair: it generates a new key pair', function (assert) {
+// test('generateKey: it generates a new key pair', function (assert) {
 //   QUnit.config.testTimeout = 1000 * 60 * 4;
 //   const sut = this.subject();
 //   assert.expect(2);
 //   const done = assert.async();
-//   sut.generateKeyPair('user@example.com', 'secret passphrase').then((key) => {
+//   sut.generateKey('user@example.com', 'secret passphrase').then((key) => {
 //     assert.equal(key.privateKeyArmored.indexOf('-----BEGIN PGP PRIVATE KEY BLOCK'), 0);
 //     assert.equal(key.publiKeyArmored.indexOf('-----BEGIN PGP PUBLIC KEY BLOCK'), 0);
 //     done();
