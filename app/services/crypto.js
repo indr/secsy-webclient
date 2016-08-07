@@ -23,21 +23,22 @@ export default Ember.Service.extend({
    */
   encrypt(obj) {
     const self = this;
-    return new RSVP.Promise((resolve) => {
+    return new RSVP.Promise((resolve, reject) => {
       const passphrase = self.get('keyring').getPassphrase();
       const options = {
         data: self.encodeBase64(obj),
         passwords: passphrase,
         armor: true
       };
-      openpgp.encrypt(options)
-        .then((encrypted) => {
-          const result = {
-            algorithm: 'base64.pgp',
-            data: encrypted.data
-          };
-          resolve(result);
-        });
+      openpgp.encrypt(options).then((encrypted) => {
+        const result = {
+          algorithm: 'base64.pgp',
+          data: encrypted.data
+        };
+        resolve(result);
+      }).catch((err) => {
+        reject(err);
+      });
     });
   },
   
@@ -60,13 +61,11 @@ export default Ember.Service.extend({
           password: passphrase,
           message: openpgp.message.readArmored(obj.data)
         };
-        openpgp.decrypt(options)
-          .then((message) => {
-            resolve(self.decodeBase64(message.data));
-          })
-          .catch((err) => {
-            reject(err = '{}\n' ? 'decryption-failed' : err);
-          });
+        openpgp.decrypt(options).then((message) => {
+          resolve(self.decodeBase64(message.data));
+        }).catch((err) => {
+          reject(err = '{}\n' ? 'decryption-failed' : err);
+        });
       }
       else {
         reject(new Error('unknown algorithm'));
@@ -80,5 +79,20 @@ export default Ember.Service.extend({
   
   decodeBase64(text) {
     return JSON.parse(window.atob(text));
+  },
+  
+  generateKeyPair(email, passphrase) {
+    return new RSVP.Promise((resolve, reject) => {
+      const options = {
+        userIds: [{email}],
+        numBits: 4096,
+        passphrase
+      };
+      openpgp.generateKey(options).then((key) => {
+        resolve(key);
+      }).catch((err) => {
+        reject(err);
+      });
+    });
   }
 });
