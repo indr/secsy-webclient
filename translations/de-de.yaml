@@ -19,12 +19,14 @@ signup:
   unknown-error: "Unbekannter Fehler bei der Registrierung"
 
 generate:
+  generating: "Schlüssel werden generiert"
   success: "Schlüssel erfolgreich generiert"
   unknown-error: "Unbekannter Fehler beim Generieren der Schlüssel"
 
 decrypt:
   title: 'Adressbuch entschlüsseln'
   passphrase: 'Passwort'
+  decrypting: "Adressbuch wird entschlüsselt"
   success: "Adressbuch erfolgreich entschlüsselt"
   unknown-error: "Unbekannter Fehler beim Entschlüsseln"
 

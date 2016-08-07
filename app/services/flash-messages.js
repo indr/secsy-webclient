@@ -17,6 +17,11 @@ export default FlashMessages.reopen({
     console.log(reason);
   },
   
+  infoT(key) {
+    const message = this.get('intl').t(key);
+    this.info(message);
+  },
+  
   successT(key) {
     const message = this.get('intl').t(key);
     this.success(message);

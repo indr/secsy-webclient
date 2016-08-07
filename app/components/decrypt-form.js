@@ -22,6 +22,7 @@ export default Ember.Component.extend(Validations, {
       const userId = self.get('session.data.authenticated.user');
       const passphrase = this.get('passphrase');
       
+      flash.infoT('decrypt.decrypting');
       keychain.open(userId, passphrase).then(() => {
         flash.successT('decrypt.success');
       }).catch((reason) => {
@@ -38,6 +39,7 @@ export default Ember.Component.extend(Validations, {
       const emailAddress = self.get('session.data.authenticated.email');
       const passphrase = self.get('passphrase');
       
+      flash.infoT('generate.generating');
       keychain.generateKey(userId, emailAddress, passphrase).then(() => {
         flash.successT('generate.success');
       }).catch((reason) => {

@@ -19,12 +19,14 @@ signup:
   unknown-error: "Unknown error during sign up"
 
 generate:
+  generating: "Generating key"
   success: "Key successfully generated"
   unknown-error: "Unknown error during key generation"
 
 decrypt:
   title: 'Decrypt addressbook'
   passphrase: 'Passphrase'
+  decrypting: "Decrypting addressbook"
   success: "Addressbook successfully encrypted"
   unknown-error: "Unknown error during encryption"
 
