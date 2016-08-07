@@ -6,8 +6,10 @@ const Validations = buildValidations({
 });
 
 export default Ember.Component.extend(Validations, {
-  keyring: Ember.inject.service(),
   crypto: Ember.inject.service(),
+  keychain: Ember.inject.service(),
+  session: Ember.inject.service(),
+  
   passphrase: null,
   
   actions: {
@@ -15,16 +17,17 @@ export default Ember.Component.extend(Validations, {
       const self = this;
       const passphrase = this.get('passphrase');
       
-      const keyring = self.get('keyring');
-      keyring.open(passphrase);
+      const keychain = self.get('keychain');
+      keychain.open(passphrase);
     },
     
     generateKeys() {
       const self = this;
+      const emailAddress = this.get('session.data.authenticated.email');
       const passphrase = this.get('passphrase');
       
       const crypto = self.get('crypto');
-      crypto.generateKeyPair('john@example.com', passphrase)
+      crypto.generateKeyPair(emailAddress, passphrase)
         .then((key) => {
           console.log('yess', key);
         })

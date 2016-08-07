@@ -1,6 +1,6 @@
 import { moduleFor, test } from 'ember-qunit';
 
-moduleFor('service:keyring', 'Unit | Service | keyring', {
+moduleFor('service:keychain', 'Unit | Service | keychain', {
   // Specify the other units that are required for this test.
   needs: ['service:session']
 });

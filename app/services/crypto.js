@@ -6,7 +6,7 @@ const {
 } = Ember;
 
 export default Ember.Service.extend({
-  keyring: Ember.inject.service(),
+  keychain: Ember.inject.service(),
   
   init() {
     this._super(...arguments);
@@ -24,7 +24,7 @@ export default Ember.Service.extend({
   encrypt(obj) {
     const self = this;
     return new RSVP.Promise((resolve, reject) => {
-      const passphrase = self.get('keyring').getPassphrase();
+      const passphrase = self.get('keychain').getPassphrase();
       const options = {
         data: self.encodeBase64(obj),
         passwords: passphrase,
@@ -56,7 +56,7 @@ export default Ember.Service.extend({
         resolve(self.decodeBase64(obj.data));
       }
       else if (obj.algorithm === 'base64.pgp') {
-        const passphrase = self.get('keyring').getPassphrase();
+        const passphrase = self.get('keychain').getPassphrase();
         const options = {
           password: passphrase,
           message: openpgp.message.readArmored(obj.data)

@@ -4,7 +4,7 @@ moduleFor('route:application', 'Unit | Route | application', {
   // Specify the other units that are required for this test.
   needs: [
     'service:intl',
-    'service:keyring',
+    'service:keychain',
     'service:session']
 });
 

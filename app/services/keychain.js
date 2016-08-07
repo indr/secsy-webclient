@@ -16,16 +16,16 @@ export default Ember.Service.extend(Ember.Evented, {
   },
   
   open(passphrase) {
-    Ember.Logger.info('Opening keyring');
+    Ember.Logger.info('Opening keychain');
     this.set('isOpen', true);
     this.passphrase = passphrase;
-    this.trigger('keyringOpened', ...arguments);
+    this.trigger('keychainOpened', ...arguments);
   },
   
   close() {
-    Ember.Logger.info('Closing keyring');
+    Ember.Logger.info('Closing keychain');
     this.set('isOpen', false);
-    this.trigger('keyringClosed', ...arguments);
+    this.trigger('keychainClosed', ...arguments);
   },
   
   _subscribeToSessionEvents() {

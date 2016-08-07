@@ -2,29 +2,29 @@ import Ember from 'ember';
 import ENV from 'addressbook/config/environment';
 
 export default Ember.Mixin.create({
-  keyring: Ember.inject.service(),
+  keychain: Ember.inject.service(),
   
   init() {
     this._super(...arguments);
-    this._subscribeToKeyringEvents();
+    this._subscribeToKeychainEvents();
   },
   
-  keyringOpened() {
-    const attemptedTransition = this.get('keyring.attemptedTransition');
+  keychainOpened() {
+    const attemptedTransition = this.get('keychain.attemptedTransition');
     
     if (attemptedTransition) {
       attemptedTransition.retry();
-      this.set('keyring.attemptedTransition', null);
+      this.set('keychain.attemptedTransition', null);
     }
     else {
       this.transitionTo(ENV.APP.routeAfterDecryption);
     }
   },
   
-  _subscribeToKeyringEvents() {
-    this.get('keyring').on('keyringOpened',
+  _subscribeToKeychainEvents() {
+    this.get('keychain').on('keychainOpened',
       Ember.run.bind(this, () => {
-        this['keyringOpened'](...arguments);
+        this['keychainOpened'](...arguments);
       })
     );
   }

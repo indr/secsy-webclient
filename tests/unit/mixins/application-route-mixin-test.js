@@ -8,7 +8,7 @@ import { moduleFor, test } from 'ember-qunit';
 moduleFor('mixin:application-route-mixin', 'Unit | Mixin | application route mixin', {
   // Specify the other units that are required for this test.
   needs: [
-    'service:keyring',
+    'service:keychain',
     'service:session'],
   
   subject() {

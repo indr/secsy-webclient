@@ -4,7 +4,7 @@ import QUnit from 'qunit';
 moduleFor('service:crypto', 'Unit | Service | crypto', {
   // Specify the other units that are required for this test.
   needs: [
-    'service:keyring',
+    'service:keychain',
     'service:session'
   ],
   
@@ -19,7 +19,7 @@ moduleFor('service:crypto', 'Unit | Service | crypto', {
 
 test('it decrypts "base64"', function (assert) {
   const service = this.subject();
-  service.get('keyring').passphrase = '1234';
+  service.get('keychain').passphrase = '1234';
   const expected = {'foo': 'bar'};
   assert.expect(1);
   var done = assert.async();
@@ -31,7 +31,7 @@ test('it decrypts "base64"', function (assert) {
 
 test('it encrypts an object to base64.pgp', function (assert) {
   const service = this.subject();
-  service.get('keyring').passphrase = '1234';
+  service.get('keychain').passphrase = '1234';
   const plain = {
     a: 'foo',
     b: {b1: 'bar'}
@@ -47,7 +47,7 @@ test('it encrypts an object to base64.pgp', function (assert) {
 
 test('it encrypts and decrypts', function (assert) {
   const service = this.subject();
-  service.get('keyring').passphrase = '1234';
+  service.get('keychain').passphrase = '1234';
   const expected = {
     a: 'foo'
   };
@@ -63,12 +63,12 @@ test('it encrypts and decrypts', function (assert) {
 
 test('it rejects with wrong passphrase', function (assert) {
   const service = this.subject();
-  const keyring = service.get('keyring');
-  keyring.passphrase = '1234';
+  const keychain= service.get('keychain');
+  keychain.passphrase = '1234';
   assert.expect(1);
   const done = assert.async();
   service.encrypt({a: 'b'}).then((encrypted) => {
-    keyring.passphrase = 'wrong';
+    keychain.passphrase = 'wrong';
     return service.decrypt(encrypted);
   }).catch((error) => {
     assert.equal(error, 'decryption-failed');
