@@ -1,5 +1,9 @@
 import Ember from 'ember';
 
+const {
+  RSVP
+} = Ember;
+
 export default Ember.Service.extend({
   store: Ember.inject.service(),
   
@@ -8,7 +12,7 @@ export default Ember.Service.extend({
    *
    * @param userId
    * @param key
-   * @return {Promise<Key>}
+   * @return {Promise<{Key}>}
    */
   save(userId, key) {
     console.log('saving:', key);
@@ -34,28 +38,31 @@ export default Ember.Service.extend({
   /**
    *
    * @param userId
-   * @returns {Promise.<Key[]>}
+   * @returns {Promise.<String[]>}
    */
   load(userId) {
-    console.log('loading:', userId);
+    // console.log('loading:', userId);
     const self = this;
     
-    const store = self.get('store');
     const filter = {userId: userId};
     
-    return store.queryRecord('public-key', filter).then((record) => {
-      console.log('publicKey', record);
+    const promises = [];
+    promises.push(self._queryKey('public-key', filter));
+    promises.push(self._queryKey('private-key', filter));
+    
+    return RSVP.all(promises);
+  },
+  
+  _queryKey(type, filter) {
+    const self = this;
+  
+    const store = self.get('store');
+    
+    return store.queryRecord(type, filter).then((record) => {
       if (!record) {
-        throw new Error('public-key-not-exist');
+        throw new Error(type + '-not-found');
       }
-      self.publicKey = record;
-      return store.queryRecord('private-key', filter);
-    }).then((record) => {
-      console.log('privateKey', record);
-      if (!record) {
-        throw new Error('private-key-not-exist');
-      }
-      self.privateKey = record;
+      return record.get('armored');
     });
   }
 });

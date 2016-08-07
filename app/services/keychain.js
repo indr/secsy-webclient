@@ -28,7 +28,23 @@ export default Ember.Service.extend(Ember.Evented, {
     
     const keystore = this.get('keystore');
     
-    return keystore.load(userId).then(() => {
+    return keystore.load(userId).then((records) => {
+      // console.log('armored', records);
+      
+      const openpgp = self.get('openpgp');
+      var publicKey = openpgp.key.readArmored(records[0]).keys[0];
+      var privateKey = openpgp.key.readArmored(records[1]).keys[0];
+      
+      // console.log('public key:', publicKey);
+      // console.log('private key:', privateKey);
+      
+      openpgp.decryptKey({privateKey: privateKey, passphrase: passphrase}).then((unlockedPrivateKey) => {
+        console.log('unlocked', unlockedPrivateKey);
+      }).catch((err) => {
+        console.log(err);
+        return err;
+      });
+      
       self.passphrase = passphrase;
       self.set('isOpen', true);
       self.trigger('keychainOpened', self);
@@ -64,7 +80,7 @@ export default Ember.Service.extend(Ember.Evented, {
       self.trigger('keychainOpened', self);
     });
   },
- 
+  
   _subscribeToSessionEvents() {
     this.get('session').on('invalidationSucceeded',
       Ember.run.bind(this, () => {

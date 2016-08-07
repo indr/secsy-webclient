@@ -8,6 +8,7 @@ export default Ember.Service.extend({
     openpgp.initWorker({path: 'assets/openpgp.worker.min.js'});
     
     this.decrypt = openpgp.decrypt;
+    this.decryptKey = openpgp.decryptKey;
     this.encrypt = openpgp.encrypt;
     this.key = openpgp.key;
     this.message = openpgp.message;
@@ -16,16 +17,20 @@ export default Ember.Service.extend({
   /**
    * @param {String} emailAddress
    * @param {String} passphrase
+   * @param {Number} numBits
    * @returns {Promise<Object>}
    * The generated key object in the form:
    * { key:String, privateKeyArmored:String, publicKeyArmored: String }
    */
-  generateKey(emailAddress, passphrase) {
+  generateKey(emailAddress, passphrase, numBits) {
     const options = {
       userIds: [{email: emailAddress}],
-      numBits: 4096,
+      numBits: numBits || 4096,
       passphrase
     };
+    if (options.numBits < 4096) {
+      console.log('Generating key with less than 4096 bits');
+    }
     return openpgp.generateKey(options);
   }
 });
