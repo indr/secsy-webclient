@@ -2,13 +2,13 @@
 /* global require, module */
 var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
-module.exports = function(defaults) {
+module.exports = function (defaults) {
   var app = new EmberApp(defaults, {
     'ember-bootstrap': {
       'importBootstrapTheme': true
     }
   });
-
+  
   // Use `app.import` to add additional libraries to the generated
   // output files.
   //
@@ -21,13 +21,26 @@ module.exports = function(defaults) {
   // modules that you would like to import into your application
   // please specify an object with the list of modules as keys
   // along with the exports of each module as its value.
-
+  
+  
   app.import('bower_components/bootstrap/dist/js/bootstrap.min.js');
+  
   app.import('bower_components/openpgp/dist/openpgp.min.js');
   app.import('vendor/shims/openpgp.js', {
     exports: {
       'openpgp': ['default']
     }
+  });
+  
+  app.otherAssetPaths.push({
+    src: 'bower_components/openpgp/dist/',
+    file: 'openpgp.min.js',
+    dest: 'assets'
+  });
+  app.otherAssetPaths.push({
+    src: 'bower_components/openpgp/dist/',
+    file: 'openpgp.worker.min.js',
+    dest: 'assets'
   });
   
   return app.toTree();
