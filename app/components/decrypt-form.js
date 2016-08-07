@@ -17,25 +17,31 @@ export default Ember.Component.extend(Validations, {
     decrypt() {
       const self = this;
       const keychain = self.get('keychain');
+      const flash = self.get('flashMessages');
       
       const userId = self.get('session.data.authenticated.user');
       const passphrase = this.get('passphrase');
       
-      keychain.open(userId, passphrase).catch((err) => {
-        console.log('catch', err.message || err);
+      keychain.open(userId, passphrase).then(() => {
+        flash.successT('decrypt.success');
+      }).catch((reason) => {
+        flash.dangerT(reason, 'decrypt.unknown-error');
       });
     },
     
     generateKeys() {
       const self = this;
       const keychain = self.get('keychain');
+      const flash = this.get('flashMessages');
       
       const userId = self.get('session.data.authenticated.user');
       const emailAddress = self.get('session.data.authenticated.email');
       const passphrase = self.get('passphrase');
       
-      keychain.generateKey(userId, emailAddress, passphrase).catch((err) => {
-        console.log('catch', err.message || err);
+      keychain.generateKey(userId, emailAddress, passphrase).then(() => {
+        flash.successT('generate.success');
+      }).catch((reason) => {
+        flash.dangerT(reason, 'generate.unknown-error');
       });
     }
   }

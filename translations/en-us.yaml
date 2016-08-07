@@ -16,11 +16,17 @@ signup:
   password: "Password"
   passwordRepeat: "Repeat"
   success: "Welcome aboard!"
-  unknown-error: "Unknown error during sign up."
+  unknown-error: "Unknown error during sign up"
+
+generate:
+  success: "Key successfully generated"
+  unknown-error: "Unknown error during key generation"
 
 decrypt:
   title: 'Decrypt addressbook'
   passphrase: 'Passphrase'
+  success: "Addressbook successfully encrypted"
+  unknown-error: "Unknown error during encryption"
 
 contact:
   edit: 'Edit contact'

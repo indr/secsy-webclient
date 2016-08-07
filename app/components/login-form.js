@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import {validator, buildValidations} from 'ember-cp-validations';
+import { validator, buildValidations } from 'ember-cp-validations';
 
 const Validations = buildValidations({
   emailAddress: {
@@ -13,27 +13,19 @@ const Validations = buildValidations({
 
 export default Ember.Component.extend(Validations, {
   session: Ember.inject.service(),
-  intl: Ember.inject.service(),
-
+  
   emailAddress: null,
   password: null,
-
+  
   actions: {
     login() {
-      const {flashMessages, intl} = this.getProperties('flashMessages', 'intl');
+      const flash = this.get('flashMessages');
       const {emailAddress, password} = this.getProperties('emailAddress', 'password');
-
+      
       this.get('session').authenticate('authenticator:seneca', emailAddress, password).then(() => {
-        const message = intl.t('login.success');
-        flashMessages.success(message);
+        flash.successT('login.success');
       }, (reason) => {
-        let message;
-        if (intl.exists('errors.' + reason)) {
-          message = intl.t('errors.' + reason);
-        } else {
-          message = intl.t('signup.unknown-error');
-        }
-        flashMessages.danger(message);
+        flash.dangerT(reason, 'login.unknown-error');
       });
     }
   }

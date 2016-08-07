@@ -16,7 +16,17 @@ signup:
   password: "Passwort"
   passwordRepeat: "Wiederholung"
   success: "Willkommen an Bord!"
-  unknown-error: "Unbekannter Fehler bei der Registrierung."
+  unknown-error: "Unbekannter Fehler bei der Registrierung"
+
+generate:
+  success: "Schlüssel erfolgreich generiert"
+  unknown-error: "Unbekannter Fehler beim Generieren der Schlüssel"
+
+decrypt:
+  title: 'Adressbuch entschlüsseln'
+  passphrase: 'Passwort'
+  success: "Adressbuch erfolgreich entschlüsselt"
+  unknown-error: "Unbekannter Fehler beim Entschlüsseln"
 
 contact:
   edit: 'Kontakt bearbeiten'
@@ -24,9 +34,6 @@ contact:
 
 contacts:
   no-results: 'Deine Suche ergab keine Treffer!'
-decrypt:
-  title: 'Adressbuch entschlüsseln'
-  passphrase: 'Passwort'
 
 actions:
   cancel: "Verwerfen"

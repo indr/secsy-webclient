@@ -15,8 +15,6 @@ const Validations = buildValidations({
 });
 
 export default Ember.Component.extend(Validations, {
-  flashMessages: Ember.inject.service(),
-  intl: Ember.inject.service(),
   senecaAuth: Ember.inject.service(),
 
   emailAddress: null,
@@ -26,21 +24,14 @@ export default Ember.Component.extend(Validations, {
   actions: {
     signup() {
       const self = this;
-      const {flashMessages, intl} = this.getProperties('flashMessages', 'intl');
+      const flash = this.get('flashMessages');
       const {emailAddress, password} = this.getProperties('emailAddress', 'password');
 
       this.get('senecaAuth').register(emailAddress, password).then(() => {
-        const message = intl.t('signup.success');
-        flashMessages.success(message);
+        flash.successT('signup.success');
         self.sendAction('signedUp');
       }, (reason) => {
-        let message;
-        if (intl.exists('errors.' + reason)) {
-          message = intl.t('errors.' + reason);
-        } else {
-          message = intl.t('signup.unknown-error');
-        }
-        flashMessages.danger(message);
+        flash.dangerT(reason, 'signup.unknown-error');
       });
     }
   }
