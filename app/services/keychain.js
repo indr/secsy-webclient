@@ -32,13 +32,13 @@ export default Ember.Service.extend(Ember.Evented, {
       // console.log('armored', records);
       
       const openpgp = self.get('openpgp');
-      var publicKey = openpgp.key.readArmored(records[0]).keys[0];
-      var privateKey = openpgp.key.readArmored(records[1]).keys[0];
+      self.publicKey = openpgp.key.readArmored(records[0]).keys[0];
+      self.privateKey = openpgp.key.readArmored(records[1]).keys[0];
       
       // console.log('public key:', publicKey);
       // console.log('private key:', privateKey);
       
-      openpgp.decryptKey({privateKey: privateKey, passphrase: passphrase}).then((unlockedPrivateKey) => {
+      openpgp.decryptKey({privateKey: self.privateKey, passphrase: passphrase}).then((unlockedPrivateKey) => {
         console.log('unlocked', unlockedPrivateKey);
       }).catch((err) => {
         console.log(err);
@@ -66,13 +66,13 @@ export default Ember.Service.extend(Ember.Evented, {
    * @param passphrase
    * @returns {Promise}
    */
-  generateKey(userId, emailAddress, passphrase) {
+  generateKey(userId, emailAddress, passphrase, bits) {
     const self = this;
     
     const openpgp = self.get('openpgp');
     const keystore = self.get('keystore');
     
-    return openpgp.generateKey(emailAddress, passphrase).then((key) => {
+    return openpgp.generateKey(emailAddress, passphrase, bits, true).then((key) => {
       return keystore.save(userId, key);
     }).then(() => {
       self.passphrase = passphrase;

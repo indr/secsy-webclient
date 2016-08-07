@@ -1,5 +1,4 @@
 import { moduleFor, test } from 'ember-qunit';
-import QUnit from 'qunit';
 
 moduleFor('service:crypto', 'Unit | Service | crypto', {
   // Specify the other units that are required for this test.
@@ -8,15 +7,7 @@ moduleFor('service:crypto', 'Unit | Service | crypto', {
     'service:keystore',
     'service:openpgp',
     'service:session'
-  ],
-  
-  defaultTestTimeout: QUnit.config.testTimeout,
-  beforeEach: function () {
-    this.defaultTestTimeout = QUnit.config.testTimeout;
-  },
-  afterEach: function () {
-    QUnit.config.testTimeout = this.defaultTestTimeout;
-  }
+  ]
 });
 
 test('it decrypts "base64"', function (assert) {
@@ -65,7 +56,7 @@ test('it encrypts and decrypts', function (assert) {
 
 test('it rejects with wrong passphrase', function (assert) {
   const service = this.subject();
-  const keychain= service.get('keychain');
+  const keychain = service.get('keychain');
   keychain.passphrase = '1234';
   assert.expect(1);
   const done = assert.async();
@@ -78,17 +69,3 @@ test('it rejects with wrong passphrase', function (assert) {
   });
 });
 
-//  very slow...
-// test('generateKey: it generates a new key pair', function (assert) {
-//   QUnit.config.testTimeout = 1000 * 60 * 4;
-//   const sut = this.subject();
-//   assert.expect(2);
-//   const done = assert.async();
-//   sut.generateKey('user@example.com', 'secret passphrase').then((key) => {
-//     assert.equal(key.privateKeyArmored.indexOf('-----BEGIN PGP PRIVATE KEY BLOCK'), 0);
-//     assert.equal(key.publicKeyArmored.indexOf('-----BEGIN PGP PUBLIC KEY BLOCK'), 0);
-//     done();
-//   }).catch((err) => {
-//     done();
-//   });
-// });

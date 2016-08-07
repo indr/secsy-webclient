@@ -18,15 +18,17 @@ export default Ember.Service.extend({
    * @param {String} emailAddress
    * @param {String} passphrase
    * @param {Number} numBits
+   * @param {Boolean} unlocked
    * @returns {Promise<Object>}
    * The generated key object in the form:
    * { key:String, privateKeyArmored:String, publicKeyArmored: String }
    */
-  generateKey(emailAddress, passphrase, numBits) {
+  generateKey(emailAddress, passphrase, numBits, unlocked) {
     const options = {
       userIds: [{email: emailAddress}],
+      passphrase: passphrase,
       numBits: numBits || 4096,
-      passphrase
+      unlocked: unlocked
     };
     if (options.numBits < 4096) {
       console.log('Generating key with less than 4096 bits');
