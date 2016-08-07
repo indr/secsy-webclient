@@ -18,7 +18,9 @@ export default Ember.Component.extend(Validations, {
       const passphrase = this.get('passphrase');
       
       const keychain = self.get('keychain');
-      keychain.open(passphrase);
+      keychain.open(passphrase).catch((err) => {
+        console.log('catch', err.message || err);
+      });
     },
     
     generateKeys() {
@@ -31,10 +33,8 @@ export default Ember.Component.extend(Validations, {
       console.log('Generating key');
       openpgp.generateKey(emailAddress, passphrase).then((key) => {
         return keychain.save(key);
-      }).then((key) => {
-        console.log('yess', key);
       }).catch((err) => {
-        console.log('nay', err);
+        console.log('catch', err.message || err);
       });
     }
   }
