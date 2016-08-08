@@ -1,8 +1,9 @@
-import { moduleForComponent, test } from 'ember-qunit';
+import { assert } from 'chai';
+import { describeComponent, it } from 'ember-mocha';
 import hbs from 'htmlbars-inline-precompile';
 import instanceInitializer from '../../../instance-initializers/ember-intl';
 
-moduleForComponent('contacts-filter', 'Integration | Component | contacts filter', {
+describeComponent('contacts-filter', 'Integration | Component | contacts filter', {
   integration: true,
   setup() {
     // manually invoke the ember-intl initializer
@@ -10,9 +11,10 @@ moduleForComponent('contacts-filter', 'Integration | Component | contacts filter
     let intl = this.container.lookup('service:intl');
     intl.setLocale('en-us');
   }
-});
+  },
+  function () {
 
-test('it renders', function(assert) {
+it('it renders', function () {
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });
 
@@ -28,4 +30,5 @@ test('it renders', function(assert) {
   `);
 
   assert.notEqual(this.$().text().trim(), 'template block text');
+});
 });

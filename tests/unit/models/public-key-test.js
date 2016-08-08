@@ -1,12 +1,15 @@
-import { moduleForModel, test } from 'ember-qunit';
+import { assert } from 'chai';
+import { describeModel, it } from 'ember-mocha';
 
-moduleForModel('public-key', 'Unit | Model | public key', {
+describeModel('public-key', 'Unit | Model | public key', {
   // Specify the other units that are required for this test.
   needs: []
-});
+  },
+  function () {
 
-test('it exists', function(assert) {
+it('it exists', function () {
   let model = this.subject();
   // let store = this.store();
   assert.ok(!!model);
+});
 });

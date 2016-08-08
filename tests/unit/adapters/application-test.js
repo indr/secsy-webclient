@@ -1,12 +1,15 @@
-import { moduleFor, test } from 'ember-qunit';
+import { assert } from 'chai';
+import { describeModule, it } from 'ember-mocha';
 
-moduleFor('adapter:application', 'Unit | Adapter | application', {
+describeModule('adapter:application', 'Unit | Adapter | application', {
   // Specify the other units that are required for this test.
   // needs: ['serializer:foo']
-});
+  },
+  function () {
 
 // Replace this with your real tests.
-test('it exists', function(assert) {
+it('it exists', function () {
   let adapter = this.subject();
   assert.ok(adapter);
+});
 });

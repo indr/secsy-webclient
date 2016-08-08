@@ -1,11 +1,14 @@
-import { moduleFor, test } from 'ember-qunit';
+import { assert } from 'chai';
+import { describeModule, it } from 'ember-mocha';
 
-moduleFor('route:decrypt', 'Unit | Route | decrypt', {
+describeModule('route:decrypt', 'Unit | Route | decrypt', {
   // Specify the other units that are required for this test.
   // needs: ['controller:foo']
-});
+  },
+  function () {
 
-test('it exists', function(assert) {
+it('it exists', function () {
   let route = this.subject();
   assert.ok(route);
+});
 });

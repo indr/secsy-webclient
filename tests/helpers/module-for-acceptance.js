@@ -1,9 +1,9 @@
-import { module } from 'qunit';
+import { describe } from 'mocha';
 import startApp from '../helpers/start-app';
 import destroyApp from '../helpers/destroy-app';
 
 export default function(name, options = {}) {
-  module(name, {
+  describe(name, {
     beforeEach() {
       this.application = startApp();
 

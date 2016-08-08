@@ -1,16 +1,18 @@
-import {moduleForModel, test, skip} from 'ember-qunit';
+import { assert } from 'chai';
+import {describeModel, it, skip} from 'ember-mocha';
 
 // The blueprint of this file doesn't work.
 // https://github.com/ember-cli/ember-cli/issues/4879
 
-//moduleForModel('application', 'Unit | Serializer | application', {
-moduleForModel('contact', 'Unit | Serializer | application', {
+//describeModel('application', 'Unit | Serializer | application', {
+describeModel('contact', 'Unit | Serializer | application', {
   // Specify the other units that are required for this test.
   needs: ['serializer:application']
-});
+  },
+  function () {
 
 // Replace this with your real tests.
-test('it serializes records', function (assert) {
+it('it serializes records', function () {
   let record = this.subject();
 
   let serializedRecord = record.serialize();
@@ -18,7 +20,8 @@ test('it serializes records', function (assert) {
   assert.ok(serializedRecord);
 });
 
-test('ember-qunit does not provide a skip function', function (assert) {
+it('ember-qunit does not provide a skip function', function () {
   // If this test fails, ember-qunit has finally caught up with qunit!
   assert.equal(skip, undefined);
+});
 });

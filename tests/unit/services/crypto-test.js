@@ -1,6 +1,7 @@
-import { moduleFor, test } from 'ember-qunit';
+import { assert } from 'chai';
+import { describeModule, it } from 'ember-mocha';
 
-moduleFor('service:crypto', 'Unit | Service | crypto', {
+describeModule('service:crypto', 'Unit | Service | crypto', {
   // Specify the other units that are required for this test.
   needs: [
     'service:keychain',
@@ -8,29 +9,26 @@ moduleFor('service:crypto', 'Unit | Service | crypto', {
     'service:openpgp',
     'service:session'
   ]
-});
+  },
+  function () {
 
-test('it decrypts "base64"', function (assert) {
+it('it decrypts "base64"', function (done) {
   const service = this.subject();
   service.get('keychain').passphrase = '1234';
   const expected = {'foo': 'bar'};
-  assert.expect(1);
-  var done = assert.async();
   service.decrypt({algorithm: 'base64', data: 'eyJmb28iOiJiYXIifQ=='}).then((decrypted) => {
     assert.deepEqual(decrypted, expected);
     done();
   });
 });
 
-test('it encrypts an object to base64.pgp', function (assert) {
+it('it encrypts an object to base64.pgp', function (done) {
   const service = this.subject();
   service.get('keychain').passphrase = '1234';
   const plain = {
     a: 'foo',
     b: {b1: 'bar'}
   };
-  assert.expect(2);
-  var done = assert.async();
   service.encrypt(plain).then((encrypted) => {
     assert.equal(encrypted.algorithm, 'base64.pgp');
     assert.ok(encrypted.data);
@@ -38,14 +36,12 @@ test('it encrypts an object to base64.pgp', function (assert) {
   });
 });
 
-test('it encrypts and decrypts', function (assert) {
+it('it encrypts and decrypts', function (done) {
   const service = this.subject();
   service.get('keychain').passphrase = '1234';
   const expected = {
     a: 'foo'
   };
-  assert.expect(1);
-  var done = assert.async();
   service.encrypt(expected).then((encrypted) => {
     return service.decrypt(encrypted);
   }).then((actual) => {
@@ -54,12 +50,10 @@ test('it encrypts and decrypts', function (assert) {
   });
 });
 
-test('it rejects with wrong passphrase', function (assert) {
+it('it rejects with wrong passphrase', function (done) {
   const service = this.subject();
   const keychain = service.get('keychain');
   keychain.passphrase = '1234';
-  assert.expect(1);
-  const done = assert.async();
   service.encrypt({a: 'b'}).then((encrypted) => {
     keychain.passphrase = 'wrong';
     return service.decrypt(encrypted);
@@ -69,3 +63,4 @@ test('it rejects with wrong passphrase', function (assert) {
   });
 });
 
+});

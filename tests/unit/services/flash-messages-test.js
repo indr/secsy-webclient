@@ -1,12 +1,15 @@
-import { moduleFor, test } from 'ember-qunit';
+import { assert } from 'chai';
+import { describeModule, it } from 'ember-mocha';
 
-moduleFor('service:flash-messages', 'Unit | Service | flash messages', {
+describeModule('service:flash-messages', 'Unit | Service | flash messages', {
   // Specify the other units that are required for this test.
   // needs: ['service:foo']
-});
+  },
+  function () {
 
 // Replace this with your real tests.
-test('it exists', function(assert) {
+it('it exists', function () {
   let service = this.subject();
   assert.ok(service);
+});
 });

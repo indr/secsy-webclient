@@ -1,12 +1,16 @@
+import { assert } from 'chai';
 import Ember from 'ember';
 import KeychainOpenedRouteMixinMixin from 'addressbook/mixins/keychain-opened-route-mixin';
-import { module, test } from 'qunit';
+import { describe, it } from 'mocha';
 
-module('Unit | Mixin | keychain opened route mixin');
+describe('Unit | Mixin | keychain opened route mixin', function () {
 
 // Replace this with your real tests.
-test('it works', function(assert) {
+it('it works', function () {
   let KeychainOpenedRouteMixinObject = Ember.Object.extend(KeychainOpenedRouteMixinMixin);
   let subject = KeychainOpenedRouteMixinObject.create();
   assert.ok(subject);
+  },
+  function () {
+});
 });

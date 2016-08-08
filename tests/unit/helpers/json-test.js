@@ -1,10 +1,14 @@
+import { assert } from 'chai';
 import { json } from 'addressbook/helpers/json';
-import { module, test } from 'qunit';
+import { describe, it } from 'mocha';
 
-module('Unit | Helper | json');
+describe('Unit | Helper | json', function () {
 
 // Replace this with your real tests.
-test('it works', function(assert) {
+it('it works', function () {
   let result = json([42]);
   assert.ok(result);
+  },
+  function () {
+});
 });
