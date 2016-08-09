@@ -2,6 +2,8 @@ import Ember from 'ember';
 import ENV from 'addressbook/config/environment';
 
 export default Ember.Route.extend({
+  sharer: Ember.inject.service(),
+  
   model(params) {
     return this.store.findRecord('contact', params.id);
   },
@@ -23,6 +25,18 @@ export default Ember.Route.extend({
       
       model.destroyRecord().then(() =>
         this.transitionTo('contacts'));
+    },
+    
+    share() {
+      const model = this.controller.get('model');
+      const sharer = this.get('sharer');
+      const flashMessages = this.get('flashMessages');
+      
+      sharer.share(model).then(() => {
+        flashMessages.success('Successfully shared your info');
+      }).catch((err) => {
+        flashMessages.danger('Oops: ' + (err.message || err));
+      });
     }
   }
 });

@@ -13,6 +13,7 @@
 <p>
     {{#link-to 'contacts.edit' model class="btn btn-primary"}}{{t 'actions.edit'}}{{/link-to}}
     <button {{action 'delete' model}} class="btn btn-default">{{t 'actions.delete'}}</button>
+    <button {{action 'share' model}} class="btn btn-default">Share</button>
 </p>
 
 {{outlet}}
