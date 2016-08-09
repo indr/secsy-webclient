@@ -22,7 +22,7 @@ module.exports = function(environment) {
   };
 
   ENV['ember-simple-auth'] = {
-    routeAfterAuthentication: 'contacts'
+    routeAfterAuthentication: 'decrypt'
   };
 
   if (environment === 'development') {
