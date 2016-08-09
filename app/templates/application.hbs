@@ -8,13 +8,18 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-          {{#link-to "index" class="navbar-brand"}}addressbook{{/link-to}}
+          {{#if session.isAuthenticated}}
+            {{#link-to "contacts" class="navbar-brand"}}addressbook{{/link-to}}
+          {{else}}
+            {{#link-to "index" class="navbar-brand"}}addressbook{{/link-to}}
+          {{/if}}
         </div>
 
 
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
               {{#if session.isAuthenticated}}
+                  <li>{{#link-to 'map'}}Map{{/link-to}}</li>
                   <li>{{#link-to 'contacts.new'}}{{t 'contact.new'}}{{/link-to}}</li>
               {{/if}}
             </ul>
