@@ -1,28 +1,41 @@
 import Ember from 'ember';
+import openpgp from 'openpgp';
 
 const {RSVP} = Ember;
 
 export default Ember.Service.extend({
   store: Ember.inject.service(),
   keystore: Ember.inject.service(),
+  crypto: Ember.inject.service(),
   
   // TODO:
   // 1. Check contact is 'me'
   // 2. Get contacts public keys
   // 3. For each public key
   // 4. Encrypt and post a share
-  share(/*contact*/) {
+  share(contact) {
     return new RSVP.Promise((resolve, reject) => {
       return this.getPublicKeys().then((result) => {
-        for (var i = 0; i < result; i++) {
-          console.log('share for ' + result[i].emailAddress);
+        console.log('public keys', result);
+        const promises = [];
+        for (var i = 0; i < result.length; i++) {
+          // console.log('share for ' + result[i].emailAddress);
+          
+          const key = openpgp.key.readArmored(result[i].armored).keys[0];
+          
+          // console.log('his key', key);
+          promises.push(this._share(contact, result[i].emailAddress, key));
         }
-        console.log(result);
-        reject('not implementet');
+        
+        RSVP.allSettled(promises).then((promises) => {
+          console.log(promises);
+          resolve('shared');
+        }).catch((err) => {
+          reject(err);
+        });
       });
     });
   },
-  
   
   getPublicKeys() {
     return new RSVP.Promise((resolve) => {
@@ -60,5 +73,22 @@ export default Ember.Service.extend({
         armored
       };
     });
+  },
+  
+  _share(contact, toEmailAddress, key) {
+    const crypto = this.get('crypto');
+    return crypto.encrypt(contact, key).then((encrypted) => {
+      console.log('encrypted for ' + toEmailAddress, encrypted);
+      const share = this.get('store').createRecord('share');
+      console.log('share', share);
+      share.set('for', toEmailAddress);
+      share.set('algorithm', encrypted.algorithm);
+      share.set('encrypted', encrypted.data);
+      return share.save().then(() => {
+        console.log('share saved');
+        return 'ok';
+      });
+    });
   }
+  
 });

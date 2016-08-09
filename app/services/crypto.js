@@ -14,16 +14,20 @@ export default Ember.Service.extend({
    *
    * @async
    * @param {Object} obj
+   * @param {Object} key
    * @returns {Promise}
    * {{algorithm: string, data: string}}
    */
-  encrypt(obj) {
+  encrypt(obj, key) {
     const self = this;
     return self.encodeBase64(obj).then((encoded) => {
-      const keychain = self.get('keychain');
+      if (!key) {
+        const keychain = self.get('keychain');
+        key = keychain.getPrivateKey();
+      }
       const options = {
         data: encoded,
-        publicKeys: keychain.getPrivateKey(),
+        publicKeys: key,
         armor: true
       };
       const openpgp = self.get('openpgp');
