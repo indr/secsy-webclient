@@ -62,8 +62,8 @@ describeModule('service:crypto', 'Unit | Service | crypto', {
     });
     
     it('encrypt() rejects if keychain is not open', function (done) {
-      keychain.getPublicKey = function () {
-        throw new Error('getPublicKey error');
+      keychain.getPublicKey = keychain.getPrivateKey = function () {
+        throw new Error('getKey error');
       };
       sut.encrypt({ a: 'b' }).then((encrypted) => {
         return sut.decrypt(encrypted);

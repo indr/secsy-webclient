@@ -23,7 +23,7 @@ export default Ember.Service.extend({
       const keychain = self.get('keychain');
       const options = {
         data: encoded,
-        publicKeys: keychain.getPublicKey(),
+        publicKeys: keychain.getPrivateKey(),
         armor: true
       };
       const openpgp = self.get('openpgp');
