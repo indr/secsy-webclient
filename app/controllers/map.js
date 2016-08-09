@@ -8,6 +8,14 @@ export default Ember.Controller.extend({
   selectMarker(contact) {
     this.set('lat', contact.get('latitude$'));
     this.set('lng', contact.get('longitude$'));
-    this.set('zoom', 8);
+    this.set('zoom', this.get('zoom'));
+  },
+  
+  actions: {
+    markerClicked(contact) {
+      // https://github.com/miguelcobain/ember-leaflet/issues/48
+      // console.log('conroller/markerClicked', contact.id);
+      this.transitionToRoute('map.view', contact);
+    }
   }
 });
