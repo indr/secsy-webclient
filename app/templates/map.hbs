@@ -2,13 +2,15 @@
   {{tile-layer url="http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"}}
 
   {{#each model as |contact|}}
-    {{#marker-layer location=contact.location onClick=(action "markerClicked" contact)}}
-      <b>{{#link-to 'contacts.view' contact}}{{contact.name$}}{{/link-to}}</b>
-      <br>
-      Phone: {{contact.phoneNumber$}}
-      <br>
-      Email: {{contact.emailAddress$}}
-    {{/marker-layer}}
+    {{#if contact.location}}
+      {{#marker-layer location=contact.location onClick=(action "markerClicked" contact)}}
+          <b>{{#link-to 'contacts.view' contact}}{{contact.name$}}{{/link-to}}</b>
+          <br>
+          Phone: {{contact.phoneNumber$}}
+          <br>
+          Email: {{contact.emailAddress$}}
+      {{/marker-layer}}
+    {{/if}}
   {{/each}}
 
 {{/leaflet-map}}

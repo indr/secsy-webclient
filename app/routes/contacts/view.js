@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import ENV from 'addressbook/config/environment';
 
 export default Ember.Route.extend({
   model(params) {
@@ -13,6 +14,13 @@ export default Ember.Route.extend({
   actions: {
     delete() {
       const model = this.controller.get('model');
+      
+      if (ENV.APP.autoCreateMe && model.get('me')) {
+        const flash = this.get('flashMessages');
+        flash.dangerT(undefined, 'no-delete-self');
+        return;
+      }
+      
       model.destroyRecord().then(() =>
         this.transitionTo('contacts'));
     }
