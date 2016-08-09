@@ -10,26 +10,21 @@ export default Ember.Service.extend({
   /**
    * Uploads a key to the key server and adds the key to the keychain.
    *
-   * @param userId
-   * @param key
+   * @param {String} userId
+   * @param {{privateKeyArmored, publicKeyArmored, key}} key
    * @return {Promise<{Key}>}
    */
   save(userId, key) {
-    console.log('saving:', key);
-    const self = this;
-    
     const store = this.get('store');
     
     return store.createRecord('public-key', {
       userId: userId,
       armored: key.publicKeyArmored
-    }).save().then((publicKey) => {
-      self.publicKey = publicKey;
+    }).save().then(() => {
       return store.createRecord('private-key', {
         userId: userId,
         armored: key.privateKeyArmored
-      }).save().then((privateKey) => {
-        self.privateKey = privateKey;
+      }).save().then(() => {
         return key.key;
       });
     });

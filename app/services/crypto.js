@@ -14,21 +14,27 @@ export default Ember.Service.extend({
    *
    * @async
    * @param {Object} obj
-   * @returns {{algorithm: string, data: string}}
+   * @returns {Promise}
+   * {{algorithm: string, data: string}}
    */
   encrypt(obj) {
-    const passphrase = this.get('keychain').getPassphrase();
-    const options = {
-      data: this.encodeBase64(obj),
-      passwords: passphrase,
-      armor: true
-    };
-    const openpgp = this.get('openpgp');
-    return openpgp.encrypt(options).then((encrypted) => {
-      return {
-        algorithm: 'base64.pgp',
-        data: encrypted.data
+    const self = this;
+    return self.encodeBase64(obj).then((encoded) => {
+      const keychain = self.get('keychain');
+      const options = {
+        data: encoded,
+        publicKeys: keychain.getPublicKey(),
+        armor: true
       };
+      const openpgp = self.get('openpgp');
+      return openpgp.encrypt(options).then((encrypted) => {
+        return {
+          algorithm: 'base64.pgp',
+          data: encrypted.data
+        };
+      });
+    }).catch(() => {
+      throw new Error('encryption-failed');
     });
   },
   
@@ -41,48 +47,47 @@ export default Ember.Service.extend({
    */
   decrypt(obj) {
     const self = this;
-    return new RSVP.Promise((resolve, reject) => {
-      if (obj.algorithm === 'base64') {
-        resolve(self.decodeBase64(obj.data));
-      }
-      else if (obj.algorithm === 'base64.pgp') {
-        const passphrase = self.get('keychain').getPassphrase();
-        const openpgp = self.get('openpgp');
-        const options = {
-          password: passphrase,
-          message: openpgp.message.readArmored(obj.data)
-        };
-        openpgp.decrypt(options).then((message) => {
-          resolve(self.decodeBase64(message.data));
-        }).catch((err) => {
-          reject(err = '{}\n' ? 'decryption-failed' : err);
-        });
-      }
-      else {
-        reject(new Error('unknown algorithm'));
-      }
+    
+    if (obj.algorithm === 'base64') {
+      return self.decodeBase64(obj.data);
+    }
+    
+    if (obj.algorithm === 'base64.pgp') {
+      const keychain = self.get('keychain');
+      const openpgp = self.get('openpgp');
+      const options = {
+        message: openpgp.message.readArmored(obj.data),
+        privateKey: keychain.getPrivateKey(),
+        format: 'utf8'
+      };
+      return openpgp.decrypt(options).then((message) => {
+        return self.decodeBase64(message.data);
+      });
+    }
+    throw new Error('Unknown algorithm');
+  },
+  
+  /**
+   * Encodes `obj` and returns base64 encoded {String}
+   * @param {Object} obj
+   * @returns {Promise}
+   */
+  encodeBase64(obj)
+  {
+    return new RSVP.Promise((resolve) => {
+      resolve(window.btoa(JSON.stringify(obj)));
     });
   },
   
-  encodeBase64(obj) {
-    return window.btoa(JSON.stringify(obj));
-  },
-  
-  decodeBase64(text) {
-    return JSON.parse(window.atob(text));
-  },
-  
-  // TODO: Move to service:openpgp
-  generateKey(emailAddress, passphrase) {
-    const self = this;
-    return new RSVP.Promise((resolve, reject) => {
-      const openpgp = self.get('openpgp');
-      
-      openpgp.generateKey(emailAddress, passphrase).then((key) => {
-        resolve(key);
-      }).catch((err) => {
-        reject(err);
-      });
+  /**
+   * Decodes base64 `text` and returns an {Object}
+   * @param text
+   * @returns {Promise}
+   */
+  decodeBase64(text)
+  {
+    return new RSVP.Promise((resolve) => {
+      resolve(JSON.parse(window.atob(text)));
     });
   }
 });

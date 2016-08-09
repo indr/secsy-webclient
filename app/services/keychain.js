@@ -1,13 +1,11 @@
 import Ember from 'ember';
 
 export default Ember.Service.extend(Ember.Evented, {
-  keystore: Ember.inject.service(),
+  keystore: Ember.inject.service('keystore'),
   openpgp: Ember.inject.service(),
   session: Ember.inject.service(),
   
   isOpen: false,
-  passphrase: null,
-  
   attemptedTransition: null,
   
   init() {
@@ -15,39 +13,39 @@ export default Ember.Service.extend(Ember.Evented, {
     this._subscribeToSessionEvents();
   },
   
-  getPassphrase() {
-    return this.passphrase;
+  getPublicKey() {
+    if (!this.get('isOpen')) {
+      throw new Error('Keychain is not open');
+    }
+    return this.publicKey;
+  },
+  
+  getPrivateKey() {
+    if (!this.get('isOpen')) {
+      throw new Error('Keychain is not open');
+    }
+    return this.privateKey;
   },
   
   /**
-   * @param passphrase
+   * @param {String} userId
+   * @param {String} passphrase
    * @returns {Promise}
    */
   open(userId, passphrase) {
     const self = this;
     
     const keystore = this.get('keystore');
-    
     return keystore.load(userId).then((records) => {
-      // console.log('armored', records);
-      
       const openpgp = self.get('openpgp');
+      
       self.publicKey = openpgp.key.readArmored(records[0]).keys[0];
-      self.privateKey = openpgp.key.readArmored(records[1]).keys[0];
+      const lockedPrivateKey = openpgp.key.readArmored(records[1]).keys[0];
       
-      // console.log('public key:', publicKey);
-      // console.log('private key:', privateKey);
-      
-      openpgp.decryptKey({privateKey: self.privateKey, passphrase: passphrase}).then((unlockedPrivateKey) => {
-        console.log('unlocked', unlockedPrivateKey);
-      }).catch((err) => {
-        console.log(err);
-        return err;
+      return openpgp.decryptKey({ privateKey: lockedPrivateKey, passphrase: passphrase }).then((result) => {
+        self.privateKey = result.key;
+        self._opened();
       });
-      
-      self.passphrase = passphrase;
-      self.set('isOpen', true);
-      self.trigger('keychainOpened', self);
     });
   },
   
@@ -55,15 +53,17 @@ export default Ember.Service.extend(Ember.Evented, {
    * @returns undefined
    */
   close() {
-    Ember.Logger.info('Closing keychain');
     this.set('isOpen', false);
+    this.publicKey = null;
+    this.privateKey = null;
     this.trigger('keychainClosed', this);
   },
   
   /**
-   * @param userId
-   * @param emailAddress
-   * @param passphrase
+   * @param {String} userId
+   * @param {String} emailAddress
+   * @param {String} passphrase
+   * @param {Number} bits
    * @returns {Promise}
    */
   generateKey(userId, emailAddress, passphrase, bits) {
@@ -72,12 +72,12 @@ export default Ember.Service.extend(Ember.Evented, {
     const openpgp = self.get('openpgp');
     const keystore = self.get('keystore');
     
-    return openpgp.generateKey(emailAddress, passphrase, bits, true).then((key) => {
-      return keystore.save(userId, key);
-    }).then(() => {
-      self.passphrase = passphrase;
-      self.set('isOpen', true);
-      self.trigger('keychainOpened', self);
+    return openpgp.generateKey(emailAddress, passphrase, bits, true).then((result) => {
+      return keystore.save(userId, result).then(() => {
+        self.publicKey = result.key;
+        self.privateKey = result.key;
+        self._opened();
+      });
     });
   },
   
@@ -87,6 +87,12 @@ export default Ember.Service.extend(Ember.Evented, {
         this['close'](...arguments);
       })
     );
+  },
+  
+  _opened() {
+    const self = this;
+    self.set('isOpen', true);
+    self.trigger('keychainOpened', self);
   }
 })
 ;
