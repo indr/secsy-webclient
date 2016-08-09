@@ -9,3 +9,7 @@ body {
 .flash-messages-container {
   margin-top: 25px;
 }
+
+.leaflet-container {
+  height: 500px;
+}

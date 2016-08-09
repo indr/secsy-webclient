@@ -1,0 +1,16 @@
+{{#leaflet-map lat=lat lng=lng zoom=zoom}}
+  {{tile-layer url="http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"}}
+
+  {{#each model as |contact|}}
+    {{#marker-layer location=contact.location}}
+      <b>{{#link-to 'contacts.view' contact}}{{contact.name$}}{{/link-to}}</b>
+      <br>
+      Phone: {{contact.phoneNumber$}}
+      <br>
+      Email: {{contact.emailAddress$}}
+    {{/marker-layer}}
+  {{/each}}
+
+{{/leaflet-map}}
+
+{{outlet}}

@@ -12,6 +12,7 @@
     "openpgp": "^2.3.2",
     "mocha": "~2.2.4",
     "chai": "~2.3.0",
-    "ember-mocha-adapter": "~0.3.1"
+    "ember-mocha-adapter": "~0.3.1",
+    "leaflet": "~0.7.7"
   }
 }
