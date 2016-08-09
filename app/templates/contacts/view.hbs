@@ -5,6 +5,7 @@
 
 <p>Latitude: {{model.latitude$}}</p>
 <p>Longitude: {{model.longitude$}}</p>
+<p>{{#link-to 'map.view' model}}Show on map{{/link-to}}</p>
 
 <p>Created: {{format-date model.createdAt}}</p>
 <p>Accessed: {{format-date model.accessedAt year='numeric' month='short' day='numeric' hour='numeric' minute='numeric' second='numeric'}}</p>
