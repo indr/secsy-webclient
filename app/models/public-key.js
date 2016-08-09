@@ -4,5 +4,6 @@ import attr from 'ember-data/attr';
 
 export default Model.extend({
   userId: attr(),
+  emailAddress: attr(),
   armored: attr()
 });

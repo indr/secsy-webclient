@@ -10,15 +10,19 @@ export default Ember.Service.extend({
   /**
    * Uploads a key to the key server and adds the key to the keychain.
    *
+   * TODO: Supply email address
+   *
    * @param {String} userId
+   * @param {String} emailAddress
    * @param {{privateKeyArmored, publicKeyArmored, key}} key
    * @return {Promise<{Key}>}
    */
-  save(userId, key) {
+  save(userId, emailAddress, key) {
     const store = this.get('store');
     
     return store.createRecord('public-key', {
       userId: userId,
+      emailAddress: emailAddress,
       armored: key.publicKeyArmored
     }).save().then(() => {
       return store.createRecord('private-key', {
@@ -31,26 +35,36 @@ export default Ember.Service.extend({
   },
   
   /**
+   * TODO: Rename to getPrivateKey()
    *
    * @param userId
    * @returns {Promise.<String[]>}
    */
   load(userId) {
-    // console.log('loading:', userId);
-    const self = this;
-    
     const filter = {userId: userId};
     
     const promises = [];
-    promises.push(self._queryKey('public-key', filter));
-    promises.push(self._queryKey('private-key', filter));
+    promises.push(this._queryKey('public-key', filter));
+    promises.push(this._queryKey('private-key', filter));
     
     return RSVP.all(promises);
   },
   
+  /**
+   * Looks for a public key for the given email address.
+   *
+   * @param emailAddress
+   * @returns {Promise}
+   */
+  getPublicKey(emailAddress) {
+    const filter = {emailAddress: emailAddress};
+    
+    return this._queryKey('public-key', filter);
+  },
+  
   _queryKey(type, filter) {
     const self = this;
-  
+    
     const store = self.get('store');
     
     return store.queryRecord(type, filter).then((record) => {

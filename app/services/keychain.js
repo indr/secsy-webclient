@@ -73,7 +73,7 @@ export default Ember.Service.extend(Ember.Evented, {
     const keystore = self.get('keystore');
     
     return openpgp.generateKey(emailAddress, passphrase, bits, true).then((result) => {
-      return keystore.save(userId, result).then(() => {
+      return keystore.save(userId, emailAddress, result).then(() => {
         self.publicKey = result.key;
         self.privateKey = result.key;
         self._opened();
