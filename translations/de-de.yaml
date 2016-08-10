@@ -84,7 +84,8 @@ errors:
   email: "{description} muss eine gültige E-Mail-Adresse sein"
   phone: "{description} must be a valid phone number"
   url: "{description} must be a valid url"
-  nick-exists: "Die E-Mail-Addresse wird bereits verwendet"
+  email-exists: "Die E-Mail-Addresse wird bereits verwendet"
+  nick-exists: "Der Benutzername wird bereits verwendet"
   user-not-found: "Diese E-Mail-Adresse ist uns nicht bekannt"
   invalid-password: "Ungültiges Passwort"
   # No clue where these two guys are comming from...
