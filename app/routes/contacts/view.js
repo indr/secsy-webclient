@@ -7,12 +7,12 @@ export default Ember.Route.extend({
   model(params) {
     return this.store.findRecord('contact', params.id);
   },
-
+  
   afterModel(/*model, transition*/) {
     //model.set('accessedAt', new Date());
     //model.save();
   },
-
+  
   actions: {
     delete() {
       const model = this.controller.get('model');
@@ -36,6 +36,48 @@ export default Ember.Route.extend({
         flashMessages.success('Successfully shared your info');
       }).catch((err) => {
         flashMessages.danger('Oops: ' + (err.message || err));
+      });
+    },
+    
+    applyShare(share) {
+      const contact = this.controller.get('model');
+      const decrypted = share.decrypted;
+      contact.set('phoneNumber$', decrypted.phoneNumber$);
+      contact.set('latitude$', decrypted.latitude$);
+      contact.set('longitude$', decrypted.longitude$);
+      contact.save().then(() => {
+        share.share.destroyRecord().then(() => {
+          contact.set('sharesCount', contact.get('sharesCount') - 1);
+          const shares = contact.get('shares');
+          for (var i = 0; i < shares.length; i++) {
+            // console.log(shares[i].share.id, share.share.id);
+            if (shares[i].share.id === share.share.id) {
+              shares.splice(i, 1);
+              break;
+            }
+          }
+          // console.log(shares);
+          contact.set('shares', null);
+          contact.set('shares', Array.from(shares));
+        });
+      });
+    },
+    
+    dismissShare(share) {
+      const contact = this.controller.get('model');
+      share.share.destroyRecord().then(() => {
+        contact.set('sharesCount', contact.get('sharesCount') - 1);
+        const shares = contact.get('shares');
+        for (var i = 0; i < shares.length; i++) {
+          // console.log(shares[i].share.id, share.share.id);
+          if (shares[i].share.id === share.share.id) {
+            shares.splice(i, 1);
+            break;
+          }
+        }
+        // console.log(shares);
+        contact.set('shares', null);
+        contact.set('shares', Array.from(shares));
       });
     }
   }

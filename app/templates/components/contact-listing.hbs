@@ -1,6 +1,8 @@
 <div class="list-group">
   {{#each model as |contact|}}
-    {{#link-to "contacts.view" contact class="list-group-item"}}<strong>{{contact.name$}}</strong><br/>{{contact.emailAddress$}}<br/>{{/link-to}}
+    {{#link-to "contacts.view" contact class="list-group-item"}}<strong>{{contact.name$}}</strong>
+      {{#if contact.sharesCount}}<span class="pull-right label label-pill label-danger label" style="font-size:120%">{{contact.sharesCount}}</span>{{/if}}
+        <br/>{{contact.emailAddress$}}<br/>{{/link-to}}
   {{else}}
     <div class="alert alert-info">{{t 'contacts.no-results'}}</div>
   {{/each}}

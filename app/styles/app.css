@@ -13,3 +13,12 @@ body {
 .leaflet-container {
   height: 500px;
 }
+
+/**
+ * http://stackoverflow.com/questions/18730116/twitter-bootstrap-3-0-how-do-i-badge-badge-important-now
+ */
+.label-pill {
+  padding-right: .6em;
+  padding-left: .6em;
+  border-radius: 10rem;
+}

@@ -18,4 +18,21 @@
   {{/if}}
 </p>
 
+
+<h4 style="margin-top:30px">Shares</h4>
+{{#each model.shares as |share|}}
+    <div class="row">
+        <div class="col-md-8">
+            Phone number: {{share.decrypted.phoneNumber$}}<br>
+            Latitude: {{share.decrypted.latitude$}}<br>
+            Longitude: {{share.decrypted.longitude$}}
+        </div>
+        <div class="col-md4">
+            <button {{action 'applyShare' share}} class="btn btn-primary">Apply</button>
+            <button {{action 'dismissShare' share}} class="btn btn-default">Dismiss</button>
+        </div>
+    </div>
+{{else}}
+  <p>No shares. Click 'Get shares' in the main menu to refresh.</p>
+{{/each}}
 {{outlet}}

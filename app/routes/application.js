@@ -41,18 +41,40 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
         const userId = this.get('session.data.authenticated.user');
         this.get('store').query('contact', {userId}).then((contacts) => {
           array.forEach((each) => {
+            
             const {algorithm, encrypted} = each.getProperties('algorithm', 'encrypted');
             crypto.decrypt({algorithm, data: encrypted}).then((decrypted) => {
               console.log('decrypted', decrypted);
               
               const contact = contacts.findBy('emailAddress$', decrypted.emailAddress$);
               
-              contact.set('phoneNumber$', decrypted.phoneNumber$);
-              contact.set('latitude$', decrypted.latitude$);
-              contact.set('longitude$', decrypted.longitude$);
-              contact.save().then(() => {
-                each.destroyRecord();
-              });
+              var shares = contact.get('shares');
+              // console.log('shares', shares);
+              if (!shares) {
+                shares = [];
+                // console.log('contact.set(\'shares\')');
+                contact.set('shares', shares);
+              }
+              // console.log('shares.push()');
+              var found = false;
+              for (var i = 0; i < shares.length; i++) {
+                if (shares[i].share.id === each.id) {
+                  found = true;
+                }
+              }
+              if (!found) {
+                shares.push({share: each, decrypted});
+                contact.set('shares', null);
+                contact.set('shares', shares);
+                var count = contact.get('sharesCount') || 0;
+                contact.set('sharesCount', count + 1);
+              }
+              // contact.set('phoneNumber$', decrypted.phoneNumber$);
+              // contact.set('latitude$', decrypted.latitude$);
+              // contact.set('longitude$', decrypted.longitude$);
+              // contact.save().then(() => {
+              //   each.destroyRecord();
+              // });
             });
           });
         });
