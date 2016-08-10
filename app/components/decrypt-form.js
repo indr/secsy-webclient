@@ -7,8 +7,6 @@ const Validations = buildValidations({
 
 export default Ember.Component.extend(Validations, {
   keychain: Ember.inject.service(),
-  keystore: Ember.inject.service(),
-  openpgp: Ember.inject.service(),
   session: Ember.inject.service(),
   
   passphrase: null,
@@ -26,24 +24,13 @@ export default Ember.Component.extend(Validations, {
       keychain.open(userId, passphrase).then(() => {
         flash.successT('decrypt.success');
       }).catch((reason) => {
-        flash.dangerT(reason, 'decrypt.unknown-error');
-      });
-    },
-    
-    generateKeys() {
-      const self = this;
-      const keychain = self.get('keychain');
-      const flash = this.get('flashMessages');
-      
-      const userId = self.get('session.data.authenticated.user');
-      const emailAddress = self.get('session.data.authenticated.email');
-      const passphrase = self.get('passphrase');
-      
-      flash.infoT('generate.generating');
-      keychain.generateKey(userId, emailAddress, passphrase).then(() => {
-        flash.successT('generate.success');
-      }).catch((reason) => {
-        flash.dangerT(reason, 'generate.unknown-error');
+        if (reason.message.indexOf('Invalid passphrase') >= 0) {
+          flash.dangerT(undefined, 'decrypt.invalid-passphrase');
+          this.set('showForgot', true);
+        }
+        else {
+          flash.dangerT(reason, 'decrypt.unknown-error');
+        }
       });
     }
   }
