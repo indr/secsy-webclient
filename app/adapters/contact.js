@@ -8,7 +8,7 @@ const {
 // https://github.com/lodash/lodash/blob/4.14.1/lodash.js#L11269
 function isObject(value) {
   var type = typeof value;
-  return !!value && (type == 'object' || type == 'function');
+  return !!value && (type === 'object' || type === 'function');
 }
 
 export default ApplicationAdapter.extend({

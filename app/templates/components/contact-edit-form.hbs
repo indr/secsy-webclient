@@ -1,6 +1,6 @@
 {{#bs-form action="save" model=model formLayout="horizontal"}}
     {{bs-form-element controlType="text" label="Name" property="name$"}}
-    {{bs-form-element controlType="text" label="Email address" property="emailAddress$"}}
+    {{bs-form-element controlType="text" label="Email address" property="emailAddress$" disabled=model.me}}
     {{bs-form-element controlType="text" label="Phone number" property="phoneNumber$"}}
 
     {{bs-form-element controlType="text" label="Latitude" property="latitude$"}}

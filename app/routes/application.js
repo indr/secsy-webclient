@@ -30,7 +30,7 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
     getShares() {
       console.log('get shares');
       const emailAddress = this.get('session.data.authenticated.email');
-      this.get('store').query('share', {for: emailAddress}).then((shares) => {
+      this.get('store').query('share', {for: emailAddress.toLowerCase()}).then((shares) => {
         if (!shares) {
           console.log('no shares');
           return;

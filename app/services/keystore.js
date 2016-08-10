@@ -22,7 +22,7 @@ export default Ember.Service.extend({
     
     return store.createRecord('public-key', {
       userId: userId,
-      emailAddress: emailAddress,
+      emailAddress: emailAddress.toLowerCase(),
       armored: key.publicKeyArmored
     }).save().then(() => {
       return store.createRecord('private-key', {
@@ -60,7 +60,7 @@ export default Ember.Service.extend({
    * @returns {Promise}
    */
   getPublicKey(emailAddress) {
-    const filter = {emailAddress: emailAddress};
+    const filter = {emailAddress: emailAddress.toLowerCase()};
     
     return this._queryKey('public-key', filter);
   },

@@ -16,24 +16,24 @@ export default Ember.Service.extend({
   share(contact) {
     return new RSVP.Promise((resolve, reject) => {
       return this.getPublicKeys().then((result) => {
-        console.log('public keys found %d', result.length, result);
+        // console.log('public keys found %d', result.length, result);
         const promises = [];
         for (var i = 0; i < result.length; i++) {
           const eachPublicKey = result[i];
           if (eachPublicKey.emailAddress === contact.get('emailAddress$')) {
-            console.log('skipping own public key, %s', eachPublicKey.emailAddress);
+            // console.log('skipping own public key, %s', eachPublicKey.emailAddress);
             continue;
           }
-          console.log('share for ' + eachPublicKey.emailAddress);
+          // console.log('share for ' + eachPublicKey.emailAddress);
           
           const key = openpgp.key.readArmored(eachPublicKey.armored).keys[0];
           
-          console.log('his key', key);
+          // console.log('his key', key);
           promises.push(this._share(contact, eachPublicKey.emailAddress, key));
         }
         
-        RSVP.allSettled(promises).then((promises) => {
-          console.log(promises);
+        RSVP.allSettled(promises).then((/*promises*/) => {
+          // console.log(promises);
           resolve('shared');
         }).catch((err) => {
           reject(err);
@@ -44,7 +44,7 @@ export default Ember.Service.extend({
   
   getPublicKeys() {
     return new RSVP.Promise((resolve) => {
-      console.log('asking store', this.get('store'));
+      // console.log('asking store', this.get('store'));
       this.get('store').findAll('contact').then((contacts) => {
         const array = contacts.toArray();
         const promises = [];
@@ -83,12 +83,12 @@ export default Ember.Service.extend({
   _share(contact, toEmailAddress, key) {
     const crypto = this.get('crypto');
     return crypto.encrypt(contact, key).then((encrypted) => {
-      console.log('encrypted for ' + toEmailAddress, encrypted);
+      // console.log('encrypted for ' + toEmailAddress, encrypted);
       const share = this.get('store').createRecord('share');
-      share.set('for', toEmailAddress);
+      share.set('for', toEmailAddress.toLowerCase());
       share.set('algorithm', encrypted.algorithm);
       share.set('encrypted', encrypted.data);
-      console.log('share to %s', toEmailAddress, share);
+      // console.log('share to %s', toEmailAddress, share);
       return share.save().then(() => {
         console.log('share saved');
         return 'ok';

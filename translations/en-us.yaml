@@ -29,8 +29,8 @@ decrypt:
   title: 'Decrypt addressbook'
   passphrase: 'Passphrase'
   decrypting: "Decrypting addressbook"
-  success: "Addressbook successfully encrypted"
-  unknown-error: "Unknown error during encryption"
+  success: "Addressbook successfully decrypted"
+  unknown-error: "Unknown error during decryption"
 
 contact:
   edit: 'Edit contact'
