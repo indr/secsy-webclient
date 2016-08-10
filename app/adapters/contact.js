@@ -1,10 +1,15 @@
-import _ from 'lodash';
 import ApplicationAdapter from './application';
 import Ember from 'ember';
 
 const {
   RSVP
 } = Ember;
+
+// https://github.com/lodash/lodash/blob/4.14.1/lodash.js#L11269
+function isObject(value) {
+  var type = typeof value;
+  return !!value && (type == 'object' || type == 'function');
+}
 
 export default ApplicationAdapter.extend({
   crypto: Ember.inject.service(),
@@ -27,7 +32,7 @@ export default ApplicationAdapter.extend({
     return new RSVP.Promise((resolve) => {
       const promises = [];
       
-      if (_.isArray(obj)) {
+      if (Array.isArray(obj)) {
         for (var i = 0; i < obj.length; i++) {
           promises.push(self.deepEncrypt(obj[i]));
         }
@@ -46,7 +51,7 @@ export default ApplicationAdapter.extend({
             continue;
           }
           
-          if (_.isObject(obj[key])) {
+          if (isObject(obj[key])) {
             promises.push(self.deepEncrypt(obj[key]));
           }
         }
@@ -72,7 +77,7 @@ export default ApplicationAdapter.extend({
     return new RSVP.Promise((resolve) => {
       const promises = [];
       
-      if (_.isArray(obj)) {
+      if (Array.isArray(obj)) {
         for (var i = 0; i < obj.length; i++) {
           promises.push(self.deepDecrypt(obj[i]));
         }
@@ -91,7 +96,7 @@ export default ApplicationAdapter.extend({
             continue;
           }
           
-          if (_.isObject(obj[key])) {
+          if (isObject(obj[key])) {
             promises.push(self.deepDecrypt(obj[key]));
           }
         }
