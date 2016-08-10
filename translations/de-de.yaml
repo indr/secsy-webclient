@@ -19,6 +19,8 @@ signup:
   unknown-error: "Unbekannter Fehler bei der Registrierung"
 
 generate:
+  title: 'Schlüssel erstellen'
+  passphrase: 'Passwort'
   generating: "Schlüssel werden generiert"
   success: "Schlüssel erfolgreich generiert"
   unknown-error: "Unbekannter Fehler beim Generieren der Schlüssel"
@@ -42,6 +44,7 @@ actions:
   decrypt: "Entschlüsseln"
   delete: "Löschen"
   edit: "Bearbeiten"
+  generate: "Generieren"
   login: "Anmelden"
   logout: "Abmelden"
   save: "Speichern"
@@ -88,6 +91,7 @@ errors:
   nick-exists: "Der Benutzername wird bereits verwendet"
   user-not-found: "Diese E-Mail-Adresse ist uns nicht bekannt"
   invalid-password: "Ungültiges Passwort"
+  invalid-passphrase: 'Ungültiges Passwort'
   # No clue where these two guys are comming from...
   passwordConfirmation: 'dummy'
   usernameDescription: 'dummy'

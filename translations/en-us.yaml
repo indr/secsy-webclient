@@ -19,6 +19,8 @@ signup:
   unknown-error: "Unknown error during sign up"
 
 generate:
+  title: 'Generate key'
+  passphrase: 'Passphrase'
   generating: "Generating key"
   success: "Key successfully generated"
   unknown-error: "Unknown error during key generation"
@@ -42,6 +44,7 @@ actions:
   decrypt: "Decrypt"
   delete: "Delete"
   edit: "Edit"
+  generate: "Generate"
   login: "Login"
   logout: "Logout"
   save: "Save"
@@ -88,3 +91,4 @@ errors:
   nick-exists: "Username is already taken"
   user-not-found: "We don't know that email address"
   invalid-password: "Invalid password"
+  invalid-passphrase: 'Invalid passphrase'

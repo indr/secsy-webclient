@@ -25,7 +25,7 @@ export default Ember.Component.extend(Validations, {
         flash.successT('decrypt.success');
       }).catch((reason) => {
         if (reason.message.indexOf('Invalid passphrase') >= 0) {
-          flash.dangerT(undefined, 'decrypt.invalid-passphrase');
+          flash.dangerT('invalid-passphrase');
           this.set('showForgot', true);
         }
         else {
