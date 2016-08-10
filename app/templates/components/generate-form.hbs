@@ -1,0 +1,7 @@
+{{#bs-form action="generate" model=this}}
+  {{bs-form-element controlType="password" label=(t 'generate.passphrase') property="passphrase"}}
+
+  {{#bs-form-group}}
+    {{#bs-button type="primary" buttonType="submit"}}{{t 'actions.generate'}}{{/bs-button}}
+  {{/bs-form-group}}
+{{/bs-form}}

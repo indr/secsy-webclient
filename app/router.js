@@ -17,6 +17,9 @@ Router.map(function () {
   this.route('map', function () {
     this.route('view', { path: '/:id' });
   });
+  this.route('generate', function() {
+    this.route('forgot');
+  });
 });
 
 export default Router;
