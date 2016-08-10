@@ -35,8 +35,7 @@ export default Ember.Service.extend({
   },
   
   /**
-   * TODO: Rename to getPrivateKey()
-   *
+   * Deprecated. Use getPrivateKey
    * @param userId
    * @returns {Promise.<String[]>}
    */
@@ -48,6 +47,10 @@ export default Ember.Service.extend({
     promises.push(this._queryKey('private-key', filter));
     
     return RSVP.all(promises);
+  },
+  
+  getPrivateKey(userId) {
+    return this._queryKey('private-key', {userId: userId});
   },
   
   /**
@@ -63,11 +66,7 @@ export default Ember.Service.extend({
   },
   
   _queryKey(type, filter) {
-    const self = this;
-    
-    const store = self.get('store');
-    
-    return store.queryRecord(type, filter).then((record) => {
+    return this.get('store').queryRecord(type, filter).then((record) => {
       if (!record) {
         throw new Error(type + '-not-found');
       }
