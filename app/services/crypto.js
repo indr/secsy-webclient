@@ -49,7 +49,7 @@ export default Ember.Service.extend({
    * @param {{algorithm: string, data: string}} obj
    * @returns {Object}
    */
-  decrypt(obj) {
+  decrypt(obj, key) {
     const self = this;
     
     if (obj.algorithm === 'base64') {
@@ -57,11 +57,14 @@ export default Ember.Service.extend({
     }
     
     if (obj.algorithm === 'base64.pgp') {
-      const keychain = self.get('keychain');
+      if (!key) {
+        const keychain = self.get('keychain');
+        key = keychain.getPrivateKey();
+      }
       const openpgp = self.get('openpgp');
       const options = {
         message: openpgp.message.readArmored(obj.data),
-        privateKey: keychain.getPrivateKey(),
+        privateKey: key,
         format: 'utf8'
       };
       return openpgp.decrypt(options).then((message) => {

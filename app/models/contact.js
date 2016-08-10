@@ -18,6 +18,7 @@ export default Model.extend(Validations, {
       return new Date();
     }
   }),
+  userId: attr('string'),
   me: attr('boolean', {
     defaultValue: false
   }),

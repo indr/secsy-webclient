@@ -1,14 +1,18 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
+  session: Ember.inject.service(),
+  
   model() {
-    return this.store.createRecord('contact');  
+    return this.store.createRecord('contact');
   },
 
   actions: {
     save() {
+      const userId = this.get('session.data.authenticated.user');
       const model = this.controller.get('model');
-      model.save().then(() => 
+      model.set('userId', userId);
+      model.save().then(() =>
         this.transitionTo('contacts.view', model));
     },
 

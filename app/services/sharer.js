@@ -16,15 +16,20 @@ export default Ember.Service.extend({
   share(contact) {
     return new RSVP.Promise((resolve, reject) => {
       return this.getPublicKeys().then((result) => {
-        console.log('public keys', result);
+        console.log('public keys found %d', result.length, result);
         const promises = [];
         for (var i = 0; i < result.length; i++) {
-          // console.log('share for ' + result[i].emailAddress);
+          const eachPublicKey = result[i];
+          if (eachPublicKey.emailAddress === contact.get('emailAddress$')) {
+            console.log('skipping own public key, %s', eachPublicKey.emailAddress);
+            continue;
+          }
+          console.log('share for ' + eachPublicKey.emailAddress);
           
-          const key = openpgp.key.readArmored(result[i].armored).keys[0];
+          const key = openpgp.key.readArmored(eachPublicKey.armored).keys[0];
           
-          // console.log('his key', key);
-          promises.push(this._share(contact, result[i].emailAddress, key));
+          console.log('his key', key);
+          promises.push(this._share(contact, eachPublicKey.emailAddress, key));
         }
         
         RSVP.allSettled(promises).then((promises) => {
@@ -80,10 +85,10 @@ export default Ember.Service.extend({
     return crypto.encrypt(contact, key).then((encrypted) => {
       console.log('encrypted for ' + toEmailAddress, encrypted);
       const share = this.get('store').createRecord('share');
-      console.log('share', share);
       share.set('for', toEmailAddress);
       share.set('algorithm', encrypted.algorithm);
       share.set('encrypted', encrypted.data);
+      console.log('share to %s', toEmailAddress, share);
       return share.save().then(() => {
         console.log('share saved');
         return 'ok';
