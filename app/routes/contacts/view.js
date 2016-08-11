@@ -27,6 +27,13 @@ export default Ember.Route.extend({
         this.transitionTo('contacts'));
     },
     
+    deleteLocation() {
+      const model = this.controller.get('model');
+      model.set('latitude$', null);
+      model.set('longitude$', null);
+      model.save();
+    },
+    
     share() {
       const model = this.controller.get('model');
       const sharer = this.get('sharer');

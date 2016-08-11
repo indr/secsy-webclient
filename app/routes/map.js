@@ -6,7 +6,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, KeychainOpenedRouteMi
   model() {
     return this.get('store').findAll('contact');
   },
-  
+ 
   actions: {
     openPopup(contact) {
       this.controller.openPopup(contact);
@@ -29,6 +29,10 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, KeychainOpenedRouteMi
       if (transition.targetName.indexOf('map.') === -1) {
         this.controller.doTransitionOnClosed = false;
       }
+    },
+    
+    mapClicked(mouseEvent) {
+      this.controllerFor('map.view').set('location', mouseEvent.latlng);
     }
   }
 });

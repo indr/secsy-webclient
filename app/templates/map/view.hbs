@@ -1,1 +1,6 @@
+{{#unless model.location}}
+    <div class="alert alert-info">
+        <p>Click on the map to set {{model.name$}}'s location.</p>
+    </div>
+{{/unless}}
 {{outlet}}

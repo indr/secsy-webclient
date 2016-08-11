@@ -30,9 +30,8 @@ export default Ember.Controller.extend({
   },
   
   actions: {
-    mapClicked(/*mouseEvent*/) {
-      // console.log('controllers/map/actions/mapClicked()');
-      // console.log('mapClicked', mouseEvent.latlng);
+    onMapClick(mouseEvent) {
+      this.send('mapClicked', mouseEvent);
     },
     
     popupOpened(contact) {
