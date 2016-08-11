@@ -47,7 +47,7 @@ export default Ember.Controller.extend({
       this.transitionToRoute('map.view', contact);
     },
     
-    popupClosed(contact) {
+    popupClosed(/*contact*/) {
       if (this.doTransitionOnClosed) {
         this.transitionToRoute('map');
       }
