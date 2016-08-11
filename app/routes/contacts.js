@@ -7,7 +7,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, KeychainOpenedRouteMi
   session: Ember.inject.service(),
   
   model() {
-    const userId = this.get('session.data.authenticated.user');
+    const userId = this.get('session.data.authenticated.user.id');
     return this.get('store').findAll('contact').then((contacts) => {
       if (ENV.APP.autoCreateMe) {
         var me = contacts.findBy('me', true);

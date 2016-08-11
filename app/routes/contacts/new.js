@@ -9,7 +9,7 @@ export default Ember.Route.extend({
 
   actions: {
     save() {
-      const userId = this.get('session.data.authenticated.user');
+      const userId = this.get('session.data.authenticated.user.id');
       const model = this.controller.get('model');
       model.set('userId', userId);
       model.save().then(() =>

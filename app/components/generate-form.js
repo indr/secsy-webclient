@@ -17,7 +17,7 @@ export default Ember.Component.extend(Validations, {
       const keychain = self.get('keychain');
       const flash = this.get('flashMessages');
       
-      const userId = self.get('session.data.authenticated.user');
+      const userId = self.get('session.data.authenticated.user.id');
       const emailAddress = self.get('session.data.authenticated.email');
       const passphrase = self.get('passphrase');
       
