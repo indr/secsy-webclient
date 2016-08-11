@@ -1,19 +1,21 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
+  beforeModel(transition) {
+    this.center = transition.queryParams.center;
+  },
+  
   model(params) {
+    this.center = true;
     return this.store.findRecord('contact', params.id);
   },
   
-  afterModel(model) {
-    const self = this;
-    
-    // Nasty hack, I don't know why I can not send actions in model() or afterModel()
-    // this.send('selectMarker', model);
-    window.setTimeout(function () {
-      Ember.run(() => {
-        self.send('selectMarker', model);
-      });
-    }, 500);
+  actions: {
+    didTransition() {
+      if (this.center) {
+        this.send('setCenter', this.controller.model.get('location'), 3);
+      }
+      this.send('openPopup', this.controller.model);
+    }
   }
 });

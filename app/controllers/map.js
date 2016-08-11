@@ -4,18 +4,47 @@ export default Ember.Controller.extend({
   lat: 10,
   lng: 0,
   zoom: 2,
- 
-  selectMarker(contact) {
-    this.set('lat', contact.get('latitude$'));
-    this.set('lng', contact.get('longitude$'));
-    this.set('zoom', this.get('zoom'));
+  
+  // Usually, when a popup is closed, we want to leave
+  // the child route map.view (/map/;id) and go to the parent.
+  doTransitionOnClosed: true,
+  
+  openPopup(contact) {
+    contact.set('popupOpen', true);
+  },
+  
+  closePopup() {
+    if (this._openPopup) {
+      this._openPopup.set('popupOpen', false);
+    }
+  },
+  
+  setCenter(location, zoom) {
+    if (location) {
+      this.set('lat', location[0]);
+      this.set('lng', location[1]);
+      if (zoom) {
+        this.set('zoom', zoom);
+      }
+    }
   },
   
   actions: {
-    markerClicked(contact) {
-      // https://github.com/miguelcobain/ember-leaflet/issues/48
-      // console.log('conroller/markerClicked', contact.id);
+    mapClicked(/*mouseEvent*/) {
+      // console.log('controllers/map/actions/mapClicked()');
+      // console.log('mapClicked', mouseEvent.latlng);
+    },
+    
+    popupOpened(contact) {
+      this.doTransitionOnClosed = true;
+      this._openPopup = contact;
       this.transitionToRoute('map.view', contact);
+    },
+    
+    popupClosed(contact) {
+      if (this.doTransitionOnClosed) {
+        this.transitionToRoute('map');
+      }
     }
   }
 });

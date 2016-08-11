@@ -5,7 +5,7 @@
 
 <p>Latitude: {{model.latitude$}}</p>
 <p>Longitude: {{model.longitude$}}</p>
-<p>{{#link-to 'map.view' model}}Show on map{{/link-to}}</p>
+<p>{{#link-to 'map.view' model (query-params center=true)}}Show on map{{/link-to}}</p>
 
 <p>Created: {{format-date model.createdAt}}</p>
 <p>Accessed: {{format-date model.accessedAt}}</p>
