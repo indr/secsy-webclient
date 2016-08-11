@@ -33,6 +33,13 @@ export default Ember.Controller.extend({
     onMapClick(mouseEvent) {
       this.send('mapClicked', mouseEvent);
     },
+   
+    onDragEnd(model, dragEndEvent) {
+      const latlng = dragEndEvent.target._latlng;
+      model.set('latitude$', latlng.lat);
+      model.set('longitude$', latlng.lng);
+      model.save();
+    },
     
     popupOpened(contact) {
       this.doTransitionOnClosed = true;

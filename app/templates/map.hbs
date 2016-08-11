@@ -4,7 +4,8 @@
   {{#each model as |contact|}}
     {{#if contact.location}}
       {{#marker-layer location=contact.location draggable=true popupOpen=contact.popupOpen
-      onPopupopen=(action "popupOpened" contact) onPopupclose=(action "popupClosed" contact)}}
+      onPopupopen=(action "popupOpened" contact) onPopupclose=(action "popupClosed" contact)
+      onDragend=(action "onDragEnd" contact)}}
           <b>{{#link-to 'contacts.view' contact}}{{contact.name$}}{{/link-to}}</b>
           <br>
           Phone: {{contact.phoneNumber$}}
