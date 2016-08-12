@@ -28,6 +28,8 @@ export default Ember.Service.extend(Ember.Evented, {
   },
   
   /**
+   * Opens the keychain by obtaining and decrypting the users private key.
+   *
    * TODO: Remove first param
    *
    * @param {String} userId
@@ -69,7 +71,6 @@ export default Ember.Service.extend(Ember.Evented, {
     const keystore = self.get('keystore');
     
     return openpgp.generateKey(emailAddress, passphrase, bits, true).then((result) => {
-      self.set('session.data.authenticated.user.privateKey', result.armoredPrivateKey);
       return keystore.save(userId, emailAddress, result).then(() => {
         self.publicKey = result.key;
         self.privateKey = result.key;

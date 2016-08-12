@@ -7,9 +7,7 @@ export default Ember.Service.extend({
   openpgp: Ember.inject.service(),
   
   /**
-   * Uploads a key to the key server anselfd adds the key to the keychain.
-   *
-   * TODO: Supply email address
+   * Uploads a key to the key server and adds the key to the session.
    *
    * @param {String} userId
    * @param {String} emailAddress
@@ -38,10 +36,18 @@ export default Ember.Service.extend({
     });
   },
   
+  /**
+   * Retrieves the private key from session data.
+   *
+   * @returns {Key}
+   */
   getPrivateKey() {
     const armored = this.get('session.data.authenticated.user.privateKey');
-    const openpgp = this.get('openpgp');
+    if (!armored) {
+      throw new Error('private-key-not-found');
+    }
     
+    const openpgp = this.get('openpgp');
     const result = openpgp.key.readArmored(armored);
     if (result.keys.length === 0) {
       throw new Error(result.err[0].message);

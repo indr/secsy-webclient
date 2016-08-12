@@ -57,10 +57,16 @@ describeModule('service:keystore', 'Unit | Service | keystore', {
     });
     
     describe('getPrivateKey()', function () {
+      it('throws if no private key is present', function () {
+        session.set('data.authenticated.user.privateKey', undefined);
+        assert.throws(() => sut.getPrivateKey(), 'private-key-not-found');
+      });
+      
       it('throws with invalid private key', function () {
         session.set('data.authenticated.user.privateKey', 'invalid');
         assert.throws(() => sut.getPrivateKey(), 'Unknown ASCII armor type');
       });
+      
       
       it('returns key', function () {
         var key = sut.getPrivateKey();
