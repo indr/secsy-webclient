@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 import { describeModel, it } from 'ember-mocha';
 
-describeModel('public-key', 'Unit | Model | public key', {
+describeModel('key', 'Unit | Model | public key', {
   // Specify the other units that are required for this test.
   needs: []
   },

@@ -19,7 +19,7 @@ export default Ember.Service.extend({
     const store = this.get('store');
     const senecaAuth = this.get('senecaAuth');
     
-    return store.createRecord('public-key', {
+    return store.createRecord('key', {
       userId: userId,
       emailAddress: emailAddress.toLowerCase(),
       armored: key.publicKeyArmored
@@ -64,7 +64,7 @@ export default Ember.Service.extend({
   getPublicKey(emailAddress) {
     const filter = {emailAddress: emailAddress.toLowerCase()};
     
-    return this._queryKey('public-key', filter);
+    return this._queryKey('key', filter);
   },
   
   _queryKey(type, filter) {
