@@ -26,25 +26,19 @@ export default Ember.Service.extend({
       emailAddress: emailAddress.toLowerCase(),
       armored: key.publicKeyArmored
     }).save().then(() => {
-      return store.createRecord('private-key', {
-        userId: userId,
-        armored: key.privateKeyArmored
-      }).save().then(() => {
-        return senecaAuth.updateUser(null, null, null, emailAddress, {
-          privateKey: key.privateKeyArmored,
-          publicKey: key.publicKeyArmored
-        }).then(() => {
-          session.set('data.authenticated.user.publicKey', key.publicKeyArmored);
-          session.set('data.authenticated.user.privateKey', key.privateKeyArmored);
-        });
+      return senecaAuth.updateUser(null, null, null, emailAddress, {
+        privateKey: key.privateKeyArmored,
+        publicKey: key.publicKeyArmored
       }).then(() => {
-        return key.key;
+        session.set('data.authenticated.user.publicKey', key.publicKeyArmored);
+        session.set('data.authenticated.user.privateKey', key.privateKeyArmored);
       });
+    }).then(() => {
+      return key.key;
     });
   },
   
   getPrivateKey() {
-    // return this._queryKey('private-key', {userId: userId});
     const armored = this.get('session.data.authenticated.user.privateKey');
     const openpgp = this.get('openpgp');
     
