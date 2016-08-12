@@ -4,24 +4,32 @@ import { describeModule, it } from 'ember-mocha';
 import { beforeEach, describe } from 'mocha';
 
 import { aks, keys } from '../../keys';
-const { RSVP } = Ember;
+const {RSVP} = Ember;
 
 
 describeModule('service:keychain', 'Unit | Service | keychain', {
     // Specify the other units that are required for this test.
     needs: [
       'service:keystore',
-      'service:session',
       'service:openpgp']
   },
   function () {
-    let sut;
+    let sut, session;
     
     beforeEach(function (done) {
+      this.register('service:session', Ember.Object.extend({
+        data: {authenticated: {user: {}}},
+        on: function () {
+        }
+      }));
+      session = Ember.getOwner(this).lookup('service:session');
+      session.set('data.authenticated.user.privateKey', aks[0][1]);
+      this.register('service:seneca-auth', Ember.Object.extend());
+      
       sut = this.subject();
       sut.get('keystore').load = () => RSVP.resolve(aks[0]);
       sut.get('keystore').save = () => RSVP.resolve();
-      sut.get('openpgp').generateKey = () => RSVP.resolve({ key: keys[0][1] });
+      sut.get('openpgp').generateKey = () => RSVP.resolve({key: keys[0][1]});
       done();
     });
     
@@ -39,7 +47,12 @@ describeModule('service:keychain', 'Unit | Service | keychain', {
     });
     
     describe('open()', function () {
-      it('throws with invalid passphrase', function (done) {
+      it('throws with invalid private key', function () {
+        session.set('data.authenticated.user.privateKey', 'invalid');
+        assert.throws(() => sut.open(), 'Unknown ASCII armor type');
+      });
+      
+      it('rejects with invalid passphrase', function (done) {
         sut.open('abc123', 'invalid-passphrase').then(assert.fail).catch((err) => {
           assert.equal(err.message, 'Error decrypting private key: Invalid passphrase');
           done();

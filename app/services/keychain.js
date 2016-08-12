@@ -28,24 +28,25 @@ export default Ember.Service.extend(Ember.Evented, {
   },
   
   /**
+   * TODO: Remove first param
+   *
    * @param {String} userId
    * @param {String} passphrase
    * @returns {Promise}
    */
   open(userId, passphrase) {
     const self = this;
+    const armored = self.get('session.data.authenticated.user.privateKey');
+    const openpgp = self.get('openpgp');
     
-    const keystore = this.get('keystore');
-    return keystore.load(userId).then((records) => {
-      const openpgp = self.get('openpgp');
-      
-      self.publicKey = openpgp.key.readArmored(records[0]).keys[0];
-      const lockedPrivateKey = openpgp.key.readArmored(records[1]).keys[0];
-      
-      return openpgp.decryptKey({ privateKey: lockedPrivateKey, passphrase: passphrase }).then((result) => {
-        self.privateKey = result.key;
-        self._opened();
-      });
+    const result = openpgp.key.readArmored(armored);
+    if (result.keys.length === 0) {
+      throw new Error(result.err[0].message);
+    }
+    return openpgp.decryptKey({privateKey: result.keys[0], passphrase: passphrase}).then((result) => {
+      self.privateKey = result.key;
+      self.publicKey = result.key;
+      self._opened();
     });
   },
   
@@ -73,6 +74,7 @@ export default Ember.Service.extend(Ember.Evented, {
     const keystore = self.get('keystore');
     
     return openpgp.generateKey(emailAddress, passphrase, bits, true).then((result) => {
+      self.set('session.data.authenticated.user.privateKey', result.armoredPrivateKey);
       return keystore.save(userId, emailAddress, result).then(() => {
         self.publicKey = result.key;
         self.privateKey = result.key;
