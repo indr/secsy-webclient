@@ -3,9 +3,11 @@ import { assert } from 'chai';
 import { describeModule, it } from 'ember-mocha';
 import { beforeEach, describe } from 'mocha';
 
+import { aks } from '../../keys';
+
 describeModule('service:keystore', 'Unit | Service | keystore', {
     // Specify the other units that are required for this test.
-    // needs: ['service:foo']
+    needs: ['service:openpgp']
   },
   function () {
     let sut, senecaAuth, session, store;
@@ -13,8 +15,9 @@ describeModule('service:keystore', 'Unit | Service | keystore', {
     beforeEach(function (done) {
       this.register('service:seneca-auth', Ember.Object.extend({}));
       senecaAuth = Ember.getOwner(this).lookup('service:seneca-auth');
-      this.register('service:session', Ember.Object.extend({data:{authenticated:{user:{}}}}));
+      this.register('service:session', Ember.Object.extend({data: {authenticated: {user: {}}}}));
       session = Ember.getOwner(this).lookup('service:session');
+      session.set('data.authenticated.user.privateKey', aks[0][1]);
       
       // TODO: Remove keystores dependency on store
       store = Ember.getOwner(this).lookup('service:store');
@@ -50,6 +53,19 @@ describeModule('service:keystore', 'Unit | Service | keystore', {
           assert.equal(session.get('data.authenticated.user.privateKey'), 'priv');
           done();
         });
+      });
+    });
+    
+    describe('getPrivateKey()', function () {
+      it('throws with invalid private key', function () {
+        session.set('data.authenticated.user.privateKey', 'invalid');
+        assert.throws(() => sut.getPrivateKey(), 'Unknown ASCII armor type');
+      });
+      
+      it('returns key', function () {
+        var key = sut.getPrivateKey();
+        assert.isObject(key);
+        assert.property(key, 'primaryKey');
       });
     });
   }

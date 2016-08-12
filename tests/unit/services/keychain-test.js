@@ -27,7 +27,6 @@ describeModule('service:keychain', 'Unit | Service | keychain', {
       this.register('service:seneca-auth', Ember.Object.extend());
       
       sut = this.subject();
-      sut.get('keystore').load = () => RSVP.resolve(aks[0]);
       sut.get('keystore').save = () => RSVP.resolve();
       sut.get('openpgp').generateKey = () => RSVP.resolve({key: keys[0][1]});
       done();
@@ -60,8 +59,6 @@ describeModule('service:keychain', 'Unit | Service | keychain', {
       });
       
       it('resolves with valid passphrase', function (done) {
-        sut.get('keystore').load = () => RSVP.resolve(aks[0]);
-        
         sut.open('abc123', 'secret').then(done).catch(assert.fail);
       });
       

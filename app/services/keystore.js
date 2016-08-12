@@ -1,13 +1,10 @@
 import Ember from 'ember';
 
-const {
-  RSVP
-} = Ember;
-
 export default Ember.Service.extend({
   session: Ember.inject.service(),
   store: Ember.inject.service(),
   senecaAuth: Ember.inject.service(),
+  openpgp: Ember.inject.service(),
   
   /**
    * Uploads a key to the key server anselfd adds the key to the keychain.
@@ -46,23 +43,16 @@ export default Ember.Service.extend({
     });
   },
   
-  /**
-   * Deprecated. Use getPrivateKey
-   * @param userId
-   * @returns {Promise.<String[]>}
-   */
-  load(userId) {
-    const filter = {userId: userId};
+  getPrivateKey() {
+    // return this._queryKey('private-key', {userId: userId});
+    const armored = this.get('session.data.authenticated.user.privateKey');
+    const openpgp = this.get('openpgp');
     
-    const promises = [];
-    promises.push(this._queryKey('public-key', filter));
-    promises.push(this._queryKey('private-key', filter));
-    
-    return RSVP.all(promises);
-  },
-  
-  getPrivateKey(userId) {
-    return this._queryKey('private-key', {userId: userId});
+    const result = openpgp.key.readArmored(armored);
+    if (result.keys.length === 0) {
+      throw new Error(result.err[0].message);
+    }
+    return result.keys[0];
   },
   
   /**

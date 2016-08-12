@@ -36,14 +36,9 @@ export default Ember.Service.extend(Ember.Evented, {
    */
   open(userId, passphrase) {
     const self = this;
-    const armored = self.get('session.data.authenticated.user.privateKey');
-    const openpgp = self.get('openpgp');
+    const key = this.get('keystore').getPrivateKey();
     
-    const result = openpgp.key.readArmored(armored);
-    if (result.keys.length === 0) {
-      throw new Error(result.err[0].message);
-    }
-    return openpgp.decryptKey({privateKey: result.keys[0], passphrase: passphrase}).then((result) => {
+    return this.get('openpgp').decryptKey({privateKey: key, passphrase: passphrase}).then((result) => {
       self.privateKey = result.key;
       self.publicKey = result.key;
       self._opened();
