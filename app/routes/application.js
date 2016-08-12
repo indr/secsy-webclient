@@ -38,7 +38,7 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
         var array = shares.toArray();
         console.log('number of shares', array.length);
         const crypto = this.get('crypto');
-        const userId = this.get('session.data.authenticated.user.id');
+        const userId = this.get('session.data.authenticated.user');
         this.get('store').query('contact', {userId}).then((contacts) => {
           array.forEach((each) => {
             

@@ -20,6 +20,10 @@ module.exports = function(environment) {
       routeAfterDecryption: 'contacts',
       
       autoCreateMe: true
+    },
+    
+    'seneca-auth': {
+      assignFromUser: ['privateKey']
     }
   };
 
