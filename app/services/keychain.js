@@ -1,5 +1,7 @@
 import Ember from 'ember';
 
+const {RSVP} = Ember;
+
 export default Ember.Service.extend(Ember.Evented, {
   keystore: Ember.inject.service('keystore'),
   openpgp: Ember.inject.service(),
@@ -43,7 +45,23 @@ export default Ember.Service.extend(Ember.Evented, {
     return this.get('openpgp').decryptKey({privateKey: key, passphrase: passphrase}).then((result) => {
       self.privateKey = result.key;
       self.publicKey = result.key;
+      self.get('session').set('data.passphrase', passphrase);
       self._opened();
+    });
+  },
+  
+  /**
+   * @returns {Promise}
+   */
+  restore() {
+    const self = this;
+    return new RSVP.Promise((resolve, reject) => {
+      const passphrase = self.get('session.data.passphrase');
+      if (!passphrase) {
+        return reject();
+      }
+      self.open(null, passphrase).then(resolve)
+        .catch(reject);
     });
   },
   
@@ -52,6 +70,7 @@ export default Ember.Service.extend(Ember.Evented, {
    */
   close() {
     this.set('isOpen', false);
+    this.get('session').set('data.passphrase', undefined);
     this.publicKey = null;
     this.privateKey = null;
     this.trigger('keychainClosed', this);
