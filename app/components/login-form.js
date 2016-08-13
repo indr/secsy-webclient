@@ -22,7 +22,7 @@ export default Ember.Component.extend(Validations, {
       const flash = this.get('flashMessages');
       const {emailAddress, password} = this.getProperties('emailAddress', 'password');
       
-      this.get('session').authenticate('authenticator:seneca', emailAddress, password, {user: true}).then(() => {
+      this.get('session').authenticate('authenticator:local', emailAddress, password).then(() => {
         flash.successT('login.success');
       }, (reason) => {
         flash.dangerT(reason, 'login.unknown-error');
