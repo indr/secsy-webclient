@@ -32,10 +32,7 @@ export default Ember.Service.extend({
       };
       const openpgp = self.get('openpgp');
       return openpgp.encrypt(options).then((encrypted) => {
-        return {
-          algorithm: 'base64.pgp',
-          data: encrypted.data
-        };
+        return 'base64.pgp///' + encrypted.data;
       });
     }).catch(() => {
       throw new Error('encryption-failed');
@@ -47,23 +44,27 @@ export default Ember.Service.extend({
    *
    * @async
    * @param {{algorithm: string, data: string}} obj
+   * @param key Private key
    * @returns {Object}
    */
   decrypt(obj, key) {
     const self = this;
     
-    if (obj.algorithm === 'base64') {
-      return self.decodeBase64(obj.data);
+    var parts = obj.split('///');
+    const algorithm = parts[0];
+    const cypher = parts[1];
+    if (algorithm === 'base64') {
+      return self.decodeBase64(cypher);
     }
     
-    if (obj.algorithm === 'base64.pgp') {
+    if (algorithm === 'base64.pgp') {
       if (!key) {
         const keychain = self.get('keychain');
         key = keychain.getPrivateKey();
       }
       const openpgp = self.get('openpgp');
       const options = {
-        message: openpgp.message.readArmored(obj.data),
+        message: openpgp.message.readArmored(cypher),
         privateKey: key,
         format: 'utf8'
       };

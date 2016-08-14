@@ -30,21 +30,22 @@ describeModule('service:crypto', 'Unit | Service | crypto', {
     
     it('it decrypts "base64"', function (done) {
       const expected = { 'foo': 'bar' };
-      sut.decrypt({ algorithm: 'base64', data: 'eyJmb28iOiJiYXIifQ==' }).then((decrypted) => {
+      sut.decrypt('base64///eyJmb28iOiJiYXIifQ==').then((decrypted) => {
         assert.deepEqual(decrypted, expected);
         done();
       });
     });
     
     it('it encrypts an object to base64.pgp', function (done) {
-      sut.get('keychain').passphrase = '1234';
       const plain = {
         a: 'foo',
         b: { b1: 'bar' }
       };
       sut.encrypt(plain).then((encrypted) => {
-        assert.equal(encrypted.algorithm, 'base64.pgp');
-        assert.ok(encrypted.data);
+        assert.ok(encrypted);
+        encrypted = encrypted.split('///');
+        assert.equal(encrypted[0], 'base64.pgp');
+        assert.ok(encrypted[1]);
         done();
       });
     });
