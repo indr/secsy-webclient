@@ -8,17 +8,9 @@ const Validations = buildValidations({
 });
 
 export default Model.extend(Validations, {
-  createdAt: attr('date', {
-    defaultValue() {
-      return new Date();
-    }
-  }),
-  accessedAt: attr('date', {
-    defaultValue() {
-      return new Date();
-    }
-  }),
-  userId: attr('string'),
+  createdAt: attr('date'),
+  updatedAt: attr('date'),
+  
   me: attr('boolean', {
     defaultValue: false
   }),
