@@ -6,7 +6,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
   session: Ember.inject.service(),
   
   model() {
-    const userId = this.get('session.data.authenticated.user');
+    const userId = this.get('session.data.authenticated.id');
     return this.get('keystore').getPrivateKey(userId);
   },
   
