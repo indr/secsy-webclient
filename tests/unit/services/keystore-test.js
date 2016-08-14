@@ -5,6 +5,8 @@ import { beforeEach, describe } from 'mocha';
 
 import { aks } from '../../keys';
 
+const {RSVP} = Ember;
+
 describeModule('service:keystore', 'Unit | Service | keystore', {
     // Specify the other units that are required for this test.
     needs: ['service:openpgp']
@@ -34,20 +36,22 @@ describeModule('service:keystore', 'Unit | Service | keystore', {
     
     describe('save()', function () {
       it('updates users privateKey and publicKey and returns key', function (done) {
-        senecaAuth.updateUser = function () {
-          assert.equal(arguments[0], null);
-          assert.equal(arguments[1], null);
-          assert.equal(arguments[2], null);
-          assert.equal(arguments[3], 'user@example.com');
-          assert.deepEqual(arguments[4], {
-            publicKey: 'pub',
-            privateKey: 'priv'
-          });
-          return Ember.RSVP.resolve();
+        const fakeUser = {
+          set: function (key, value) {
+            this[key] = value;
+          },
+          save: function () {
+            return RSVP.resolve(this);
+          }
+        };
+        store.findRecord = function () {
+          return RSVP.resolve(fakeUser);
         };
         
         sut.save('123abc', 'user@example.com',
           {key: '1', publicKeyArmored: 'pub', privateKeyArmored: 'priv'}).then((key) => {
+          assert.equal(fakeUser.privateKey, 'priv');
+          assert.equal(fakeUser.publicKey, 'pub');
           assert.equal(key, '1');
           assert.equal(session.get('data.authenticated.publicKey'), 'pub');
           assert.equal(session.get('data.authenticated.privateKey'), 'priv');

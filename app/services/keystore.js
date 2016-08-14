@@ -3,7 +3,6 @@ import Ember from 'ember';
 export default Ember.Service.extend({
   session: Ember.inject.service(),
   store: Ember.inject.service(),
-  senecaAuth: Ember.inject.service(),
   openpgp: Ember.inject.service(),
   
   /**
@@ -17,20 +16,14 @@ export default Ember.Service.extend({
   save(userId, emailAddress, key) {
     const session = this.get('session');
     const store = this.get('store');
-    const senecaAuth = this.get('senecaAuth');
     
-    return store.createRecord('key', {
-      userId: userId,
-      emailAddress: emailAddress.toLowerCase(),
-      armored: key.publicKeyArmored
-    }).save().then(() => {
-      return senecaAuth.updateUser(null, null, null, emailAddress, {
-        privateKey: key.privateKeyArmored,
-        publicKey: key.publicKeyArmored
-      }).then(() => {
-        session.set('data.authenticated.publicKey', key.publicKeyArmored);
-        session.set('data.authenticated.privateKey', key.privateKeyArmored);
-      });
+    return store.findRecord('user', userId).then((user) => {
+      user.set('privateKey', key.privateKeyArmored);
+      user.set('publicKey', key.publicKeyArmored);
+      return user.save();
+    }).then(() => {
+      session.set('data.authenticated.publicKey', key.publicKeyArmored);
+      session.set('data.authenticated.privateKey', key.privateKeyArmored);
     }).then(() => {
       return key.key;
     });
