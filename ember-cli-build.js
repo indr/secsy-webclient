@@ -22,26 +22,7 @@ module.exports = function (defaults) {
   // please specify an object with the list of modules as keys
   // along with the exports of each module as its value.
   
-  
   app.import('bower_components/bootstrap/dist/js/bootstrap.min.js');
-  
-  app.import('bower_components/openpgp/dist/openpgp.min.js');
-  app.import('vendor/shims/openpgp.js', {
-    exports: {
-      'openpgp': ['default']
-    }
-  });
-  
-  app.otherAssetPaths.push({
-    src: 'bower_components/openpgp/dist/',
-    file: 'openpgp.min.js',
-    dest: 'assets'
-  });
-  app.otherAssetPaths.push({
-    src: 'bower_components/openpgp/dist/',
-    file: 'openpgp.worker.min.js',
-    dest: 'assets'
-  });
   
   return app.toTree();
 };
