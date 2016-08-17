@@ -34,5 +34,13 @@ export default DS.RESTSerializer.extend({
     }
     
     return result;
+  },
+  
+  serializeAttribute: function (record, json, key, attribute) {
+    if (attribute.options && attribute.options.readonly) {
+      // no-op
+    } else {
+      this._super(record, json, key, attribute);
+    }
   }
 });

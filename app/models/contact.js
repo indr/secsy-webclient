@@ -8,11 +8,16 @@ const Validations = buildValidations({
 });
 
 export default Model.extend(Validations, {
-  createdAt: attr('date'),
-  updatedAt: attr('date'),
+  createdAt: attr('date', {
+    readonly: true
+  }),
+  updatedAt: attr('date', {
+    readonly: true
+  }),
   
   me: attr('boolean', {
-    defaultValue: false
+    defaultValue: false,
+    readonly: true
   }),
   
   name$: attr(),
