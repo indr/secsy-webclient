@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import openpgp from 'openpgp';
 
 export default Ember.Service.extend({
   session: Ember.inject.service(),
@@ -17,10 +16,11 @@ export default Ember.Service.extend({
   save(userId, emailAddress, key) {
     const session = this.get('session');
     const store = this.get('store');
+    const openpgp = this.get('openpgp');
     
     return store.createRecord('key', {
       isPublic: true,
-      emailSha256: this._sha256(emailAddress),
+      emailSha256: openpgp.sha256(emailAddress),
       publicKey: key.publicKeyArmored,
       privateKey: key.privateKeyArmored
     }).save().then(function () {
@@ -70,19 +70,5 @@ export default Ember.Service.extend({
       }
       return record.get('armored');
     });
-  },
-  
-  _sha256(data) {
-    var u8a = openpgp.crypto.hash.sha256(data);
-    return this._bytesToString(u8a);
-  },
-  
-  _bytesToString(bytes) {
-    var result = '';
-    for (var i = 0; i < bytes.length; i++) {
-      var s = bytes[i].toString(16);
-      result = result + (bytes[i] < 0x10 ? '0' + s : s);
-    }
-    return result;
   }
 });

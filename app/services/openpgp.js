@@ -34,5 +34,25 @@ export default Ember.Service.extend({
       console.log('Generating key with less than 4096 bits');
     }
     return openpgp.generateKey(options);
+  },
+  
+  /**
+   * Returns sha256 hash of data.
+   *
+   * @param data
+   * @returns {String}
+   */
+  sha256(data) {
+    var u8a = openpgp.crypto.hash.sha256(data);
+    return this._bytesToString(u8a);
+  },
+  
+  _bytesToString(bytes) {
+    var result = '';
+    for (var i = 0; i < bytes.length; i++) {
+      var s = bytes[i].toString(16);
+      result = result + (bytes[i] < 0x10 ? '0' + s : s);
+    }
+    return result;
   }
 });
