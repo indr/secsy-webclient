@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import openpgp from 'openpgp';
 
 export default Ember.Service.extend({
   session: Ember.inject.service(),
@@ -17,11 +18,12 @@ export default Ember.Service.extend({
     const session = this.get('session');
     const store = this.get('store');
     
-    return store.findRecord('user', userId).then((user) => {
-      user.set('privateKey', key.privateKeyArmored);
-      user.set('publicKey', key.publicKeyArmored);
-      return user.save();
-    }).then(() => {
+    return store.createRecord('key', {
+      isPublic: true,
+      emailSha256: this._sha256(emailAddress),
+      publicKey: key.publicKeyArmored,
+      privateKey: key.privateKeyArmored
+    }).save().then(function () {
       session.set('data.authenticated.publicKey', key.publicKeyArmored);
       session.set('data.authenticated.privateKey', key.privateKeyArmored);
     }).then(() => {
@@ -55,6 +57,7 @@ export default Ember.Service.extend({
    * @returns {Promise}
    */
   getPublicKey(emailAddress) {
+    // TODO: Conver to lowercase and sha256
     const filter = {emailAddress: emailAddress.toLowerCase()};
     
     return this._queryKey('key', filter);
@@ -67,5 +70,19 @@ export default Ember.Service.extend({
       }
       return record.get('armored');
     });
+  },
+  
+  _sha256(data) {
+    var u8a = openpgp.crypto.hash.sha256(data);
+    return this._bytesToString(u8a);
+  },
+  
+  _bytesToString(bytes) {
+    var result = '';
+    for (var i = 0; i < bytes.length; i++) {
+      var s = bytes[i].toString(16);
+      result = result + (bytes[i] < 0x10 ? '0' + s : s);
+    }
+    return result;
   }
 });

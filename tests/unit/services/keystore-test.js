@@ -35,26 +35,27 @@ describeModule('service:keystore', 'Unit | Service | keystore', {
     });
     
     describe('save()', function () {
-      it('updates users privateKey and publicKey and returns key', function (done) {
-        const fakeUser = {
-          set: function (key, value) {
-            this[key] = value;
-          },
-          save: function () {
-            return RSVP.resolve(this);
-          }
-        };
-        store.findRecord = function () {
-          return RSVP.resolve(fakeUser);
+      it('saves a new key record, updates session keys and returns key', function (done) {
+        var fakeKey;
+        store.createRecord = function (type, data) {
+          assert.equal(type, 'key');
+          fakeKey = data;
+          return {
+            save: function () {
+              return RSVP.resolve(this);
+            }
+          };
         };
         
         sut.save('123abc', 'user@example.com',
-          {key: '1', publicKeyArmored: 'pub', privateKeyArmored: 'priv'}).then((key) => {
-          assert.equal(fakeUser.privateKey, 'priv');
-          assert.equal(fakeUser.publicKey, 'pub');
-          assert.equal(key, '1');
+          {key: '1', publicKeyArmored: 'pub', privateKeyArmored: 'priv'}).then((result) => {
+          assert.equal(fakeKey.privateKey, 'priv');
+          assert.equal(fakeKey.publicKey, 'pub');
+          assert.equal(fakeKey.emailSha256, 'b4c9a289323b21a01c3e940f150eb9b8c542587f1abfd8f0e1cc1ffc5e475514');
+          assert.equal(fakeKey.isPublic, true);
           assert.equal(session.get('data.authenticated.publicKey'), 'pub');
           assert.equal(session.get('data.authenticated.privateKey'), 'priv');
+          assert.equal(result, '1');
           done();
         });
       });
