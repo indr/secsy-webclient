@@ -6,5 +6,9 @@ export default DS.Model.extend({
     readonly: true
   }),
   emailSha256: attr('string'),
-  encrypted_: attr('string')
+  encrypted_: attr('string'),
+  
+  base64: attr('string', {
+    readonly: true
+  })
 });

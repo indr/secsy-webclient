@@ -48,17 +48,17 @@ export default Ember.Route.extend({
     
     applyShare(share) {
       const contact = this.controller.get('model');
-      const decrypted = share.decrypted;
+      const decrypted = share.decoded;
       contact.set('phoneNumber$', decrypted.phoneNumber$);
       contact.set('latitude$', decrypted.latitude$);
       contact.set('longitude$', decrypted.longitude$);
       contact.save().then(() => {
-        share.share.destroyRecord().then(() => {
+        share.destroyRecord().then(() => {
           contact.set('sharesCount', contact.get('sharesCount') - 1);
           const shares = contact.get('shares');
           for (var i = 0; i < shares.length; i++) {
             // console.log(shares[i].share.id, share.share.id);
-            if (shares[i].share.id === share.share.id) {
+            if (shares[i].id === share.id) {
               shares.splice(i, 1);
               break;
             }
@@ -72,12 +72,12 @@ export default Ember.Route.extend({
     
     dismissShare(share) {
       const contact = this.controller.get('model');
-      share.share.destroyRecord().then(() => {
+      share.destroyRecord().then(() => {
         contact.set('sharesCount', contact.get('sharesCount') - 1);
         const shares = contact.get('shares');
         for (var i = 0; i < shares.length; i++) {
           // console.log(shares[i].share.id, share.share.id);
-          if (shares[i].share.id === share.share.id) {
+          if (shares[i].id === share.id) {
             shares.splice(i, 1);
             break;
           }

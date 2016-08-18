@@ -30,9 +30,9 @@
 {{#each model.shares as |share|}}
     <div class="row">
         <div class="col-md-8">
-            Phone number: {{share.decrypted.phoneNumber$}}<br>
-            Latitude: {{share.decrypted.latitude$}}<br>
-            Longitude: {{share.decrypted.longitude$}}
+            Phone number: {{share.decoded.phoneNumber$}}<br>
+            Latitude: {{share.decoded.latitude$}}<br>
+            Longitude: {{share.decoded.longitude$}}
         </div>
         <div class="col-md4">
             <button {{action 'applyShare' share}} class="btn btn-primary">Apply</button>
