@@ -66,10 +66,9 @@ export default Ember.Service.extend({
       longitude$: me.get('longitude$')
     };
     var status = {
-      max: 1,
+      max: 0,
       value: 0
     };
-    progress(status);
     
     return this.get('crypto').encodeBase64(data).then((encoded) => {
       data = {base64: encoded};
@@ -130,10 +129,9 @@ export default Ember.Service.extend({
     const emailHash = self.get('openpgp').sha256(emailAddress);
     
     var status = {
-      value: 0,
-      max: 1
+      max: 0,
+      value: 0
     };
-    progress(status);
     
     return this.get('store').query('share', {emailSha256: emailHash}).then((shares) => {
       const result = shares.toArray();
