@@ -2,6 +2,10 @@ import Ember from 'ember';
 
 const {RSVP} = Ember;
 
+function noop() {
+  // noop
+}
+
 /**
  * Returns a new function that wraps the given function fn. The new function will always return a promise that is
  * fulfilled with the original functions return values or rejected with thrown exceptions from the original function.
@@ -31,7 +35,11 @@ const promiseFor = RSVP.Promise.method(function (aggregate, condition, action, v
   if (!condition(value)) {
     return aggregate;
   }
-  return action(value, aggregate).then(promiseFor.bind(null, aggregate, condition, action));
+  return action(value, aggregate).then(function (result) {
+    return new RSVP.Promise(function (resolve) {
+      Ember.run.later(resolve.bind(this, result), 1);
+    });
+  }).then(promiseFor.bind(null, aggregate, condition, action));
 });
 
 export default Ember.Service.extend({
@@ -49,8 +57,7 @@ export default Ember.Service.extend({
    */
   share(me, progress) {
     const self = this;
-    progress = progress || function noop() {
-      };
+    progress = progress || noop;
     
     var data = {
       emailAddress$: me.get('emailAddress$'),
@@ -59,9 +66,10 @@ export default Ember.Service.extend({
       longitude$: me.get('longitude$')
     };
     var status = {
-      max: 0,
+      max: 1,
       value: 0
     };
+    progress(status);
     
     return this.get('crypto').encodeBase64(data).then((encoded) => {
       data = {base64: encoded};
@@ -114,13 +122,24 @@ export default Ember.Service.extend({
     });
   },
   
-  getShares() {
+  getShares(progress) {
     const self = this;
+    progress = progress || noop;
+    
     const emailAddress = self.get('session').get('data.authenticated.email');
     const emailHash = self.get('openpgp').sha256(emailAddress);
     
+    var status = {
+      value: 0,
+      max: 1
+    };
+    progress(status);
+    
     return this.get('store').query('share', {emailSha256: emailHash}).then((shares) => {
-      return shares.toArray();
+      const result = shares.toArray();
+      status.max = result.length;
+      progress(status);
+      return result;
     }).then(function (shares) {
       return promiseFor([], function condition(shares) {
         return shares.length > 0;
@@ -139,6 +158,8 @@ export default Ember.Service.extend({
           console.log('Destroying record');
           return share.destroyRecord();
         }).then(() => {
+          status.value++;
+          progress(status);
           return shares;
         });
       }, shares);
@@ -148,7 +169,9 @@ export default Ember.Service.extend({
     });
   },
   
-  digestShares(shares) {
+  digestShares(shares, progress) {
+    progress = progress || noop;
+    
     return this.get('store').findAll('contact').then((contacts) => {
       return contacts;//contacts.toArray();
     }).then((contacts) => {

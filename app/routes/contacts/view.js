@@ -40,7 +40,7 @@ export default Ember.Route.extend({
       const flashMessages = this.get('flashMessages');
       
       sharer.share(model, this.send.bind(this, 'onProgress')).then(() => {
-        Ember.run.later(flashMessages.success.bind(this, 'Successfully shared your info'), 1000);
+        Ember.run.later(flashMessages.success.bind(this, 'Successfully shared your info'), 1200);
       }).catch((err) => {
         flashMessages.danger('Oops: ' + (err.message || err));
       });

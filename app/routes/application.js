@@ -23,6 +23,16 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
     this.controller.set('progress.type', 'info');
   },
   
+  onProgress(status) {
+    console.log('onProgress', status);
+    this.controller.set('progress.value', status.value);
+    this.controller.set('progress.max', status.max);
+    if (status.value === status.max) {
+      this.controller.set('progress.type', 'success');
+      Ember.run.later(this.restoreProgress.bind(this), 1000);
+    }
+  },
+  
   actions: {
     setLocale(localeName) {
       this.get('intl').setLocale(localeName);
@@ -34,20 +44,17 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
     },
     
     getShares() {
-      this.get('sharer').getShares().then((shares) => {
+      this.get('sharer').getShares(this.onProgress.bind(this)).then((shares) => {
         return this.get('sharer').digestShares(shares);
       }).then(() => {
         console.log('loaded and digested');
+        const flashMessages = this.get('flashMessages');
+        Ember.run.later(flashMessages.success.bind(this, 'Successfully loaded and digested shares'), 1200);
       });
     },
     
     onProgress(status) {
-      this.controller.set('progress.value', status.value);
-      this.controller.set('progress.max', status.max);
-      if (status.value === status.max) {
-        this.controller.set('progress.type', 'success');
-        Ember.run.later(this.restoreProgress.bind(this), 1000);
-      }
+      this.onProgress(status);
     }
   }
 });
