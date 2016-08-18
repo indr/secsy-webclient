@@ -57,18 +57,11 @@ export default Ember.Service.extend({
    * @returns {Promise}
    */
   getPublicKey(emailAddress) {
-    // TODO: Conver to lowercase and sha256
-    const filter = {emailAddress: emailAddress.toLowerCase()};
+    const hash = this.get('openpgp').sha256(emailAddress.toLowerCase());
+    const filter = {emailSha256: hash};
     
-    return this._queryKey('key', filter);
-  },
-  
-  _queryKey(type, filter) {
-    return this.get('store').queryRecord(type, filter).then((record) => {
-      if (!record) {
-        throw new Error(type + '-not-found');
-      }
-      return record.get('armored');
+    return this.get('store').query('key', filter).then((results) => {
+      return results.objectAt(0);
     });
   }
 });
