@@ -31,7 +31,16 @@ export default Model.extend(Validations, {
       return null;
     }
     return [this.get('latitude$'), this.get('longitude$')];
-  })
+  }),
+  
+  ready: function () {
+    this.maySetMeName();
+  },
+  
+  maySetMeName() {
+    if (Ember.isBlank(this.get('name$')) && this.get('me')) {
+      const intl = Ember.getOwner(this).lookup('service:intl');
+      this.set('name$', intl.t('contact.me-name'));
+    }
+  }
 });
-
-

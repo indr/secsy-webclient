@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import ENV from 'addressbook/config/environment';
 
 export default Ember.Route.extend({
   sharer: Ember.inject.service(),
@@ -17,7 +16,7 @@ export default Ember.Route.extend({
     delete() {
       const model = this.controller.get('model');
       
-      if (ENV.APP.autoCreateMe && model.get('me')) {
+      if (model.get('me')) {
         const flash = this.get('flashMessages');
         flash.dangerT(undefined, 'no-delete-self');
         return;

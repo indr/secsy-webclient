@@ -18,8 +18,6 @@ module.exports = function(environment) {
       // when it is created
       decryptionRoute: 'decrypt',
       routeAfterDecryption: 'contacts',
-      
-      autoCreateMe: true
     },
     
     'seneca-auth': {

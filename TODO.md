@@ -17,4 +17,10 @@
    - [x] Copy contact details
    - [x] For each contact: get public key, post share
    - [x] Progress bar
- - Remove Ember.ENV.autoCreateMe
+ - [x] Remove Ember.ENV.autoCreateMe
+   - [x] Set contacts name if empty and me
+ - [ ] Change 'set on map'
+   - [ ] Set pin to center
+   - [ ] Open pin with 'Drag me!'
+   - [ ] Remove info message
+ - [ ] Embed map with responsive-embed

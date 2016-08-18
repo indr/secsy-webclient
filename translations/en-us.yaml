@@ -33,6 +33,7 @@ decrypt:
   unknown-error: "Unknown error during decryption"
 
 contact:
+  me-name: 'Hello, this is you!'
   edit: 'Edit contact'
   new: 'Create contact'
 
