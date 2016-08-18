@@ -146,7 +146,9 @@ export default Ember.Service.extend({
       }, function action(shares, aggregate) {
         var share = shares.pop();
         
-        return self.get('crypto').decodeBase64(share.get('base64')).then((decoded) => {
+        return self.get('crypto').decrypt(share.get('encrypted_')).then((decrypted) => {
+          return self.get('crypto').decodeBase64(decrypted.base64);
+        }).then((decoded) => {
           if (Object.keys(decoded).length === 0) {
             console.log('Decoded object is empty, destroying record');
             return share.destroyRecord();
