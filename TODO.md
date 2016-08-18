@@ -19,10 +19,13 @@
    - [x] Progress bar
  - [x] Remove Ember.ENV.autoCreateMe
    - [x] Set contacts name if empty and me
+ - [ ] Embed map with responsive-embed
+ - [ ] Determine browsers prefered language
+ - [ ] Generate new key loses me contacts email address
+
+
  - [ ] Change 'set on map'
    - [ ] Set pin to center
    - [ ] Open pin with 'Drag me!'
    - [ ] Remove info message
- - [ ] Embed map with responsive-embed
- - [ ] Determine browsers prefered language
- - [ ] Generate new key loses me contacts email address
+ 
