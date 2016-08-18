@@ -46,6 +46,7 @@ export default Ember.Service.extend(Ember.Evented, {
       self.privateKey = result.key;
       self.publicKey = result.key;
       self.get('session').set('data.passphrase', passphrase);
+      self.get('session').set('data.isDecrypted', true);
       self._opened();
     });
   },
@@ -71,6 +72,7 @@ export default Ember.Service.extend(Ember.Evented, {
   close() {
     this.set('isOpen', false);
     this.get('session').set('data.passphrase', undefined);
+    this.get('session').set('data.isDecrypted', false);
     this.publicKey = null;
     this.privateKey = null;
     this.trigger('keychainClosed', this);

@@ -18,14 +18,17 @@
 
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-              {{#if session.isAuthenticated}}
+              {{#if session.data.isDecrypted}}
                   <li>{{#link-to 'map'}}Map{{/link-to}}</li>
                   <li>{{#link-to 'contacts.new'}}{{t 'contact.new'}}{{/link-to}}</li>
               {{/if}}
             </ul>
             <div class="nav navbar-nav navbar-right">
+              {{#if session.data.isDecrypted}}
+                  <li><a href="#" {{action 'getShares'}}><span class="glyphicon glyphicon-refresh"
+                                                               aria-hidden="true"></span></a></li>
+              {{/if}}
               {{#if session.isAuthenticated}}
-                  <li><a href="#" {{action 'getShares'}}><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></a></li>
                   <li class="dropdown">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                          aria-haspopup="true" aria-expanded="false">
