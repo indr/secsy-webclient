@@ -24,7 +24,6 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
   },
   
   onProgress(status) {
-    console.log('onProgress', status);
     this.controller.set('progress.value', status.value);
     this.controller.set('progress.max', status.max);
     if (status.value === status.max) {

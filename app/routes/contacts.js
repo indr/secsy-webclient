@@ -6,6 +6,8 @@ import KeychainOpenedRouteMixin from '../mixins/keychain-opened-route-mixin';
 export default Ember.Route.extend(AuthenticatedRouteMixin, KeychainOpenedRouteMixin, {
   session: Ember.inject.service(),
   
+  firstTransition: true,
+  
   model() {
     const userId = this.get('session.data.authenticated.id');
     return this.get('store').findAll('contact').then((contacts) => {
@@ -23,5 +25,14 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, KeychainOpenedRouteMi
       }
       return contacts;
     });
+  },
+  
+  actions: {
+    didTransition() {
+      if (this.firstTransition) {
+        this.firstTransition = false;
+        this.send('getShares');
+      }
+    }
   }
 });

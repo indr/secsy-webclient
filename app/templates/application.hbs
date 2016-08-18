@@ -21,11 +21,11 @@
               {{#if session.isAuthenticated}}
                   <li>{{#link-to 'map'}}Map{{/link-to}}</li>
                   <li>{{#link-to 'contacts.new'}}{{t 'contact.new'}}{{/link-to}}</li>
-                  <li><a href="#" {{action 'getShares'}}>Get shares</a></li>
               {{/if}}
             </ul>
             <div class="nav navbar-nav navbar-right">
               {{#if session.isAuthenticated}}
+                  <li><a href="#" {{action 'getShares'}}><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></a></li>
                   <li class="dropdown">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                          aria-haspopup="true" aria-expanded="false">
