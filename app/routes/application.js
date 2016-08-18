@@ -18,6 +18,11 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
     this.get('intl').setLocale(localeName);
   },
   
+  restoreProgress() {
+    this.controller.set('progress.max', 0);
+    this.controller.set('progress.type', 'info');
+  },
+  
   actions: {
     setLocale(localeName) {
       this.get('intl').setLocale(localeName);
@@ -34,6 +39,15 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
       }).then(() => {
         console.log('loaded and digested');
       });
+    },
+    
+    onProgress(status) {
+      this.controller.set('progress.value', status.value);
+      this.controller.set('progress.max', status.max);
+      if (status.value === status.max) {
+        this.controller.set('progress.type', 'success');
+        Ember.run.later(this.restoreProgress.bind(this), 1000);
+      }
     }
   }
 });

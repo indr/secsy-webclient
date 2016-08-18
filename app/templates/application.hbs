@@ -21,7 +21,7 @@
               {{#if session.isAuthenticated}}
                   <li>{{#link-to 'map'}}Map{{/link-to}}</li>
                   <li>{{#link-to 'contacts.new'}}{{t 'contact.new'}}{{/link-to}}</li>
-                <li><a href="#" {{action 'getShares'}}>Get shares</a></li>
+                  <li><a href="#" {{action 'getShares'}}>Get shares</a></li>
               {{/if}}
             </ul>
             <div class="nav navbar-nav navbar-right">
@@ -48,6 +48,13 @@
       {{#each flashMessages.queue as |flash|}}
         {{flash-message flash=flash}}
       {{/each}}
+    </div>
+    <div class="progress-bar-container">
+      {{#if progress.max}}
+        {{#bs-progress}}
+          {{bs-progress-bar value=progress.value minValue=0 maxValue=progress.max showLabel=false type=progress.type}}
+        {{/bs-progress}}
+      {{/if}}
     </div>
   {{outlet}}
 </div>

@@ -41,20 +41,37 @@ export default Ember.Service.extend({
   crypto: Ember.inject.service(),
   openpgp: Ember.inject.service(),
   
-  share(me) {
+  /**
+   *
+   * @param me
+   * @param progress
+   * @returns {Promise.<TResult>}
+   */
+  share(me, progress) {
     const self = this;
+    progress = progress || function noop() {
+      };
+    
     var data = {
       emailAddress$: me.get('emailAddress$'),
       phoneNumber$: me.get('phoneNumber$'),
       latitude$: me.get('latitude$'),
       longitude$: me.get('longitude$')
     };
+    var status = {
+      max: 0,
+      value: 0
+    };
+    
     return this.get('crypto').encodeBase64(data).then((encoded) => {
       data = {base64: encoded};
     }).then(()=> {
       return this.get('store').findAll('contact');
     }).then((contacts) => {
-      return contacts.toArray();
+      const results = contacts.toArray();
+      status.max = results.length;
+      progress(status);
+      return results;
     }).then((contacts) => {
       return promiseFor(null, function condition(contacts) {
         return contacts.length > 0;
@@ -89,6 +106,8 @@ export default Ember.Service.extend({
               encrypted_: options.encrypted
             }).save();
           }).then(() => {
+            status.value++;
+            progress(status);
             return contacts;
           });
       }, contacts);

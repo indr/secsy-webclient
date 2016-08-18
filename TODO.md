@@ -7,12 +7,14 @@
  - [ ] Remove 'Get shares' from navbar and check
    - [ ] After opening addressbook
    - [ ] Periodically
-   - [ ] Remove periodicall and use Websockets push
+   - [ ] Remove periodical and use Websockets push
  - [ ] Add user settings with
    - [ ] Change login password
    - [ ] Change addressbook passphrase
    - [ ] Delete account
  - [ ] Share:
-   - [ ] Check if contact.me
-   - [ ] Copy contact details
-   - [ ] For each contact: get public key, post share, call progress
+   - [x] ~~~Check if contact.me~~~
+   - [x] Copy contact details
+   - [x] For each contact: get public key, post share
+   - [ ] Progress bar
+ - Remove Ember.ENV.autoCreateMe
