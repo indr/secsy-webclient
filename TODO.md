@@ -1,6 +1,6 @@
 # addressbook-webclient Todo
 
- - [ ] Display back button in generate/forgot
+ - [x] Display back button in generate/forgot, login and signup
  - [ ] Transform attribute validation errors
  - [ ] Session store as described here: https://github.com/ProtonMail/WebClient/blob/public/src/app/services/storage.js
  - [x] Refactor sha256 from keystore
@@ -25,3 +25,4 @@
    - [ ] Remove info message
  - [ ] Embed map with responsive-embed
  - [ ] Determine browsers prefered language
+ - [ ] Generate new key loses me contacts email address

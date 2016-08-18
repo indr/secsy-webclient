@@ -1,7 +1,7 @@
 {{#if showForgot}}
     <div class="alert alert-info">
         <p>Did you forget your {{t 'decrypt.passphrase'}}?</p>
-        <p>You can {{#link-to 'generate.forgot'}}generate{{/link-to}} a new key. By doing so you will loose your addressbook
+        <p>You can {{#link-to 'generate' (query-params forgot=true)}}generate{{/link-to}} a new key. By doing so you will loose your addressbook
             and all its contacts!</p>
     </div>
 {{/if}}
@@ -10,5 +10,6 @@
 
   {{#bs-form-group}}
     {{#bs-button type="primary" buttonType="submit"}}{{t 'actions.decrypt'}}{{/bs-button}}
+    <a href="#" {{action 'invalidateSession'}} class="btn btn-default">{{t 'actions.logout'}}</a>
   {{/bs-form-group}}
 {{/bs-form}}

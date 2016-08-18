@@ -32,6 +32,10 @@ export default Ember.Component.extend(Validations, {
           flash.dangerT(reason, 'decrypt.unknown-error');
         }
       });
+    },
+    
+    invalidateSession() {
+      this.get('session').invalidate();
     }
   }
 });

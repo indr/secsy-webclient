@@ -1,7 +1,15 @@
+
+{{#if forgot}}
+    <div class="alert alert-warning">
+        <p>This will erase your addressbook!</p>
+    </div>
+{{/if}}
+
 {{#bs-form action="generate" model=this}}
   {{bs-form-element controlType="password" label=(t 'generate.passphrase') property="passphrase"}}
 
   {{#bs-form-group}}
     {{#bs-button type="primary" buttonType="submit"}}{{t 'actions.generate'}}{{/bs-button}}
+    {{#link-to 'decrypt' class="btn btn-default"}}{{t 'actions.cancel'}}{{/link-to}}
   {{/bs-form-group}}
 {{/bs-form}}
