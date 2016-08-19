@@ -20,9 +20,10 @@
  - [x] Remove Ember.ENV.autoCreateMe
    - [x] Set contacts name if empty and me
  - [x] ~~~Embed map with responsive-embed~~~
- - [ ] Generate new key loses me contacts email address
-   - [ ] Create/update me contact after key generation
+ - [x] Generate new key loses me contacts email address
+   - [x] Create/update me contact after key generation
  - [ ] Translations!
+ - [x] Show decryption status
 
 
 ## Cosmetics

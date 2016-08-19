@@ -64,7 +64,7 @@ export default ApplicationAdapter.extend({
             }));
         }
       }
-     
+      
       RSVP.allSettled(promises)
         .then(() => {
           resolve(obj);
@@ -106,6 +106,9 @@ export default ApplicationAdapter.extend({
           promises.push(crypto.decrypt(encrypted)
             .then((plain) => {
               Ember.assign(obj, plain);
+              obj.decrypted = true;
+            }).catch((err) => {
+              obj.decrypted = false;
             }));
         }
       }

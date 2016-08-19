@@ -20,6 +20,11 @@ export default Model.extend(Validations, {
     readonly: true
   }),
   
+  decrypted: attr('boolean', {
+    defaultValue: true,
+    readonly: true
+  }),
+  
   name$: attr(),
   emailAddress$: attr(),
   phoneNumber$: attr(),
