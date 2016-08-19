@@ -1,0 +1,15 @@
+{{#unless model.decrypted}}
+  {{#bs-alert type="warning"}}
+      <div>
+          <p>
+              <strong>{{t 'errors.decryption-failed'}}</strong>
+          </p>
+        {{format-html-message 'contact.clean-text'}}
+        {{!--
+          <div class="text-right">
+            {{#bs-button type='default' size='sm' action='clean'}}Clean{{/bs-button}}
+          </div>
+        --}}
+      </div>
+  {{/bs-alert}}
+{{/unless}}
