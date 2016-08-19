@@ -41,7 +41,6 @@ export default DS.RESTAdapter.extend({
         detail: `${payload}`
       });
     }
-    console.log('errors', errors);
     return errors;
   }
 });
