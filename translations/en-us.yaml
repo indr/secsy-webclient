@@ -9,6 +9,7 @@ login:
   username: 'Email address'
   password: 'Password'
   success: 'Login successful!'
+  unknown-error: 'Unknown email address or wrong password'
 
 signup:
   title: "Signup"
@@ -89,6 +90,7 @@ errors:
   phone: "{description} must be a valid phone number"
   url: "{description} must be a valid url"
   email-exists: "Email address is already taken"
+  user-exists: 'Email address is already taken'
   nick-exists: "Username is already taken"
   user-not-found: "We don't know that email address"
   invalid-password: "Invalid password"

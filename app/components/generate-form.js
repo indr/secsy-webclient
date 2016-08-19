@@ -2,7 +2,12 @@ import Ember from 'ember';
 import { validator, buildValidations } from 'ember-cp-validations';
 
 const Validations = buildValidations({
-  passphrase: validator('presence', true)
+  passphrase: {
+    validators: [
+      validator('presence', true),
+      validator('length', {min: 8, max: 64})
+    ]
+  }
 });
 
 export default Ember.Component.extend(Validations, {

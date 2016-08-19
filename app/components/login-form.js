@@ -8,7 +8,12 @@ const Validations = buildValidations({
       validator('format', {type: 'email'})
     ]
   },
-  password: validator('presence', true)
+  password: {
+    validators: [
+      validator('presence', true),
+      validator('length', {min: 8, max: 64})
+    ]
+  }
 });
 
 export default Ember.Component.extend(Validations, {

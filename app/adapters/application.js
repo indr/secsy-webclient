@@ -17,6 +17,7 @@ export default DS.RESTAdapter.extend({
     }
   }),
   
+  // TODO: Why is `this` undefined?
   normalizeErrorResponse(status, headers, payload) {
     const errors = [];
     
@@ -26,7 +27,7 @@ export default DS.RESTAdapter.extend({
           const pointer = 'data/attributes/' + eachKey;
           payload.invalidAttributes[eachKey].forEach(function (obj) {
             errors.push({
-              detail: obj.message,
+              detail: normalizeDetail(obj.message),
               source: {pointer}
             });
           });
@@ -44,3 +45,11 @@ export default DS.RESTAdapter.extend({
     return errors;
   }
 });
+
+function normalizeDetail(message) {
+  if (!message || !message.startsWith('Error.Passport.')) {
+    return message;
+  }
+  
+  return message.substr(15).toLowerCase().replace('.', '-');
+}
