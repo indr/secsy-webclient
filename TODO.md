@@ -24,10 +24,20 @@
    - [x] Create/update me contact after key generation
  - [ ] Translations!
  - [x] Show decryption status
-
+ - [ ] Scrollspy
+ - [ ] Fields
+ - [ ] Notes with markdown
+ - [ ] Don't share empty fields
+ - [ ] Undefine session.data.decrypted when session could not be restored
+ - [ ] Share with contact without emailAddress throws undefined error
+ - [ ] Restore session on subroute => transitions always to /contacts
 
 ## Cosmetics
 
+ - [ ] Login/signup/decrypt/generate smaller
+ - [x] Flash messages: Generate key should be persistent
+ - [ ] Autom. loading of shares should not show success alert
+ - [ ] Spin shares loader glyphicon
  - [ ] Determine browsers prefered language
  - [ ] Change 'set on map'
    - [ ] Set pin to center

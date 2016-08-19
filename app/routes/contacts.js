@@ -15,7 +15,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, KeychainOpenedRouteMi
     didTransition() {
       if (this.firstTransition) {
         this.firstTransition = false;
-        this.send('getShares');
+        this.send('getShares', {silent: true});
       }
     }
   }

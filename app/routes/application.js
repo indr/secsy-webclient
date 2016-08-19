@@ -2,6 +2,12 @@ import Ember from 'ember';
 import SimpleAuthApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 import CustomApplicationRouteMixin from '../mixins/application-route-mixin';
 
+const {
+  assign,
+  debug,
+  K
+} = Ember;
+
 export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplicationRouteMixin, {
   intl: Ember.inject.service(),
   session: Ember.inject.service(),
@@ -42,13 +48,15 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
       this.get('session').invalidate();
     },
     
-    getShares() {
-      this.get('sharer').getShares(this.onProgress.bind(this)).then((shares) => {
+    getShares(options) {
+      options = assign({silent: false}, options);
+      
+      debug('routes/application/actions#getShares() / silent:' + options.silent);
+      
+      const onProgress = options.silent ? K : this.onProgress.bind(this);
+      
+      this.get('sharer').getShares(onProgress).then((shares) => {
         return this.get('sharer').digestShares(shares);
-      }).then(() => {
-        console.log('loaded and digested');
-        const flashMessages = this.get('flashMessages');
-        Ember.run.later(flashMessages.success.bind(this, 'Successfully loaded and digested shares'), 1200);
       });
     },
     

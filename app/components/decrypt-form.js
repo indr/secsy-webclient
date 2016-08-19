@@ -25,7 +25,7 @@ export default Ember.Component.extend(Validations, {
       const userId = self.get('session.data.authenticated.id');
       const passphrase = this.get('passphrase');
       
-      flash.infoT('decrypt.decrypting');
+      flash.infoT('decrypt.decrypting', {sticky: true});
       keychain.open(userId, passphrase).then(() => {
         flash.successT('decrypt.success');
       }).catch((reason) => {

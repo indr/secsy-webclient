@@ -27,7 +27,7 @@ export default Ember.Component.extend(Validations, {
       const passphrase = self.get('passphrase');
       const destroyMe = this.controller.get('forgot');
       
-      flash.infoT('generate.generating');
+      flash.infoT('generate.generating', {sticky: true});
       keychain.generateKey(userId, emailAddress, passphrase, undefined, destroyMe).then(() => {
         flash.successT('generate.success');
       }).catch((reason) => {

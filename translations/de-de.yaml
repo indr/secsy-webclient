@@ -37,6 +37,8 @@ contact:
   me-name: 'Hallo, dies bist du!'
   edit: 'Kontakt bearbeiten'
   new: 'Neuer Kontakt'
+  clean-text: |
+    <p>Missing translation</p>
 
 contacts:
   no-results: 'Deine Suche ergab keine Treffer!'
@@ -95,6 +97,7 @@ errors:
   user-not-found: "Diese E-Mail-Adresse ist uns nicht bekannt"
   invalid-password: "Ungültiges Passwort"
   invalid-passphrase: 'Ungültiges Passwort'
+  decryption-failed: 'Entschlüsselungsfehler'
   # No clue where these two guys are comming from...
   passwordConfirmation: 'dummy'
   usernameDescription: 'dummy'

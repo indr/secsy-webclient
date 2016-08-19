@@ -1,29 +1,36 @@
 import Ember from 'ember';
 import FlashMessages from 'ember-cli-flash/services/flash-messages';
 
+const {
+  debug
+} = Ember;
+
 export default FlashMessages.reopen({
   intl: Ember.inject.service(),
   
-  dangerT(reason, key) {
+  dangerT(reason, key, options) {
+    this.clearMessages();
     let message;
     const intl = this.get('intl');
     
     if (intl.exists('errors.' + reason)) {
       message = intl.t('errors.' + reason);
     } else {
+      debug(`No error specific translation 'errors.${reason}' exists`);
       message = intl.t(key);
     }
-    this.danger(message);
-    console.log(reason);
+    this.danger(message, options);
   },
   
-  infoT(key) {
+  infoT(key, options) {
+    this.clearMessages();
     const message = this.get('intl').t(key);
-    this.info(message);
+    this.info(message, options);
   },
   
-  successT(key) {
+  successT(key, options) {
+    this.clearMessages();
     const message = this.get('intl').t(key);
-    this.success(message);
+    this.success(message, options);
   }
 });
