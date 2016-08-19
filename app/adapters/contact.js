@@ -107,7 +107,7 @@ export default ApplicationAdapter.extend({
             .then((plain) => {
               Ember.assign(obj, plain);
               obj.decrypted = true;
-            }).catch((err) => {
+            }).catch(() => {
               obj.decrypted = false;
             }));
         }
