@@ -6,5 +6,10 @@ export default Model.extend({
   emailSha256: attr('string'),
   isPublic: attr('boolean'),
   privateKey: attr('string'),
-  publicKey: attr('string')
+  publicKey: attr('string'),
+  
+  destroyMe: attr('boolean', {
+    defaultValue: false,
+    writeonly: true
+  })
 });
