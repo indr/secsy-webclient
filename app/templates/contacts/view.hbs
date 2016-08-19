@@ -1,5 +1,10 @@
-<h3>{{model.name$}}</h3>
+{{contact-decryption-failed model=model clean='clean'}}
 
+{{#if model.decrypted}}
+    <h3>{{model.name$}}</h3>
+{{else}}
+    <h3>{{model.id}}</h3>
+{{/if}}
 <p>Email address: {{model.emailAddress$}}</p>
 <p>Phone number: {{model.phoneNumber$}}</p>
 
@@ -10,12 +15,14 @@
     {{#if model.location}}Show on map{{else}}Set on map{{/if}}
   {{/link-to}}
   {{#if model.location}}
-    or <a href="#" {{action 'deleteLocation'}}>Remove</a>
+      or <a href="#" {{action 'deleteLocation'}}>Remove</a>
   {{/if}}
 </p>
 
+{{!--
 <p>Created: {{format-date model.createdAt}}</p>
 <p>Accessed: {{format-date model.accessedAt}}</p>
+ --}}
 
 <p>
   {{#link-to 'contacts.edit' model class="btn btn-primary"}}{{t 'actions.edit'}}{{/link-to}}
@@ -24,7 +31,6 @@
       <button {{action 'share' model}} class="btn btn-success">Share</button>
   {{/if}}
 </p>
-
 
 <h4 style="margin-top:30px">Shares</h4>
 {{#each model.shares as |share|}}
@@ -42,4 +48,5 @@
 {{else}}
     <p>No shares. Click 'Get shares' in the main menu to refresh.</p>
 {{/each}}
+
 {{outlet}}

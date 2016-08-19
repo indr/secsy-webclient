@@ -7,7 +7,9 @@
                 class="pull-right label label-pill label-danger label">{{contact.sharesCount}}</span>{{/if}}
           <br/>{{contact.emailAddress$}}<br/>
       {{else}}
-          <strong>Decryption failed!<br/></strong>
+          <span class="glyphicon glyphicon-alert"></span>
+          <strong>{{t 'errors.decryption-failed'}}</strong><br/>
+          <small>{{contact.id}}</small>
       {{/if}}
     {{/link-to}}
   {{else}}
