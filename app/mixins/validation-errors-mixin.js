@@ -19,17 +19,15 @@ export default Ember.Mixin.create({
   },
   
   handleValidationErrors: function (err, options) {
-    // console.log('#handleValidationErrors', err);
-    
     var hash = errorsArrayToHash(err.errors);
-    this._adapterDidInvalidate(hash, options);
+    this._adapterDidInvalidate(hash, options || {});
+    
+    return this.get('validations.isInvalid');
   },
   
   _errorsArrayToHash: errorsArrayToHash,
   
   _adapterDidInvalidate: function (errors, options) {
-    // console.log('#_adapterDidInvalidate', errors);
-    
     var attribute;
     
     for (attribute in errors) {
@@ -39,12 +37,11 @@ export default Ember.Mixin.create({
     }
     
     // Trigger validation of ds-error
+    // TODO: Trigger validations only of ds-error validators? What about dependent validators?
     this.validate();
   },
   
   _addErrorMessageToAttribute: function (attribute, message) {
-    // console.log('#_addErrorMessageToAttribute', attribute, message);
-    
     get(this, 'errors')._add(attribute, message);
   }
 });
