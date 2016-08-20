@@ -19,6 +19,7 @@ export default Ember.Mixin.create({
       Ember.assert('The route configured as ENV.APP.decryptionRoute cannot implement the DecryptedRouteMixin mixin as that leads to an infinite transitioning loop!',
         self.get('routeName') !== decryptionRoute);
       
+      transition.abort();
       self.set('keychain.attemptedTransition', transition);
       return self.transitionTo(decryptionRoute);
     });

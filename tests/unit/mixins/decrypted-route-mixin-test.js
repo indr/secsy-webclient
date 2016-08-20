@@ -7,6 +7,7 @@ import { beforeEach, describe } from 'mocha';
 import DecryptedRouteMixin from 'addressbook/mixins/decrypted-route-mixin';
 
 const {
+  K,
   RSVP
 } = Ember;
 
@@ -31,21 +32,22 @@ describeModule('mixin:decrypted-route-mixin', 'Unit | Mixin | decrypted route mi
     }
   },
   function () {
-    var sut, keychain;
+    var sut, keychain, transition;
     
     beforeEach(function () {
       this.register('service:keychain', Ember.Object.extend());
       keychain = Ember.getOwner(this).lookup('service:keychain');
+      transition = {abort: K};
       sut = this.subject();
     });
     
     describe('#beforeModel | keychain is open', function () {
-      it('should resolve supers promise if keychain is open', function () {
+      it('should resolve supers promise', function () {
         keychain.isOpen = true;
         
-        return sut.beforeModel('transition').then((result) => {
+        return sut.beforeModel(transition).then((result) => {
           assert.equal(result.this, sut);
-          assert.equal(result.arguments[0], 'transition');
+          assert.equal(result.arguments[0], transition);
         });
       });
     });
@@ -58,9 +60,9 @@ describeModule('mixin:decrypted-route-mixin', 'Unit | Mixin | decrypted route mi
       it('should resolve supers promise if keychain could be restored', function () {
         keychain.restore = () => RSVP.resolve();
         
-        return sut.beforeModel('transition').then((result) => {
+        return sut.beforeModel(transition).then((result) => {
           assert.equal(result.this, sut);
-          assert.equal(result.arguments[0], 'transition');
+          assert.equal(result.arguments[0], transition);
         });
       });
       
@@ -74,18 +76,22 @@ describeModule('mixin:decrypted-route-mixin', 'Unit | Mixin | decrypted route mi
         });
       });
       
-      it('should set keychain.attemptedTransition if keychain could not be restored', function () {
+      it('should abort transition and set keychain.attemptedTransition if keychain could not be restored', function () {
         keychain.restore = () => RSVP.reject();
-        
-        return sut.beforeModel('myRoute').then(() => {
-          assert.equal(keychain.get('attemptedTransition'), 'myRoute');
+        var aborted = false;
+        var transition = {
+          abort: () => aborted = true
+        };
+        return sut.beforeModel(transition).then(() => {
+          assert.isTrue(aborted);
+          assert.equal(keychain.get('attemptedTransition'), transition);
         });
       });
       
       it('should return transition to decryption route if keychain could not be restored', function () {
         keychain.restore = () => RSVP.reject();
         
-        return sut.beforeModel().then((result) => {
+        return sut.beforeModel(transition).then((result) => {
           assert.equal(result.this, sut);
           assert.equal(result.arguments[0], ENV.APP.decryptionRoute);
         });
