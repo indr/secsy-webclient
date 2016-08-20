@@ -27,15 +27,17 @@
  - [ ] Undefine session.data.decrypted when session could not be restored
  - [ ] Share with contact without emailAddress throws undefined error
  - [x] Restore session on subroute => transitions always to /contacts
- - [ ] How to handle ajax errors 403s?
-   - [ ] Login, decrypt, open contact, reject session, login another user, 403 get contacts/abc123
+ - [x] How to handle ajax errors 403s?
+   - [x] Login, decrypt, open contact, reject session, login another user, 403 get contacts/abc123
          No transition away from /decrypt
-   - [ ] DS.RESTAdapters feature flag for Error classes
- - [ ] How to handle invalid route errors?
+   - [x] ~~~DS.RESTAdapters feature flag for Error classes~~~
+ - [x] How to handle invalid route errors?
  - [ ] jQuery ajax timeout?
  - [ ] Scrollspy
  - [ ] Translations
  - [ ] More fields
+   - [ ] Social
+   - [ ] IMs and VoIP
  - [ ] Notes with markdown
  - [ ] Deployment MVP
 

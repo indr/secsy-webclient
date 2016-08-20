@@ -18,6 +18,8 @@ Router.map(function () {
     this.route('view', {path: '/:id'});
   });
   this.route('generate');
+  this.route('index', {path: '/*wildcard'});
+  this.route('index', {path: '/'});
 });
 
 export default Router;

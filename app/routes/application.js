@@ -53,6 +53,7 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
       });
       
       // More specific errors could be rendered this way
+      // Or; Set error.status = error.errors[0].status and handle this in the template
       // if (error.isAdapterError && error.errors && error.errors[0] && error.errors[0].status) {
       //   const status = error.errors[0].status;
       //   this.render('error.404', {
