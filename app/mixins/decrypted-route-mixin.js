@@ -10,15 +10,17 @@ export default Ember.Mixin.create({
     }
     
     const self = this;
+    const _super = this._super.bind(this, ...arguments);
     const keychain = this.get('keychain');
-    return keychain.restore()
-      .catch(() => {
-        const decryptionRoute = ENV.APP.decryptionRoute;
-        Ember.assert('The route configured as ENV.APP.decryptionRoute cannot implement the DecryptedRouteMixin mixin as that leads to an infinite transitioning loop!',
-          self.get('routeName') !== decryptionRoute);
-        
-        self.set('keychain.attemptedTransition', transition);
-        return self.transitionTo(decryptionRoute);
-      });
+    return keychain.restore().then(() => {
+      return _super();
+    }).catch(() => {
+      const decryptionRoute = ENV.APP.decryptionRoute;
+      Ember.assert('The route configured as ENV.APP.decryptionRoute cannot implement the DecryptedRouteMixin mixin as that leads to an infinite transitioning loop!',
+        self.get('routeName') !== decryptionRoute);
+      
+      self.set('keychain.attemptedTransition', transition);
+      return self.transitionTo(decryptionRoute);
+    });
   }
 });
