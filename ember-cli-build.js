@@ -24,5 +24,11 @@ module.exports = function (defaults) {
   
   app.import('bower_components/bootstrap/dist/js/bootstrap.min.js');
   
+  app.import('bower_components/simple-mock/index.js');
+  app.import('vendor/shims/simple-mock.js', {
+    exports: {
+      'simple-mock': ['default']
+    }
+  });
   return app.toTree();
 };
