@@ -1,6 +1,7 @@
 import { assert } from 'chai';
 import Ember from 'ember';
 import { describeModule, it } from 'ember-mocha';
+import ENV from 'addressbook/config/environment';
 import { beforeEach, describe } from 'mocha';
 import simple from 'simple-mock';
 
@@ -44,17 +45,32 @@ describeModule('mixin:application-route-mixin', 'Unit | Mixin | application rout
       });
     });
     
+    var sut;
+    
     describe('event keychain#keychainOpened', function () {
+      beforeEach(function () {
+        sut = this.subject();
+      });
+      
       it('should remove and retry keychains attempted transition', function () {
         const transition = {};
         const retry = simple.mock(transition, 'retry');
         keychain.set('attemptedTransition', transition);
         
-        this.subject();
         keychain.trigger('keychainOpened');
         
         assert.isTrue(retry.called);
         assert.isNull(keychain.get('attemptedTransition'));
+      });
+      
+      it('should transition to route after decryption', function () {
+        const transitionTo = simple.mock(sut, 'transitionTo');
+        keychain.set('attemptedTransition', null);
+        
+        keychain.trigger('keychainOpened');
+        
+        assert.isTrue(transitionTo.called);
+        assert.equal(transitionTo.lastCall.args[0], ENV.APP.routeAfterDecryption);
       });
     });
   }

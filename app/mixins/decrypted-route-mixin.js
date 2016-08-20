@@ -1,17 +1,40 @@
 import Ember from 'ember';
 import ENV from 'addressbook/config/environment';
 
+/**
+ * The `DecryptedRouteMixin` ensures that the `keychain` is open. If the keychain is closed, it will
+ * call the keychains `restore` method and returns its promise. If this promise is rejected, this mixin
+ * aborts the transition, safes the attempted transition object to the keychains `attemptedTransition` property and
+ * transitions to the `ENV.APP.decryptionRoute`.
+ *
+ * When the keychain is opened in the decryption route, the keychain will trigger its `keychainOpened` event. This
+ * event will be handled in the application route mixin where the attempted transition is `retry`ed.
+ *
+ * See ember-simple-auths authenticated-route-mixins (beforeModel)[https://github.com/simplabs/ember-simple-auth/blob/1.1.0-beta.3/addon/mixins/authenticated-route-mixin.js#L36]
+ *
+ * @class DecryptedRouteMixin
+ * @module addressbook/mixins/decrypted-route-mixin
+ * @extends Ember.Mixin
+ * @public
+ */
 export default Ember.Mixin.create({
   keychain: Ember.inject.service(),
   
   beforeModel(transition) {
-    if (this.get('keychain').isOpen) {
-      return this._super(...arguments);
-    }
-    
-    const self = this;
     const _super = this._super.bind(this, ...arguments);
     const keychain = this.get('keychain');
+    
+    if (this.get('keychain').isOpen) {
+      return _super();
+    }
+    
+    // Thinking about setting `keychain.attemptedTransition` before `keychain.restore()`?
+    // Good point. The application route mixin will handle `keychainOpened` and look for an attempted transition.
+    // If theres none, it won't do anything,.. but, we resolve this promise, so the original transition will be
+    // executed.
+    
+    const self = this;
+    
     return keychain.restore().then(() => {
       return _super();
     }).catch(() => {

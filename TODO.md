@@ -22,15 +22,22 @@
  - [x] ~~~Embed map with responsive-embed~~~
  - [x] Generate new key loses me contacts email address
    - [x] Create/update me contact after key generation
- - [ ] Translations!
  - [x] Show decryption status
- - [ ] Scrollspy
- - [ ] Fields
- - [ ] Notes with markdown
  - [ ] Don't share empty fields
  - [ ] Undefine session.data.decrypted when session could not be restored
  - [ ] Share with contact without emailAddress throws undefined error
  - [x] Restore session on subroute => transitions always to /contacts
+ - [ ] How to handle ajax errors 403s?
+   - [ ] Login, decrypt, open contact, reject session, login another user, 403 get contacts/abc123
+         No transition away from /decrypt
+   - [ ] DS.RESTAdapters feature flag for Error classes
+ - [ ] How to handle invalid route errors?
+ - [ ] jQuery ajax timeout?
+ - [ ] Scrollspy
+ - [ ] Translations
+ - [ ] More fields
+ - [ ] Notes with markdown
+ - [ ] Deployment MVP
 
 ## Cosmetics
 
@@ -43,4 +50,8 @@
    - [ ] Set pin to center
    - [ ] Open pin with 'Drag me!'
    - [ ] Remove info message
+   
+## Contributions
+
+ - [ ] ember-cli-simple-mock-shim
  

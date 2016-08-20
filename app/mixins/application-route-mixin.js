@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import ENV from 'addressbook/config/environment';
 
 export default Ember.Mixin.create({
   keychain: Ember.inject.service(),
@@ -14,6 +15,8 @@ export default Ember.Mixin.create({
     if (attemptedTransition) {
       this.set('keychain.attemptedTransition', null);
       attemptedTransition.retry();
+    } else {
+      this.transitionTo(ENV.APP.routeAfterDecryption);
     }
   },
   
