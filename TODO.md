@@ -30,7 +30,7 @@
  - [ ] Don't share empty fields
  - [ ] Undefine session.data.decrypted when session could not be restored
  - [ ] Share with contact without emailAddress throws undefined error
- - [ ] Restore session on subroute => transitions always to /contacts
+ - [x] Restore session on subroute => transitions always to /contacts
 
 ## Cosmetics
 
