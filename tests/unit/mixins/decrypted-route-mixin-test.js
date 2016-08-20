@@ -2,23 +2,25 @@ import { assert } from 'chai';
 import Ember from 'ember';
 import { describeModule, it } from 'ember-mocha';
 
-import ValidationErrorsMixin from 'addressbook/mixins/validation-errors-mixin';
+import DecryptedRouteMixin from 'addressbook/mixins/decrypted-route-mixin';
 
 // Testing Ember.js Mixins With a Container
 // http://www.chriskrycho.com/2016/testing-emberjs-mixins-with-a-container.html
 
-describeModule('mixin:validation-errors-mixin', 'Unit | Mixin | validation errors mixin', {
-    needs: [],
+describeModule('mixin:decrypted-route-mixin', 'Unit | Mixin | decrypted route mixin', {
+    needs: [
+      'service:keychain'
+    ],
     
     subject() {
-      const name = 'test-container:validation-errors-mixin-object';
-      this.register(name, Ember.Object.extend(ValidationErrorsMixin));
+      const name = 'test-container:decrypted-route-mixin-object';
+      this.register(name, Ember.Object.extend(DecryptedRouteMixin));
       return Ember.getOwner(this).lookup(name);
     }
   },
   function () {
     
-    it('works', function () {
+    it('it works', function () {
       const sut = this.subject();
       assert.ok(sut);
     });

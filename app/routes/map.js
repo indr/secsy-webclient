@@ -1,8 +1,8 @@
-import Ember from 'ember';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
-import KeychainOpenedRouteMixin from '../mixins/keychain-opened-route-mixin';
+import DecryptedRouteMixin from '../mixins/decrypted-route-mixin';
+import Ember from 'ember';
 
-export default Ember.Route.extend(AuthenticatedRouteMixin, KeychainOpenedRouteMixin, {
+export default Ember.Route.extend(AuthenticatedRouteMixin, DecryptedRouteMixin, {
   model() {
     return this.get('store').findAll('contact');
   },

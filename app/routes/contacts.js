@@ -1,10 +1,8 @@
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
+import DecryptedRouteMixin from '../mixins/decrypted-route-mixin';
 import Ember from 'ember';
-import KeychainOpenedRouteMixin from '../mixins/keychain-opened-route-mixin';
 
-export default Ember.Route.extend(AuthenticatedRouteMixin, KeychainOpenedRouteMixin, {
-  session: Ember.inject.service(),
-  
+export default Ember.Route.extend(AuthenticatedRouteMixin, DecryptedRouteMixin, {
   firstTransition: true,
   
   model() {

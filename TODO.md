@@ -34,9 +34,9 @@
 
 ## Cosmetics
 
- - [ ] Login/signup/decrypt/generate smaller
+ - [ ] Login/signup/decrypt/generate narrower
  - [x] Flash messages: Generate key should be persistent
- - [ ] Autom. loading of shares should not show success alert
+ - [x] Autom. loading of shares should not show success alert
  - [ ] Spin shares loader glyphicon
  - [ ] Determine browsers prefered language
  - [ ] Change 'set on map'
