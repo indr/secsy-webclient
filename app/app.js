@@ -11,6 +11,10 @@ Ember.RSVP.on('error', function (error) {
   Ember.Logger.assert(false, error);
 });
 
+Ember.$.ajaxSetup({
+  timeout: 5000
+});
+
 App = Ember.Application.extend({
   modulePrefix: config.modulePrefix,
   podModulePrefix: config.podModulePrefix,
