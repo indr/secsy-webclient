@@ -39,6 +39,28 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
   },
   
   actions: {
+    error: function (error, transition) {
+      Ember.Logger.error(error, transition);
+      
+      // Clear flash messages. Success messages at this point are confusing
+      this.get('flashMessages').clearMessages();
+      
+      // Render template. Remember that {{outlet}} inside error.hbs would render
+      // the currents route content
+      this.render('error', {
+        into: 'application',
+        model: error
+      });
+      
+      // More specific errors could be rendered this way
+      // if (error.isAdapterError && error.errors && error.errors[0] && error.errors[0].status) {
+      //   const status = error.errors[0].status;
+      //   this.render('error.404', {
+      //     into: 'error'
+      //   });
+      // }
+    },
+    
     setLocale(localeName) {
       this.get('intl').setLocale(localeName);
       this.get('session').set('data.localeName', localeName);
