@@ -22,3 +22,25 @@ body {
   padding-left: .6em;
   border-radius: 10rem;
 }
+
+/**
+ * Cards
+ */
+
+a.card-link:hover {
+  text-decoration: none;
+}
+
+.card .caption h4 {
+  margin-top: 0px;
+  /*white-space: nowrap;*/
+  /*overflow: hidden;*/
+}
+.card .caption {
+  white-space: nowrap;
+  overflow: hidden;
+}
+.card .label {
+  margin-right: 7px;
+}
+

@@ -12,8 +12,8 @@
    - [ ] Change login password (send reset link?)
    - [ ] Change addressbook passphrase (send reset link?)
    - [ ] Delete account
-   - [ ] Clean addressbook
-   - [ ] Generate fakes
+   - [x] Clean addressbook
+   - [x] Generate fakes
  - [x] Share:
    - [x] ~~~Check if contact.me~~~
    - [x] Copy contact details
@@ -37,16 +37,23 @@
  - [x] jQuery ajax timeout?
  - [ ] TODO: Error handling\??
  - [ ] Show contact cards in contacts.index
- - [ ] Scrollspy
+   - [ ] Group by first letter
+   - [ ] Affix letter navigation
  - [ ] Don't share empty fields
  - [ ] Translations
  - [ ] More fields
    - [ ] Social
    - [ ] IMs and VoIP
  - [ ] Notes with markdown
- - [ ] Deployment MVP
  - [ ] autofocus
  - [ ] Loading screen
+
+## Deployment
+ 
+ - [ ] Canary to Heroku
+ - [ ] Docker
+ - [ ] Backup
+ - [ ] Emailing
 
 ## Cosmetics
 
