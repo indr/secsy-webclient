@@ -13,10 +13,15 @@ export default FlashMessages.reopen({
     let message;
     const intl = this.get('intl');
     
-    if (intl.exists('errors.' + reason)) {
-      message = intl.t('errors.' + reason);
-    } else {
-      debug(`No error specific translation 'errors.${reason}' exists`);
+    if (reason) {
+      if (intl.exists('errors.' + reason)) {
+        message = intl.t('errors.' + reason);
+      } else {
+        debug(`No error specific translation 'errors.${reason}' exists`);
+        message = intl.t(key);
+      }
+    }
+    else {
       message = intl.t(key);
     }
     this.danger(message, options);
