@@ -23,7 +23,6 @@
  - [x] Generate new key loses me contacts email address
    - [x] Create/update me contact after key generation
  - [x] Show decryption status
- - [ ] Don't share empty fields
  - [ ] Undefine session.data.decrypted when session could not be restored
   - [ ] Trigger sessionDataInvalidated
   - [ ] Implement custom session store
@@ -34,14 +33,18 @@
          No transition away from /decrypt
    - [x] ~~~DS.RESTAdapters feature flag for Error classes~~~
  - [x] How to handle invalid route errors?
- - [ ] jQuery ajax timeout?
+ - [x] jQuery ajax timeout?
+ - [ ] TODO: Error handling\??
+ - [ ] Show contact cards in contacts.index
  - [ ] Scrollspy
+ - [ ] Don't share empty fields
  - [ ] Translations
  - [ ] More fields
    - [ ] Social
    - [ ] IMs and VoIP
  - [ ] Notes with markdown
  - [ ] Deployment MVP
+ - [ ] autofocus
 
 ## Cosmetics
 

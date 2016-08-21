@@ -77,8 +77,10 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
       debug('routes/application/actions#getShares() / silent:' + options.silent);
       
       const onProgress = options.silent ? K : this.onProgress.bind(this);
-      
+  
+      // TODO: Error handling
       this.get('sharer').getShares(onProgress).then((shares) => {
+        // TODO: Error handling
         return this.get('sharer').digestShares(shares);
       });
     },

@@ -22,6 +22,7 @@ export default Ember.Route.extend({
         return;
       }
       
+      // TODO: Error handling
       model.destroyRecord().then(() =>
         this.transitionTo('contacts'));
     },
@@ -30,6 +31,7 @@ export default Ember.Route.extend({
       const model = this.controller.get('model');
       model.set('latitude$', null);
       model.set('longitude$', null);
+      // TODO: Error handling
       model.save();
     },
     
@@ -41,6 +43,7 @@ export default Ember.Route.extend({
       sharer.share(model, this.send.bind(this, 'onProgress')).then(() => {
         Ember.run.later(flashMessages.success.bind(this, 'Successfully shared your info'), 1200);
       }).catch((err) => {
+        // TODO: Error handling
         flashMessages.danger('Oops: ' + (err.message || err));
       });
     },
@@ -51,6 +54,7 @@ export default Ember.Route.extend({
       contact.set('phoneNumber$', decrypted.phoneNumber$);
       contact.set('latitude$', decrypted.latitude$);
       contact.set('longitude$', decrypted.longitude$);
+      // TODO: Error handling
       contact.save().then(() => {
         share.destroyRecord().then(() => {
           contact.set('sharesCount', contact.get('sharesCount') - 1);
@@ -71,6 +75,7 @@ export default Ember.Route.extend({
     
     dismissShare(share) {
       const contact = this.controller.get('model');
+      // TODO: Error handling
       share.destroyRecord().then(() => {
         contact.set('sharesCount', contact.get('sharesCount') - 1);
         const shares = contact.get('shares');

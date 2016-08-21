@@ -7,6 +7,7 @@ export default Ember.Controller.extend({
     if (model && model.get('location') === null) {
       model.set('latitude$', location.lat);
       model.set('longitude$', location.lng);
+      // TODO: Error handling
       model.save();
     }
   })
