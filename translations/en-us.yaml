@@ -51,6 +51,7 @@ actions:
   generate: "Generate"
   login: "Login"
   logout: "Logout"
+  preferences: 'Preferences'
   save: "Save"
   signup: "Signup"
 

@@ -35,6 +35,7 @@
                         {{session.data.authenticated.email}} <span class="caret"></span>
                       </a>
                       <ul class="dropdown-menu">
+                          <li>{{#link-to 'preferences'}}{{t 'actions.preferences'}}{{/link-to}}</li>
                           <li><a href="#" {{action 'invalidateSession'}}>{{t 'actions.logout'}}</a></li>
                       </ul>
                   </li>

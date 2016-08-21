@@ -20,6 +20,7 @@ Router.map(function () {
   this.route('generate');
   this.route('index', {path: '/*wildcard'});
   this.route('index', {path: '/'});
+  this.route('preferences');
 });
 
 export default Router;
