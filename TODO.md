@@ -23,9 +23,8 @@
  - [x] Generate new key loses me contacts email address
    - [x] Create/update me contact after key generation
  - [x] Show decryption status
- - [ ] Undefine session.data.decrypted when session could not be restored
-  - [ ] Trigger sessionDataInvalidated
-  - [ ] Implement custom session store
+ - [x] Undefine session.data.isDecrypted when session could not be restored
+  - [x] Trigger sessionDataInvalidated => session.isDecrypted
  - [ ] Share with contact without emailAddress throws undefined error
  - [x] Restore session on subroute => transitions always to /contacts
  - [x] How to handle ajax errors 403s?

@@ -18,13 +18,13 @@
 
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-              {{#if session.data.isDecrypted}}
+              {{#if session.isDecrypted}}
                   <li>{{#link-to 'map'}}Map{{/link-to}}</li>
                   <li>{{#link-to 'contacts.new'}}{{t 'contact.new'}}{{/link-to}}</li>
               {{/if}}
             </ul>
             <div class="nav navbar-nav navbar-right">
-              {{#if session.data.isDecrypted}}
+              {{#if session.isDecrypted}}
                   <li><a href="#" {{action 'getShares'}}><span class="glyphicon glyphicon-refresh"
                                                                aria-hidden="true"></span></a></li>
               {{/if}}

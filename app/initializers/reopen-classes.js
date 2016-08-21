@@ -1,5 +1,6 @@
 /*jshint unused:false*/
 import DSError from './../validators/ds-error';
+import Session from './../services/session';
 
 /**
  * https://duckduckgo.com/?q=ember+where+to+put+reopen&t=ffab&ia=web
