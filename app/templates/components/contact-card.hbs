@@ -1,0 +1,18 @@
+<div class="col-xs-6 col-sm-4 col-md-2">
+  {{#link-to "contacts.view" contact class='card-link'}}
+      <div class="thumbnail card">
+          <div class="caption">
+            {{#if contact.decrypted}}
+              {{#if contact.sharesCount}}<span
+                      class="pull-left label label-pill label-danger label">{{contact.sharesCount}}</span> {{/if}}
+                <h4>{{contact.name$}}</h4>
+            {{else}}
+                <span class="glyphicon glyphicon-alert"></span>
+                <h4>{{t 'errors.decryption-failed'}}</h4>
+            {{/if}}
+              <p>{{contact.emailAddress$}}</p>
+              <p>{{contact.phoneNumber$}}</p>
+          </div>
+      </div>
+  {{/link-to}}
+</div>

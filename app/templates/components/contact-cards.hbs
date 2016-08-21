@@ -1,24 +1,12 @@
-<div class="row">
-  {{#each model as |contact|}}
-      <div class="col-xs-6 col-sm-4 col-md-2">
-        {{#link-to "contacts.view" contact class='card-link'}}
-            <div class="thumbnail card">
-                <div class="caption">
-                  {{#if contact.decrypted}}
-                    {{#if contact.sharesCount}}<span
-                            class="pull-left label label-pill label-danger label">{{contact.sharesCount}}</span> {{/if}}
-                      <h4>{{contact.name$}}</h4>
-                  {{else}}
-                      <span class="glyphicon glyphicon-alert"></span>
-                      <h4>{{t 'errors.decryption-failed'}}</h4>
-                  {{/if}}
-                    <p>{{contact.emailAddress$}}</p>
-                    <p>{{contact.phoneNumber$}}</p>
-                </div>
-            </div>
-        {{/link-to}}
-      </div>
-  {{else}}
-      <div class="alert alert-info">{{t 'contacts.no-results'}}</div>
-  {{/each}}
-</div>
+{{#each groups as |group|}}
+    <div class="row">
+        <div class="col-xs-12">
+            <h3>{{group.value}}</h3>
+        </div>
+    </div>
+    <div class="row">
+      {{#each group.items as |contact|}}
+        {{contact-card contact=contact}}
+      {{/each}}
+    </div>
+{{/each}}

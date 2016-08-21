@@ -47,6 +47,7 @@
  - [ ] Notes with markdown
  - [ ] autofocus
  - [ ] Loading screen
+ - [ ] Remove ember-cli-filterby-query if not used anymore
 
 ## Deployment
  

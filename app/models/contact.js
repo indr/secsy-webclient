@@ -38,6 +38,10 @@ export default Model.extend(Validations, {
     return [this.get('latitude$'), this.get('longitude$')];
   }),
   
+  letter: Ember.computed('name$', function () {
+    return this.get('name$').trimLeft().substr(0, 1).toUpperCase() || '-';
+  }).readOnly(),
+
   ready: function () {
     this.maySetMeName();
   },
