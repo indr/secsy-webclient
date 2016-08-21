@@ -6,8 +6,14 @@ export default Ember.Controller.extend({
   // https://github.com/lazybensch/ember-cli-filter-by-query
   
   sorting: ['name$:asc'],
-  
+
   sorted: Ember.computed.sort('model', 'sorting'),
+
+  filtered: computedFilterByQuery('sorted', ['name$', 'emailAddress$', 'phoneNumber$'], 'query'),
+
+  init() {
+    console.log('controllers/contacts/index#init');
+    console.log(this.get('model'));
+  }
   
-  filtered: computedFilterByQuery('sorted', ['name$', 'emailAddress$', 'phoneNumber$'], 'query')
 });

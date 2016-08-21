@@ -3,13 +3,4 @@
   {{#bs-button type='default' action='clearContacts'}}Delete all contacts{{/bs-button}}
 </div>
 
-<div class="row">
-  <div class="col-sm-4">
-    {{contacts-filter query=query}}
-
-    {{contact-listing model=filtered}}
-  </div>
-  <div class="col-sm-8">
-    {{outlet}}
-  </div>
-</div>
+{{outlet}}
