@@ -30,7 +30,7 @@ export default Ember.Component.extend(Validations, {
       this.get('session').authenticate('authenticator:local', emailAddress, password).then(() => {
         flash.successT('login.success');
       }, (reason) => {
-        flash.dangerT(reason, 'login.unknown-error');
+        flash.dangerT('login.unknown-error', reason);
       });
     }
   }

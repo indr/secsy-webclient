@@ -18,7 +18,7 @@ export default Ember.Route.extend({
       
       if (model.get('me')) {
         const flash = this.get('flashMessages');
-        flash.dangerT(undefined, 'no-delete-self');
+        flash.dangerT('no-delete-self');
         return;
       }
       

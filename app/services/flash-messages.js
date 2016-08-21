@@ -8,7 +8,7 @@ const {
 export default FlashMessages.reopen({
   intl: Ember.inject.service(),
   
-  dangerT(reason, key, options) {
+  dangerT(key, reason, options) {
     this.clearMessages();
     let message;
     const intl = this.get('intl');
