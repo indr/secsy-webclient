@@ -12,6 +12,7 @@
     "chai": "~2.3.0",
     "ember-mocha-adapter": "~0.3.1",
     "leaflet": "~0.7.7",
-    "simple-mock": "^0.6.0"
+    "simple-mock": "^0.6.0",
+    "fakerator": "^0.3.0"
   }
 }

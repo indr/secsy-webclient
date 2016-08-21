@@ -8,10 +8,12 @@
    - [x] Add little icon next to user
    - [x] After opening addressbook
    - [x] ~~~Periodically~~~
- - [ ] Add user settings with
-   - [ ] Change login password
-   - [ ] Change addressbook passphrase
+ - [ ] Add user preferences with
+   - [ ] Change login password (send reset link?)
+   - [ ] Change addressbook passphrase (send reset link?)
    - [ ] Delete account
+   - [ ] Clean addressbook
+   - [ ] Generate fakes
  - [x] Share:
    - [x] ~~~Check if contact.me~~~
    - [x] Copy contact details

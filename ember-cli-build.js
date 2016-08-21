@@ -30,5 +30,13 @@ module.exports = function (defaults) {
       'simple-mock': ['default']
     }
   });
+  
+  app.import('bower_components/fakerator/dist/fakerator.min.js');
+  app.import('vendor/shims/fakerator.js', {
+    exports: {
+      'Fakerator': ['default']
+    }
+  });
+  
   return app.toTree();
 };
