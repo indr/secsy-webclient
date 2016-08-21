@@ -1,46 +1,9 @@
 import Ember from 'ember';
 
-const {RSVP} = Ember;
-
-function noop() {
-  // noop
-}
-
-/**
- * Returns a new function that wraps the given function fn. The new function will always return a promise that is
- * fulfilled with the original functions return values or rejected with thrown exceptions from the original function.
- *
- * This method is convenient when a function can sometimes return synchronously or throw synchronously.
- *
- * See http://bluebirdjs.com/docs/api/promise.method.html
- *
- * @param fn
- * @returns {Function}
- */
-RSVP.Promise.method = function (fn) {
-  return function () {
-    return new RSVP.Promise((resolve, reject) => {
-      try {
-        resolve(fn(...arguments));
-      }
-      catch (err) {
-        reject(err);
-      }
-    });
-  };
-};
-
-// See http://stackoverflow.com/questions/24660096/correct-way-to-write-loops-for-promise
-const promiseFor = RSVP.Promise.method(function (aggregate, condition, action, value) {
-  if (!condition(value)) {
-    return aggregate;
-  }
-  return action(value, aggregate).then(function (result) {
-    return new RSVP.Promise(function (resolve) {
-      Ember.run.later(resolve.bind(this, result), 1);
-    });
-  }).then(promiseFor.bind(null, aggregate, condition, action));
-});
+const {
+  K,
+  RSVP
+} = Ember;
 
 export default Ember.Service.extend({
   session: Ember.inject.service(),
@@ -57,7 +20,7 @@ export default Ember.Service.extend({
    */
   share(me, progress) {
     const self = this;
-    progress = progress || noop;
+    progress = progress || K;
     
     var data = {
       emailAddress$: me.get('emailAddress$'),
@@ -80,7 +43,7 @@ export default Ember.Service.extend({
       progress(status);
       return results;
     }).then((contacts) => {
-      return promiseFor(null, function condition(contacts) {
+      return RSVP.promiseFor(null, function condition(contacts) {
         return contacts.length > 0;
       }, function action(contacts) {
         var contact = contacts.pop();
@@ -123,7 +86,7 @@ export default Ember.Service.extend({
   
   getShares(progress) {
     const self = this;
-    progress = progress || noop;
+    progress = progress || K;
     
     const emailAddress = self.get('session').get('data.authenticated.email');
     const emailHash = self.get('openpgp').sha256(emailAddress);
@@ -139,7 +102,7 @@ export default Ember.Service.extend({
       progress(status);
       return result;
     }).then(function (shares) {
-      return promiseFor([], function condition(shares) {
+      return RSVP.promiseFor([], function condition(shares) {
         return shares.length > 0;
       }, function action(shares, aggregate) {
         var share = shares.pop();
@@ -170,7 +133,7 @@ export default Ember.Service.extend({
   },
   
   digestShares(shares, progress) {
-    progress = progress || noop;
+    progress = progress || K;
     
     return this.get('store').findAll('contact').then((contacts) => {
       return contacts;//contacts.toArray();
