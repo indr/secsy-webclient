@@ -36,7 +36,7 @@ export default Base.extend({
       data: data != null ? JSON.stringify(data) : null,
       type: type,
       dataType: 'json',
-      contentType: 'application/json',
+      contentType: 'application/json'
     };
     
     return new RSVP.Promise((resolve, reject) => {

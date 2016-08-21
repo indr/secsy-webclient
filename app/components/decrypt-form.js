@@ -27,7 +27,7 @@ export default Ember.Component.extend(Validations, {
       
       flash.infoT('decrypt.decrypting', {sticky: true});
       keychain.open(userId, passphrase).then(() => {
-        flash.successT('decrypt.success');
+        flash.clearMessages();
       }).catch((reason) => {
         if (reason.message.indexOf('Invalid passphrase') >= 0) {
           flash.dangerT('errors.invalid-passphrase');

@@ -46,6 +46,7 @@
  - [ ] Notes with markdown
  - [ ] Deployment MVP
  - [ ] autofocus
+ - [ ] Loading screen
 
 ## Cosmetics
 

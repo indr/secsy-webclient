@@ -32,15 +32,16 @@ export default Ember.Service.extend({
         var contact = contacts.pop();
         
         status.value++;
-        if (contact.get('me')) {
+        const stateName = contact.get('currentState.stateName');
+        if (contact.get('me') || contact.get('inFlight')) {
           progress(status);
           return RSVP.resolve(contacts);
         }
         return contact.destroyRecord().then(() => {
           progress(status);
           return contacts;
-        }).catch((err) => {
-          status.err = err;
+        }).catch(() => {
+          console.log('Error destroying, state was ' + stateName);
           progress(status);
           return contacts;
         });
@@ -57,7 +58,7 @@ export default Ember.Service.extend({
     
     const store = this.get('store');
     const fake = fakerator(locale);
-    const number = number || fake.random.number(5, 20);
+    const number = number || fake.random.number(30, 50);
     
     var status = {
       max: number,
@@ -79,10 +80,14 @@ export default Ember.Service.extend({
         longitude$: location.longitude
       };
       
-      return store.createRecord('contact', data).save().then(() => {
-        return number - 1;
-      }).catch((err) => {
-        status.err = err;
+      // return store.createRecord('contact', data).save().then(() => {
+      return RSVP.resolve(store.createRecord('contact', data)).then(() => {
+        return new RSVP.Promise((resolve) => {
+          Ember.run.later(() => {
+            resolve(number - 1);
+          }, 200);
+        });
+      }).catch(() => {
         return number - 1;
       }).finally(() => {
         status.value++;

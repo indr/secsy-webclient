@@ -14,6 +14,7 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
   store: Ember.inject.service(),
   crypto: Ember.inject.service(),
   sharer: Ember.inject.service(),
+  addressbook: Ember.inject.service(),
   
   beforeModel()  {
     this.restoreLocale();
@@ -77,7 +78,7 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
       debug('routes/application/actions#getShares() / silent:' + options.silent);
       
       const onProgress = options.silent ? K : this.onProgress.bind(this);
-  
+      
       // TODO: Error handling
       this.get('sharer').getShares(onProgress).then((shares) => {
         // TODO: Error handling
@@ -87,6 +88,14 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
     
     onProgress(status) {
       this.onProgress(status);
+    },
+    
+    generateFakes() {
+      this.get('addressbook').fake(this.onProgress.bind(this));
+    },
+    
+    clearContacts() {
+      this.get('addressbook').clear(this.onProgress.bind(this));
     }
   }
 });
