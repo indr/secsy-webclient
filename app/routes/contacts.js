@@ -6,7 +6,10 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, DecryptedRouteMixin, 
   firstTransition: true,
   
   model() {
-    return this.get('store').findAll('contact');
+    return this.get('store').findAll('contact').then((result) => {
+      console.log('routes/contacts#model() loaded %s records', result.get('length'));
+      return result;
+    });
   },
   
   actions: {

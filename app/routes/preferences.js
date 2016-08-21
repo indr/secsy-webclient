@@ -2,14 +2,17 @@ import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-rout
 import Ember from 'ember';
 
 export default Ember.Route.extend(AuthenticatedRouteMixin, {
+  addressbook: Ember.inject.service(),
   
   actions: {
     generateFakes() {
-      console.log('TODO: generateFakes()');
+      const progress = this.send.bind(this, 'onProgress');
+      return this.get('addressbook').fake(progress);
     },
     
     deleteAll() {
-      console.log('TODO: deleteAll()');
+      const progress = this.send.bind(this, 'onProgress');
+      return this.get('addressbook').clear(progress);
     }
   }
 });

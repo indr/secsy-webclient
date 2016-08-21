@@ -4,9 +4,12 @@ import Ember from 'ember';
 
 export default Ember.Route.extend(AuthenticatedRouteMixin, DecryptedRouteMixin, {
   model() {
-    return this.get('store').findAll('contact');
+    return this.get('store').findAll('contact').then((contacts) => {
+      console.log('routes/map#model() loaded %s records', contacts.get('length'));
+      return contacts;
+    });
   },
- 
+  
   actions: {
     openPopup(contact) {
       this.controller.openPopup(contact);

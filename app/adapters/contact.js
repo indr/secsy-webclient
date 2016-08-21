@@ -23,6 +23,9 @@ export default ApplicationAdapter.extend({
         return _super.call(self, url, type, options);
       })
       .then((response) => {
+        if (type === 'DELETE') {
+          return response;
+        }
         return self.deepDecrypt(response);
       });
   },
