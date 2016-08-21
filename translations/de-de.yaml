@@ -9,7 +9,7 @@ login:
   username: 'E-Mail-Adresse'
   password: 'Passwort'
   success: 'Anmeldung erfolgreich!'
-  unknown-error: 'Unbekannte E-Mail-Adresse oder falsches Passwort'
+  unknown-error: 'Unbekannter Fehler bei der Anmeldung'
 
 signup:
   title: "Registrierung"
@@ -91,12 +91,14 @@ errors:
   email: "{description} muss eine gültige E-Mail-Adresse sein"
   phone: "{description} must be a valid phone number"
   url: "{description} must be a valid url"
+  timeout: 'Der Server hat nicht innerhalb einer angemessenen Zeit geantwortet'
   email-exists: Die E-Mail-Adresse wird bereits verwendet
   user-exists: Die E-Mail-Adresse wird bereits verwendet
   nick-exists: "Der Benutzername wird bereits verwendet"
   user-not-found: "Diese E-Mail-Adresse ist uns nicht bekannt"
   invalid-password: "Ungültiges Passwort"
   invalid-passphrase: 'Ungültiges Passwort'
+  invalid-username-or-password: 'Unbekannte E-Mail-Adresse oder falsches Passwort'
   decryption-failed: 'Entschlüsselungsfehler'
   # No clue where these two guys are comming from...
   passwordConfirmation: 'dummy'

@@ -25,6 +25,8 @@
  - [x] Show decryption status
  - [ ] Don't share empty fields
  - [ ] Undefine session.data.decrypted when session could not be restored
+  - [ ] Trigger sessionDataInvalidated
+  - [ ] Implement custom session store
  - [ ] Share with contact without emailAddress throws undefined error
  - [x] Restore session on subroute => transitions always to /contacts
  - [x] How to handle ajax errors 403s?

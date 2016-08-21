@@ -27,10 +27,14 @@ export default Ember.Component.extend(Validations, {
       const flash = this.get('flashMessages');
       const {emailAddress, password} = this.getProperties('emailAddress', 'password');
       
+      flash.clearMessages();
       this.get('session').authenticate('authenticator:local', emailAddress, password).then(() => {
         flash.successT('login.success');
       }, (reason) => {
-        flash.dangerT('login.unknown-error', reason);
+        if (reason === 'forbidden') {
+          reason = 'invalid-username-or-password';
+        }
+        flash.dangerT('login.unknown-error', reason, {sticky: true});
       });
     }
   }

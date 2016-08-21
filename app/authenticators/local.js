@@ -14,7 +14,10 @@ export default Base.extend({
   },
   
   authenticate(identifier, password) {
-    return this._makeRequest('POST', '/auth/local', {identifier, password});
+    return this._makeRequest('POST', '/auth/local', {identifier, password})
+      .catch((err/*, textStatus, errorThrown*/) => {
+        throw err.statusText ? err.statusText.toLowerCase() : err;
+      });
   },
   
   invalidate(/*data*/) {
