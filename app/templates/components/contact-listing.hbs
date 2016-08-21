@@ -5,7 +5,7 @@
           <strong>{{contact.name$}}</strong>
         {{#if contact.sharesCount}}<span
                 class="pull-right label label-pill label-danger label">{{contact.sharesCount}}</span>{{/if}}
-          <br/>{{contact.emailAddress$}}<br/>
+          <br/>{{contact.currentState.stateName}} / {{contact.inFlight}}<br/>
       {{else}}
           <span class="glyphicon glyphicon-alert"></span>
           <strong>{{t 'errors.decryption-failed'}}</strong><br/>

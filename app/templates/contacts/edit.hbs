@@ -1,7 +1,20 @@
 {{contact-decryption-failed model=model clean='clean'}}
 
 <h3>{{t 'contact.edit'}}</h3>
+<pre>stateName {{model.currentState.stateName}}
 
+inFlight {{model.inFlight}}
+isDeleted {{model.isDeleted}}
+isEmpty {{model.isEmpty}}
+isError {{model.isError}}
+isLoaded {{model.isLoaded}}
+isLoading {{model.isLoading}}
+isNew {{model.isNew}}
+isReloading {{model.isReloading}}
+isSaving {{model.isSaving}}
+isValid {{model.isValid}}
+</pre>
+<hr>
 {{contact-edit-form model=model save='save' cancel='cancel'}}
 
 {{outlet}}

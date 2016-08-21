@@ -18,14 +18,14 @@ export default ApplicationAdapter.extend({
     const self = this;
     const _super = this._super;
     
+    if (type === 'DELETE') {
+      return _super.call(self, url, type, options);
+    }
     return self.deepEncrypt(options ? options.data : null)
       .then(() => {
         return _super.call(self, url, type, options);
       })
       .then((response) => {
-        if (type === 'DELETE') {
-          return response;
-        }
         return self.deepDecrypt(response);
       });
   },

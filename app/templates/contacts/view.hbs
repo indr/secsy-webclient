@@ -5,6 +5,20 @@
 {{else}}
     <h3>{{model.id}}</h3>
 {{/if}}
+<pre>stateName {{model.currentState.stateName}}
+
+inFlight {{model.inFlight}}
+isDeleted {{model.isDeleted}}
+isEmpty {{model.isEmpty}}
+isError {{model.isError}}
+isLoaded {{model.isLoaded}}
+isLoading {{model.isLoading}}
+isNew {{model.isNew}}
+isReloading {{model.isReloading}}
+isSaving {{model.isSaving}}
+isValid {{model.isValid}}
+</pre>
+<hr>
 <p>Email address: {{model.emailAddress$}}</p>
 <p>Phone number: {{model.phoneNumber$}}</p>
 
