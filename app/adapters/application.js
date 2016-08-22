@@ -6,16 +6,16 @@ export default DS.RESTAdapter.extend({
   
   namespace: 'api',
   
-  headers: Ember.computed('session.data.authenticated.token', function () {
-    const key = 'X-Auth-Token';
-    var token = this.get('session.data.authenticated.token');
-    Ember.Logger.info(key, token);
-    if (Ember.isPresent(token)) {
-      const headers = {};
-      headers[key] = token;
-      return headers;
-    }
-  }),
+  // headers: Ember.computed('session.data.authenticated.token', function () {
+  //   const key = 'X-Auth-Token';
+  //   var token = this.get('session.data.authenticated.token');
+  //   Ember.Logger.info(key, token);
+  //   if (Ember.isPresent(token)) {
+  //     const headers = {};
+  //     headers[key] = token;
+  //     return headers;
+  //   }
+  // }),
   
   // TODO: Why is `this` undefined?
   normalizeErrorResponse(status, headers, payload) {
