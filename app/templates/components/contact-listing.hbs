@@ -1,6 +1,6 @@
 <div class="list-group">
   {{#each model as |contact|}}
-    {{#link-to "contacts.view" contact class="list-group-item"}}
+    {{#link-to "contacts.edit" contact class="list-group-item"}}
       {{#if contact.decrypted}}
           <strong>{{contact.name$}}</strong>
         {{#if contact.sharesCount}}<span

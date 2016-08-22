@@ -2,6 +2,7 @@
   {{#bs-button type='default' action='generateFakes'}}Generate fake contacts{{/bs-button}}
   {{#bs-button type='default' action='clearContacts'}}Delete all contacts{{/bs-button}}
 </div>
+<hr>
 
 {{outlet}}
 
@@ -13,7 +14,7 @@
       {{#marker-layer location=contact.location draggable=true popupOpen=contact.popupOpen
       onPopupopen=(action "popupOpened" contact) onPopupclose=(action "popupClosed" contact)
       onDragend=(action "onDragEnd" contact)}}
-          <b>{{#link-to 'contacts.view' contact}}{{contact.name$}}{{/link-to}}</b>
+          <b>{{#link-to 'contacts.edit' contact}}{{contact.name$}}{{/link-to}}</b>
           <br>
           Phone: {{contact.phoneNumber$}}
           <br>

@@ -4,6 +4,18 @@ product:
   html:
     info: '<strong>{product}</strong> will cost <em>{price, number, USD}</em> if ordered by {deadline, date, time}'
 
+actions:
+  cancel: "Verwerfen"
+  decrypt: "Entschlüsseln"
+  delete: "Löschen"
+  edit: "Bearbeiten"
+  generate: "Generieren"
+  login: "Anmelden"
+  logout: "Abmelden"
+  preferences: 'Einstellungen'
+  save: "Speichern"
+  signup: "Registrieren"
+
 login:
   title: 'Anmelden'
   username: 'E-Mail-Adresse'
@@ -34,26 +46,34 @@ decrypt:
   unknown-error: "Unbekannter Fehler beim Entschlüsseln"
 
 contact:
-  me-name: 'Hallo, dies bist du!'
-  edit: 'Kontakt bearbeiten'
-  new: 'Neuer Kontakt'
   clean-text: |
     <p>Missing translation</p>
+  edit: 'Kontakt bearbeiten'
+  emailAddress: E-Mail-Adresse
+  legend:
+    information: Kontaktinformationen
+    location: Standort
+    internet: Internet
+    notes: Notizen
+  me-name: 'Hallo, dies bist du!'
+  name: 'Name'
+  new: 'Neuer Kontakt'
+  phoneNumber: Telefonnummer
+  website: Webseite
 
 contacts:
   no-results: 'Deine Suche ergab keine Treffer!'
 
-actions:
-  cancel: "Verwerfen"
-  decrypt: "Entschlüsseln"
-  delete: "Löschen"
-  edit: "Bearbeiten"
-  generate: "Generieren"
-  login: "Anmelden"
-  logout: "Abmelden"
-  preferences: 'Einstellungen'
-  save: "Speichern"
-  signup: "Registrieren"
+internet:
+  facebook: Facebook
+  skype: Skype
+  telegram: Telegram
+  whatsapp: Whatsapp
+
+location:
+  name: Ort
+  latitude: Breitengrad
+  longitude: Längengrad
 
 placeholders:
   query: "Suchen..."

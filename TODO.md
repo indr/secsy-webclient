@@ -35,7 +35,6 @@
    - [x] ~~~DS.RESTAdapters feature flag for Error classes~~~
  - [x] How to handle invalid route errors?
  - [x] jQuery ajax timeout?
- - [ ] TODO: Error handling\??
  - [x] Show contact cards in contacts.index
    - [x] Group by first letter
    - [x] Affix letter navigation
@@ -44,9 +43,8 @@
  - [ ] More fields
    - [ ] Social
    - [ ] IMs and VoIP
- - [ ] Notes with markdown
  - [ ] Loading screen
- - [ ] Remove ember-cli-filterby-query if not used anymore
+ - [ ] TODO: Error handling\??
 
 ## Deployment
  
@@ -57,6 +55,8 @@
 
 ## Cosmetics
 
+ - [ ] Remove ember-cli-filterby-query if not used anymore
+ - [ ] Notes with markdown
  - [ ] autofocus
  - [ ] Login/signup/decrypt/generate narrower
  - [x] Flash messages: Generate key should be persistent

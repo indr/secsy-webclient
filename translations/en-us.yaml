@@ -4,6 +4,18 @@ product:
   html:
     info: '<strong>{product}</strong> will cost <em>{price, number, USD}</em> if ordered by {deadline, date, time}'
 
+actions:
+  cancel: "Cancel"
+  decrypt: "Decrypt"
+  delete: "Delete"
+  edit: "Edit"
+  generate: "Generate"
+  login: "Login"
+  logout: "Logout"
+  preferences: 'Preferences'
+  save: "Save"
+  signup: "Signup"
+
 login:
   title: 'Login'
   username: 'Email address'
@@ -34,26 +46,34 @@ decrypt:
   unknown-error: "Unknown error during decryption"
 
 contact:
-  me-name: 'Hello, this is you!'
-  edit: 'Edit contact'
-  new: 'Create contact'
   clean-text: |
     <p>Missing translation</p>
+  edit: 'Edit contact'
+  emailAddress: 'E-Mail-Adresse'
+  legend:
+    information: Contact information
+    location: Location
+    internet: Internet
+    notes: Notes
+  me-name: 'Hello, this is you!'
+  name: 'Name'
+  new: 'Create contact'
+  phoneNumber: Phone number
+  website: Website
 
 contacts:
   no-results: "Your search did not match any contacts!"
 
-actions:
-  cancel: "Cancel"
-  decrypt: "Decrypt"
-  delete: "Delete"
-  edit: "Edit"
-  generate: "Generate"
-  login: "Login"
-  logout: "Logout"
-  preferences: 'Preferences'
-  save: "Save"
-  signup: "Signup"
+internet:
+  facebook: Facebook
+  skype: Skype
+  telegram: Telegram
+  whatsapp: Whatsapp
+
+location:
+  name: Location name
+  latitude: Latitude
+  longitude: Longitude
 
 placeholders:
   query: "Search..."
