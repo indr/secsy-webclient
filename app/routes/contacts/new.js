@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
+  intl: Ember.inject.service(),
   store: Ember.inject.service(),
   
   model() {
@@ -10,7 +11,7 @@ export default Ember.Route.extend({
   actions: {
     save() {
       this.controller.get('model').save().then(() => {
-        this.transitionTo('contacts')
+        this.transitionTo('contacts');
       }, (err) => {
         throw err;
       }).catch((err) => {
@@ -22,9 +23,19 @@ export default Ember.Route.extend({
       this.controller.get('model').rollbackAttributes();
       this.transitionTo('contacts');
     },
-    
-    willTransition() {
-      this.controller.get('model').rollbackAttributes();
+  
+    willTransition(transition) {
+      const model = this.controller.get('model');
+      if (!model.get('hasDirtyAttributes')) {
+        return;
+      }
+      
+      const message = this.get('intl').t('confirm.pending-unsaved');
+      if (window.confirm(message)) {
+        model.rollbackAttributes();
+      } else {
+        transition.abort();
+      }
     }
   }
 });

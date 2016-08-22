@@ -19,6 +19,9 @@ actions:
 application:
   loading: Application is loading... Please wait a moment!
 
+confirm:
+  pending-unsaved: You have pending unsaved changes. Do you really want to discard them?
+
 login:
   title: 'Login'
   username: 'Email address'

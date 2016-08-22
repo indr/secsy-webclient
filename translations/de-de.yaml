@@ -19,6 +19,9 @@ actions:
 application:
   loading: Laden... Bitte warten Sie einen Moment!
 
+confirm:
+  pending-unsaved: Sie haben ungespeicherte Änderungen. Möchten Sie diese wirklich verwerfen?
+
 login:
   title: 'Anmelden'
   username: 'E-Mail-Adresse'

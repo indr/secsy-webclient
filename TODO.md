@@ -45,7 +45,7 @@
    - [x] IMs and VoIP
  - [x] Loading screen
  - [ ] TODO: Error handling\??
- - [ ] Grouping shows deleted.saved records?
+ - [x] Grouping shows deleted.saved records? => willTransition()!!!
 
 ## Deployment
  

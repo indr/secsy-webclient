@@ -1,17 +1,18 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
+  intl: Ember.inject.service(),
   sharer: Ember.inject.service(),
   store: Ember.inject.service(),
   
   model(params) {
     return this.get('store').findRecord('contact', params.id);
-},
+  },
   
   actions: {
     save() {
       this.controller.get('model').save().then(() => {
-        this.transitionTo('contacts')
+        this.transitionTo('contacts');
       }, (err) => {
         throw err;
       }).catch((err) => {
@@ -22,10 +23,6 @@ export default Ember.Route.extend({
     cancel() {
       this.controller.get('model').rollbackAttributes();
       this.transitionTo('contacts');
-    },
-    
-    willTransition() {
-      this.controller.get('model').rollbackAttributes();
     },
     
     delete() {
@@ -109,6 +106,20 @@ export default Ember.Route.extend({
         contact.set('shares', null);
         contact.set('shares', Array.from(shares));
       });
+    },
+    
+    willTransition(transition) {
+      const model = this.controller.get('model');
+      if (!model.get('hasDirtyAttributes')) {
+        return;
+      }
+      
+      const message = this.get('intl').t('confirm.pending-unsaved');
+      if (window.confirm(message)) {
+        model.rollbackAttributes();
+      } else {
+        transition.abort();
+      }
     }
   }
 });
