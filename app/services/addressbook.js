@@ -74,10 +74,10 @@ export default Ember.Service.extend({
       const location = fake.address.geoLocation();
       const data = {
         name$: firstName + ' ' + lastName,
-        phoneNumber$: fake.phone.number(),
         emailAddress$: fake.internet.email(firstName, lastName),
-        latitude$: location.latitude,
-        longitude$: location.longitude
+        contact_phoneNumber$: fake.phone.number(),
+        location_latitude$: location.latitude,
+        location_longitude$: location.longitude
       };
       
       // return store.createRecord('contact', data).save().then(() => {
