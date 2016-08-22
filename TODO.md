@@ -38,13 +38,14 @@
  - [x] Show contact cards in contacts.index
    - [x] Group by first letter
    - [x] Affix letter navigation
- - [ ] Don't share empty fields
- - [ ] Translations
- - [ ] More fields
-   - [ ] Social
-   - [ ] IMs and VoIP
+ - [x] Don't share empty fields
+ - [x] Translations
+ - [x] More fields
+   - [x] Social
+   - [x] IMs and VoIP
  - [ ] Loading screen
  - [ ] TODO: Error handling\??
+ - [ ] Grouping shows deleted.saved records?
 
 ## Deployment
  

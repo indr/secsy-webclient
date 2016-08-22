@@ -8,6 +8,8 @@
 
 <p>Created on {{format-date model.createdAt}} | Updated on {{format-date model.updatedAt}}</p>
 
+<p>{{model.currentState.stateName}}</p>
+
 {{#if model.shares}}
     <fieldset>
         <legend>{{t 'contact.legend.shares'}} </legend>
@@ -27,6 +29,6 @@
     </fieldset>
 {{/if}}
 
-{{contact-edit-form model='model' save='save' cancel='cancel' share='share' delete='delete'}}
+{{contact-edit-form model=model save='save' cancel='cancel' share='share' delete='delete'}}
 
 {{outlet}}

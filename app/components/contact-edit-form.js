@@ -7,6 +7,12 @@ export default Ember.Component.extend({
     },
     cancel() {
       this.sendAction('cancel');
+    },
+    delete() {
+      this.sendAction('delete');
+    },
+    share() {
+      this.sendAction('share');
     }
   }
 });

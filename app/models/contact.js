@@ -27,9 +27,16 @@ export default Model.extend(Validations, {
   
   name$: attr(),
   emailAddress$: attr(),
-  phoneNumber$: attr(),
-  latitude$: attr(),
-  longitude$: attr(),
+  contact_phoneNumber$: attr(),
+  contact_website$: attr(),
+  contact_notes$: attr(),
+  location_name$: attr(),
+  location_latitude$: attr(),
+  location_longitude$: attr(),
+  internet_skype$: attr(),
+  internet_telegram$: attr(),
+  internet_whatsapp$: attr(),
+  
   
   location: Ember.computed('latitude$', 'longitude$', function () {
     if (!this.get('latitude$') || !this.get('longitude$')) {

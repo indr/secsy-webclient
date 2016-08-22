@@ -22,12 +22,11 @@ export default Ember.Service.extend({
     const self = this;
     progress = progress || K;
     
-    var data = {
-      emailAddress$: me.get('emailAddress$'),
-      phoneNumber$: me.get('phoneNumber$'),
-      latitude$: me.get('latitude$'),
-      longitude$: me.get('longitude$')
-    };
+    var data = this.prepareSharedData(me);
+    if (Ember.isEmpty(data)) {
+      return RSVP.resolve();
+    }
+    
     var status = {
       max: 0,
       value: 0
@@ -175,5 +174,23 @@ export default Ember.Service.extend({
         }
       });
     });
+  },
+  
+  prepareSharedData(contact) {
+    const properties = ['emailAddress$',
+      'contact_phoneNumber$', 'contact_website$',
+      'location_name$', 'location_latitude$', 'location_longitude$',
+      'internet_skype$', 'internet_telegram$', 'internet_whatsapp$'
+    ];
+    
+    const result = {};
+    properties.forEach(function (key) {
+      var value = contact.get(key);
+      if (!Ember.isEmpty(value)) {
+        result[key] = value;
+      }
+    });
+    
+    return result;
   }
 });

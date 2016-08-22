@@ -52,9 +52,10 @@ contact:
   emailAddress: 'E-Mail-Adresse'
   legend:
     information: Contact information
-    location: Location
     internet: Internet
+    location: Location
     notes: Notes
+    shares: Shared updates
   me-name: 'Hello, this is you!'
   name: 'Name'
   new: 'Create contact'

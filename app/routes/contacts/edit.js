@@ -1,14 +1,21 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
+  sharer: Ember.inject.service(),
+  
   model(params) {
     return this.store.findRecord('contact', params.id);
   },
   
   actions: {
     save() {
-      this.controller.get('model').save().then(() =>
-        this.transitionTo('contacts'));
+      this.controller.get('model').save().then(() => {
+        this.transitionTo('contacts')
+      }, (err) => {
+        throw err;
+      }).catch((err) => {
+        this.get('flashMessages').dangerT('save.unknown', err.message || err);
+      });
     },
     
     cancel() {
@@ -29,9 +36,13 @@ export default Ember.Route.extend({
         return;
       }
       
-      // TODO: Error handling
-      model.destroyRecord().then(() =>
-        this.transitionTo('contacts'));
+      model.destroyRecord().then(() => {
+        this.transitionTo('contacts');
+      }, (err) => {
+        throw err;
+      }).catch((err) => {
+        this.get('flashMessages').dangerT(err.message || err, 'save.unknown-error');
+      });
     },
     
     deleteLocation() {
