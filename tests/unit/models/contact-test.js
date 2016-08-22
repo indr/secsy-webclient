@@ -18,11 +18,11 @@ describeModel('contact', 'Unit | Model | contact', {
     it('location', function () {
       let sut = this.subject();
       assert.deepEqual(sut.get('location'), null);
-      sut.set('latitude$', 45);
+      sut.set('location_latitude$', 45);
       assert.deepEqual(sut.get('location'), null);
-      sut.set('longitude$', 105);
+      sut.set('location_longitude$', 105);
       assert.deepEqual(sut.get('location'), [45, 105]);
-      sut.set('latitude$', null);
+      sut.set('location_latitude$', null);
       assert.deepEqual(sut.get('location'), null);
     });
   }

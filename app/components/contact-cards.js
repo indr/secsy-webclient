@@ -3,8 +3,7 @@ import Ember from 'ember';
 const {
   $,
   A,
-  computed,
-  get
+  computed
 } = Ember;
 
 export default Ember.Component.extend({
