@@ -27,7 +27,7 @@
  - [x] Show decryption status
  - [x] Undefine session.data.isDecrypted when session could not be restored
   - [x] Trigger sessionDataInvalidated => session.isDecrypted
- - [ ] Share with contact without emailAddress throws undefined error
+ - [x] Share with contact without emailAddress throws undefined error
  - [x] Restore session on subroute => transitions always to /contacts
  - [x] How to handle ajax errors 403s?
    - [x] Login, decrypt, open contact, reject session, login another user, 403 get contacts/abc123

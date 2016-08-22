@@ -48,6 +48,12 @@ export default Ember.Service.extend({
       }, function action(contacts) {
         var contact = contacts.pop();
         
+        status.value++;
+        const emailAddress = contact.get('emailAddress$');
+        if (Ember.isBlank(emailAddress)) {
+          progress(status);
+          return RSVP.resolve(contacts);
+        }
         return self.get('keystore').getPublicKey(contact.get('emailAddress$'))
           .then((key) => {
             if (!key) {
@@ -76,7 +82,6 @@ export default Ember.Service.extend({
               encrypted_: options.encrypted
             }).save();
           }).then(() => {
-            status.value++;
             progress(status);
             return contacts;
           });
