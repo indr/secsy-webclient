@@ -47,13 +47,7 @@
  - [ ] TODO: Error handling\??
  - [x] Grouping shows deleted.saved records? => willTransition()!!!
  - [ ] Search
-
-## Deployment
- 
- - [ ] Canary to Heroku
- - [ ] Docker
- - [ ] Backup
- - [ ] Emailing
+ - [ ] Set on map asks for saving pending changes
 
 ## Cosmetics
 

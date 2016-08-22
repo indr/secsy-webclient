@@ -11,8 +11,9 @@ export default Ember.Route.extend({
   
   actions: {
     save() {
-      this.controller.get('model').save().then(() => {
-        this.transitionTo('contacts');
+      const model = this.controller.get('model');
+      model.save().then(() => {
+        this.transitionTo('contacts.view', model);
       }, (err) => {
         throw err;
       }).catch((err) => {
@@ -21,8 +22,9 @@ export default Ember.Route.extend({
     },
     
     cancel() {
-      this.controller.get('model').rollbackAttributes();
-      this.transitionTo('contacts');
+      const model = this.controller.get('model');
+      model.rollbackAttributes();
+      this.transitionTo('contacts.view', model);
     },
     
     delete() {

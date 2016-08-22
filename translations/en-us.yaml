@@ -5,6 +5,7 @@ product:
     info: '<strong>{product}</strong> will cost <em>{price, number, USD}</em> if ordered by {deadline, date, time}'
 
 actions:
+  back: Back
   cancel: "Cancel"
   decrypt: "Decrypt"
   delete: "Delete"
