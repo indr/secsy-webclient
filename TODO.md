@@ -43,7 +43,7 @@
  - [x] More fields
    - [x] Social
    - [x] IMs and VoIP
- - [ ] Loading screen
+ - [x] Loading screen
  - [ ] TODO: Error handling\??
  - [ ] Grouping shows deleted.saved records?
 

@@ -1,8 +1,10 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
+  store: Ember.inject.service(),
+  
   model() {
-    return this.store.createRecord('contact');
+    return this.get('store').createRecord('contact');
   },
   
   actions: {

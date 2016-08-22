@@ -9,7 +9,7 @@ const {
 
 export default Ember.Component.extend({
   sorting: ['letter:desc'],
-  sorted: Ember.computed.sort('model', 'sorting').readOnly(),
+  sorted: Ember.computed.sort('model', 'sorting'),
   groups: groupBy('sorted', 'letter'),
   
   didInsertElement() {
@@ -29,37 +29,34 @@ export default Ember.Component.extend({
 
 
 /**
- * Groups an already sorted collection by the specified property.
+ * Groups an already sorted dependentKey by the specified propertyKey.
  *
  * TODO: I guess a for loop is faster than a .forEach() call?
  *
  * https://github.com/HeroicEric/ember-group-by
  *
- * @param collection
- * @param property
+ * @param dependentKey
+ * @param propertyKey
  * @returns {Ember.ComputedProperty}
  */
-function groupBy(collection, property) {
-  var dependentKey = collection + '.@each.' + property;
+function groupBy(dependentKey, propertyKey) {
   
-  return computed(dependentKey, function () {
+  return computed('' + dependentKey + '.@each.{' + propertyKey + '}', function () {
     var groups = new A();
-    var items = get(this, collection);
+    var items = this.get(dependentKey);
     
     var group = null;
     for (var i = items.get('length') - 1; i >= 0; i--) {
       var item = items.objectAt(i);
-      var value = get(item, property);
+      var value = item.get(propertyKey);
       
       if (!group || group.value !== value) {
-        group = {
-          value, items: [item]
-        };
-        groups.push(group);
-      } else {
-        group.items.push(item);
+        group = {value};
+        group.items = Ember.A();
+        groups.pushObject(group);
       }
+      group.items.pushObject(item);
     }
     return groups;
-  }).readOnly();
+  });
 }

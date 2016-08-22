@@ -1,13 +1,15 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
+  store: Ember.inject.service(),
+  
   beforeModel(transition) {
     this.center = transition.queryParams.center;
   },
   
   model(params) {
     this.center = true;
-    return this.store.findRecord('contact', params.id);
+    return this.get('store').findRecord('contact', params.id);
   },
   
   actions: {

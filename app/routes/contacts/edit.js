@@ -2,10 +2,11 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   sharer: Ember.inject.service(),
+  store: Ember.inject.service(),
   
   model(params) {
-    return this.store.findRecord('contact', params.id);
-  },
+    return this.get('store').findRecord('contact', params.id);
+},
   
   actions: {
     save() {

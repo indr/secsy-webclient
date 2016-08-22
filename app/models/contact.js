@@ -38,11 +38,11 @@ export default Model.extend(Validations, {
   internet_whatsapp$: attr(),
   
   
-  location: Ember.computed('latitude$', 'longitude$', function () {
-    if (!this.get('latitude$') || !this.get('longitude$')) {
+  location: Ember.computed('location_latitude$', 'location_longitude$', function () {
+    if (!this.get('location_latitude$') || !this.get('location_longitude$')) {
       return null;
     }
-    return [this.get('latitude$'), this.get('longitude$')];
+    return [this.get('location_latitude$'), this.get('location_longitude$')];
   }),
   
   letter: Ember.computed('name$', function () {

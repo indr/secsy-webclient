@@ -36,8 +36,8 @@ export default Ember.Controller.extend({
    
     onDragEnd(model, dragEndEvent) {
       const latlng = dragEndEvent.target._latlng;
-      model.set('latitude$', latlng.lat);
-      model.set('longitude$', latlng.lng);
+      model.set('location_latitude$', latlng.lat);
+      model.set('location_longitude$', latlng.lng);
       // TODO: Error handling
       model.save();
     },
