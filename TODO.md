@@ -46,6 +46,7 @@
  - [x] Loading screen
  - [ ] TODO: Error handling\??
  - [x] Grouping shows deleted.saved records? => willTransition()!!!
+ - [ ] Search
 
 ## Deployment
  

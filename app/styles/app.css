@@ -37,7 +37,6 @@ a.anchor {
 /**
  * Cards
  */
-
 a.card-link:hover {
   text-decoration: none;
 }
@@ -57,9 +56,11 @@ a.card-link:hover {
   margin-right: 7px;
 }
 
-/* Custom Styles */
+/*
+ * Affix nav-bar nav-tabs
+ */
 ul.nav-tabs {
-  width: 140px;
+  width: 60px;
   margin-top: 20px;
   border-radius: 4px;
   border: 1px solid #ddd;
@@ -79,6 +80,7 @@ ul.nav-tabs li a {
   margin: 0;
   padding: 8px 16px;
   border-radius: 0;
+  text-align: center;
 }
 
 ul.nav-tabs li.active a, ul.nav-tabs li.active a:hover {
