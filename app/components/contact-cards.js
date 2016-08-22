@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 const {
+  $,
   A,
   computed,
   get
@@ -9,7 +10,21 @@ const {
 export default Ember.Component.extend({
   sorting: ['letter:desc'],
   sorted: Ember.computed.sort('model', 'sorting').readOnly(),
-  groups: groupBy('sorted', 'letter')
+  groups: groupBy('sorted', 'letter'),
+  
+  didInsertElement() {
+    this._super(...arguments);
+    
+    $('html,body').scrollspy({
+      offset: 70,
+      target: '#letters-scrollspy',
+    });
+    this.$('#letters-affix').affix({
+      offset: {
+        top: 75
+      }
+    });
+  }
 });
 
 

@@ -36,16 +36,15 @@
  - [x] How to handle invalid route errors?
  - [x] jQuery ajax timeout?
  - [ ] TODO: Error handling\??
- - [ ] Show contact cards in contacts.index
-   - [ ] Group by first letter
-   - [ ] Affix letter navigation
+ - [x] Show contact cards in contacts.index
+   - [x] Group by first letter
+   - [x] Affix letter navigation
  - [ ] Don't share empty fields
  - [ ] Translations
  - [ ] More fields
    - [ ] Social
    - [ ] IMs and VoIP
  - [ ] Notes with markdown
- - [ ] autofocus
  - [ ] Loading screen
  - [ ] Remove ember-cli-filterby-query if not used anymore
 
@@ -58,6 +57,7 @@
 
 ## Cosmetics
 
+ - [ ] autofocus
  - [ ] Login/signup/decrypt/generate narrower
  - [x] Flash messages: Generate key should be persistent
  - [x] Autom. loading of shares should not show success alert
