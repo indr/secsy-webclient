@@ -29,7 +29,6 @@ export default Ember.Component.extend(Validations, {
       
       flash.clearMessages();
       this.get('session').authenticate('authenticator:local', emailAddress, password).then(() => {
-        flash.successT('login.success');
       }, (reason) => {
         if (reason === 'forbidden') {
           reason = 'invalid-username-or-password';

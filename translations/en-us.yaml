@@ -16,6 +16,9 @@ actions:
   save: "Save"
   signup: "Signup"
 
+application:
+  loading: Application is loading... Please wait a moment!
+
 login:
   title: 'Login'
   username: 'Email address'
@@ -63,6 +66,7 @@ contact:
   website: Website
 
 contacts:
+  loading: Loading and decrypting contacts... Please wait a moment!
   no-results: "Your search did not match any contacts!"
 
 internet:

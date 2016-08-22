@@ -16,6 +16,9 @@ actions:
   save: "Speichern"
   signup: "Registrieren"
 
+application:
+  loading: Laden... Bitte warten Sie einen Moment!
+
 login:
   title: 'Anmelden'
   username: 'E-Mail-Adresse'
@@ -63,6 +66,7 @@ contact:
   website: Webseite
 
 contacts:
+  loading: Lade und entschlüssle Kontakte... Bitte warten Sie einen Moment!
   no-results: 'Deine Suche ergab keine Treffer!'
 
 internet:
