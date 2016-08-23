@@ -10,6 +10,8 @@
 
 <p>{{model.currentState.stateName}}</p>
 
+{{contact-view model=model}}
+
 {{#link-to 'contacts' class="btn btn-default" active=false}}{{t 'actions.back'}}{{/link-to}}
 {{#link-to 'contacts.edit' model class="btn btn-default"}}{{t 'actions.edit'}}{{/link-to}}
 {{#if model.me}}

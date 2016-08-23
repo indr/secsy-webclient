@@ -43,15 +43,13 @@
                 <legend>{{t 'contact.legend.notes'}}</legend>
                 <div class="form-group">
                     <div class="col-md-12">
-                        {{textarea value=model.contact_notes$ class="form-control" rows="10"}}
+                      {{textarea value=model.contact_notes$ class="form-control" rows="10"}}
                     </div>
                 </div>
             </fieldset>
         </div>
     </div>
 
-    {{#bs-form-group}}
-      {{#bs-button type="primary" buttonType="submit"}}{{t 'actions.save'}}{{/bs-button}}
-      {{#bs-button type="default" action="cancel"}}{{t 'actions.cancel'}}{{/bs-button}}
-    {{/bs-form-group}}
+    {{#bs-button type="primary" buttonType="submit"}}{{t 'actions.save'}}{{/bs-button}}
+    {{#bs-button type="default" action="cancel"}}{{t 'actions.cancel'}}{{/bs-button}}
 {{/bs-form}}
