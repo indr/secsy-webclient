@@ -9,6 +9,7 @@ actions:
   cancel: "Cancel"
   decrypt: "Decrypt"
   delete: "Delete"
+  dismiss: Dismiss
   edit: "Edit"
   generate: "Generate"
   login: "Login"
@@ -20,6 +21,7 @@ actions:
   share: Share
   show-on-map: Show on map
   signup: "Signup"
+  update: Update
 
 application:
   loading: Application is loading... Please wait a moment!
@@ -71,6 +73,7 @@ contact:
   name: 'Name'
   new: 'Create contact'
   phoneNumber: Phone number
+  update-available: Update available! Click here to review and apply or dismiss it.
   website: Website
 
 contacts:
@@ -90,6 +93,9 @@ location:
 
 placeholders:
   query: "Search..."
+
+review:
+  title: Review your contacts update
 
 share:
   title: Share your details with your contacts

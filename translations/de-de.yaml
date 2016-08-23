@@ -9,6 +9,7 @@ actions:
   cancel: "Verwerfen"
   decrypt: "Entschlüsseln"
   delete: "Löschen"
+  dismiss: Verwerfen
   edit: "Bearbeiten"
   generate: "Generieren"
   login: "Anmelden"
@@ -20,6 +21,7 @@ actions:
   share: Teilen
   show-on-map: Auf der Karte anzeigen
   signup: "Registrieren"
+  update: Aktualisieren
 
 application:
   loading: Laden... Bitte warten Sie einen Moment!
@@ -71,6 +73,7 @@ contact:
   name: 'Name'
   new: 'Neuer Kontakt'
   phoneNumber: Telefonnummer
+  update-available: Aktualisierung verfügbar! Hier klicken um zu überprüfen.
   website: Webseite
 
 contacts:
@@ -90,6 +93,9 @@ location:
 
 placeholders:
   query: "Suchen..."
+
+review:
+  title: Überprüfen der Kontaktaktualisierung
 
 share:
   title: Teile deine Informationen mit deinen Kontakten

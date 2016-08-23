@@ -13,7 +13,7 @@
     <div class="col-sm-6 col-lg-6">
       {{#if model.sharesCount}}
           <div class="alert alert-info">
-              Update available! Click here to review and apply or dismiss it.
+            {{#link-to 'contacts.review' model}}{{t 'contact.update-available'}}{{/link-to}}
           </div>
       {{/if}}
     </div>
