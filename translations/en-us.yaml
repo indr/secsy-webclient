@@ -96,6 +96,11 @@ placeholders:
 
 review:
   title: Review your contacts update
+  category: Category
+  name: Name
+  value: Value
+  update: New
+  checkbox: Update?
 
 share:
   title: Share your details with your contacts

@@ -96,6 +96,12 @@ placeholders:
 
 review:
   title: Überprüfen der Kontaktaktualisierung
+  category: Kategorie
+  name: Name
+  value: Wert
+  update: Neu
+  checkbox: Aktualisieren?
+
 
 share:
   title: Teile deine Informationen mit deinen Kontakten

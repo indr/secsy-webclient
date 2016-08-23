@@ -7,6 +7,28 @@ const Validations = buildValidations({
   name$: validator('presence', true)
 });
 
+function buildViewProperties(model) {
+  const propertyNames = ['name$',
+    'contact_phoneNumber$', 'emailAddress$', 'contact_website$',
+    'location_name$', 'location_latitude$', 'location_longitude$',
+    'internet_skype$', 'internet_telegram$', 'internet_whatsapp$'
+  ];
+  
+  return propertyNames.map((each) => {
+    var [name, prefix] = each.replace('$', '').split('_').reverse();
+    prefix = prefix || 'contact';
+    var legend = prefix === 'contact' ? 'information' : prefix;
+    return {
+      key: each,
+      legend: 'contact.legend.' + legend,
+      value: model.get(each),
+      name: [prefix, name].join('.')
+      // checked: each !== 'name$' && each !== 'emailAddress$',
+      // disabled: each === 'emailAddress$'
+    };
+  });
+}
+
 export default Model.extend(Validations, {
   createdAt: attr('date', {
     readonly: true
@@ -48,7 +70,7 @@ export default Model.extend(Validations, {
   letter: Ember.computed('name$', function () {
     return this.get('name$').trimLeft().substr(0, 1).toUpperCase() || '-';
   }).readOnly(),
-
+  
   ready: function () {
     this.maySetMeName();
   },
@@ -58,5 +80,9 @@ export default Model.extend(Validations, {
       const intl = Ember.getOwner(this).lookup('service:intl');
       this.set('name$', intl.t('contact.me-name'));
     }
+  },
+  
+  getViewProperties() {
+    return buildViewProperties(this);
   }
 });
