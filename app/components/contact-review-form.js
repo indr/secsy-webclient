@@ -34,7 +34,16 @@ export default Ember.Component.extend({
   
   actions: {
     update() {
-      this.sendAction('update', this.get('properties'));
+      const selected = this.get('properties').filter((each) => {
+        return each.checked;
+      });
+      
+      if (selected.length === 0) {
+        this.get('flashMessages').dangerT('review.error-no-selection');
+        return;
+      }
+      
+      this.sendAction('update', selected, this.get('shares'));
     },
     
     back() {
@@ -42,7 +51,7 @@ export default Ember.Component.extend({
     },
     
     dismiss() {
-      this.sendAction('dismiss');
+      this.sendAction('dismiss', this.get('shares'));
     }
   }
 });

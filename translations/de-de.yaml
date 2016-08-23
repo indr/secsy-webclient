@@ -101,7 +101,11 @@ review:
   value: Wert
   update: Neu
   checkbox: Aktualisieren?
-
+  error-no-selection: Sie müssen mindestens ein Attribut auswählen
+  update-successful: Die Informationen wurden erfolgreich aktualisiert
+  update-unknown-error: Unbekannter Fehler beim Aktualisieren der Informationen
+  dismiss-successful: Das Update wurde erfolgreich verworfen
+  dismiss-unknown-error: Unbekannter Fehler beim Verwerfen des Updates
 
 share:
   title: Teile deine Informationen mit deinen Kontakten

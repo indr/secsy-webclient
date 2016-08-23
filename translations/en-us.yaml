@@ -101,6 +101,11 @@ review:
   value: Value
   update: New
   checkbox: Update?
+  error-no-selection: You must specify at least one attribute
+  update-successful: Successfully updated the details
+  update-unknown-error: Unknown error during updating
+  dismiss-successful: Successfully dismissed updates
+  dismiss-unknown-error: Unknown error during deletion of updates
 
 share:
   title: Share your details with your contacts

@@ -14,6 +14,7 @@ export default Ember.Route.extend({
       
       sharer.share(properties, this.send.bind(this, 'onProgress')).then(() => {
         Ember.run.later(flashMessages.successT.bind(flashMessages, 'share.successful'), 1200);
+        this.transitionTo('contacts.view', this.controller.get('model'));
       }).catch((err) => {
         flashMessages.dangerT('share.unknown-error', err.message || err);
       });
