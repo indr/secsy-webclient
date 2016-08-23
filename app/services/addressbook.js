@@ -40,7 +40,7 @@ export default Ember.Service.extend({
         return contact.destroyRecord().then(() => {
           progress(status);
           return contacts;
-        }).catch(() => {
+        }, () => {
           console.log('Error destroying, state was ' + stateName);
           progress(status);
           return contacts;

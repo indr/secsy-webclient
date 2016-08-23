@@ -34,7 +34,7 @@ export default Ember.Component.extend(Validations, {
           this.set('showForgot', true);
         }
         else {
-          flash.dangerT(reason, 'decrypt.unknown-error');
+          flash.dangerT('decrypt.unknown-error', reason);
         }
       });
     },

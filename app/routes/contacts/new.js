@@ -13,9 +13,7 @@ export default Ember.Route.extend({
       this.controller.get('model').save().then(() => {
         this.transitionTo('contacts');
       }, (err) => {
-        throw err;
-      }).catch((err) => {
-        this.get('flashMessages').dangerT(err.message || err, 'save.unknown-error');
+        this.get('flashMessages').dangerT('errors.save-unknown', err.message || err);
       });
     },
     
@@ -23,7 +21,7 @@ export default Ember.Route.extend({
       this.controller.get('model').rollbackAttributes();
       this.transitionTo('contacts');
     },
-  
+    
     willTransition(transition) {
       const model = this.controller.get('model');
       if (!model.get('hasDirtyAttributes')) {

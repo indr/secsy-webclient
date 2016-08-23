@@ -135,3 +135,4 @@ errors:
   invalid-passphrase: 'Invalid passphrase'
   invalid-username-or-password: 'Unknown email address or wrong password'
   decryption-failed: 'Decryption error'
+  save-unknown: Unknown error during save

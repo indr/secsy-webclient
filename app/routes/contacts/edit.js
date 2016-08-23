@@ -14,9 +14,7 @@ export default Ember.Route.extend({
       model.save().then(() => {
         this.transitionTo('contacts.view', model);
       }, (err) => {
-        throw err;
-      }).catch((err) => {
-        this.get('flashMessages').dangerT('save.unknown', err.message || err);
+        this.get('flashMessages').dangerT('errors.save-unknown', err.message || err);
       });
     },
     
@@ -25,7 +23,7 @@ export default Ember.Route.extend({
       model.rollbackAttributes();
       this.transitionTo('contacts.view', model);
     },
-   
+    
     applyShare(share) {
       const contact = this.controller.get('model');
       const decrypted = share.decoded;

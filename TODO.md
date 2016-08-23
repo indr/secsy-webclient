@@ -47,7 +47,7 @@
  - [ ] TODO: Error handling\??
  - [x] Grouping shows deleted.saved records? => willTransition()!!!
  - [ ] Search
- - [ ] Set on map asks for saving pending changes
+ - [x] Set on map asks for saving pending changes
 
 ## Cosmetics
 
