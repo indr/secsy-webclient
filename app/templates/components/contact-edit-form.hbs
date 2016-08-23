@@ -5,7 +5,13 @@
                 <legend>{{t 'contact.legend.information'}}</legend>
               {{bs-form-element controlType="text" label=(t 'contact.name') property="name$"}}
               {{bs-form-element controlType="text" label=(t 'contact.phoneNumber') property="contact_phoneNumber$"}}
-              {{bs-form-element controlType="text" label=(t 'contact.emailAddress') property="emailAddress$" disabled=model.me}}
+              {{#if model.me}}
+                {{#bs-form-element label=(t 'contact.emailAddress')}}
+                    <p class="form-control-static">{{model.emailAddress$}}</p>
+                {{/bs-form-element}}
+              {{else}}
+                {{bs-form-element controlType="text" label=(t 'contact.emailAddress') property="emailAddress$" disabled=model.me}}
+              {{/if}}
               {{bs-form-element controlType="text" label=(t 'contact.website') property="contact_website$"}}
             </fieldset>
         </div>
