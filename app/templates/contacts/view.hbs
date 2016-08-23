@@ -5,9 +5,9 @@
 {{contact-view model=model}}
 
 {{#link-to 'contacts' class="btn btn-default" active=false}}{{t 'actions.back'}}{{/link-to}}
-{{#link-to 'contacts.edit' model class="btn btn-default"}}{{t 'actions.edit'}}{{/link-to}}
+{{#link-to 'contacts.edit' model class="btn btn-primary"}}{{t 'actions.edit'}}{{/link-to}}
 {{#if model.me}}
-  {{#link-to 'contacts.share' model class="btn btn-default"}}{{t 'actions.share'}}...{{/link-to}}
+  {{#link-to 'contacts.share' model class="btn btn-success"}}{{t 'actions.share'}}...{{/link-to}}
 {{else}}
     <button {{action 'destroy' model}} class="btn btn-danger">{{t 'actions.delete'}}</button>
 {{/if}}

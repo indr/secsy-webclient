@@ -1,22 +1,3 @@
 {{contact-header model=model}}
 
-{{!--#if model.shares}}
-    <fieldset>
-        <legend>{{t 'contact.legend.shares'}} </legend>
-      {{#each model.shares as |share|}}
-          <div class="row">
-              <div class="col-md-8">
-                  Phone number: {{share.decoded.phoneNumber$}}<br>
-                  Latitude: {{share.decoded.latitude$}}<br>
-                  Longitude: {{share.decoded.longitude$}}
-              </div>
-              <div class="col-md4">
-                  <button {{action 'applyShare' share}} class="btn btn-primary">Apply</button>
-                  <button {{action 'dismissShare' share}} class="btn btn-default">Dismiss</button>
-              </div>
-          </div>
-      {{/each}}
-    </fieldset>
-{{/if--}}
-
 {{contact-edit-form model=model save='save' cancel='cancel'}}

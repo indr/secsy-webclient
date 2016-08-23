@@ -6,9 +6,7 @@
 
 <div class="row">
     <div class="col-sm-6 col-lg-6">
-        <p>Created on {{format-date model.createdAt}} | Updated on {{format-date model.updatedAt}}</p>
-
-        <p>{{model.currentState.stateName}}</p>
+        <p>Created on {{format-date model.createdAt}}<br>Updated on {{format-date model.updatedAt}}</p>
     </div>
     <div class="col-sm-6 col-lg-6">
       {{#if model.sharesCount}}
