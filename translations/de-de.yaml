@@ -93,6 +93,19 @@ placeholders:
 
 share:
   title: Teile deine Informationen mit deinen Kontakten
+  text: |
+    <p>Wählen Sie die Informationen aus die Sie mit Ihren Kontakten teilen möchten. Ihre Daten werden nie
+    unverschlüsselt übermittelt, und nur dem Empfänger ist es möglich, die Daten zu entschlüsseln. Dies ist eine
+    Charakteristik des Verschlüsselungsverfahrens
+    <a href="https://de.wikipedia.org/wiki/Pretty_Good_Privacy">PGP</a>.</p>
+    <p>Wie sieht der Ablauf aus?</p>
+    <p>Für jeden Kontakt in Ihrem Adressbuch passiert folgendes:</p>
+    <ol>
+    <li>Der Server wird nach dem öffentlichen Schlüssel des Kontakts gefragt.</li>
+    <li>Ihre Informationen werden mit dem erhaltenen Schlüssel verschlüsselt.</li>
+    <li>Die verschlüsselten Daten werden an den Server gesendet.</li>
+    <li>Wenn der Empfänger sich anmeldet und in sein Adressbuch gelangt, empfängt er die verschlüsselten Daten und
+    entschlüsselt diese mit seinem privaten Schlüssel.</li>
   category: Kategorie
   name: Name
   value: Wert

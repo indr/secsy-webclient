@@ -93,6 +93,19 @@ placeholders:
 
 share:
   title: Share your details with your contacts
+  text: |
+    <p>Choose which details you want to share with your contacts in your addressbook. Your details are never sent over
+    the wire unencrypted, and only the recipient is able to decrypt the information thanks to the encryption algorithm
+    <a href="https://en.wikipedia.org/wiki/Pretty_Good_Privacy">PGP</a>.</p>
+    <p>How does the process work?</p>
+    <p>For every contact in your addressbook the following happens:</p>
+    <ol>
+    <li>The server is asked for the contacts public key.</li>
+    <li>Your information is decrypted with the received key.</li>
+    <li>The decrypted information is sent to the server.</li>
+    <li>When the recipient logs into his addressbook, she receives the encrypted information and decrypts it with
+    her private key.</li>
+    </ol>
   category: Category
   name: Name
   value: Value
