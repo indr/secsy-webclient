@@ -30,6 +30,14 @@
               {{#bs-form-element label=(t 'location.longitude')}}
                   <p class="form-control-static">{{model.location_longitude$}}</p>
               {{/bs-form-element}}
+              {{#bs-form-element}}
+                  <p class="form-control-static">
+                    {{#link-to 'map.view' model (query-params center=true)}}
+                      {{#if model.location}}{{t 'actions.show-on-map'}}{{else}}{{t 'actions.set-on-map'}}{{/if}}
+                    {{/link-to}}
+                  </p>
+              {{/bs-form-element}}
+
             </fieldset>
         </div>
     </div>

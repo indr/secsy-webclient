@@ -14,8 +14,11 @@ actions:
   login: "Anmelden"
   logout: "Abmelden"
   preferences: 'Einstellungen'
+  remove-coordinate: Koordinate entfernen
   save: "Speichern"
+  set-on-map: Koordinate auf der Karte setzen
   share: Teilen
+  show-on-map: Auf der Karte anzeigen
   signup: "Registrieren"
 
 application:

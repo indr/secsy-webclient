@@ -22,14 +22,13 @@
               {{bs-form-element controlType="text" label=(t 'location.name') property="location_name$"}}
               {{bs-form-element controlType="text" label=(t 'location.latitude') property="location_latitude$"}}
               {{bs-form-element controlType="text" label=(t 'location.longitude') property="location_longitude$"}}
-                <p>
-                  {{#link-to 'map.view' model (query-params center=true)}}
-                    {{#if model.location}}Show on map{{else}}Set on map{{/if}}
-                  {{/link-to}}
-                  {{#if model.location}}
-                      or <a href="#" {{action 'deleteLocation'}}>Remove</a>
-                  {{/if}}
-                </p>
+              {{#bs-form-element}}
+                  <p class="form-control-static">
+                    {{#if model.location}}
+                        <a href="#" {{action 'removeCoordinate'}}>{{t 'actions.remove-coordinate'}}</a>
+                    {{/if}}
+                  </p>
+              {{/bs-form-element}}
             </fieldset>
         </div>
     </div>

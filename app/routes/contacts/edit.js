@@ -25,15 +25,7 @@ export default Ember.Route.extend({
       model.rollbackAttributes();
       this.transitionTo('contacts.view', model);
     },
-    
-    deleteLocation() {
-      const model = this.controller.get('model');
-      model.set('latitude$', null);
-      model.set('longitude$', null);
-      // TODO: Error handling
-      model.save();
-    },
-    
+   
     applyShare(share) {
       const contact = this.controller.get('model');
       const decrypted = share.decoded;
