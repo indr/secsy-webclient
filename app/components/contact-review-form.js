@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import { viewProperties } from './../models/contact';
 
 export default Ember.Component.extend({
   init() {

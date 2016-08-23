@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 const {
+  debug,
   RSVP
 } = Ember;
 
@@ -12,28 +13,27 @@ export default Ember.Route.extend({
   },
   
   destroyShares(contact, shares) {
-    const promises = [];
-    for (var j = 0; j < shares.length; j++) {
-      var share = shares[j];
+    return RSVP.promiseFor(null, function condition(shares) {
+      return shares.length > 0;
+    }, function action(shares) {
+      const share = shares.pop();
       
-      promises.push(share.destroyRecord().then((share) => {
+      return share.destroyRecord().then(() => {
         contact.set('sharesCount', contact.get('sharesCount') - 1);
-        const shares = contact.get('shares');
-        console.log('contact.shares', shares);
-        for (var i = 0; i < shares.length; i++) {
-          if (shares[i].id === share.id) {
-            shares.splice(i, 1);
-            console.log('Splicing share');
-            contact.set('shares', null);
-            contact.set('shares', Array.from(shares));
-            return;
+        var _shares = contact.get('shares');
+        for (var i = 0; i < _shares.length; i++) {
+          if (_shares[i].id === share.id) {
+            _shares.splice(i, 1);
+            contact.set('shares', Array.from(_shares));
+            return shares;
           }
         }
       }, (err) => {
-        Ember.Logger.debug(err.message || err);
-      }));
-    }
-    return RSVP.allSettled(promises);
+        debug('Could not destroy share: ', err.message || err);
+        return shares;
+      });
+      
+    }, shares);
   },
   
   actions: {

@@ -14,7 +14,7 @@ export default Ember.Component.extend({
     properties.forEach((each) => {
       var key = each.key;
       each.checked = key !== 'name$';
-      each.disabled = key === 'emailAddress$'
+      each.disabled = key === 'emailAddress$';
     });
     
     return properties;
