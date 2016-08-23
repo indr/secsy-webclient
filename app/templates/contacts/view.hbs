@@ -1,14 +1,6 @@
 {{contact-decryption-failed model=model clean='clean'}}
 
-{{#if model.decrypted}}
-    <h3>{{model.name$}}</h3>
-{{else}}
-    <h3>{{model.id}}</h3>
-{{/if}}
-
-<p>Created on {{format-date model.createdAt}} | Updated on {{format-date model.updatedAt}}</p>
-
-<p>{{model.currentState.stateName}}</p>
+{{contact-header model=model}}
 
 {{contact-view model=model}}
 

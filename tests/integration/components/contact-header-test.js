@@ -3,7 +3,7 @@ import { describeComponent, it } from 'ember-mocha';
 import hbs from 'htmlbars-inline-precompile';
 import instanceInitializer from '../../../instance-initializers/ember-intl';
 
-describeComponent('contact-view', 'Integration: ContactViewComponent', {
+describeComponent('contact-header', 'Integration: ContactHeaderComponent', {
     integration: true,
     setup() {
       // manually invoke the ember-intl initializer
@@ -13,17 +13,18 @@ describeComponent('contact-view', 'Integration: ContactViewComponent', {
     }
   },
   function () {
+    
     it('renders', function () {
       // Set any properties with this.set('myProperty', 'value');
       // Handle any actions with this.on('myAction', function(val) { ... });
       // Template block usage:
       // this.render(hbs`
-      //   {{#contact-view}}
+      //   {{#contact-header}}
       //     template content
-      //   {{/contact-view}}
+      //   {{/contact-header}}
       // `);
       
-      this.render(hbs`{{contact-view}}`);
+      this.render(hbs`{{contact-header}}`);
       expect(this.$()).to.have.length(1);
     });
   }

@@ -15,7 +15,7 @@
    - [x] Clean addressbook
    - [x] Generate fakes
  - [x] Share:
-   - [x] ~~~Check if contact.me~~~
+   - [ ] Check if contact.me
    - [x] Copy contact details
    - [x] For each contact: get public key, post share
    - [x] Progress bar
