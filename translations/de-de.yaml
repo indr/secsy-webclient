@@ -91,6 +91,13 @@ location:
 placeholders:
   query: "Suchen..."
 
+share:
+  title: Teile deine Informationen mit deinen Kontakten
+  category: Kategorie
+  name: Name
+  value: Wert
+  checkbox: Teilen?
+
 errors:
   description: "Dieses Feld"
   inclusion: "{description} is not included in the list"

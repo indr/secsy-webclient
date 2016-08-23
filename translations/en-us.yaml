@@ -91,6 +91,13 @@ location:
 placeholders:
   query: "Search..."
 
+share:
+  title: Share your details with your contacts
+  category: Category
+  name: Name
+  value: Value
+  checkbox: Share?
+
 errors:
   description: "This field"
   inclusion: "{description} is not included in the list"
