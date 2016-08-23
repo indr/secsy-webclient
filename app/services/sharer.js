@@ -14,15 +14,15 @@ export default Ember.Service.extend({
   
   /**
    *
-   * @param me
+   * @param properties
    * @param progress
    * @returns {Promise.<TResult>}
    */
-  share(me, progress) {
+  share(properties, progress) {
     const self = this;
     progress = progress || K;
     
-    var data = this.prepareSharedData(me);
+    var data = this.prepareSharedData(properties);
     if (Ember.isEmpty(data)) {
       return RSVP.resolve();
     }
@@ -176,21 +176,25 @@ export default Ember.Service.extend({
     });
   },
   
-  prepareSharedData(contact) {
-    const properties = ['emailAddress$',
-      'contact_phoneNumber$', 'contact_website$',
-      'location_name$', 'location_latitude$', 'location_longitude$',
-      'internet_skype$', 'internet_telegram$', 'internet_whatsapp$'
-    ];
+  prepareSharedData(selected) {
+    // const properties = ['emailAddress$',
+    //   'contact_phoneNumber$', 'contact_website$',
+    //   'location_name$', 'location_latitude$', 'location_longitude$',
+    //   'internet_skype$', 'internet_telegram$', 'internet_whatsapp$'
+    // ];
+    //
+    // const result = {};
+    // properties.forEach(function (key) {
+    //   var value = contact.get(key);
+    //   if (!Ember.isEmpty(value)) {
+    //     result[key] = value;
+    //   }
+    // });
+    // return result;
     
-    const result = {};
-    properties.forEach(function (key) {
-      var value = contact.get(key);
-      if (!Ember.isEmpty(value)) {
-        result[key] = value;
-      }
-    });
-    
-    return result;
+    return selected.reduce(function (result, each) {
+      result[each.key] = each.value;
+      return result;
+    }, {});
   }
 });

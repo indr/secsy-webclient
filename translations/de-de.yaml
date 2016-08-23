@@ -110,6 +110,9 @@ share:
   name: Name
   value: Wert
   checkbox: Teilen?
+  error-no-selection: Sie müssen mindestens ein Attribut auswählen
+  successful: Die Informationen wurden erfolgreich geteilt
+  unknown-error: Unbekannter Fehler beim Teilen der Information
 
 errors:
   description: "Dieses Feld"

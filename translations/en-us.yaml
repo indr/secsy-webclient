@@ -110,6 +110,9 @@ share:
   name: Name
   value: Value
   checkbox: Share?
+  error-no-selection: You must specify at least one attribute
+  successful: Successfully shared your details
+  unknown-error: Unknown error during sharing
 
 errors:
   description: "This field"

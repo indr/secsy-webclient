@@ -1,7 +1,6 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  sharer: Ember.inject.service(),
   store: Ember.inject.service(),
   
   model(params) {
@@ -9,7 +8,7 @@ export default Ember.Route.extend({
   },
   
   actions: {
-    delete() {
+    destroy() {
       const model = this.controller.get('model');
       
       if (model.get('me')) {
@@ -22,19 +21,6 @@ export default Ember.Route.extend({
         this.transitionTo('contacts');
       }, (err) => {
         this.get('flashMessages').dangerT('save.unknown-error', err.message || err);
-      });
-    },
-    
-    share() {
-      const model = this.controller.get('model');
-      const sharer = this.get('sharer');
-      const flashMessages = this.get('flashMessages');
-      
-      sharer.share(model, this.send.bind(this, 'onProgress')).then(() => {
-        Ember.run.later(flashMessages.success.bind(this, 'Successfully shared your info'), 1200);
-      }).catch((err) => {
-        // TODO: Error handling
-        flashMessages.danger('Oops: ' + (err.message || err));
       });
     }
   }

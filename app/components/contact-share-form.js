@@ -16,7 +16,7 @@ export default Ember.Component.extend({
       prefix = prefix || 'contact';
       var legend = prefix === 'contact' ? 'information' : prefix;
       return {
-        attribute: each,
+        key: each,
         legend: 'contact.legend.' + legend,
         value: model.get(each),
         name: [prefix, name].join('.'),
@@ -36,6 +36,17 @@ export default Ember.Component.extend({
   },
   
   actions: {
+    share() {
+      const selected = this.get('properties').filter((each) => {
+        return each.checked;
+      });
+      if (selected.length === 0) {
+        this.get('flashMessages').dangerT('share.error-no-selection');
+        return;
+      }
+      this.sendAction('share', selected);
+    },
+    
     cancel() {
       this.sendAction('cancel');
     }
