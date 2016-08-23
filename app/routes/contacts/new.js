@@ -12,7 +12,7 @@ export default Ember.Route.extend({
     save() {
       this.controller.get('model').save().then(() => {
         this.transitionTo('contacts');
-      }, (err) => {
+      }).catch((err) => {
         this.get('flashMessages').dangerT('errors.save-unknown', err.message || err);
       });
     },

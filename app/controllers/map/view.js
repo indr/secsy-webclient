@@ -9,8 +9,7 @@ export default Ember.Controller.extend({
       model.set('location_latitude$', location.lat);
       model.set('location_longitude$', location.lng);
       
-      model.save().then(() => {
-      }, (err) => {
+      model.save().catch((err) => {
         this.get('flashMessages').dangerT('errors.save-unknown', err.message || err);
       });
     }

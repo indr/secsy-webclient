@@ -18,7 +18,6 @@ export default Ember.Service.extend({
     const store = this.get('store');
     const openpgp = this.get('openpgp');
     
-    // TODO: Error handling
     return store.createRecord('key', {
       isPublic: true,
       emailSha256: openpgp.sha256(emailAddress),

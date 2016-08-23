@@ -40,7 +40,7 @@ export default Ember.Service.extend({
         return contact.destroyRecord().then(() => {
           progress(status);
           return contacts;
-        }, () => {
+        }).catch(() => {
           console.log('Error destroying, state was ' + stateName);
           progress(status);
           return contacts;
@@ -80,7 +80,6 @@ export default Ember.Service.extend({
         location_longitude$: location.longitude
       };
       
-      // return store.createRecord('contact', data).save().then(() => {
       return RSVP.resolve(store.createRecord('contact', data)).then(() => {
         return new RSVP.Promise((resolve) => {
           Ember.run.later(() => {

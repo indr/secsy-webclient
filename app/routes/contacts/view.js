@@ -19,8 +19,8 @@ export default Ember.Route.extend({
       
       model.destroyRecord().then(() => {
         this.transitionTo('contacts');
-      }, (err) => {
-        this.get('flashMessages').dangerT('save.unknown-error', err.message || err);
+      }).catch((err) => {
+        this.get('flashMessages').dangerT('errors.delete-unknown-error', err.message || err);
       });
     }
   }
