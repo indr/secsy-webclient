@@ -38,7 +38,7 @@ export default Ember.Service.extend(Ember.Evented, {
    * @param {String} passphrase
    * @returns {Promise}
    */
-  open(userId, passphrase) {
+  open(userId, passphrase, trigger) {
     const self = this;
     const key = this.get('keystore').getPrivateKey();
     
@@ -47,7 +47,7 @@ export default Ember.Service.extend(Ember.Evented, {
       self.publicKey = result.key;
       self.get('session').set('data.passphrase', passphrase);
       self.get('session').set('data.isDecrypted', true);
-      self._opened();
+      self._opened(trigger);
     });
   },
   
@@ -61,7 +61,7 @@ export default Ember.Service.extend(Ember.Evented, {
       if (!passphrase) {
         return reject();
       }
-      self.open(null, passphrase).then(resolve)
+      self.open(null, passphrase, false).then(resolve)
         .catch(reject);
     });
   },
@@ -111,10 +111,12 @@ export default Ember.Service.extend(Ember.Evented, {
     );
   },
   
-  _opened() {
+  _opened(trigger) {
+    trigger = Ember.isNone(trigger) ? true : trigger;
     const self = this;
     self.set('isOpen', true);
-    self.trigger('keychainOpened', self);
+    if (trigger) {
+      self.trigger('keychainOpened', self);
+    }
   }
-})
-;
+});
