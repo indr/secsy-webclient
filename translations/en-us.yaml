@@ -15,6 +15,7 @@ actions:
   logout: "Logout"
   preferences: 'Preferences'
   save: "Save"
+  share: Share
   signup: "Signup"
 
 application:
@@ -125,6 +126,7 @@ errors:
   email-exists: "Email address is already taken"
   user-exists: 'Email address is already taken'
   nick-exists: "Username is already taken"
+  no-delete-self: You can not delete your own contact
   user-not-found: "We don't know that email address"
   invalid-password: "Invalid password"
   invalid-passphrase: 'Invalid passphrase'

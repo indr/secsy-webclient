@@ -2,7 +2,6 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   intl: Ember.inject.service(),
-  sharer: Ember.inject.service(),
   store: Ember.inject.service(),
   
   model(params) {
@@ -27,43 +26,12 @@ export default Ember.Route.extend({
       this.transitionTo('contacts.view', model);
     },
     
-    delete() {
-      const model = this.controller.get('model');
-      
-      if (model.get('me')) {
-        const flash = this.get('flashMessages');
-        flash.dangerT('no-delete-self');
-        return;
-      }
-      
-      model.destroyRecord().then(() => {
-        this.transitionTo('contacts');
-      }, (err) => {
-        throw err;
-      }).catch((err) => {
-        this.get('flashMessages').dangerT(err.message || err, 'save.unknown-error');
-      });
-    },
-    
     deleteLocation() {
       const model = this.controller.get('model');
       model.set('latitude$', null);
       model.set('longitude$', null);
       // TODO: Error handling
       model.save();
-    },
-    
-    share() {
-      const model = this.controller.get('model');
-      const sharer = this.get('sharer');
-      const flashMessages = this.get('flashMessages');
-      
-      sharer.share(model, this.send.bind(this, 'onProgress')).then(() => {
-        Ember.run.later(flashMessages.success.bind(this, 'Successfully shared your info'), 1200);
-      }).catch((err) => {
-        // TODO: Error handling
-        flashMessages.danger('Oops: ' + (err.message || err));
-      });
     },
     
     applyShare(share) {

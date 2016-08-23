@@ -53,10 +53,5 @@
     {{#bs-form-group}}
       {{#bs-button type="primary" buttonType="submit"}}{{t 'actions.save'}}{{/bs-button}}
       {{#bs-button type="default" action="cancel"}}{{t 'actions.cancel'}}{{/bs-button}}
-      {{#if model.me}}
-          <button {{action 'share' model}} class="btn btn-success">Share</button>
-      {{else}}
-          <button {{action 'delete' model}} class="btn btn-danger">{{t 'actions.delete'}}</button>
-      {{/if}}
     {{/bs-form-group}}
 {{/bs-form}}
