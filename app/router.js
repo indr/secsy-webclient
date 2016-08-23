@@ -10,6 +10,7 @@ Router.map(function () {
     this.route('new');
     this.route('view', {path: '/:id'});
     this.route('edit', {path: '/:id/edit'});
+    this.route('share', {path: '/:id/share'});
   });
   this.route('decrypt');
   this.route('login');

@@ -15,7 +15,7 @@
 {{#link-to 'contacts' class="btn btn-default" active=false}}{{t 'actions.back'}}{{/link-to}}
 {{#link-to 'contacts.edit' model class="btn btn-default"}}{{t 'actions.edit'}}{{/link-to}}
 {{#if model.me}}
-    <button {{action 'share' model}} class="btn btn-success">{{t 'actions.share'}}</button>
+  {{#link-to 'contacts.share' model class="btn btn-default"}}{{t 'actions.share'}}...{{/link-to}}
 {{else}}
     <button {{action 'delete' model}} class="btn btn-danger">{{t 'actions.delete'}}</button>
 {{/if}}

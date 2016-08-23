@@ -1,0 +1,7 @@
+{{#if model.decrypted}}
+    <h3>{{model.name$}}</h3>
+{{else}}
+    <h3>{{model.id}}</h3>
+{{/if}}
+
+{{contact-share-form model=model cancel='cancel'}}

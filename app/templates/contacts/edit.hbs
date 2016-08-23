@@ -1,5 +1,3 @@
-{{contact-decryption-failed model=model clean='clean'}}
-
 {{#if model.decrypted}}
     <h3>{{model.name$}}</h3>
 {{else}}
@@ -30,5 +28,3 @@
 {{/if}}
 
 {{contact-edit-form model=model save='save' cancel='cancel'}}
-
-{{outlet}}
