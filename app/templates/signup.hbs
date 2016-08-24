@@ -1,5 +1,7 @@
-<h2>{{t 'signup.title'}}</h2>
-
-{{signup-form model=model signedUp="signedUp"}}
-
-{{outlet}}
+<div class="row">
+    <div class="col-sm-offset-3 col-sm-6">
+        <h2>{{t 'signup.title'}}</h2>
+      {{signup-form model=model signedUp="signedUp"}}
+      {{outlet}}
+    </div>
+</div>

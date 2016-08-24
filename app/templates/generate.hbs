@@ -1,6 +1,9 @@
-<h2>{{t 'generate.title'}}</h2>
+<div class="row">
+    <div class="col-sm-offset-3 col-sm-6">
+        <h2>{{t 'generate.title'}}</h2>
+      {{outlet}}
+      {{generate-form forgot=forgot}}
+    </div>
+</div>
 
-{{outlet}}
-
-{{generate-form forgot=forgot}}
 

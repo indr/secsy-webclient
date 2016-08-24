@@ -13,6 +13,12 @@ a.anchor {
   visibility: hidden;
 }
 
+div.loading {
+  text-align: center;
+  font-size: 120%;
+  margin-top: 50px;
+}
+
 .footer {
   margin-top: 60px;
 }
