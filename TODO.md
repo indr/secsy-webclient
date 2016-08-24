@@ -54,7 +54,7 @@
  - [ ] Remove ember-cli-filterby-query if not used anymore
  - [ ] Notes with markdown
  - [ ] autofocus
- - [ ] Login/signup/decrypt/generate narrower
+ - [x] Login/signup/decrypt/generate narrower
  - [x] Flash messages: Generate key should be persistent
  - [x] Autom. loading of shares should not show success alert
  - [ ] Spin shares loader glyphicon

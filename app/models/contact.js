@@ -68,7 +68,8 @@ export default Model.extend(Validations, {
   }),
   
   letter: Ember.computed('name$', function () {
-    return this.get('name$').trimLeft().substr(0, 1).toUpperCase() || '-';
+    const result = this.get('name$');
+    return result ? result.trimLeft().substr(0, 1).toUpperCase() : '-';
   }).readOnly(),
   
   ready: function () {
