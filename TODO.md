@@ -48,6 +48,8 @@
  - [x] Grouping shows deleted.saved records? => willTransition()!!!
  - [ ] Search
  - [x] Set on map asks for saving pending changes
+ - [ ] Navbar responsive
+ - [ ] Marketing page
 
 ## Cosmetics
 
