@@ -48,10 +48,9 @@
  - [x] Grouping shows deleted.saved records? => willTransition()!!!
  - [ ] Search
  - [x] Set on map asks for saving pending changes
- - [ ] Navbar
-   - [ ] Search icon
-   - [ ] Map icon
-   - [ ] Responsive: User, Preferences, Logout
+ - [x] Navbar
+   - [x] Map icon
+   - [x] Responsive: User, Preferences, Logout
  - [x] Show warning on login and generate key
 
 ## Cosmetics
