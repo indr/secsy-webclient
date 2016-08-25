@@ -15,7 +15,7 @@
    - [x] Clean addressbook
    - [x] Generate fakes
  - [x] Share:
-   - [ ] Check if contact.me
+   - [ ] Check if contact.me: from hash should equal hash in encrypted payload
    - [x] Copy contact details
    - [x] For each contact: get public key, post share
    - [x] Progress bar

@@ -1,8 +1,3 @@
-<div class="text-right" style="margin-bottom:15px">
-  {{#bs-button type='default' action='generateFakes'}}Generate fake contacts{{/bs-button}}
-  {{#bs-button type='default' action='clearContacts'}}Delete all contacts{{/bs-button}}
-</div>
-
 {{outlet}}
 
 {{#leaflet-map lat=lat lng=lng zoom=zoom onClick=(action "onMapClick")}}
