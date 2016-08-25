@@ -1,6 +1,6 @@
 {{#unless model.location}}
-    <div class="alert alert-info">
-        <p>Click on the map to set <strong>{{model.name$}}</strong>'s location.</p>
-    </div>
+  {{#bs-alert type="info" dismissible=false}}
+    {{format-html-message 'map.click-to-set' name=model.name$}}
+  {{/bs-alert}}
 {{/unless}}
 {{outlet}}

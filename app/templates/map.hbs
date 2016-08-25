@@ -1,5 +1,7 @@
 {{outlet}}
-
+{{#bs-alert type="info"}}
+  {{format-html-message 'map.dragndrop-to-change'}}
+{{/bs-alert}}
 {{#leaflet-map lat=lat lng=lng zoom=zoom onClick=(action "onMapClick")}}
   {{tile-layer url="http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"}}
 

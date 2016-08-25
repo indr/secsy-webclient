@@ -98,6 +98,12 @@ location:
   latitude: Latitude
   longitude: Longitude
 
+map:
+  click-to-set: |
+    <p>Click on the map to set the location of <strong>{name}</strong>.</p>
+  dragndrop-to-change: |
+    <p>Drag and drop a contacts pin to change its location.<p>
+
 placeholders:
   query: "Search..."
 

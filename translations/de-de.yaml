@@ -100,6 +100,12 @@ location:
   latitude: Breitengrad
   longitude: Längengrad
 
+map:
+  click-to-set: |
+    <p>Klicke auf die Karte um den Standort von <strong>{name}</strong> zu setzen.</p>
+  dragndrop-to-change: |
+    <p>Ziehe und lasse eine Nadel fallen um den Standort des Kontaktes zu verändern.</p>
+
 placeholders:
   query: "Suchen..."
 
