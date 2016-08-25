@@ -27,6 +27,25 @@ div.loading {
   margin-top: 25px;
 }
 
+.modal-content .flash-messages-container {
+  margin-top: 0;
+  padding: 0 20px;
+}
+
+.modal-content .flash-messages-container .alert {
+  margin-top: 21px;
+  margin-bottom: 0;
+}
+
+.modal-footer .form-group {
+  margin-bottom: 0;
+}
+
+.modal-footer .btn-link {
+  padding-left:0;
+  padding-right: 0;
+}
+
 .leaflet-container {
   height: 500px;
 }

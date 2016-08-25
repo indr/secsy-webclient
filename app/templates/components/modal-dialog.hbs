@@ -4,6 +4,11 @@
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h1 class="modal-title">{{title}}</h1>
         </div>
+        <div class="flash-messages-container">
+          {{#each flashMessages.queue as |flash|}}
+            {{flash-message flash=flash}}
+          {{/each}}
+        </div>
       {{yield}}
     </div>
 </div>

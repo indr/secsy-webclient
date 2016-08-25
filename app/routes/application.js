@@ -72,6 +72,19 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
       this.get('session').invalidate();
     },
     
+    modalOpened() {
+      this.controller.set('isModal', true);
+    },
+    
+    modalClosed() {
+      this.controller.get('isModal', false);
+    },
+    
+    willTransition() {
+      this.controller.set('isModal', false);
+      return this._super(...arguments);
+    },
+    
     getShares(options) {
       options = assign({silent: false}, options);
       

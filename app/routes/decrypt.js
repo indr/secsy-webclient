@@ -11,12 +11,16 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
   },
   
   actions: {
-    error: function(error/*, transition*/) {
+    error: function (error/*, transition*/) {
       if (error.message === 'private-key-not-found') {
         this.transitionTo('generate');
         return false;
       }
       return true;
+    },
+    
+    didTransition() {
+      this.send('modalOpened');
     }
   }
 });
