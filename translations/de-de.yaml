@@ -12,6 +12,7 @@ actions:
   dismiss: Verwerfen
   edit: Bearbeiten
   generate: Generieren
+  generate-new: Neuer Schlüssel generieren
   login: Anmelden
   logout: Abmelden
   preferences: Einstellungen
@@ -45,15 +46,23 @@ signup:
   unknown-error: "Unbekannter Fehler bei der Registrierung"
 
 generate:
-  title: 'Schlüssel erstellen'
-  passphrase: 'Passwort'
-  generating: "Schlüssel werden generiert... Bitte warten Sie einen Moment!"
-  success: "Schlüssel erfolgreich generiert"
-  unknown-error: "Unbekannter Fehler beim Generieren der Schlüssel"
+  title: Schlüssel generieren
+  passphrase: Passphrase
+  generating: Schlüssel werden generiert... Bitte warten Sie einen Moment!
+  success: Schlüssel erfolgreich generiert
+  unknown-error: Unbekannter Fehler beim Generieren der Schlüssel
+
+generate-new:
+  title: Neuer Schlüssel generieren
+  warning: |
+    <p>
+    <strong>Warnung!</strong></p>
+    <p>Wenn Sie einen neuen Schlüssel generieren, können die bestehenden Kontakte in Ihrem Addressbuch
+    nicht mehr entschlüsselt werden.</p>
 
 decrypt:
   title: 'Adressbuch entschlüsseln'
-  passphrase: 'Passwort'
+  passphrase: 'Passphrase'
   decrypting: "Adressbuch wird entschlüsselt"
   success: "Adressbuch erfolgreich entschlüsselt"
   unknown-error: "Unbekannter Fehler beim Entschlüsseln"
@@ -171,7 +180,7 @@ errors:
   no-delete-self: Du kannst deinen eigenen Kontakt nicht löschen
   user-not-found: "Diese E-Mail-Adresse ist uns nicht bekannt"
   invalid-password: "Ungültiges Passwort"
-  invalid-passphrase: 'Ungültiges Passwort'
+  invalid-passphrase: 'Ungültige Passphrase'
   invalid-username-or-password: 'Unbekannte E-Mail-Adresse oder falsches Passwort'
   decryption-failed: 'Entschlüsselungsfehler'
   save-unknown: Unbekannter Fehler beim Speichern

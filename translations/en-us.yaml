@@ -12,6 +12,7 @@ actions:
   dismiss: Dismiss
   edit: Edit
   generate: Generate
+  generate-new: Generate new key
   login: Login
   logout: Logout
   preferences: Preferences
@@ -45,11 +46,17 @@ signup:
   unknown-error: "Unknown error during sign up"
 
 generate:
-  title: 'Generate key'
-  passphrase: 'Passphrase'
-  generating: "Generating new key... Please wait a moment!"
-  success: "Key successfully generated"
-  unknown-error: "Unknown error during key generation"
+  title: Generate key
+  passphrase: Passphrase
+  generating: Generating new key... Please wait a moment!
+  success: Key successfully generated
+  unknown-error: Unknown error during key generation
+
+generate-new:
+  title: Generate new key
+  warning: |
+    <p><strong>Warning!</strong></p>
+    <p>If you generate a new key you won't be able to decrypt the existing contacts in your addressbook!</p>
 
 decrypt:
   title: 'Decrypt addressbook'

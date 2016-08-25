@@ -52,11 +52,6 @@
    - [ ] Search icon
    - [ ] Map icon
    - [ ] Responsive: User, Preferences, Logout
- - [ ] Marketing page
-   - [ ] Features: Secure, Map, Share
-   - [ ] Blog
-   - [ ] Contact
-   - [ ] English and Deutsch
  - [ ] Show warning on login and generate key
 
 ## Cosmetics

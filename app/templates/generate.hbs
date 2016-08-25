@@ -1,3 +1,3 @@
-{{#modal-dialog title=(t 'generate.title')}}
+{{#modal-dialog title=(t (if forgot 'generate-new.title' 'generate.title'))}}
   {{generate-form isModal=true forgot=forgot}}
 {{/modal-dialog}}

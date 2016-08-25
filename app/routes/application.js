@@ -17,6 +17,7 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
   addressbook: Ember.inject.service(),
   
   beforeModel()  {
+    this.get('session').set('data.isDecrypted', false);
     this.restoreLocale();
   },
   
