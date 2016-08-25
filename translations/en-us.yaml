@@ -40,14 +40,6 @@ login:
   success: 'Login successful!'
   unknown-error: 'Unknown error during login'
 
-signup:
-  title: "Signup"
-  emailAddress: "Email address"
-  password: "Password"
-  passwordRepeat: "Repeat"
-  success: "Welcome aboard!"
-  unknown-error: "Unknown error during sign up"
-
 generate:
   title: Generate key
   passphrase: Passphrase
@@ -107,6 +99,14 @@ map:
   dragndrop-to-change: |
     <p>Drag and drop a contacts pin to change its location.<p>
 
+nav:
+  title:
+    contacts: Your addressbook
+    map: Show contacts on the world map
+    create-contact: Create a new contact
+    preferences: Tools
+    logout: Logout
+
 placeholders:
   query: "Search..."
 
@@ -145,6 +145,14 @@ share:
   error-no-selection: You must specify at least one attribute
   successful: Successfully shared your details
   unknown-error: Unknown error during sharing
+
+signup:
+  title: "Signup"
+  emailAddress: "Email address"
+  password: "Password"
+  passwordRepeat: "Repeat"
+  success: "Welcome aboard!"
+  unknown-error: "Unknown error during sign up"
 
 warnings:
   no-ssl: |

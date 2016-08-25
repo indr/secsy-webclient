@@ -14,37 +14,36 @@
                 <span class="icon-bar"></span>
             </button>
           {{#if session.isAuthenticated}}
-            {{#link-to "contacts" class="navbar-brand hidden-xs"}}addressbook{{/link-to}}
+            {{#link-to "contacts" class="navbar-brand hidden-xs" title=(t 'nav.title.contacts')}}addressbook{{/link-to}}
           {{else}}
-          {{!--{{#link-to "index" class="navbar-brand"}}addressbook{{/link-to}}--}}
               <a href="/" class="navbar-brand">addressbook</a>
           {{/if}}
         </div>
 
-
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
               {{#if session.isDecrypted}}
-                  <li class="visible-xs">{{#link-to 'contacts'}}<span class="glyphicon glyphicon-book"
-                                                                      aria-hidden="true"></span><span class="sr-only">contacts</span>{{/link-to}}
+                  <li class="visible-xs" title="{{t 'nav.title.contacts'}}">{{#link-to 'contacts'}}<span
+                          class="glyphicon glyphicon-book"
+                          aria-hidden="true"></span><span
+                          class="sr-only">{{t 'nav.title.contacts'}}</span>{{/link-to}}
                   </li>
-                  <li>{{#link-to 'map'}}<span class="glyphicon glyphicon-globe" aria-hidden="true"></span><span
-                          class="sr-only">map</span>{{/link-to}}
+                  <li title="{{t 'nav.title.map'}}">{{#link-to 'map'}}<span class="glyphicon glyphicon-globe"
+                                                                            aria-hidden="true"></span><span
+                          class="sr-only">{{t 'nav.title.map'}}</span>{{/link-to}}
                   </li>
-                  <li>{{#link-to 'contacts.new'}}<span class="glyphicon glyphicon-plus"></span><span
-                          class="sr-only">create contact</span>{{/link-to}}</li>
+                  <li title="{{t 'nav.title.create-contact'}}">{{#link-to 'contacts.new'}}<span
+                          class="glyphicon glyphicon-plus" aria-hidden="true"></span><span
+                          class="sr-only">{{t 'nav.title.create-contact'}}</span>{{/link-to}}</li>
               {{/if}}
             </ul>
             <div class="nav navbar-nav navbar-right">
               {{#if session.isDecrypted}}
-
-                  {{!--<li>{{#link-to 'preferences'}}<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span><span
-                          class="sr-only">{{t 'actions.preferences'}}</span>{{/link-to}}</li>--}}
-                  <li class="dropdown">
+                  <li class="dropdown" title="{{t 'nav.title.preferences'}}">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                          aria-haspopup="true" aria-expanded="false">
-                        <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span><span
-                          class="sr-only">{{t 'actions.preferences'}}</span> <span class="caret"></span>
+                          <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span><span
+                              class="sr-only">{{t 'nav.title.preferences'}}</span> <span class="caret"></span>
                       </a>
                       <ul class="dropdown-menu">
                           <li><a href="#" {{action 'generateFakes'}}>{{t 'actions.generate-fakes'}}</a></li>
@@ -52,16 +51,9 @@
                           <li><a href="#" {{action 'getShares'}}>{{t 'actions.get-updates'}}</a></li>
                       </ul>
                   </li>
-
-                  <li><a href="#" {{action 'invalidateSession'}}><span class="glyphicon glyphicon-log-out"
-                                                                       aria-hidden="true"></span><span
-                          class="sr-only">{{t 'actions.logout'}}</span></a></li>
-
-              {{else}}
-              {{!--
-                <li>{{#link-to 'login'}}{{t 'actions.login'}}{{/link-to}}</li>
-                <li>{{#link-to 'signup'}}{{t 'actions.signup'}}{{/link-to}}</li>
-                --}}
+                  <li title="{{t 'nav.title.logout'}}"><a href="#" {{action 'invalidateSession'}}><span
+                          class="glyphicon glyphicon-log-out" aria-hidden="true"></span><span
+                          class="sr-only">{{t 'nav.title.logout'}}</span></a></li>
               {{/if}}
             </div>
         </div><!--/.nav-collapse -->

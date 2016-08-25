@@ -40,14 +40,6 @@ login:
   success: 'Anmeldung erfolgreich!'
   unknown-error: 'Unbekannter Fehler bei der Anmeldung'
 
-signup:
-  title: "Registrierung"
-  emailAddress: "E-Mail-Adresse"
-  password: "Passwort"
-  passwordRepeat: "Wiederholung"
-  success: "Willkommen an Bord!"
-  unknown-error: "Unbekannter Fehler bei der Registrierung"
-
 generate:
   title: Schlüssel generieren
   passphrase: Passphrase
@@ -109,6 +101,14 @@ map:
   dragndrop-to-change: |
     <p>Ziehe und lasse eine Nadel fallen um den Standort des Kontaktes zu verändern.</p>
 
+nav:
+  title:
+    contacts: Dein Adressbuch
+    map: Betrachte deine Kontakte auf der Weltkarte
+    create-contact: Erfasse einen neuen Kontakt
+    preferences: Tools
+    logout: Abmelden
+
 placeholders:
   query: "Suchen..."
 
@@ -147,6 +147,14 @@ share:
   error-no-selection: Sie müssen mindestens ein Attribut auswählen
   successful: Die Informationen wurden erfolgreich geteilt
   unknown-error: Unbekannter Fehler beim Teilen der Information
+
+signup:
+  title: "Registrierung"
+  emailAddress: "E-Mail-Adresse"
+  password: "Passwort"
+  passwordRepeat: "Wiederholung"
+  success: "Willkommen an Bord!"
+  unknown-error: "Unbekannter Fehler bei der Registrierung"
 
 warnings:
   no-ssl: |
