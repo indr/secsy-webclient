@@ -15,10 +15,8 @@
       onPopupopen=(action "popupOpened" contact) onPopupclose=(action "popupClosed" contact)
       onDragend=(action "onDragEnd" contact)}}
           <b>{{#link-to 'contacts.view' contact}}{{contact.name$}}{{/link-to}}</b>
-          <br>
-          Phone: {{contact.phoneNumber$}}
-          <br>
-          Email: {{contact.emailAddress$}}
+          <br>{{contact.location_name$}}
+          <br>{{contact.emailAddress$}}
       {{/marker-layer}}
     {{/if}}
   {{/each}}

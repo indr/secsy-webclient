@@ -73,9 +73,12 @@ export default Ember.Service.extend({
       const lastName = fake.names.lastName();
       const location = fake.address.geoLocation();
       const data = {
+        createdAt: fake.date.past(),
+        updatedAt: fake.date.recent(),
         name$: firstName + ' ' + lastName,
         emailAddress$: fake.internet.email(firstName, lastName),
         contact_phoneNumber$: fake.phone.number(),
+        location_name$: fake.address.country(),
         location_latitude$: location.latitude,
         location_longitude$: location.longitude
       };

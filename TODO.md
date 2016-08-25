@@ -52,8 +52,8 @@
    - [x] Map icon
    - [x] Responsive: User, Preferences, Logout
  - [x] Show warning on login and generate key
- - [ ] Translate created on, updated on
- - [ ] Footer
+ - [x] Translate created on, updated on
+ - [x] Footer
 
 ## Cosmetics
 
