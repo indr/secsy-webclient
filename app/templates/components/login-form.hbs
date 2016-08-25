@@ -6,7 +6,8 @@
     <div class="{{if isModal 'modal-footer'}}">
       {{#bs-form-group}}
         {{#bs-button type="primary" buttonType="submit"}}{{t 'actions.login'}}{{/bs-button}}
-        {{#link-to 'index' class="btn btn-default"}}{{t 'actions.cancel'}}{{/link-to}}
+        {{!--{{#link-to 'index' class="btn btn-default"}}{{t 'actions.cancel'}}{{/link-to}}--}}
+          <a href="/" class="btn btn-default">{{t 'actions.cancel'}}</a>
       {{/bs-form-group}}
     </div>
 {{/bs-form}}

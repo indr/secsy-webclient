@@ -6,21 +6,21 @@ product:
 
 actions:
   back: Zurück
-  cancel: "Verwerfen"
-  decrypt: "Entschlüsseln"
-  delete: "Löschen"
+  cancel: Abbrechen
+  decrypt: Entschlüsseln
+  delete: Löschen
   dismiss: Verwerfen
-  edit: "Bearbeiten"
-  generate: "Generieren"
-  login: "Anmelden"
-  logout: "Abmelden"
-  preferences: 'Einstellungen'
+  edit: Bearbeiten
+  generate: Generieren
+  login: Anmelden
+  logout: Abmelden
+  preferences: Einstellungen
   remove-coordinate: Koordinate entfernen
-  save: "Speichern"
+  save: Speichern
   set-on-map: Koordinate auf der Karte setzen
   share: Teilen
   show-on-map: Auf der Karte anzeigen
-  signup: "Registrieren"
+  signup: Registrieren
   update: Aktualisieren
 
 application:

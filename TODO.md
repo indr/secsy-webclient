@@ -48,7 +48,10 @@
  - [x] Grouping shows deleted.saved records? => willTransition()!!!
  - [ ] Search
  - [x] Set on map asks for saving pending changes
- - [ ] Responsive navbar
+ - [ ] Navbar
+   - [ ] Search icon
+   - [ ] Map icon
+   - [ ] Responsive: User, Preferences, Logout
  - [ ] Marketing page
    - [ ] Features: Secure, Map, Share
    - [ ] Blog

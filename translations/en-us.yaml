@@ -6,21 +6,21 @@ product:
 
 actions:
   back: Back
-  cancel: "Cancel"
-  decrypt: "Decrypt"
-  delete: "Delete"
+  cancel: Cancel
+  decrypt: Decrypt
+  delete: Delete
   dismiss: Dismiss
-  edit: "Edit"
-  generate: "Generate"
-  login: "Login"
-  logout: "Logout"
-  preferences: 'Preferences'
-  remove-coordinate: 'Remove coordinate'
-  save: "Save"
+  edit: Edit
+  generate: Generate
+  login: Login
+  logout: Logout
+  preferences: Preferences
+  remove-coordinate: Remove coordinate
+  save: Save
   set-on-map: Set coordinate on map
   share: Share
   show-on-map: Show on map
-  signup: "Signup"
+  signup: Signup
   update: Update
 
 application:

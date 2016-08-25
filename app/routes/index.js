@@ -1,3 +1,8 @@
 import Ember from 'ember';
 
-export default Ember.Route.extend({});
+export default Ember.Route.extend({
+  beforeModel() {
+    this._super(...arguments);
+    this.transitionTo('login');
+  }
+});

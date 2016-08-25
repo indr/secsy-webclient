@@ -11,7 +11,8 @@
           {{#if session.isAuthenticated}}
             {{#link-to "contacts" class="navbar-brand"}}addressbook{{/link-to}}
           {{else}}
-            {{#link-to "index" class="navbar-brand"}}addressbook{{/link-to}}
+          {{!--{{#link-to "index" class="navbar-brand"}}addressbook{{/link-to}}--}}
+              <a href="/" class="navbar-brand">addressbook</a>
           {{/if}}
         </div>
 
@@ -40,8 +41,10 @@
                       </ul>
                   </li>
               {{else}}
-                  <li>{{#link-to 'login'}}{{t 'actions.login'}}{{/link-to}}</li>
-                  <li>{{#link-to 'signup'}}{{t 'actions.signup'}}{{/link-to}}</li>
+              {{!--
+                <li>{{#link-to 'login'}}{{t 'actions.login'}}{{/link-to}}</li>
+                <li>{{#link-to 'signup'}}{{t 'actions.signup'}}{{/link-to}}</li>
+                --}}
               {{/if}}
             </div>
         </div><!--/.nav-collapse -->
