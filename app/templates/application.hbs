@@ -14,9 +14,11 @@
                 <span class="icon-bar"></span>
             </button>
           {{#if session.isAuthenticated}}
-            {{#link-to "contacts" class="navbar-brand hidden-xs" title=(t 'nav.title.contacts')}}addressbook{{/link-to}}
+            {{#link-to "contacts" class="navbar-brand hidden-xs" title=(t 'nav.title.contacts')}}<span
+                    class="glyphicon glyphicon-book" aria-hidden="true"></span> addressbook{{/link-to}}
           {{else}}
-              <a href="/" class="navbar-brand">addressbook</a>
+              <a href="/" class="navbar-brand"><span class="glyphicon glyphicon-book" aria-hidden="true"></span>
+                  addressbook</a>
           {{/if}}
         </div>
 
