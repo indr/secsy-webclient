@@ -65,6 +65,8 @@ decrypt:
 contact:
   clean-text: |
     <p>Missing translation</p>
+  created-at: '{timestamp} erfasst'
+  updated-at: aktualisiert {timestamp}
   edit: 'Kontakt bearbeiten'
   emailAddress: E-Mail-Adresse
   legend:
