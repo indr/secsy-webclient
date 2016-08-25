@@ -40,8 +40,11 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
     }
   },
   
+  clearError() {
+    this.render('application');
+  },
+  
   actions: {
-    // TODO: How to recover?
     error: function (error, transition) {
       Ember.Logger.error(error, transition);
       
@@ -83,6 +86,7 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
     },
     
     willTransition() {
+      this.clearError();
       this.controller.set('isModal', false);
       return this._super(...arguments);
     },
