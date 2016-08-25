@@ -83,6 +83,12 @@ contact:
 contacts:
   loading: Lade und entschlüssle Kontakte... Bitte warten Sie einen Moment!
   no-results: 'Deine Suche ergab keine Treffer!'
+  create-or-generate-hint: |
+    <p>Sieht so aus als hätten Sie noch nicht so viele Kontakte. Klicken Sie im Hauptmenü
+    auf das Plus-Symbol um einen neuen Kontakt zu erfassen.</p>
+    <p>Wenn Sie mögen, können Sie sich auch
+    eine handvoll zufällige Kontakte generieren lassen. Klicken Sie dazu rechts oben auf das
+    Schraubenschlüssel-Symbol und wählen Sie "Erzeuge ein paar zufällige Kontakte".</p>
 
 internet:
   facebook: Facebook

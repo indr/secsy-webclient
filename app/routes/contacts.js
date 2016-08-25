@@ -16,8 +16,12 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, DecryptedRouteMixin, 
     didTransition() {
       if (this.firstTransition) {
         this.firstTransition = false;
-        // this.send('getShares', {silent: true});
+        this.send('getShares', {silent: true});
       }
+      
+      const showCreateOrGenerateHint = this.controller.get('model')
+          .get('length') <= 1;
+      this.controller.set('showCreateOrGenerateHint', showCreateOrGenerateHint);
     }
   }
 });

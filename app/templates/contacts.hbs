@@ -1,1 +1,7 @@
+{{#if showCreateOrGenerateHint}}
+  {{#bs-alert type="info"}}
+    {{format-html-message 'contacts.create-or-generate-hint'}}
+  {{/bs-alert}}
+{{/if}}
+
 {{outlet}}

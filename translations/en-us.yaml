@@ -81,6 +81,12 @@ contact:
 contacts:
   loading: Loading and decrypting contacts... Please wait a moment!
   no-results: "Your search did not match any contacts!"
+  create-or-generate-hint: |
+    <p>Looks like you don't have many contacts yet. Click in the main menu on the
+    plus symbol to create a new contact.</p>
+    <p>If you like, you can create a bunch of
+    fake contacts. Click on the wrench symbol in the upper right corner and choose
+    'Create some fake contacts'.</p>
 
 internet:
   facebook: Facebook
