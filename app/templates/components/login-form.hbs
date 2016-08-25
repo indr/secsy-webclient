@@ -1,9 +1,12 @@
-{{#bs-form action="login" model=this}}
-  {{bs-form-element controlType="text" label=(t 'login.username') property="emailAddress"}}
-  {{bs-form-element controlType="password" label=(t 'login.password') property="password"}}
-
-  {{#bs-form-group}}
-    {{#bs-button type="primary" buttonType="submit"}}{{t 'actions.login'}}{{/bs-button}}
-    {{#link-to 'index' class="btn btn-default"}}{{t 'actions.cancel'}}{{/link-to}}
-  {{/bs-form-group}}
+{{#bs-form action="login" model=this novalidate=true}}
+    <div class="{{if isModal 'modal-body'}}">
+      {{bs-form-element controlType="text" label=(t 'login.username') property="emailAddress"}}
+      {{bs-form-element controlType="password" label=(t 'login.password') property="password"}}
+    </div>
+    <div class="{{if isModal 'modal-footer'}}">
+      {{#bs-form-group}}
+        {{#bs-button type="primary" buttonType="submit"}}{{t 'actions.login'}}{{/bs-button}}
+        {{#link-to 'index' class="btn btn-default"}}{{t 'actions.cancel'}}{{/link-to}}
+      {{/bs-form-group}}
+    </div>
 {{/bs-form}}

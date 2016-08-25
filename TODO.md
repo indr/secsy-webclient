@@ -48,8 +48,13 @@
  - [x] Grouping shows deleted.saved records? => willTransition()!!!
  - [ ] Search
  - [x] Set on map asks for saving pending changes
- - [ ] Navbar responsive
+ - [ ] Responsive navbar
  - [ ] Marketing page
+   - [ ] Features: Secure, Map, Share
+   - [ ] Blog
+   - [ ] Contact
+   - [ ] English and Deutsch
+ - [ ] Show warning on login and generate key
 
 ## Cosmetics
 
