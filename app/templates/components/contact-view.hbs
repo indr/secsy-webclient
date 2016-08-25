@@ -1,71 +1,73 @@
-{{#bs-form model=model formLayout="horizontal"}}
-    <div class="row">
-        <div class="col-sm-6 col-lg-6">
-            <fieldset>
-                <legend>{{t 'contact.legend.information'}}</legend>
-              {{#bs-form-element label=(t 'contact.name') property="name$"}}
-                  <p class="form-control-static">{{model.name$}}</p>
-              {{/bs-form-element}}
-              {{#bs-form-element label=(t 'contact.phoneNumber')}}
-                  <p class="form-control-static">{{model.contact_phoneNumber$}}</p>
-              {{/bs-form-element}}
-              {{#bs-form-element label=(t 'contact.emailAddress')}}
-                  <p class="form-control-static">{{model.emailAddress$}}</p>
-              {{/bs-form-element}}
-              {{#bs-form-element label=(t 'contact.website')}}
-                  <p class="form-control-static">{{model.contact_website$}}</p>
-              {{/bs-form-element}}
-            </fieldset>
-        </div>
+<div class="well">
+  {{#bs-form model=model formLayout="horizontal"}}
+      <div class="row">
+          <div class="col-sm-6 col-lg-6">
+              <fieldset>
+                  <legend>{{t 'contact.legend.information'}}</legend>
+                {{#bs-form-element label=(t 'contact.name') property="name$"}}
+                    <p class="form-control-static">{{model.name$}}</p>
+                {{/bs-form-element}}
+                {{#bs-form-element label=(t 'contact.phoneNumber')}}
+                    <p class="form-control-static">{{model.contact_phoneNumber$}}</p>
+                {{/bs-form-element}}
+                {{#bs-form-element label=(t 'contact.emailAddress')}}
+                    <p class="form-control-static">{{model.emailAddress$}}</p>
+                {{/bs-form-element}}
+                {{#bs-form-element label=(t 'contact.website')}}
+                    <p class="form-control-static">{{model.contact_website$}}</p>
+                {{/bs-form-element}}
+              </fieldset>
+          </div>
 
-        <div class="col-sm-6 col-lg-6">
-            <fieldset>
-                <legend>{{t 'contact.legend.location'}}</legend>
-              {{#bs-form-element label=(t 'location.name')}}
-                  <p class="form-control-static">{{model.location_name$}}</p>
-              {{/bs-form-element}}
-              {{#bs-form-element label=(t 'location.latitude')}}
-                  <p class="form-control-static">{{model.location_latitude$}}</p>
-              {{/bs-form-element}}
-              {{#bs-form-element label=(t 'location.longitude')}}
-                  <p class="form-control-static">{{model.location_longitude$}}</p>
-              {{/bs-form-element}}
-              {{#bs-form-element}}
-                  <p class="form-control-static">
-                    {{#link-to 'map.view' model (query-params center=true)}}
-                      {{#if model.location}}{{t 'actions.show-on-map'}}{{else}}{{t 'actions.set-on-map'}}{{/if}}
-                    {{/link-to}}
-                  </p>
-              {{/bs-form-element}}
+          <div class="col-sm-6 col-lg-6">
+              <fieldset>
+                  <legend>{{t 'contact.legend.location'}}</legend>
+                {{#bs-form-element label=(t 'location.name')}}
+                    <p class="form-control-static">{{model.location_name$}}</p>
+                {{/bs-form-element}}
+                {{#bs-form-element label=(t 'location.latitude')}}
+                    <p class="form-control-static">{{model.location_latitude$}}</p>
+                {{/bs-form-element}}
+                {{#bs-form-element label=(t 'location.longitude')}}
+                    <p class="form-control-static">{{model.location_longitude$}}</p>
+                {{/bs-form-element}}
+                {{#bs-form-element}}
+                    <p class="form-control-static">
+                      {{#link-to 'map.view' model (query-params center=true)}}
+                        {{#if model.location}}{{t 'actions.show-on-map'}}{{else}}{{t 'actions.set-on-map'}}{{/if}}
+                      {{/link-to}}
+                    </p>
+                {{/bs-form-element}}
 
-            </fieldset>
-        </div>
-    </div>
+              </fieldset>
+          </div>
+      </div>
 
-    <div class="row">
-        <div class="col-sm-6 col-lg-6">
-            <fieldset>
-                <legend>{{t 'contact.legend.internet'}}</legend>
-              {{#bs-form-element label=(t 'internet.skype')}}
-                  <p class="form-control-static">{{model.internet_skype$}}</p>
-              {{/bs-form-element}}
-              {{#bs-form-element label=(t 'internet.telegram')}}
-                  <p class="form-control-static">{{model.internet_telegram$}}</p>
-              {{/bs-form-element}}
-              {{#bs-form-element label=(t 'internet.whatsapp')}}
-                  <p class="form-control-static">{{model.internet_whatsapp$}}</p>
-              {{/bs-form-element}}
-            </fieldset>
-        </div>
+      <div class="row">
+          <div class="col-sm-6 col-lg-6">
+              <fieldset>
+                  <legend>{{t 'contact.legend.internet'}}</legend>
+                {{#bs-form-element label=(t 'internet.skype')}}
+                    <p class="form-control-static">{{model.internet_skype$}}</p>
+                {{/bs-form-element}}
+                {{#bs-form-element label=(t 'internet.telegram')}}
+                    <p class="form-control-static">{{model.internet_telegram$}}</p>
+                {{/bs-form-element}}
+                {{#bs-form-element label=(t 'internet.whatsapp')}}
+                    <p class="form-control-static">{{model.internet_whatsapp$}}</p>
+                {{/bs-form-element}}
+              </fieldset>
+          </div>
 
-        <div class="col-sm-6 col-lg-6">
-            <fieldset>
-                <legend>{{t 'contact.legend.notes'}}</legend>
-                <div class="form-group">
-                    <div class="col-md-12" style="white-space: pre-line">{{model.contact_notes$}}
-                    </div>
-                </div>
-            </fieldset>
-        </div>
-    </div>
-{{/bs-form}}
+          <div class="col-sm-6 col-lg-6">
+              <fieldset>
+                  <legend>{{t 'contact.legend.notes'}}</legend>
+                  <div class="form-group">
+                      <div class="col-md-12" style="white-space: pre-line">{{model.contact_notes$}}
+                      </div>
+                  </div>
+              </fieldset>
+          </div>
+      </div>
+  {{/bs-form}}
+</div>

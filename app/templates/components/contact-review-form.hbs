@@ -1,25 +1,27 @@
-<table class="table">
-    <thead>
-    <tr>
-        <th>{{t 'review.category'}}</th>
-        <th>{{t 'review.name'}}</th>
-        <th>{{t 'review.value'}}</th>
-        <th>{{t 'review.update'}}</th>
-        <th>{{t 'review.checkbox'}}</th>
-    </tr>
-    </thead>
-    <tbody>
-    {{#each properties as |property|}}
+<div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <thead>
         <tr>
-            <td>{{t property.legend}}</td>
-            <td>{{t property.name}}</td>
-            <td>{{property.value}}</td>
-            <td>{{property.update}}</td>
-            <td>{{input type="checkbox" checked=property.checked}}</td>
+            <th>{{t 'review.category'}}</th>
+            <th>{{t 'review.name'}}</th>
+            <th>{{t 'review.value'}}</th>
+            <th>{{t 'review.update'}}</th>
+            <th>{{t 'review.checkbox'}}</th>
         </tr>
-    {{/each}}
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+        {{#each properties as |property|}}
+            <tr>
+                <td>{{t property.legend}}</td>
+                <td>{{t property.name}}</td>
+                <td>{{property.value}}</td>
+                <td>{{property.update}}</td>
+                <td>{{input type="checkbox" checked=property.checked}}</td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</div>
 {{#bs-button type="default" action="back"}}{{t 'actions.back'}}{{/bs-button}}
 {{#bs-button type="primary" action="update"}}{{t 'actions.update'}}{{/bs-button}}
 {{#bs-button type="danger" action="dismiss"}}{{t 'actions.dismiss'}}{{/bs-button}}

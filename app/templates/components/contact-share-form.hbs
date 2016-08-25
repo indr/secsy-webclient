@@ -1,24 +1,25 @@
 {{format-html-message 'share.text'}}
-<table class="table">
-    <thead>
-    <tr>
-        <th>{{t 'share.category'}}</th>
-        <th>{{t 'share.name'}}</th>
-        <th>{{t 'share.value'}}</th>
-        <th>{{t 'share.checkbox'}}</th>
-    </tr>
-    </thead>
-    <tbody>
-    {{#each properties as |property|}}
+<div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <thead>
         <tr>
-            <td>{{t property.legend}}</td>
-            <td>{{t property.name}}</td>
-            <td>{{property.value}}</td>
-            <td>{{input type="checkbox" checked=property.checked disabled=property.disabled}}</td>
+            <th>{{t 'share.category'}}</th>
+            <th>{{t 'share.name'}}</th>
+            <th>{{t 'share.value'}}</th>
+            <th>{{t 'share.checkbox'}}</th>
         </tr>
-    {{/each}}
-    </tbody>
-</table>
-
+        </thead>
+        <tbody>
+        {{#each properties as |property|}}
+            <tr>
+                <td>{{t property.legend}}</td>
+                <td>{{t property.name}}</td>
+                <td>{{property.value}}</td>
+                <td>{{input type="checkbox" checked=property.checked disabled=property.disabled}}</td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</div>
 {{#bs-button type="default" action="cancel"}}{{t 'actions.back'}}{{/bs-button}}
 {{#bs-button type="primary" action="share"}}{{t 'actions.share'}}{{/bs-button}}
