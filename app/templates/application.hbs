@@ -25,7 +25,9 @@
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
               {{#if session.isDecrypted}}
-                  <li class="visible-xs">{{#link-to 'contacts'}}<span class="glyphicon glyphicon-book" aria-hidden="true"></span><span class="sr-only">contacts</span>{{/link-to}}</li>
+                  <li class="visible-xs">{{#link-to 'contacts'}}<span class="glyphicon glyphicon-book"
+                                                                      aria-hidden="true"></span><span class="sr-only">contacts</span>{{/link-to}}
+                  </li>
                   <li>{{#link-to 'map'}}<span class="glyphicon glyphicon-globe" aria-hidden="true"></span><span
                           class="sr-only">map</span>{{/link-to}}
                   </li>
@@ -65,17 +67,18 @@
 </nav>
 
 <div class="container">
-  {{#unless isModal}}
-      <div class="row">
-          <div class="col-sm-offset-3 col-sm-6">
-              <div class="flash-messages-container">
-                {{#each flashMessages.queue as |flash|}}
-                  {{flash-message flash=flash}}
-                {{/each}}
-              </div>
-          </div>
-      </div>
-  {{/unless}}
+    <div class="flash-messages-container">
+      {{#if noSsl}}
+        {{#bs-alert type="warning"}}
+          {{format-html-message 'warnings.no-ssl'}}
+        {{/bs-alert}}
+      {{/if}}
+      {{#unless isModal}}
+        {{#each flashMessages.queue as |flash|}}
+          {{flash-message flash=flash}}
+        {{/each}}
+      {{/unless}}
+    </div>
     <div class="progress-bar-container">
       {{#if progress.max}}
         {{#bs-progress}}

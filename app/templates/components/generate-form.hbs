@@ -1,10 +1,5 @@
 {{#bs-form action="generate" model=this}}
     <div class="{{if isModal 'modal-body'}}">
-      {{#if noSsl}}
-        {{#bs-alert type="warning"}}
-          {{format-html-message 'warnings.no-ssl'}}
-        {{/bs-alert}}
-      {{/if}}
       {{#if forgot}}
           <div class="alert alert-warning">
             {{format-html-message 'generate-new.warning'}}

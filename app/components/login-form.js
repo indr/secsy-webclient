@@ -19,8 +19,6 @@ const Validations = buildValidations({
 export default Ember.Component.extend(Validations, {
   session: Ember.inject.service(),
   
-  noSsl: window.location.href.indexOf('https') !== 0,
-  
   emailAddress: null,
   password: null,
   
