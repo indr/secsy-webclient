@@ -9,10 +9,13 @@ actions:
   cancel: Cancel
   decrypt: Decrypt
   delete: Delete
+  delete-all: Delete all contacts
   dismiss: Dismiss
   edit: Edit
   generate: Generate
+  generate-fakes: Generate some fake contacts
   generate-new: Generate new key
+  get-updates: Reload shared updates
   login: Login
   logout: Logout
   preferences: Preferences
