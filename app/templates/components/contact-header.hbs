@@ -10,9 +10,9 @@
     </div>
     <div class="col-sm-6 col-lg-6">
       {{#if model.sharesCount}}
-          <div class="alert alert-info">
-            {{#link-to 'contacts.review' model}}{{t 'contact.update-available'}}{{/link-to}}
-          </div>
+        {{#bs-alert type="info"}}
+          {{#link-to 'contacts.review' model}}{{t 'contact.update-available'}}{{/link-to}}
+        {{/bs-alert}}
       {{/if}}
     </div>
 </div>

@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  init() {
+  didReceiveAttrs() {
     this._super(...arguments);
     
     this.set('properties', this.getProperties());
@@ -9,7 +9,12 @@ export default Ember.Component.extend({
   
   getProperties() {
     const model = this.get('model');
-    const shares = model.get('shares').sort((a, b) => {
+    var shares = model.get('shares');
+    if (!shares) {
+      return;
+    }
+    
+    shares = shares.sort((a, b) => {
       return a.get('createdAt') > b.get('createdAt');
     });
     this.set('shares', shares);

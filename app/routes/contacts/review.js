@@ -28,6 +28,7 @@ export default Ember.Route.extend({
             return shares;
           }
         }
+        return shares;
       }).catch((err) => {
         debug('Could not destroy share: ', err.message || err);
         return shares;
