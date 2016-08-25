@@ -47,7 +47,7 @@ signup:
 generate:
   title: 'Schlüssel erstellen'
   passphrase: 'Passwort'
-  generating: "Schlüssel werden generiert"
+  generating: "Schlüssel werden generiert... Bitte warten Sie einen Moment!"
   success: "Schlüssel erfolgreich generiert"
   unknown-error: "Unbekannter Fehler beim Generieren der Schlüssel"
 

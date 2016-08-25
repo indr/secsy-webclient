@@ -1,57 +1,59 @@
 {{#bs-form action="save" model=model formLayout='horizontal'}}
-    <div class="row">
-        <div class="col-sm-6 col-lg-6">
-            <fieldset>
-                <legend>{{t 'contact.legend.information'}}</legend>
-              {{bs-form-element controlType="text" label=(t 'contact.name') property="name$"}}
-              {{bs-form-element controlType="text" label=(t 'contact.phoneNumber') property="contact_phoneNumber$"}}
-              {{#if model.me}}
-                {{#bs-form-element label=(t 'contact.emailAddress')}}
-                    <p class="form-control-static">{{model.emailAddress$}}</p>
-                {{/bs-form-element}}
-              {{else}}
-                {{bs-form-element controlType="text" label=(t 'contact.emailAddress') property="emailAddress$" disabled=model.me}}
-              {{/if}}
-              {{bs-form-element controlType="text" label=(t 'contact.website') property="contact_website$"}}
-            </fieldset>
+    <div class="well">
+        <div class="row">
+            <div class="col-sm-6 col-lg-6">
+                <fieldset>
+                    <legend>{{t 'contact.legend.information'}}</legend>
+                  {{bs-form-element controlType="text" label=(t 'contact.name') property="name$"}}
+                  {{bs-form-element controlType="text" label=(t 'contact.phoneNumber') property="contact_phoneNumber$"}}
+                  {{#if model.me}}
+                    {{#bs-form-element label=(t 'contact.emailAddress')}}
+                        <p class="form-control-static">{{model.emailAddress$}}</p>
+                    {{/bs-form-element}}
+                  {{else}}
+                    {{bs-form-element controlType="text" label=(t 'contact.emailAddress') property="emailAddress$" disabled=model.me}}
+                  {{/if}}
+                  {{bs-form-element controlType="text" label=(t 'contact.website') property="contact_website$"}}
+                </fieldset>
+            </div>
+
+            <div class="col-sm-6 col-lg-6">
+                <fieldset>
+                    <legend>{{t 'contact.legend.location'}}</legend>
+                  {{bs-form-element controlType="text" label=(t 'location.name') property="location_name$"}}
+                  {{bs-form-element controlType="text" label=(t 'location.latitude') property="location_latitude$"}}
+                  {{bs-form-element controlType="text" label=(t 'location.longitude') property="location_longitude$"}}
+                  {{#bs-form-element}}
+                      <p class="form-control-static">
+                        {{#if model.location}}
+                            <a href="#" {{action 'removeCoordinate'}}>{{t 'actions.remove-coordinate'}}</a>
+                        {{/if}}
+                      </p>
+                  {{/bs-form-element}}
+                </fieldset>
+            </div>
         </div>
 
-        <div class="col-sm-6 col-lg-6">
-            <fieldset>
-                <legend>{{t 'contact.legend.location'}}</legend>
-              {{bs-form-element controlType="text" label=(t 'location.name') property="location_name$"}}
-              {{bs-form-element controlType="text" label=(t 'location.latitude') property="location_latitude$"}}
-              {{bs-form-element controlType="text" label=(t 'location.longitude') property="location_longitude$"}}
-              {{#bs-form-element}}
-                  <p class="form-control-static">
-                    {{#if model.location}}
-                        <a href="#" {{action 'removeCoordinate'}}>{{t 'actions.remove-coordinate'}}</a>
-                    {{/if}}
-                  </p>
-              {{/bs-form-element}}
-            </fieldset>
-        </div>
-    </div>
+        <div class="row">
+            <div class="col-sm-6 col-lg-6">
+                <fieldset>
+                    <legend>{{t 'contact.legend.internet'}}</legend>
+                  {{bs-form-element controlType="text" label=(t 'internet.skype') property="internet_skype$"}}
+                  {{bs-form-element controlType="text" label=(t 'internet.telegram') property="internet_telegram$"}}
+                  {{bs-form-element controlType="text" label=(t 'internet.whatsapp') property="internet_whatsapp$"}}
+                </fieldset>
+            </div>
 
-    <div class="row">
-        <div class="col-sm-6 col-lg-6">
-            <fieldset>
-                <legend>{{t 'contact.legend.internet'}}</legend>
-              {{bs-form-element controlType="text" label=(t 'internet.skype') property="internet_skype$"}}
-              {{bs-form-element controlType="text" label=(t 'internet.telegram') property="internet_telegram$"}}
-              {{bs-form-element controlType="text" label=(t 'internet.whatsapp') property="internet_whatsapp$"}}
-            </fieldset>
-        </div>
-
-        <div class="col-sm-6 col-lg-6">
-            <fieldset>
-                <legend>{{t 'contact.legend.notes'}}</legend>
-                <div class="form-group">
-                    <div class="col-md-12">
-                      {{textarea value=model.contact_notes$ class="form-control" rows="10"}}
+            <div class="col-sm-6 col-lg-6">
+                <fieldset>
+                    <legend>{{t 'contact.legend.notes'}}</legend>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                          {{textarea value=model.contact_notes$ class="form-control" rows="10"}}
+                        </div>
                     </div>
-                </div>
-            </fieldset>
+                </fieldset>
+            </div>
         </div>
     </div>
 

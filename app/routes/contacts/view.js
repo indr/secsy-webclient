@@ -8,7 +8,7 @@ export default Ember.Route.extend({
   },
   
   actions: {
-    destroy() {
+    delete() {
       const model = this.controller.get('model');
       
       if (model.get('me')) {

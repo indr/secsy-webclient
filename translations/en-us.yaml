@@ -47,7 +47,7 @@ signup:
 generate:
   title: 'Generate key'
   passphrase: 'Passphrase'
-  generating: "Generating key"
+  generating: "Generating new key... Please wait a moment!"
   success: "Key successfully generated"
   unknown-error: "Unknown error during key generation"
 
