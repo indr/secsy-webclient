@@ -139,6 +139,12 @@ share:
   successful: Die Informationen wurden erfolgreich geteilt
   unknown-error: Unbekannter Fehler beim Teilen der Information
 
+warnings:
+  no-ssl: |
+    <p><strong>Keine sichere Verbindung!</strong>
+    <p>Sie sind nicht mit SSL/https verbunden. Benutzen Sie keine realen E-Mail-Adressen und geben Sie keine
+    (ähnlichen) Passwörter ein, die Sie irgendwo sonst bereits verwenden.</p>
+
 errors:
   description: "Dieses Feld"
   inclusion: "{description} is not included in the list"

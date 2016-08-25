@@ -14,6 +14,8 @@ export default Ember.Component.extend(Validations, {
   keychain: Ember.inject.service(),
   session: Ember.inject.service(),
   
+  noSsl: window.location.href.indexOf('https') !== 0,
+  
   passphrase: null,
   
   actions: {

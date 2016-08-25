@@ -52,7 +52,7 @@
    - [ ] Search icon
    - [ ] Map icon
    - [ ] Responsive: User, Preferences, Logout
- - [ ] Show warning on login and generate key
+ - [x] Show warning on login and generate key
 
 ## Cosmetics
 

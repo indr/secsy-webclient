@@ -137,6 +137,12 @@ share:
   successful: Successfully shared your details
   unknown-error: Unknown error during sharing
 
+warnings:
+  no-ssl: |
+    <p><strong>No secure connection!</strong>
+    <p>You are not connected through secure sockets layer. Don't use real email addresses and/or enter (similar)
+    passwords/passphrases you are already using somewhere else.</p>
+
 errors:
   description: "This field"
   inclusion: "{description} is not included in the list"

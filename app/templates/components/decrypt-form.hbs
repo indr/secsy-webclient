@@ -1,5 +1,10 @@
 {{#bs-form action="decrypt" model=this}}
     <div class="{{if isModal 'modal-body'}}">
+      {{#if noSsl}}
+        {{#bs-alert type="warning"}}
+          {{format-html-message 'warnings.no-ssl'}}
+        {{/bs-alert}}
+      {{/if}}
       {{bs-form-element controlType="password" label=(t 'decrypt.passphrase') property="passphrase"}}
     </div>
     <div class="{{if isModal 'modal-footer'}}">

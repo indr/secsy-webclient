@@ -24,6 +24,8 @@ const Validations = buildValidations({
 
 
 export default Ember.Component.extend(Validations, ValidationErrorsMixin, {
+  noSsl: window.location.href.indexOf('https') !== 0,
+  
   emailAddress: null,
   password: null,
   passwordRepeat: null,
