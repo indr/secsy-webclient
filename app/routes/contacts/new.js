@@ -10,8 +10,9 @@ export default Ember.Route.extend({
   
   actions: {
     save() {
-      this.controller.get('model').save().then(() => {
-        this.transitionTo('contacts');
+      const model = this.controller.get('model');
+      model.save().then(() => {
+        this.transitionTo('contacts.view', model);
       }).catch((err) => {
         this.get('flashMessages').dangerT('errors.save-unknown', err.message || err);
       });
