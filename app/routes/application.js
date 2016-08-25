@@ -41,6 +41,7 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
   },
   
   actions: {
+    // TODO: How to recover?
     error: function (error, transition) {
       Ember.Logger.error(error, transition);
       

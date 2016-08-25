@@ -71,7 +71,7 @@ contact:
     location: Location
     notes: Notes
     shares: Shared updates
-  me-name: 'Hello, this is you!'
+  me-name: 'Me, this is me!'
   name: 'Name'
   new: 'Create contact'
   phoneNumber: Phone number
