@@ -24,6 +24,9 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, DecryptedRouteMixin, 
       // This is the case when we are in the child route (map.view)
       // and the user clicks in the main menu on 'map'.
       this.controller.closePopup();
+      
+      const showDragAndDropHint = this.controller.get('model').any((contact) => contact.get('location') !== null);
+      this.controller.set('showDragAndDropHint', showDragAndDropHint);
     },
     
     willTransition(transition) {

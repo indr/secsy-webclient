@@ -5,6 +5,8 @@ export default Ember.Controller.extend({
   lng: 0,
   zoom: 2,
   
+  showDragAndDropHint: false,
+  
   // Usually, when a popup is closed, we want to leave
   // the child route map.view (/map/;id) and go to the parent.
   doTransitionOnClosed: true,
