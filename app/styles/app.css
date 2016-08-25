@@ -90,9 +90,9 @@ ul.nav-tabs li a {
 }
 
 ul.nav-tabs li.active a, ul.nav-tabs li.active a:hover {
-  color: #fff;
-  background: #0088cc;
-  border: 1px solid #0088cc;
+  color: #ffffff;
+  background-color: #18bc9c;
+  border: 1px solid #0f7864;
 }
 
 ul.nav-tabs li:first-child a {
