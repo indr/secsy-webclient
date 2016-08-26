@@ -22,7 +22,12 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
   },
   
   restoreLocale() {
-    const localeName = this.get('session').get('data.localeName') || 'en-us';
+    // http://stackoverflow.com/questions/8199760/how-to-get-the-browser-language-using-javascript
+    var language = this.get('session').get('data.localeName') || navigator.language || navigator.userLanguage;
+    var localeName = ('' + language).toLowerCase().substr(0, 2);
+    const names = {'en': 'en-us', 'de': 'de-de'};
+    localeName = names[localeName] || 'en-us';
+    Ember.debug('Setting locale ' + localeName + ' (detected ' + language + ')');
     this.get('intl').setLocale(localeName);
   },
   
