@@ -17,6 +17,11 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
   addressbook: Ember.inject.service(),
   
   beforeModel()  {
+    const noSsl = window.location.href.indexOf('https') !== 0 && window.location.href.indexOf('http://localhost') !== 0;
+    if (noSsl) {
+      window.location.href = 'https' + window.location.href.substr(4);
+    }
+    
     this.get('session').set('data.isDecrypted', false);
     this.restoreLocale();
   },
