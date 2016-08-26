@@ -61,6 +61,12 @@ decrypt:
   unknown-error: "Unknown error during decryption"
 
 contact:
+  clean-text: |
+    <p>An error occured during decryption of this contact. This is the desired consequence if you have generated a
+    new key because the contact was encrypted with your old key and can not be decrypted anymore.</p>
+    <p>You can edit and save this contact. It will be encrypted with your new key and this message will disappear. If
+    you like you can delete all your contacts. Click on the wrench symbol in the upper right corner and choose
+    'Delete all contacts'.</p>
   created-at: Created {timestamp}
   updated-at: updated {timestamp}
   edit: 'Edit contact'

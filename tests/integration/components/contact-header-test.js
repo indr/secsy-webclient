@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import { expect } from 'chai';
 import { describeComponent, it } from 'ember-mocha';
 import hbs from 'htmlbars-inline-precompile';
@@ -24,7 +25,12 @@ describeComponent('contact-header', 'Integration: ContactHeaderComponent', {
       //   {{/contact-header}}
       // `);
       
-      this.render(hbs`{{contact-header}}`);
+      const contact = Ember.Object.create();
+      contact.set('createdAt', new Date());
+      contact.set('updatedAt', new Date());
+      this.set('contact', contact);
+      
+      this.render(hbs`{{contact-header model=contact}}`);
       expect(this.$()).to.have.length(1);
     });
   }

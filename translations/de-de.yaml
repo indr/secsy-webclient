@@ -63,6 +63,13 @@ decrypt:
   unknown-error: "Unbekannter Fehler beim Entschlüsseln"
 
 contact:
+  clean-text: |
+    <p>Beim Entschlüsseln dieses Kontaktes ist ein Fehler aufgetreten. Falls Sie einen neuen Schlüssel generiert haben,
+    ist dies die gewünschte Konsequenz, da der Kontakt mit dem alten Schlüssel verschlüsselt wurde und jetzt nicht
+    mehr gelesen werden kann.</p>
+    <p>Sie können diesen Kontakt bearbeiten und speichern. Er wird dann mit dem neuen Schlüssel verschlüsselt und diese
+    Meldung verschwindet. Wenn Sie wollen, können Sie alle Kontakte löschen. Klicken Sie dazu rechts oben auf das
+    Schraubenschlüssel-Symbol und wählen Sie "Alle Kontakte löschen".</p>
   created-at: '{timestamp} erfasst'
   updated-at: aktualisiert {timestamp}
   edit: 'Kontakt bearbeiten'

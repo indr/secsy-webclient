@@ -6,12 +6,12 @@
               {{#if contact.sharesCount}}<span
                       class="pull-left label label-pill label-danger label">{{contact.sharesCount}}</span> {{/if}}
                 <h4>{{contact.name$}}</h4>
+                <p>{{contact.emailAddress$}}</p>
+                <p>{{contact.phoneNumber$}}</p>
             {{else}}
-                <span class="glyphicon glyphicon-alert"></span>
-                <h4>{{t 'errors.decryption-failed'}}</h4>
+                <h4><span class="glyphicon glyphicon-alert"></span> {{t 'errors.decryption-failed'}}</h4>
+                <p>{{contact.id}}</p>
             {{/if}}
-              <p>{{contact.emailAddress$}}</p>
-              <p>{{contact.phoneNumber$}}</p>
           </div>
       </div>
   {{/link-to}}
