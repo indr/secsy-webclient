@@ -1,5 +1,6 @@
 /*jshint unused:false*/
 import DSError from './../validators/ds-error';
+import Format from './../validators/format';
 import Session from './../services/session';
 
 /**
