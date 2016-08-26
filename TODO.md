@@ -15,10 +15,12 @@
    - [x] Clean addressbook
    - [x] Generate fakes
  - [x] Share:
-   - [ ] Check if contact.me: from hash should equal hash in encrypted payload
+   - [ ] Check if contact.me in beforeModel and show 403
    - [x] Copy contact details
    - [x] For each contact: get public key, post share
    - [x] Progress bar
+ - [ ] Updates:
+   - [ ] Check if contact.me: from hash should equal hash in encrypted payload
  - [x] Remove Ember.ENV.autoCreateMe
    - [x] Set contacts name if empty and me
  - [x] ~~~Embed map with responsive-embed~~~
@@ -47,6 +49,7 @@
  - [ ] TODO: Error handling\??
  - [x] Grouping shows deleted.saved records? => willTransition()!!!
  - [ ] Search
+   - [ ] Remove ember-cli-filterby-query if not used anymore
  - [x] Set on map asks for saving pending changes
  - [x] Navbar
    - [x] Map icon
@@ -55,21 +58,16 @@
  - [x] Translate created on, updated on
  - [x] Footer
  - [ ] Disable buttons, show spinner
+ - [ ] Load shares automatically after decryption
 
 ## Cosmetics
 
- - [ ] Remove ember-cli-filterby-query if not used anymore
  - [ ] Notes with markdown
- - [ ] autofocus
+ - [ ] autofocus => Open issue in ember-cp-validations repo
  - [x] Login/signup/decrypt/generate narrower
  - [x] Flash messages: Generate key should be persistent
  - [x] Autom. loading of shares should not show success alert
- - [ ] Spin shares loader glyphicon
  - [x] Determine browsers prefered language
- - [ ] Change 'set on map'
-   - [ ] Set pin to center
-   - [ ] Open pin with 'Drag me!'
-   - [ ] Remove info message
    
 ## Contributions
 
