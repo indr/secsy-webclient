@@ -59,7 +59,7 @@ export default Ember.Service.extend({
    */
   getPublicKey(emailAddress) {
     const hash = this.get('openpgp').sha256(emailAddress.toLowerCase());
-    const filter = {emailSha256: hash};
+    const filter = {h: hash};
     
     return this.get('store').query('key', filter).then((results) => {
       return results.objectAt(0);
