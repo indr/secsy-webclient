@@ -1,2 +1,2 @@
 #!/usr/bin/bash
-ember serve --proxy http://localhost:1337 --live-reload false
+ember serve --proxy http://localhost:3333 --live-reload false
