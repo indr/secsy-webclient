@@ -25,8 +25,8 @@ export default Ember.Service.extend({
       privateKey: key.privateKeyArmored,
       destroyMe: destroyMe || false
     }).save().then(function () {
-      session.set('data.authenticated.publicKey', key.publicKeyArmored);
-      session.set('data.authenticated.privateKey', key.privateKeyArmored);
+      session.set('data.authenticated.public_key', key.publicKeyArmored);
+      session.set('data.authenticated.private_key', key.privateKeyArmored);
     }).then(() => {
       return key.key;
     });
@@ -38,7 +38,7 @@ export default Ember.Service.extend({
    * @returns {Key}
    */
   getPrivateKey() {
-    const armored = this.get('session.data.authenticated.privateKey');
+    const armored = this.get('session.data.authenticated.private_key');
     if (!armored) {
       throw new Error('private-key-not-found');
     }

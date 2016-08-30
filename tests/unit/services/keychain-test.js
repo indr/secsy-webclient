@@ -23,7 +23,7 @@ describeModule('service:keychain', 'Unit | Service | keychain', {
         }
       }));
       session = Ember.getOwner(this).lookup('service:session');
-      session.set('data.authenticated.privateKey', aks[0][1]);
+      session.set('data.authenticated.private_key', aks[0][1]);
       this.register('service:seneca-auth', Ember.Object.extend());
       
       sut = this.subject();
@@ -47,7 +47,7 @@ describeModule('service:keychain', 'Unit | Service | keychain', {
     
     describe('open()', function () {
       it('throws with invalid private key', function () {
-        session.set('data.authenticated.privateKey', 'invalid');
+        session.set('data.authenticated.private_key', 'invalid');
         assert.throws(() => sut.open(), 'Unknown ASCII armor type');
       });
       

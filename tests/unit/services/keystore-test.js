@@ -19,7 +19,7 @@ describeModule('service:keystore', 'Unit | Service | keystore', {
       senecaAuth = Ember.getOwner(this).lookup('service:seneca-auth');
       this.register('service:session', Ember.Object.extend({data: {authenticated: {user: {}}}}));
       session = Ember.getOwner(this).lookup('service:session');
-      session.set('data.authenticated.privateKey', aks[0][1]);
+      session.set('data.authenticated.private_key', aks[0][1]);
       
       // TODO: Remove keystores dependency on store
       store = Ember.getOwner(this).lookup('service:store');
@@ -53,8 +53,8 @@ describeModule('service:keystore', 'Unit | Service | keystore', {
           assert.equal(fakeKey.publicKey, 'pub');
           assert.equal(fakeKey.emailSha256, 'b4c9a289323b21a01c3e940f150eb9b8c542587f1abfd8f0e1cc1ffc5e475514');
           assert.equal(fakeKey.isPublic, true);
-          assert.equal(session.get('data.authenticated.publicKey'), 'pub');
-          assert.equal(session.get('data.authenticated.privateKey'), 'priv');
+          assert.equal(session.get('data.authenticated.public_key'), 'pub');
+          assert.equal(session.get('data.authenticated.private_key'), 'priv');
           assert.equal(result, '1');
           done();
         });
@@ -63,12 +63,12 @@ describeModule('service:keystore', 'Unit | Service | keystore', {
     
     describe('getPrivateKey()', function () {
       it('throws if no private key is present', function () {
-        session.set('data.authenticated.privateKey', undefined);
+        session.set('data.authenticated.private_key', undefined);
         assert.throws(() => sut.getPrivateKey(), 'private-key-not-found');
       });
       
       it('throws with invalid private key', function () {
-        session.set('data.authenticated.privateKey', 'invalid');
+        session.set('data.authenticated.private_key', 'invalid');
         assert.throws(() => sut.getPrivateKey(), 'Unknown ASCII armor type');
       });
       
