@@ -14,24 +14,21 @@
                 <span class="icon-bar"></span>
             </button>
           {{#if session.isDecrypted}}
-            {{#link-to "contacts" class="navbar-brand hidden-xs" title=(t 'nav.title.contacts')}}<span
-                    class="glyphicon glyphicon-book" aria-hidden="true"></span> addressbook{{/link-to}}
+              <a href="/" class="navbar-brand" target="_blank">secsy<span class="text-muted">.io</span></a>
           {{else}}
-              <a href="/" class="navbar-brand"><span class="glyphicon glyphicon-book" aria-hidden="true"></span>
-                  addressbook</a>
+              <a href="/" class="navbar-brand">secsy<span class="text-muted">.io</span></a>
           {{/if}}
         </div>
 
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
               {{#if session.isDecrypted}}
-                  <li class="visible-xs" title="{{t 'nav.title.contacts'}}">{{#link-to 'contacts'}}<span
-                          class="glyphicon glyphicon-book"
-                          aria-hidden="true"></span><span
+                  <li title="{{t 'nav.title.contacts'}}">{{#link-to 'contacts'}}<span
+                          class="glyphicon glyphicon-book" aria-hidden="true"></span><span
                           class="sr-only">{{t 'nav.title.contacts'}}</span>{{/link-to}}
                   </li>
-                  <li title="{{t 'nav.title.map'}}">{{#link-to 'map'}}<span class="glyphicon glyphicon-globe"
-                                                                            aria-hidden="true"></span><span
+                  <li title="{{t 'nav.title.map'}}">{{#link-to 'map'}}<span
+                          class="glyphicon glyphicon-globe" aria-hidden="true"></span><span
                           class="sr-only">{{t 'nav.title.map'}}</span>{{/link-to}}
                   </li>
                   <li title="{{t 'nav.title.create-contact'}}">{{#link-to 'contacts.new'}}<span
