@@ -24,7 +24,7 @@
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.2",
     "ember-ajax": "2.4.1",
-    "ember-bootstrap": "0.8.0",
+    "ember-bootstrap": "0.9.1",
     "ember-bootstrap-cp-validations": "0.2.0",
     "ember-cli": "2.7.0",
     "ember-cli-app-version": "^1.0.0",
