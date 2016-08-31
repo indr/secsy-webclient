@@ -6,31 +6,37 @@ export default DS.RESTAdapter.extend({
   
   namespace: 'api',
   
-  // headers: Ember.computed('session.data.authenticated.token', function () {
-  //   const key = 'X-Auth-Token';
-  //   var token = this.get('session.data.authenticated.token');
-  //   Ember.Logger.info(key, token);
-  //   if (Ember.isPresent(token)) {
-  //     const headers = {};
-  //     headers[key] = token;
-  //     return headers;
-  //   }
-  // }),
-  
-  // TODO: Why is `this` undefined?
+  /**
+   * AdonisJs uses [Indicative](http://indicative.adonisjs.com/) to validate user input. The returned payload has
+   * this format:
+   *
+   * ```js
+   * payload = [
+   *   { field: 'email', message: 'email validation failed on email', validation: 'email' },
+   *   { field: 'email', message: 'min validation failed on email', validation: 'min' },
+   *   { field: 'password', message: 'required validation failed on password', validation: 'required' }
+   * ]
+   * ```
+   *
+   * The payload is always an array even if only one validation fails or the validation
+   * is invoked with `validateAll()`.
+   *
+   * @param status
+   * @param headers
+   * @param payload
+   * @returns {Array}
+   */
   normalizeErrorResponse(status, headers, payload) {
     const errors = [];
     
-    if (payload && typeof payload === 'object') {
-      if (payload.invalidAttributes) {
-        Object.keys(payload.invalidAttributes).forEach(function (eachKey) {
-          const pointer = 'data/attributes/' + eachKey;
-          payload.invalidAttributes[eachKey].forEach(function (obj) {
-            errors.push({
-              detail: normalizeDetail(obj.message),
-              source: {pointer}
-            });
-          });
+    if (payload && Array.isArray(payload)) {
+      for (var i = 0; i < payload.length; i++) {
+        const each = payload[i];
+        const pointer = 'data/attributes/' + each.field;
+        const validation = this.normalizeErrorAttributeValidation(each);
+        errors.push({
+          detail: validation,
+          source: {pointer}
         });
       }
     }
@@ -43,13 +49,12 @@ export default DS.RESTAdapter.extend({
       });
     }
     return errors;
+  },
+  
+  normalizeErrorAttributeValidation(error) {
+    if (error.validation === 'unique') {
+      return 'unique-' + error.field;
+    }
+    return error.validation;
   }
 });
-
-function normalizeDetail(message) {
-  if (!message || !message.startsWith('Error.Passport.')) {
-    return message;
-  }
-  
-  return message.substr(15).toLowerCase().replace('.', '-');
-}

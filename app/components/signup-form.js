@@ -41,10 +41,10 @@ export default Ember.Component.extend(Validations, ValidationErrorsMixin, {
         flash.successT('signup.success');
         this.sendAction('signedUp');
       }).catch((err) => {
-        if (!this.handleValidationErrors(err, {email: 'emailAddress', username: 'emailAddress'})) {
-          flash.dangerT('signup.unknown-error', err.message || err);
-        }
+        return this.handleValidationErrors(err, {email: 'emailAddress', username: 'emailAddress'});
+      }).catch((err) => {
+        flash.dangerT('signup.unknown-error', err.message || err);
       });
-    },
+    }
   }
 });

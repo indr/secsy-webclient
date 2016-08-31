@@ -207,9 +207,8 @@ errors:
   phone: "{description} must be a valid phone number"
   url: "{description} must be a valid url"
   timeout: 'The server did not respond within a reasonable time'
-  email-exists: "Email address is already taken"
-  user-exists: 'Email address is already taken'
-  nick-exists: "Username is already taken"
+  unique-email: "Email address is already taken"
+  unique-username: 'Email address is already taken'
   no-delete-self: You can not delete your own contact
   no-updates: No updates for this contact
   user-not-found: "We don't know that email address"

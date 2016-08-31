@@ -210,9 +210,8 @@ errors:
   phone: "{description} must be a valid phone number"
   url: "{description} must be a valid url"
   timeout: 'Der Server hat nicht innerhalb einer angemessenen Zeit geantwortet'
-  email-exists: Die E-Mail-Adresse wird bereits verwendet
-  user-exists: Die E-Mail-Adresse wird bereits verwendet
-  nick-exists: "Der Benutzername wird bereits verwendet"
+  unique-email: Die E-Mail-Adresse wird bereits verwendet
+  unique-username: Die E-Mail-Adresse wird bereits verwendet
   no-delete-self: Du kannst deinen eigenen Kontakt nicht löschen
   no-updates: Keine Updates für diesen Kontakt
   user-not-found: "Diese E-Mail-Adresse ist uns nicht bekannt"

@@ -18,15 +18,41 @@ export default Ember.Mixin.create({
     }
   },
   
+  /**
+   * Sets translated error message to attributes based on contents of `err`.
+   *
+   * @param err {DS.Error}
+   * @param options {Object}
+   * @returns {Promise}
+   *
+   * Resolves if there is at least one invalid validation.
+   * Rejects otherwise with the original err argument.
+   */
   handleValidationErrors: function (err, options) {
     var hash = errorsArrayToHash(err.errors);
+    
     this._adapterDidInvalidate(hash, options || {});
     
-    return this.get('validations.isInvalid');
+    // Trigger revalidate of all validators, not only ds-error because dependent validators should also be
+    // revalidated
+    return this.validate().then(() => {
+      if (this.get('validations.isInvalid')) {
+        // Resolve promise if ds-error caused validations to fail
+        return;
+      }
+      // Throw original err object cause ds-error didn't invalidate
+      throw err;
+    });
   },
   
   _errorsArrayToHash: errorsArrayToHash,
   
+  /**
+   *
+   * @param errors
+   * @param options
+   * @private
+   */
   _adapterDidInvalidate: function (errors, options) {
     var attribute;
     
@@ -35,10 +61,6 @@ export default Ember.Mixin.create({
         this._addErrorMessageToAttribute(options[attribute] || attribute, errors[attribute]);
       }
     }
-    
-    // Trigger validation of ds-error
-    // TODO: Trigger validations only of ds-error validators? What about dependent validators?
-    this.validate();
   },
   
   _addErrorMessageToAttribute: function (attribute, message) {
