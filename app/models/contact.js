@@ -7,7 +7,7 @@ const Validations = buildValidations({
   name$: validator('presence', true)
 });
 
-function buildViewProperties(model) {
+function buildViewProperties (model) {
   const propertyNames = ['name$',
     'contact_phoneNumber$', 'emailAddress$', 'contact_website$',
     'location_name$', 'location_latitude$', 'location_longitude$',
@@ -30,9 +30,17 @@ function buildViewProperties(model) {
 }
 
 export default Model.extend(Validations, {
+  init() {
+    this._super()
+    this.updates = []
+    this.mergedUpdate = {}
+    this.newValuesCount = 0
+  },
+  
   createdAt: attr('date', {
     readonly: true
   }),
+  
   updatedAt: attr('date', {
     readonly: true
   }),
@@ -85,5 +93,28 @@ export default Model.extend(Validations, {
   
   getViewProperties() {
     return buildViewProperties(this);
+  },
+  
+  pushUpdate(update) {
+    if (this.get('updates').find((each) => {
+        return each.id === update.id
+      })) {
+      return;
+    }
+    this.get('updates').push(update)
+    
+    if (!update.decoded) {
+      return
+    }
+    
+    this.mergedUpdate = Ember.merge(this.mergedUpdate, update.decoded)
+    
+    let newValuesCount = 0;
+    Object.keys(this.mergedUpdate).forEach((key) => {
+      if ((this.mergedUpdate[key] || '') !== (this.get(key) || '')) {
+        newValuesCount++
+      }
+    })
+    this.set('newValuesCount', newValuesCount)
   }
 });

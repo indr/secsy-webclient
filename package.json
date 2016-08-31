@@ -53,6 +53,7 @@
     "ember-load-initializers": "^0.5.1",
     "ember-resolver": "^2.0.3",
     "ember-simple-auth": "^1.1.0",
+    "ember-simple-uuid": "0.1.4",
     "loader.js": "^4.0.1"
   }
 }
