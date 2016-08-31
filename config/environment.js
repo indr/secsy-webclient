@@ -1,6 +1,6 @@
 /* jshint node: true */
 
-module.exports = function(environment) {
+module.exports = function (environment) {
   var ENV = {
     modulePrefix: 'addressbook',
     environment: environment,
@@ -19,14 +19,16 @@ module.exports = function(environment) {
       decryptionRoute: 'decrypt',
       routeAfterDecryption: 'contacts',
     },
-    
+
     'seneca-auth': {
       assignFromUser: ['privateKey']
     }
   };
 
   ENV['ember-simple-auth'] = {
-    routeAfterAuthentication: 'decrypt'
+    authenticationRoute: 'login',
+    routeAfterAuthentication: 'decrypt',
+    routeIfAlreadyAuthenticated: 'decrypt'
   };
 
   if (environment === 'development') {
