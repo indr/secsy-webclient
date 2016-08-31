@@ -70,9 +70,12 @@ describeModule('mixin:decrypted-route-mixin', 'Unit | Mixin | decrypted route mi
         keychain.restore = () => RSVP.reject();
         sut.set('routeName', ENV.APP.decryptionRoute);
         
-        return sut.beforeModel().catch((err) => {
+        return sut.beforeModel(transition).catch((err) => {
           assert.instanceOf(err, Error);
           assert.match(err.message, /The route configured as/);
+          return 'ok';
+        }).then((ok) => {
+          assert(ok === 'ok', 'Expected exception to be thrown but there was none');
         });
       });
       
