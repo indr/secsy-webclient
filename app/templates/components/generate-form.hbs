@@ -5,7 +5,7 @@
             {{format-html-message 'generate-new.warning'}}
           </div>
       {{/if}}
-      {{bs-form-element controlType="password" label=(t 'generate.passphrase') property="passphrase"}}
+      {{bs-form-element controlType="password" label=(t 'generate.passphrase') property="passphrase" autofocus=true}}
     </div>
     <div class="{{if isModal 'modal-footer'}}">
       {{#bs-form-group}}

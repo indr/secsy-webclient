@@ -4,7 +4,7 @@
             <div class="col-sm-6 col-lg-6">
                 <fieldset>
                     <legend>{{t 'contact.legend.information'}}</legend>
-                  {{bs-form-element controlType="text" label=(t 'contact.name') property="name$"}}
+                  {{bs-form-element controlType="text" label=(t 'contact.name') property="name$" autofocus=true}}
                   {{bs-form-element controlType="text" label=(t 'contact.phoneNumber') property="contact_phoneNumber$"}}
                   {{#if model.me}}
                     {{#bs-form-element label=(t 'contact.emailAddress')}}

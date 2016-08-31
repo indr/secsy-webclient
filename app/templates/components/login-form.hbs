@@ -1,6 +1,6 @@
 {{#bs-form action="login" model=this novalidate=true}}
     <div class="{{if isModal 'modal-body'}}">
-      {{bs-form-element controlType="text" label=(t 'login.username') property="emailAddress"}}
+      {{bs-form-element controlType="text" label=(t 'login.username') property="emailAddress" autofocus=true}}
       {{bs-form-element controlType="password" label=(t 'login.password') property="password"}}
     </div>
     <div class="{{if isModal 'modal-footer'}}">

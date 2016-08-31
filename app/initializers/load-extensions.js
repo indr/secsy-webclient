@@ -1,8 +1,9 @@
 /*jshint unused:false*/
+import BsFormElement from './../extensions/bs-form-element'
 import Model from './../extensions/Model';
 import RSVP from './../extensions/RSVP';
 
-export function initialize(/* application */) {
+export function initialize (/* application */) {
   // application.inject('route', 'foo', 'service:foo');
 }
 
