@@ -17,9 +17,14 @@ const Validations = buildValidations({
       validator('ds-error')
     ]
   },
-  passwordRepeat: validator('confirmation', {
-    on: 'password', messageKey: 'errors.confirmation-password'
-  })
+  passwordRepeat: {
+    validators: [
+      validator('presence', true),
+      validator('confirmation', {
+        on: 'password', messageKey: 'errors.confirmation-password'
+      })
+    ]
+  }
 });
 
 
