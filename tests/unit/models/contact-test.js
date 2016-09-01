@@ -147,5 +147,62 @@ describeModel('contact', 'Unit | Model | ContactModel', {
         })
       });
     });
+    
+    describe('#applyUpdates', function () {
+      let sut, destroyRecord;
+      
+      beforeEach(function () {
+        sut = this.subject();
+        sut.pushUpdate(makeUpdate({internet_skype$: 'new skype'}));
+        sut.pushUpdate(makeUpdate({contact_website$: 'www.secsy.io', internet_telegram$: 'new telegram'}));
+        sut.pushUpdate(makeUpdate());
+        destroyRecord = simple.stub();
+        sut.get('updates').forEach((each) => {
+          each.destroyRecord = destroyRecord;
+        });
+      });
+      
+      it('should update selected values', function () {
+        destroyRecord.resolveWith();
+        
+        return sut.applyUpdates(['internet_skype$', 'contact_website$']).then(() => {
+          assert.equal(sut.get('internet_skype$'), 'new skype');
+          assert.equal(sut.get('contact_website$'), 'www.secsy.io');
+          assert.equal(sut.get('internet_telegram$'), undefined);
+        });
+      });
+      
+      it('should destroy all records', function () {
+        destroyRecord.resolveWith();
+        
+        return sut.applyUpdates().then(() => {
+          assert(destroyRecord.called);
+          assert.equal(destroyRecord.callCount, 3);
+          assert.lengthOf(sut.get('updates'), 0);
+        });
+      });
+      
+      it('should continue to try to destroy all records given they reject', function () {
+        destroyRecord.rejectWith(new Error('destroyRecord() rejected'));
+        
+        return sut.applyUpdates().then(() => {
+          assert(destroyRecord.called);
+          assert.equal(destroyRecord.callCount, 3);
+          assert.lengthOf(sut.get('updates'), 0);
+        });
+      });
+      
+      it('should reset newValuesCount and mergedUpdate', function () {
+        destroyRecord.resolveWith();
+        
+        assert.isAbove(sut.get('newValuesCount'), 0);
+        assert.notDeepEqual(sut.get('mergedUpdate'), {});
+        
+        return sut.applyUpdates().then(() => {
+          assert.equal(sut.get('newValuesCount'), 0);
+          assert.deepEqual(sut.get('mergedUpdate'), {});
+        })
+      });
+    });
   }
 );
