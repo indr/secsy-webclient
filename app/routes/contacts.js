@@ -3,12 +3,14 @@ import DecryptedRouteMixin from '../mixins/decrypted-route-mixin';
 import Ember from 'ember';
 
 export default Ember.Route.extend(AuthenticatedRouteMixin, DecryptedRouteMixin, {
+  addressbook: Ember.inject.service(),
+  
   firstTransition: true,
   
   model() {
-    return this.get('store').findAll('contact').then((result) => {
-      console.log('routes/contacts#model() loaded %s records', result.get('length'));
-      return result;
+    return this.get('addressbook').findContacts({cache: false}).then((results) => {
+      Ember.debug('routes/contacts#model() loaded ' + results.length + ' records');
+      return results;
     });
   },
   
