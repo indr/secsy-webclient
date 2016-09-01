@@ -59,7 +59,7 @@ export default Ember.Service.extend({
    * Resolves with DS.RecordArray
    */
   findUpdates(options) {
-    return this.get('store').query('share', {emailSha256: options.emailHash}).then((recordArray) => {
+    return this.get('store').query('update', {emailSha256: options.emailHash}).then((recordArray) => {
       options.updates = recordArray.toArray();
       return options;
     })

@@ -146,7 +146,7 @@ describeModule('service:update-puller', 'Unit | Service | UpdatePullerService', 
         var query = simple.mock(store, 'query').resolveWith(new RecordArray());
         
         return sut.findUpdates(options).then(() => {
-          assert.equal(query.lastCall.args[0], 'share');
+          assert.equal(query.lastCall.args[0], 'update');
           assert.deepEqual(query.lastCall.args[1], {emailSha256: 'abc123'});
         })
       });

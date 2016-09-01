@@ -76,7 +76,7 @@ export default Ember.Service.extend({
             if (!options) {
               return;
             }
-            return self.get('store').createRecord('share', {
+            return self.get('store').createRecord('update', {
               emailSha256: options.emailSha256,
               encrypted_: options.encrypted
             }).save();
@@ -88,110 +88,7 @@ export default Ember.Service.extend({
     });
   },
   
-  getShares(progress) {
-    const self = this;
-    progress = progress || K;
-    
-    const emailAddress = self.get('session').get('data.authenticated.email');
-    const emailHash = self.get('openpgp').sha256(emailAddress);
-    
-    var status = {
-      max: 0,
-      value: 0
-    };
-    
-    return this.get('store').query('share', {emailSha256: emailHash}).then((shares) => {
-      const result = shares.toArray();
-      status.max = result.length;
-      progress(status);
-      return result;
-    }).then(function (shares) {
-      return RSVP.promiseFor([], function condition(shares) {
-        return shares.length > 0;
-      }, function action(shares, aggregate) {
-        var share = shares.pop();
-        
-        return self.get('crypto').decrypt(share.get('encrypted_')).then((decrypted) => {
-          return self.get('crypto').decodeBase64(decrypted.base64);
-        }).then((decoded) => {
-          if (Object.keys(decoded).length === 0) {
-            console.log('Decoded object is empty, destroying record');
-            return share.destroyRecord();
-          }
-          share.set('decoded', decoded);
-          aggregate.push(share);
-        }).catch((err) => {
-          console.log('Decoding failed with ' + (err.message || err));
-          console.log('Destroying record');
-          return share.destroyRecord();
-        }).then(() => {
-          status.value++;
-          progress(status);
-          return shares;
-        });
-      }, shares);
-    }).then((result)=> {
-      console.log('Loaded %s shares', result.length);
-      return result;
-    });
-  },
-  
-  digestShares(shares, progress) {
-    progress = progress || K;
-    
-    return this.get('store').findAll('contact').then((contacts) => {
-      return contacts;//contacts.toArray();
-    }).then((contacts) => {
-      shares.forEach((share) => {
-        const decoded = share.get('decoded');
-        const contact = contacts.findBy('emailAddress$', decoded.emailAddress$);
-        
-        if (!contact) {
-          console.log('Contact not found ' + decoded.emailAddress$);
-        }
-        else {
-          var shares = contact.get('shares');
-          if (!shares) {
-            shares = [];
-            contact.set('shares', shares);
-          }
-          
-          var found = false;
-          for (var i = 0; i < shares.length; i++) {
-            if (shares[i].id === share.id) {
-              found = true;
-              break;
-            }
-          }
-          if (!found) {
-            shares.push(share);
-            contact.set('shares', null);
-            contact.set('shares', shares);
-            
-            var count = contact.get('sharesCount') || 0;
-            contact.set('sharesCount', count + 1);
-          }
-        }
-      });
-    });
-  },
-  
   prepareSharedData(selected) {
-    // const properties = ['emailAddress$',
-    //   'contact_phoneNumber$', 'contact_website$',
-    //   'location_name$', 'location_latitude$', 'location_longitude$',
-    //   'internet_skype$', 'internet_telegram$', 'internet_whatsapp$'
-    // ];
-    //
-    // const result = {};
-    // properties.forEach(function (key) {
-    //   var value = contact.get(key);
-    //   if (!Ember.isEmpty(value)) {
-    //     result[key] = value;
-    //   }
-    // });
-    // return result;
-    
     return selected.reduce(function (result, each) {
       result[each.key] = each.value;
       return result;
