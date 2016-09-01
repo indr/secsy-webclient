@@ -17,11 +17,15 @@ export default Ember.Service.extend({
     let modelName = 'contact';
     
     if (options.cache && this.cache[modelName]) {
-      return RSVP.resolve(this.cache[modelName]);
+      return RSVP.resolve(this.cache[modelName]).then((results) => {
+        Ember.debug('addressbook: Loaded ' + results.get('length') + ' contacts from cache');
+        return results;
+      });
     }
     
     return this.get('store').findAll(modelName).then((results) => {
       this.cache[modelName] = results;
+      Ember.debug('addressbook: Cached ' + results.get('length') + ' contacts');
       return results;
     });
   },

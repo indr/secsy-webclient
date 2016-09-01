@@ -6,6 +6,7 @@ const {
 } = Ember;
 
 export default Ember.Service.extend({
+  addressbook: Ember.inject.service(),
   session: Ember.inject.service(),
   store: Ember.inject.service(),
   keystore: Ember.inject.service(),
@@ -35,7 +36,8 @@ export default Ember.Service.extend({
     return this.get('crypto').encodeBase64(data).then((encoded) => {
       data = {base64: encoded};
     }).then(()=> {
-      return this.get('store').findAll('contact');
+      // return this.get('store').findAll('contact');
+      return this.get('addressbook').findContacts();
     }).then((contacts) => {
       const results = contacts.toArray();
       status.max = results.length;

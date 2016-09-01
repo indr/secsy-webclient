@@ -9,7 +9,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, DecryptedRouteMixin, 
   
   model() {
     return this.get('addressbook').findContacts({cache: false}).then((results) => {
-      Ember.debug('routes/contacts#model() loaded ' + results.length + ' records');
+      Ember.debug('routes/contacts#model() loaded ' + results.get('length') + ' records');
       return results;
     });
   },
