@@ -3,8 +3,8 @@
     {{#link-to "contacts.edit" contact class="list-group-item"}}
       {{#if contact.decrypted}}
           <strong>{{contact.name$}}</strong>
-        {{#if contact.sharesCount}}<span
-                class="pull-right label label-pill label-danger label">{{contact.sharesCount}}</span>{{/if}}
+        {{#if contact.newValuesCount}}<span
+                class="pull-right label label-pill label-danger label">{{contact.newValuesCount}}</span>{{/if}}
           <br/>{{contact.currentState.stateName}} / {{contact.inFlight}}<br/>
       {{else}}
           <span class="glyphicon glyphicon-alert"></span>
