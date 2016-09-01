@@ -35,13 +35,16 @@ export default Ember.Controller.extend({
     onMapClick(mouseEvent) {
       this.send('mapClicked', mouseEvent);
     },
-   
+    
     onDragEnd(model, dragEndEvent) {
       const latlng = dragEndEvent.target._latlng;
       model.set('location_latitude$', latlng.lat);
       model.set('location_longitude$', latlng.lng);
-      // TODO: Error handling
-      model.save();
+      
+      model.save().catch((err) => {
+        // Should we tell the user that this failed?
+        Ember.Logger.error('onDragEnd() model.save() failed: ' + (err.message || err));
+      });
     },
     
     popupOpened(contact) {
