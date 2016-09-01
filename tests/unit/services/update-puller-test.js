@@ -13,6 +13,7 @@ const {
 
 const {
   ArrayProxy,
+  FakeAddressbook,
   FakeContact,
   FakeCrypto,
   FakeStore,
@@ -21,10 +22,10 @@ const {
 
 describeModule('service:update-puller', 'Unit | Service | UpdatePullerService', {
     // Specify the other units that are required for this test.
-    // needs: ['service:foo']
+    needs: ['service:intl']
   },
   function () {
-    let store, crypto,
+    let addressbook, crypto, store,
       sut, options;
     
     
@@ -43,6 +44,8 @@ describeModule('service:update-puller', 'Unit | Service | UpdatePullerService', 
     beforeEach(function (done) {
       this.register('service:store', FakeStore);
       store = Ember.getOwner(this).lookup('service:store');
+      this.register('service:addressbook', FakeAddressbook);
+      addressbook = Ember.getOwner(this).lookup('service:addressbook');
       this.register('service:crypto', FakeCrypto);
       crypto = Ember.getOwner(this).lookup('service:crypto');
       
@@ -365,25 +368,25 @@ describeModule('service:update-puller', 'Unit | Service | UpdatePullerService', 
     });
     
     describe('#findContact', function () {
-      let contacts, recordArray, findAll;
-      
       beforeEach(function () {
-        contacts = Ember.A();
-        recordArray = new RecordArray();
-        Ember.set(recordArray, 'content', contacts);
-        findAll = simple.mock(store, 'findAll').resolveWith(recordArray);
       });
       
       it('should return undefined if contact could not be found', function () {
+        var findContactBy = simple.mock(addressbook, 'findContactBy').resolveWith(undefined);
+        
         return sut.findContact('unknown@example.com').then((result) => {
+          assert(findContactBy.called, 'addressbook.findContactBy() was not called');
+          assert.equal(findContactBy.lastCall.args[0], 'emailAddress$');
+          assert.equal(findContactBy.lastCall.args[1], 'unknown@example.com');
           assert.isUndefined(result);
         });
       });
       
       it('should return contact', function () {
-        var contact = FakeContact.create();
-        contact.set('emailAddress$', 'user@example.com');
-        contacts.pushObject(contact);
+        var contact = FakeContact.create({
+          emailAddress$: 'user@example.com'
+        });
+        simple.mock(addressbook, 'findContactBy').resolveWith(contact);
         
         return sut.findContact('user@example.com').then((result) => {
           assert.isDefined(result);

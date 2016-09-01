@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import Addressbook from 'addressbook/services/addressbook';
 
 const {
   RSVP
@@ -9,6 +10,8 @@ const ArrayProxy = {
     return Ember.ArrayProxy.create({content: Ember.A(array)});
   }
 };
+
+const FakeAddressbook = Addressbook.extend({});
 
 const FakeContact = Ember.Object.extend({
   getRecord(){
@@ -25,6 +28,7 @@ const FakeCrypto = Ember.Object.extend({
 });
 
 const FakeStore = Ember.Object.extend({
+  findAll: RSVP.reject,
   query: RSVP.reject
 });
 
@@ -34,6 +38,7 @@ const FakeUpdate = Ember.Object.extend({
 
 export {
   ArrayProxy,
+  FakeAddressbook,
   FakeContact,
   FakeCrypto,
   FakeStore,

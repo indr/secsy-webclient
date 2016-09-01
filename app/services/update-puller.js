@@ -5,6 +5,7 @@ const {
 } = Ember;
 
 export default Ember.Service.extend({
+  addressbook: Ember.inject.service(),
   crypto: Ember.inject.service(),
   store: Ember.inject.service(),
   
@@ -147,11 +148,7 @@ export default Ember.Service.extend({
    * Resolve promise with a contact or undefined if contact could not be found.
    */
   findContact(emailAddress) {
-    return this.get('store').findAll('contact').then((contacts) => {
-      return contacts.findBy('emailAddress$', emailAddress)
-    }).then((contact) => {
-      return contact;
-    });
+    return this.get('addressbook').findContactBy('emailAddress$', emailAddress);
   },
   
   pushToContact(options) {
