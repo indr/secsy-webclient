@@ -55,6 +55,15 @@ describeModule('service:addressbook', 'Unit | Service | AddressbookService', {
           assert.equal(result2, contacts);
         });
       });
+      
+      it('should not cache findAll with option cache:false', function () {
+        return sut.findContacts().then(() => {
+          return sut.findContacts({cache: false});
+        }).then(() => {
+          assert(findAll.called, 'findAll() was not called');
+          assert.equal(findAll.callCount, 2, 'findAll() was not called twice');
+        });
+      });
     });
     
     describe('#findContactBy', function () {

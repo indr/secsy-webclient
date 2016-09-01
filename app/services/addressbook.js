@@ -11,10 +11,12 @@ export default Ember.Service.extend({
   store: Ember.inject.service(),
   cache: {},
   
-  findContacts() {
+  
+  findContacts(options) {
+    options = Ember.merge({cache: true}, options);
     let modelName = 'contact';
     
-    if (this.cache[modelName]) {
+    if (options.cache && this.cache[modelName]) {
       return RSVP.resolve(this.cache[modelName]);
     }
     
