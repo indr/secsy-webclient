@@ -4,10 +4,19 @@ import { describeModule, it } from 'ember-mocha';
 import { beforeEach, describe } from 'mocha'
 import RecordArray from 'ember-data/-private/system/record-arrays/record-array'
 import simple from 'simple-mock'
+import fakes from './../../fakes'
 
 const {
   RSVP
 } = Ember;
+
+
+const {
+  FakeContact,
+  FakeCrypto,
+  FakeStore,
+  FakeUpdate
+} = fakes;
 
 describeModule('service:update-puller', 'Unit | Service | UpdatePullerService', {
     // Specify the other units that are required for this test.
@@ -17,26 +26,6 @@ describeModule('service:update-puller', 'Unit | Service | UpdatePullerService', 
     let store, crypto,
       sut, options;
     
-    const FakeStore = Ember.Object.extend({
-      query: RSVP.reject
-    });
-    
-    const FakeCrypto = Ember.Object.extend({
-      decrypt: RSVP.resolve.bind(null, {base64: ''}),
-      decodeBase64: RSVP.resolve.bind(null, {}),
-      hashEmail: function () {
-        return 'default hash';
-      }
-    });
-    const FakeContact = Ember.Object.extend({
-      getRecord(){
-        return this;
-      }
-    });
-    
-    const FakeUpdate = Ember.Object.extend({
-      destroyRecord: RSVP.resolve
-    });
     
     function makeUpdate () {
       return FakeUpdate.create();
