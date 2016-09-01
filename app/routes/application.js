@@ -15,6 +15,7 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
   crypto: Ember.inject.service(),
   sharer: Ember.inject.service(),
   addressbook: Ember.inject.service(),
+  updatePuller: Ember.inject.service('update-puller'),
   
   beforeModel()  {
     const noSsl = window.location.href.indexOf('https') !== 0 && window.location.href.indexOf('http://localhost') !== 0;
@@ -42,6 +43,7 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
   },
   
   onProgress(status) {
+    debug(`onProgress done:${status.done}, max:${status.max}, value:${status.value}`);
     this.controller.set('progress.value', status.value);
     this.controller.set('progress.max', status.max);
     if (status.value === status.max) {
@@ -108,11 +110,15 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
       
       const onProgress = options.silent ? K : this.onProgress.bind(this);
       
-      // TODO: Error handling
-      this.get('sharer').getShares(onProgress).then((shares) => {
-        // TODO: Error handling
-        return this.get('sharer').digestShares(shares);
+      const emailAddress = this.get('session').get('data.authenticated.email');
+      debug('Start pulling updates for ' + emailAddress);
+      this.get('updatePuller').pull(emailAddress, onProgress).then(() => {
+        debug('Finished pulling updates for ' + emailAddress);
       });
+      
+      // this.get('sharer').getShares(onProgress).then((shares) => {
+      //   return this.get('sharer').digestShares(shares);
+      // });
     },
     
     onProgress(status) {
