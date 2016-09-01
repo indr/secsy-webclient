@@ -18,17 +18,20 @@ export default Ember.Component.extend({
   }).readOnly(),
   
   actions: {
-    update() {
-      const selected = this.get('properties').filter((each) => {
-        return each.checked;
-      });
+    apply() {
+      const keys = this.get('properties').reduce(function (result, each) {
+        if (each.checked) {
+          result.push(each.key);
+        }
+        return result;
+      }, []);
       
-      if (selected.length === 0) {
+      if (keys.length === 0) {
         this.get('flashMessages').dangerT('review.error-no-selection');
         return;
       }
       
-      this.sendAction('update', selected);
+      this.sendAction('apply', keys);
     },
     
     back() {

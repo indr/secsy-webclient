@@ -133,7 +133,6 @@ export default Model.extend(Validations, {
     keys.forEach((key) => {
       Ember.run(this, 'set', key, mergedUpdate[key]);
     });
-    return this.dismissUpdates();
   },
   
   dismissUpdates() {
