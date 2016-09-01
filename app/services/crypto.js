@@ -97,5 +97,10 @@ export default Ember.Service.extend({
     return new RSVP.Promise((resolve) => {
       resolve(JSON.parse(window.atob(text)));
     });
+  },
+  
+  hashEmail(emailAddress) {
+    // TODO: Add some salt and pepper
+    return this.get('openpgp').sha256(emailAddress);
   }
 });
