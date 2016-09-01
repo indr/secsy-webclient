@@ -12,6 +12,7 @@ const {
 
 
 const {
+  ArrayProxy,
   FakeContact,
   FakeCrypto,
   FakeStore,
@@ -36,7 +37,7 @@ describeModule('service:update-puller', 'Unit | Service | UpdatePullerService', 
       while (number--) {
         updates.push(makeUpdate())
       }
-      return Ember.ArrayProxy.create({content: Ember.A(updates)});
+      return ArrayProxy.create(updates);
     }
     
     beforeEach(function (done) {

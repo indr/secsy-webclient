@@ -9,6 +9,26 @@ const {
 export default Ember.Service.extend({
   intl: Ember.inject.service(),
   store: Ember.inject.service(),
+  cache: {},
+  
+  findContacts() {
+    let modelName = 'contact';
+    
+    if (this.cache[modelName]) {
+      return RSVP.resolve(this.cache[modelName]);
+    }
+    
+    return this.get('store').findAll(modelName).then((results) => {
+      this.cache[modelName] = results;
+      return results;
+    });
+  },
+  
+  findContactBy(key, value) {
+    return this.findContacts().then((contacts) => {
+      return contacts.findBy(key, value);
+    });
+  },
   
   clear(progress) {
     progress = progress || K;
@@ -26,9 +46,9 @@ export default Ember.Service.extend({
       progress(status);
       return result;
     }).then(function (contacts) {
-      return RSVP.promiseFor(null, function condition(contacts) {
+      return RSVP.promiseFor(null, function condition (contacts) {
         return contacts.length > 0;
-      }, function action(contacts) {
+      }, function action (contacts) {
         var contact = contacts.pop();
         
         status.value++;
@@ -66,9 +86,9 @@ export default Ember.Service.extend({
     };
     
     progress(status);
-    return RSVP.promiseFor(null, function condition(number) {
+    return RSVP.promiseFor(null, function condition (number) {
       return number > 0;
-    }, function action(number) {
+    }, function action (number) {
       const firstName = fake.names.firstName();
       const lastName = fake.names.lastName();
       const location = fake.address.geoLocation();

@@ -4,6 +4,12 @@ const {
   RSVP
 } = Ember;
 
+const ArrayProxy = {
+  create: function createArrayProxy (array) {
+    return Ember.ArrayProxy.create({content: Ember.A(array)});
+  }
+};
+
 const FakeContact = Ember.Object.extend({
   getRecord(){
     return this;
@@ -27,6 +33,7 @@ const FakeUpdate = Ember.Object.extend({
 });
 
 export {
+  ArrayProxy,
   FakeContact,
   FakeCrypto,
   FakeStore,
