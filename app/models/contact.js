@@ -3,6 +3,10 @@ import Ember from 'ember';
 import Model from 'ember-data/model';
 import { validator, buildValidations } from 'ember-cp-validations';
 
+const {
+  RSVP
+} = Ember;
+
 const Validations = buildValidations({
   name$: validator('presence', true)
 });
@@ -32,7 +36,8 @@ function buildViewProperties (model) {
 export default Model.extend(Validations, {
   init() {
     this._super()
-    this.updates = []
+    
+    this.updates = Ember.A();
     this.mergedUpdate = {}
     this.newValuesCount = 0
   },
@@ -96,12 +101,11 @@ export default Model.extend(Validations, {
   },
   
   pushUpdate(update) {
-    if (this.get('updates').find((each) => {
-        return each.id === update.id
-      })) {
+    var updates = this.get('updates');
+    if (updates.findBy('id', update.id)) {
       return;
     }
-    this.get('updates').push(update);
+    updates.pushObject(update);
     
     if (!update.decoded) {
       return
@@ -121,5 +125,26 @@ export default Model.extend(Validations, {
     
     this.set('newValuesCount', newValuesCount);
     this.set('mergedUpdate', mergedUpdate);
+  },
+  
+  dismissUpdates() {
+    var updates = this.get('updates');
+    this.set('updates', Ember.A());
+    this.set('newValuesCount', 0);
+    this.set('mergedUpdate', {});
+    
+    return RSVP.promiseFor(null, function condition (updates) {
+      return updates.length > 0
+    }, function action (updates) {
+      var update = updates.popObject();
+      
+      return update.destroyRecord().then(() => {
+        return updates;
+      }).catch((err) => {
+        // We don't care
+        Ember.debug('update.destroyRecord() threw error: ' + (err.message || err));
+        return updates;
+      });
+    }, updates);
   }
 });

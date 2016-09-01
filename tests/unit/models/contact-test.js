@@ -2,6 +2,7 @@ import { assert } from 'chai';
 import { describeModel, it } from 'ember-mocha';
 import { beforeEach, describe } from 'mocha';
 import uuid from 'ember-simple-uuid';
+import simple from 'simple-mock';
 
 describeModel('contact', 'Unit | Model | ContactModel', {
     // Specify the other units that are required for this test.
@@ -10,6 +11,13 @@ describeModel('contact', 'Unit | Model | ContactModel', {
     ]
   },
   function () {
+    function makeUpdate (decoded) {
+      return {
+        id: uuid(),
+        decoded: decoded || {}
+      }
+    }
+    
     it('location', function () {
       let sut = this.subject();
       assert.deepEqual(sut.get('location'), null);
@@ -23,6 +31,7 @@ describeModel('contact', 'Unit | Model | ContactModel', {
     
     describe('#pushUpdate', function () {
       let sut;
+      
       beforeEach(function () {
         sut = this.subject();
         sut.set('name$', 'User 1');
@@ -30,13 +39,6 @@ describeModel('contact', 'Unit | Model | ContactModel', {
         sut.set('contact_phoneNumber$', '01234');
         sut.set('')
       });
-      
-      function makeUpdate (decoded) {
-        return {
-          id: uuid(),
-          decoded: decoded || {}
-        }
-      }
       
       it('should add update to collection', function () {
         let update = makeUpdate();
@@ -96,6 +98,53 @@ describeModel('contact', 'Unit | Model | ContactModel', {
         assert.equal(sut.get('updates.length'), 1);
         assert.equal(sut.get('newValuesCount'), 0);
         assert.lengthOf(Object.keys(sut.get('mergedUpdate')), 0);
+      });
+    });
+    
+    describe('#dismissUpdates', function () {
+      let sut, destroyRecord;
+      
+      beforeEach(function () {
+        sut = this.subject();
+        sut.pushUpdate(makeUpdate({internet_skype$: 'new skype'}));
+        sut.pushUpdate(makeUpdate({internet_telegram$: 'new telegram'}));
+        sut.pushUpdate(makeUpdate());
+        destroyRecord = simple.stub();
+        sut.get('updates').forEach((each) => {
+          each.destroyRecord = destroyRecord;
+        });
+      });
+      
+      it('should destroy all records', function () {
+        destroyRecord.resolveWith();
+        
+        return sut.dismissUpdates().then(() => {
+          assert(destroyRecord.called);
+          assert.equal(destroyRecord.callCount, 3);
+          assert.lengthOf(sut.get('updates'), 0);
+        });
+      });
+      
+      it('should continue to try to destroy all records given they reject', function () {
+        destroyRecord.rejectWith(new Error('destroyRecord() rejected'));
+        
+        return sut.dismissUpdates().then(() => {
+          assert(destroyRecord.called);
+          assert.equal(destroyRecord.callCount, 3);
+          assert.lengthOf(sut.get('updates'), 0);
+        });
+      });
+      
+      it('should reset newValuesCount and mergedUpdate', function () {
+        destroyRecord.resolveWith();
+        
+        assert.isAbove(sut.get('newValuesCount'), 0);
+        assert.notDeepEqual(sut.get('mergedUpdate'), {});
+        
+        return sut.dismissUpdates().then(() => {
+          assert.equal(sut.get('newValuesCount'), 0);
+          assert.deepEqual(sut.get('mergedUpdate'), {});
+        })
       });
     });
   }
