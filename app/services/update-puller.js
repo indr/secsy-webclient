@@ -6,7 +6,6 @@ const {
 
 export default Ember.Service.extend({
   crypto: Ember.inject.service(),
-  openpgp: Ember.inject.service(),
   store: Ember.inject.service(),
   
   /**
@@ -23,9 +22,33 @@ export default Ember.Service.extend({
     
     var options = {
       emailHash,
-      onProgress: onProgress || Ember.K
+      onProgress: onProgress || Ember.K,
+      status: {
+        done: false,
+        max: 0,
+        value: 0
+      }
     };
-    return this.findUpdates(options).then(this.processUpdates.bind(this));
+    
+    const self = this;
+    return this.findUpdates(options)
+      .then((options) => {
+        options.status.max = options.updates.length;
+        return options;
+      })
+      .then(this.callOnProgress.bind(this))
+      .then(this.processUpdates.bind(this))
+      
+      // TODO: Looking for a challenge? Remove .catch() and replace .then() with .finally()
+      .catch(function () {
+        return options;
+      })
+      .then(function (options) {
+        options.status.done = true;
+        self.callOnProgress(options);
+        return options;
+      })
+    
   },
   
   /**
@@ -42,6 +65,11 @@ export default Ember.Service.extend({
     })
   },
   
+  callOnProgress(options) {
+    options.onProgress(Ember.copy(options.status, false));
+    return options;
+  },
+  
   /**
    * @private
    * @param options
@@ -49,11 +77,17 @@ export default Ember.Service.extend({
    */
   processUpdates(options) {
     const self = this;
-    return RSVP.promiseFor(null, function condition (options) {
+    return RSVP.promiseFor(options, function condition (options) {
       return options.updates.length > 0;
     }, function action (options) {
       var update = options.updates.pop();
-      return self.processUpdate(options, update);
+      options.status.value++;
+      
+      return self.processUpdate(options, update)
+        .catch(() => {
+          return options;
+        })
+        .then(self.callOnProgress.bind(self));
     }, options);
   },
   
