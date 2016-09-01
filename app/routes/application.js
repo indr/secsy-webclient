@@ -103,10 +103,10 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
       return this._super(...arguments);
     },
     
-    getShares(options) {
+    pullUpdates(options) {
       options = assign({silent: false}, options);
       
-      debug('routes/application/actions#getShares() / silent:' + options.silent);
+      debug('routes/application/actions#pullUpdates() / silent:' + options.silent);
       
       const onProgress = options.silent ? K : this.onProgress.bind(this);
       
@@ -115,10 +115,6 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
       this.get('updatePuller').pull(emailAddress, onProgress).then(() => {
         debug('Finished pulling updates for ' + emailAddress);
       });
-      
-      // this.get('sharer').getShares(onProgress).then((shares) => {
-      //   return this.get('sharer').digestShares(shares);
-      // });
     },
     
     onProgress(status) {

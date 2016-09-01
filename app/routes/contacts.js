@@ -16,7 +16,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, DecryptedRouteMixin, 
     didTransition() {
       if (this.firstTransition) {
         this.firstTransition = false;
-        this.send('getShares', {silent: true});
+        Ember.run.later(this.send.bind(this, 'pullUpdates', {silent: true}), 1000 * 2);
       }
       
       const showCreateOrGenerateHint = this.controller.get('model')
