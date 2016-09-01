@@ -100,7 +100,12 @@ export default Ember.Service.extend({
       .then((options) => {
         return options;
       }).catch((err) => {
-        update.destroy();
+        Ember.debug('Update processing threw error' + (err.message || err));
+        Ember.debug('Destroying update and rethrowing error');
+        update.destroyRecord().catch((err) => {
+          // We don't care if this doesn't succeed.
+          Ember.debug('update.destroyRecord() threw error' + (err.message || err));
+        });
         throw err;
       });
   },

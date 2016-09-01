@@ -35,13 +35,11 @@ describeModule('service:update-puller', 'Unit | Service | UpdatePullerService', 
     });
     
     const FakeUpdate = Ember.Object.extend({
-      destroy: Ember.K
+      destroyRecord: RSVP.resolve
     });
     
     function makeUpdate () {
-      return FakeUpdate.create({
-        destroy: Ember.K
-      });
+      return FakeUpdate.create();
     }
     
     function makeUpdates (number) {
@@ -213,11 +211,11 @@ describeModule('service:update-puller', 'Unit | Service | UpdatePullerService', 
     });
     
     describe('#processUpdate', function () {
-      let update, destroy;
+      let update, destroyRecord;
       
       beforeEach(function () {
         update = makeUpdate();
-        destroy = simple.mock(update, 'destroy');
+        destroyRecord = simple.mock(update, 'destroyRecord');
       });
       
       it('should decrypt, decode, validate and pushToContact', function () {
@@ -250,7 +248,7 @@ describeModule('service:update-puller', 'Unit | Service | UpdatePullerService', 
         return sut.processUpdate(options, update).then(() => {
           assert.fail(false, 'not rejected')
         }).catch((err) => {
-          assert(destroy.called, 'update#destroy() was not called');
+          assert(destroyRecord.called, 'update#destroyRecord() was not called');
           assert.equal(err.message, '#decrypt threw');
         });
       });
@@ -262,7 +260,7 @@ describeModule('service:update-puller', 'Unit | Service | UpdatePullerService', 
         return sut.processUpdate(options, update).then(() => {
           assert.fail(false, 'not rejected')
         }).catch((err) => {
-          assert(destroy.called, 'update#destroy() was not called');
+          assert(destroyRecord.called, 'update#destroyRecord() was not called');
           assert.equal(err.message, '#decode threw');
         });
       });
@@ -274,7 +272,7 @@ describeModule('service:update-puller', 'Unit | Service | UpdatePullerService', 
         return sut.processUpdate(options, update).then(() => {
           assert.fail(false, 'not rejected')
         }).catch((err) => {
-          assert(destroy.called, 'update#destroy() was not called');
+          assert(destroyRecord.called, 'update#destroyRecord() was not called');
           assert.equal(err.message, '#validate threw');
         });
       });
@@ -286,7 +284,7 @@ describeModule('service:update-puller', 'Unit | Service | UpdatePullerService', 
         return sut.processUpdate(options, update).then(() => {
           assert.fail(false, 'not rejected')
         }).catch((err) => {
-          assert(destroy.called, 'update#destroy() was not called');
+          assert(destroyRecord.called, 'update#destroyRecord() was not called');
           assert.equal(err.message, '#pushToContact threw');
         });
       });
