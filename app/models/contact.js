@@ -101,20 +101,25 @@ export default Model.extend(Validations, {
       })) {
       return;
     }
-    this.get('updates').push(update)
+    this.get('updates').push(update);
     
     if (!update.decoded) {
       return
     }
     
-    this.mergedUpdate = Ember.merge(this.mergedUpdate, update.decoded)
+    const mergedUpdate = Ember.merge(Ember.copy(this.mergedUpdate), update.decoded);
+    delete mergedUpdate['emailAddress$'];
     
     let newValuesCount = 0;
-    Object.keys(this.mergedUpdate).forEach((key) => {
-      if ((this.mergedUpdate[key] || '') !== (this.get(key) || '')) {
+    Object.keys(mergedUpdate).forEach((key) => {
+      if ((mergedUpdate[key] || '') !== (this.get(key) || '')) {
         newValuesCount++
+      } else {
+        delete mergedUpdate[key]
       }
-    })
-    this.set('newValuesCount', newValuesCount)
+    });
+    
+    this.set('newValuesCount', newValuesCount);
+    this.set('mergedUpdate', mergedUpdate);
   }
 });

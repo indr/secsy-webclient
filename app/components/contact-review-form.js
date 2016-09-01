@@ -1,40 +1,21 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  didReceiveAttrs() {
-    this._super(...arguments);
+  // TODO: If `model.mergedUpdate` changes when the user is selecting properties to update,
+  // he will lose his selection because this makes all properties `checked=true` again.
+  properties: Ember.computed('model.mergedUpdate', function () {
+    const contact = this.get('model');
+    const update = contact.get('mergedUpdate');
     
-    this.set('properties', this.getProperties());
-  },
-  
-  getProperties() {
-    const model = this.get('model');
-    var shares = model.get('shares');
-    if (!shares) {
-      return;
-    }
-    
-    shares = shares.sort((a, b) => {
-      return a.get('createdAt') > b.get('createdAt');
-    });
-    this.set('shares', shares);
-    const decoded = Ember.assign({}, ...shares.map((each) => each.decoded));
-    
-    var properties = model.getViewProperties();
-    properties = properties.filter((each) => {
-      if (each.key === 'emailAddress$') {
+    return contact.getViewProperties().filter((each) => {
+      if (update[each.key] === undefined) {
         return false;
       }
-      if (decoded[each.key] === undefined) {
-        return false;
-      }
-      each.update = decoded[each.key];
+      each.update = update[each.key];
       each.checked = true;
       return true;
     });
-    
-    return properties;
-  },
+  }).readOnly(),
   
   actions: {
     update() {
@@ -47,7 +28,7 @@ export default Ember.Component.extend({
         return;
       }
       
-      this.sendAction('update', selected, this.get('shares'));
+      this.sendAction('update', selected);
     },
     
     back() {
@@ -55,7 +36,7 @@ export default Ember.Component.extend({
     },
     
     dismiss() {
-      this.sendAction('dismiss', this.get('shares'));
+      this.sendAction('dismiss');
     }
   }
 });
