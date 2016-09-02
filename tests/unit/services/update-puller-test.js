@@ -2,7 +2,6 @@ import { assert } from 'chai';
 import Ember from 'ember';
 import { describeModule, it } from 'ember-mocha';
 import { beforeEach, describe } from 'mocha'
-import RecordArray from 'ember-data/-private/system/record-arrays/record-array'
 import simple from 'simple-mock'
 import fakes from './../../fakes'
 
@@ -17,7 +16,8 @@ const {
   FakeContact,
   FakeCrypto,
   FakeStore,
-  FakeUpdate
+  FakeUpdate,
+  RecordArray
 } = fakes;
 
 describeModule('service:update-puller', 'Unit | Service | UpdatePullerService', {
@@ -27,7 +27,6 @@ describeModule('service:update-puller', 'Unit | Service | UpdatePullerService', 
   function () {
     let addressbook, crypto, store,
       sut, options;
-    
     
     function makeUpdate () {
       return FakeUpdate.create();
@@ -41,7 +40,7 @@ describeModule('service:update-puller', 'Unit | Service | UpdatePullerService', 
       return ArrayProxy.create(updates);
     }
     
-    beforeEach(function (done) {
+    beforeEach(function () {
       this.register('service:store', FakeStore);
       store = Ember.getOwner(this).lookup('service:store');
       this.register('service:addressbook', FakeAddressbook);
@@ -49,83 +48,85 @@ describeModule('service:update-puller', 'Unit | Service | UpdatePullerService', 
       this.register('service:crypto', FakeCrypto);
       crypto = Ember.getOwner(this).lookup('service:crypto');
       
-      
       sut = this.subject();
       options = {
-        onProgress: simple.spy(Ember.K),
+        onProgress: Ember.K,
         status: {done: null, max: null, value: null}
       };
-      done()
     });
     
-    describe('#pull() features', function () {
+    describe('#pull', function () {
+      let emailAddress, onProgress, options,
+        findUpdates, processUpdates;
+      
       beforeEach(function () {
+        emailAddress = 'user@example.com';
+        onProgress = simple.spy(Ember.K);
+        
+        findUpdates = simple.mock(sut, 'findUpdates').callFn(function () {
+          options = arguments[0];
+          options.updates = makeUpdates(5).toArray();
+          options.status.max = options.updates.length;
+          return RSVP.resolve(options);
+        });
+        
+        processUpdates = simple.mock(sut, 'processUpdates').callFn(function () {
+          options = arguments[0];
+          return RSVP.resolve(options);
+        });
       });
       
-      it('should ask find updates with constructed options object', function () {
-        options.updates = [];
-        var findUpdates = simple.mock(sut, 'findUpdates').resolveWith(options);
-        var onProgress = Ember.K;
-        
-        return sut.pull('user@example.com', onProgress).then(() => {
-          assert(findUpdates.called, 'findUpdates was not called');
+      it('should call find updates with constructed options object', function () {
+        return sut.pull(emailAddress, onProgress).then(() => {
+          assert(findUpdates.called, 'expected findUpdates to be called');
           var arg = findUpdates.lastCall.arg;
           assert.equal(arg.emailHash, crypto.hashEmail('user@example.com'));
           assert.equal(arg.onProgress, onProgress);
-          assert.deepEqual(arg.status, {done: false, max: 0, value: 0});
         });
       });
       
+      it('should call processUpdates', function () {
+        return sut.pull(emailAddress, onProgress).then(() => {
+          assert(processUpdates.called, 'expected processUpdates to be called');
+        });
+      });
       
-      it('should call processUpdates and resolve with options', function () {
-        options.updates = [];
-        simple.mock(sut, 'findUpdates').resolveWith(options);
-        var processUpdates = simple.mock(sut, 'processUpdates').resolveWith(options);
-        
-        return sut.pull('user@example.com').then((result) => {
-          assert(processUpdates.called, 'processUpdates was not called');
-          assert.equal(processUpdates.lastCall.arg, options);
+      it('should progress with status.max', function () {
+        return sut.pull(emailAddress, onProgress).then(() => {
+          assert(onProgress.called, 'expected onProgress to be called');
+          const status = onProgress.calls[0].arg;
+          assert.deepEqual(status, {done: false, max: 5, value: 0});
+        });
+      });
+      
+      it('should progress with done:true and return options', function () {
+        return sut.pull(emailAddress, onProgress).then((result) => {
+          assert(onProgress.called, 'expected onProgress to be called');
+          const status = onProgress.lastCall.args[0];
+          assert.deepEqual(status, {done: true, max: 5, value: 0});
           assert.equal(result, options);
         });
       });
-    });
-    
-    describe('#pull() progress', function () {
-      it('should progress with status.max, .value and .done', function () {
-        simple.mock(sut, 'findUpdates').resolveWith(options);
-        options.updates = makeUpdates(5).toArray();
-        options.status.value = 0;
-        options.status.max = 0;
-        options.status.done = false;
-        
-        // We need to hinder to make actual progress in this test
-        simple.mock(sut, 'processUpdates').resolveWith(options);
-        
-        return sut.pull('user@example.com', options.onProgress).then(() => {
-          assert(options.onProgress.called, 'onProgress was not called');
-          assert.deepEqual(options.onProgress.calls[0].args[0], {max: 5, value: 0, done: false});
-        });
-      });
       
-      
-      it('should progress with done=true', function () {
-        var onProgress = options.onProgress = simple.spy(Ember.K);
-        simple.mock(sut, 'findUpdates').resolveWith(options);
-        options.updates = makeUpdates(5).toArray();
-        simple.mock(sut, 'processUpdates').resolveWith(options);
+      it('should progress with done:true and throw error', function (done) {
+        var error = new Error('findUpdates threw error');
+        simple.mock(sut, 'findUpdates').throwWith(error);
         
-        return sut.pull('user@example.com', onProgress).then(() => {
-          assert(onProgress.called, 'onProgress was not called');
-          assert(onProgress.lastCall.args[0].done, 'Last call was not with done=true');
+        sut.pull(emailAddress, onProgress).catch((err) => {
+          assert.equal(err, error);
+          assert(onProgress.called, 'expected onProgress to be called');
+          const status = onProgress.lastCall.arg;
+          assert.isTrue(status.done);
+          done();
         });
       });
     });
     
-    describe('#callOnProgress', function () {
+    describe('#fireProgress', function () {
       it('should call options.onProgress with a copy of status and return options', function () {
         var onProgress = options.onProgress = simple.spy(Ember.K);
         
-        var result = sut.callOnProgress(options);
+        var result = sut.fireProgress(options);
         assert(onProgress.called);
         assert.notEqual(onProgress.lastCall.arg, options.status);
         assert.deepEqual(onProgress.lastCall.arg, options.status);
@@ -134,21 +135,27 @@ describeModule('service:update-puller', 'Unit | Service | UpdatePullerService', 
     });
     
     describe('#findUpdates', function () {
-      it('should ask store to query for updates with given hash', function () {
+      let query;
+      
+      beforeEach(function () {
         options.emailHash = 'abc123';
-        var query = simple.mock(store, 'query').resolveWith(new RecordArray());
-        
+        query = simple.mock(store, 'query').resolveWith(RecordArray.create([
+          FakeUpdate.create(), FakeUpdate.create(), FakeUpdate.create()
+        ]));
+      });
+      
+      it('should ask store to query for updates with given hash', function () {
         return sut.findUpdates(options).then(() => {
           assert.equal(query.lastCall.args[0], 'update');
           assert.deepEqual(query.lastCall.args[1], {emailSha256: 'abc123'});
         })
       });
       
-      it('should resolve options object with updates as plain old array', function () {
-        store.query = RSVP.resolve.bind(null, new RecordArray());
+      it('should resolve options object with options.updates and options.status.max', function () {
         return sut.findUpdates(options).then((result) => {
           assert.equal(result, options);
-          assert.isArray(result.updates);
+          assert.isArray(options.updates);
+          assert.equal(options.status.max, 3);
         })
       })
     });
@@ -169,35 +176,35 @@ describeModule('service:update-puller', 'Unit | Service | UpdatePullerService', 
         });
       });
       
-      it('should continue given processUpdate rejects with Error', function () {
+      it('should continue given processUpdate rejects', function () {
         simple.mock(sut, 'processUpdate').rejectWith(new Error('processUpdate() rejected'));
         options.updates = makeUpdates(3).toArray();
         
         return sut.processUpdates(options);
       });
       
-      it('should increment status and call callOnProgress when processUpdate resolves', function () {
+      it('should increment status and fire progress when processUpdate resolves', function () {
         options.status = {value: 0};
         simple.mock(sut, 'processUpdate').resolveWith(options);
-        var callOnProgress = simple.mock(sut, 'callOnProgress').resolveWith(options);
-        
+        var fireProgress = simple.mock(sut, 'fireProgress').resolveWith(options);
         options.updates = makeUpdates(3).toArray();
+        
         return sut.processUpdates(options).then(() => {
-          assert(callOnProgress.called, 'callOnProgress was not called');
-          assert.equal(callOnProgress.callCount, 3);
+          assert(fireProgress.called, 'expected fireProgress to be called');
+          assert.equal(fireProgress.callCount, 3);
           assert.equal(options.status.value, 3);
         })
       });
       
-      it('should increment status and call callOnProgress when processUpdate rejects', function () {
+      it('should increment status and fire progress when processUpdate rejects', function () {
         options.status = {value: 0};
         simple.mock(sut, 'processUpdate').rejectWith(new Error('processUpdate() rejected'));
-        var callOnProgress = simple.mock(sut, 'callOnProgress').resolveWith(options);
-        
+        var fireProgress = simple.mock(sut, 'fireProgress').resolveWith(options);
         options.updates = makeUpdates(3).toArray();
+        
         return sut.processUpdates(options).then(() => {
-          assert(callOnProgress.called, 'callOnProgress was not called');
-          assert.equal(callOnProgress.callCount, 3);
+          assert(fireProgress.called, 'expected fireProgress to be called');
+          assert.equal(fireProgress.callCount, 3);
           assert.equal(options.status.value, 3);
         })
       });
@@ -236,49 +243,49 @@ describeModule('service:update-puller', 'Unit | Service | UpdatePullerService', 
       
       it('should destroy contact if decrypt throws and reject with Error', function () {
         mockSteps(sut);
-        simple.mock(sut, 'decrypt').rejectWith(new Error('#decrypt threw'));
+        simple.mock(sut, 'decrypt').rejectWith(new Error('decrypt rejected'));
         
         return sut.processUpdate(options, update).then(() => {
           assert.fail(false, 'not rejected')
         }).catch((err) => {
-          assert(destroyRecord.called, 'update#destroyRecord() was not called');
-          assert.equal(err.message, '#decrypt threw');
+          assert(destroyRecord.called, 'expected update.destroyRecord to be called');
+          assert.equal(err.message, 'decrypt rejected');
         });
       });
       
       it('should destroy contact if decode throws and reject with Error', function () {
         mockSteps(sut);
-        simple.mock(sut, 'decode').rejectWith(new Error('#decode threw'));
+        simple.mock(sut, 'decode').rejectWith(new Error('decode rejected'));
         
         return sut.processUpdate(options, update).then(() => {
           assert.fail(false, 'not rejected')
         }).catch((err) => {
-          assert(destroyRecord.called, 'update#destroyRecord() was not called');
-          assert.equal(err.message, '#decode threw');
+          assert(destroyRecord.called, 'expected update.destroyRecord to be called');
+          assert.equal(err.message, 'decode rejected');
         });
       });
       
       it('should destroy contact if validate throws and reject with Error', function () {
         mockSteps(sut);
-        simple.mock(sut, 'validate').rejectWith(new Error('#validate threw'));
+        simple.mock(sut, 'validate').rejectWith(new Error('validate rejected'));
         
         return sut.processUpdate(options, update).then(() => {
           assert.fail(false, 'not rejected')
         }).catch((err) => {
-          assert(destroyRecord.called, 'update#destroyRecord() was not called');
-          assert.equal(err.message, '#validate threw');
+          assert(destroyRecord.called, 'expected update.destroyRecord to be called');
+          assert.equal(err.message, 'validate rejected');
         });
       });
       
       it('should destroy contact if pushToContact throws and reject with Error', function () {
         mockSteps(sut);
-        simple.mock(sut, 'pushToContact').rejectWith(new Error('#pushToContact threw'));
+        simple.mock(sut, 'pushToContact').rejectWith(new Error('pushToContact rejected'));
         
         return sut.processUpdate(options, update).then(() => {
           assert.fail(false, 'not rejected')
         }).catch((err) => {
-          assert(destroyRecord.called, 'update#destroyRecord() was not called');
-          assert.equal(err.message, '#pushToContact threw');
+          assert(destroyRecord.called, 'expected update.destroyRecord to be called');
+          assert.equal(err.message, 'pushToContact rejected');
         });
       });
     });
@@ -375,7 +382,7 @@ describeModule('service:update-puller', 'Unit | Service | UpdatePullerService', 
         var findContactBy = simple.mock(addressbook, 'findContactBy').resolveWith(undefined);
         
         return sut.findContact('unknown@example.com').then((result) => {
-          assert(findContactBy.called, 'addressbook.findContactBy() was not called');
+          assert(findContactBy.called, 'expected addressbook.findContactBy to be called');
           assert.equal(findContactBy.lastCall.args[0], 'emailAddress$');
           assert.equal(findContactBy.lastCall.args[1], 'unknown@example.com');
           assert.isUndefined(result);

@@ -31,25 +31,27 @@ export default Ember.Service.extend({
       }
     };
     
-    const self = this;
-    return this.findUpdates(options)
-      .then((options) => {
-        options.status.max = options.updates.length;
-        return options;
-      })
-      .then(this.callOnProgress.bind(this))
+    const fireProgress = this.fireProgress.bind(this);
+    
+    return RSVP.resolve(options)
+      .then(this.findUpdates.bind(this))
+      .then(fireProgress)
       .then(this.processUpdates.bind(this))
-      
-      // TODO: Looking for a challenge? Remove .catch() and replace .then() with .finally()
-      .catch(function () {
-        return options;
-      })
       .then(function (options) {
         options.status.done = true;
-        self.callOnProgress(options);
+        fireProgress(options);
         return options;
       })
-    
+      .catch(function (err) {
+        options.status.done = true;
+        fireProgress(options);
+        throw err;
+      });
+  },
+  
+  fireProgress(options) {
+    options.onProgress(Ember.copy(options.status, false));
+    return options;
   },
   
   /**
@@ -62,13 +64,9 @@ export default Ember.Service.extend({
   findUpdates(options) {
     return this.get('store').query('update', {emailSha256: options.emailHash}).then((recordArray) => {
       options.updates = recordArray.toArray();
+      options.status.max = options.updates.length;
       return options;
     })
-  },
-  
-  callOnProgress(options) {
-    options.onProgress(Ember.copy(options.status, false));
-    return options;
   },
   
   /**
@@ -84,16 +82,15 @@ export default Ember.Service.extend({
       var update = options.updates.pop();
       options.status.value++;
       
-      return self.processUpdate(options, update)
-        .catch(() => {
-          return options;
-        })
-        .then(self.callOnProgress.bind(self));
+      return self.processUpdate(options, update).catch(() => {
+        return options;
+      }).then(self.fireProgress.bind(self));
     }, options);
   },
   
   processUpdate(options, update) {
     options.update = update;
+    
     return this.decrypt(options)
       .then(this.decode.bind(this))
       .then(this.validate.bind(this))
