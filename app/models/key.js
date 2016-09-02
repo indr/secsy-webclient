@@ -7,9 +7,4 @@ export default Model.extend({
   isPublic: attr('boolean'),
   privateKey: attr('string'),
   publicKey: attr('string'),
-  
-  destroyMe: attr('boolean', {
-    defaultValue: false,
-    writeonly: true
-  })
 });

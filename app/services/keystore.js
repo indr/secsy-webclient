@@ -13,7 +13,7 @@ export default Ember.Service.extend({
    * @param {{privateKeyArmored, publicKeyArmored, key}} key
    * @return {Promise<{Key}>}
    */
-  save(userId, emailAddress, key, destroyMe) {
+  save(userId, emailAddress, key) {
     const session = this.get('session');
     const store = this.get('store');
     const openpgp = this.get('openpgp');
@@ -22,8 +22,7 @@ export default Ember.Service.extend({
       isPublic: true,
       emailSha256: openpgp.sha256(emailAddress),
       publicKey: key.publicKeyArmored,
-      privateKey: key.privateKeyArmored,
-      destroyMe: destroyMe || false
+      privateKey: key.privateKeyArmored
     }).save().then(function () {
       session.set('data.authenticated.public_key', key.publicKeyArmored);
       session.set('data.authenticated.private_key', key.privateKeyArmored);
