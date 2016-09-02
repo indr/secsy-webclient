@@ -11,13 +11,13 @@ export default Ember.Service.extend({
   openpgp: Ember.inject.service(),
   store: Ember.inject.service(),
   
-  push(properties, emailAddress, onProgress) {
-    this.validateProperties(properties, emailAddress);
-    properties.emailAddress$ = emailAddress;
+  push(data, emailAddress, onProgress) {
+    this.validateData(data, emailAddress);
+    data.emailAddress$ = emailAddress;
     
     const options = {
       onProgress: onProgress || Ember.K,
-      payload: properties,
+      payload: data,
       status: {
         done: false,
         max: 0,
@@ -44,17 +44,17 @@ export default Ember.Service.extend({
       });
   },
   
-  validateProperties(properties, emailAddress) {
-    delete properties.emailAddress$;
+  validateData(data, emailAddress) {
+    delete data.emailAddress$;
     
-    const keys = Object.keys(properties);
+    const keys = Object.keys(data);
     if (keys.length === 0) {
       throw new Error('You must provide at least one property except emailAddress$');
     }
-    if (!Object.keys(properties).every((each) => {
+    if (!Object.keys(data).every((each) => {
         return !!each.match(/^[a-z_]+\$$/i)
       })) {
-      throw new Error('Properties must match letters, underscore and a trailing dollar sign');
+      throw new Error('Data properties must match letters, underscore and a trailing dollar sign');
     }
     
     if (!emailAddress || !emailAddress.match(/^[^@]+@[^@]+$/)) {

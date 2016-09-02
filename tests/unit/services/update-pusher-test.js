@@ -51,11 +51,11 @@ describeModule('service:update-pusher', 'Unit | Service | UpdatePusherService', 
     });
     
     describe('#push', function () {
-      let properties, emailAddress, onProgress, options,
+      let data, emailAddress, onProgress, options,
         encodePayload, loadContacts, processContacts;
       
       beforeEach(function () {
-        properties = {internet_telegram$: 'user@example.com'};
+        data = {internet_telegram$: 'user@example.com'};
         emailAddress = 'user@example.com';
         onProgress = simple.spy(Ember.K);
         
@@ -77,38 +77,38 @@ describeModule('service:update-pusher', 'Unit | Service | UpdatePusherService', 
         });
       });
       
-      it('should throw if properties is not an object that contains emailAddress$ key', function () {
+      it('should throw if data is not an object that contains emailAddress$ key', function () {
         assert.throws(sut.push.bind(sut, {}),
           /You must provide at least one property/);
         assert.throws(sut.push.bind(sut, {randomKey: 'randomValue'}),
-          /Properties must match letters, underscore and/);
-        assert.throws(sut.push.bind(sut, properties, ''),
+          /Data properties must match letters, underscore and/);
+        assert.throws(sut.push.bind(sut, data, ''),
           /A valid email address must be provided/);
       });
       
       it('should call encodePayload with constructed options object', function () {
-        return sut.push(properties, emailAddress, onProgress).then(() => {
+        return sut.push(data, emailAddress, onProgress).then(() => {
           assert(encodePayload.called, 'expected encodePayload to be called');
           const options = encodePayload.lastCall.arg;
-          assert.equal(options.payload, properties);
+          assert.equal(options.payload, data);
           assert.equal(options.onProgress, onProgress);
         })
       });
       
       it('should call loadContacts', function () {
-        return sut.push(properties, emailAddress, onProgress).then(() => {
+        return sut.push(data, emailAddress, onProgress).then(() => {
           assert(loadContacts.called, 'expected loadContacts to be called');
         });
       });
       
       it('should call processContacts', function () {
-        return sut.push(properties, emailAddress, onProgress).then(() => {
+        return sut.push(data, emailAddress, onProgress).then(() => {
           assert(processContacts.called, 'expected processContacts to be called');
         });
       });
       
       it('should progress with status.max', function () {
-        return sut.push(properties, emailAddress, onProgress).then(() => {
+        return sut.push(data, emailAddress, onProgress).then(() => {
           assert(onProgress.called, 'expected onProgress to be called');
           const status = onProgress.calls[0].arg;
           assert.deepEqual(status, {done: false, max: 3, value: 0});
@@ -116,7 +116,7 @@ describeModule('service:update-pusher', 'Unit | Service | UpdatePusherService', 
       });
       
       it('should progress with done:true and return options', function () {
-        return sut.push(properties, emailAddress, onProgress).then((result) => {
+        return sut.push(data, emailAddress, onProgress).then((result) => {
           assert(onProgress.called, 'expected onProgress to be called');
           const status = onProgress.lastCall.arg;
           assert.deepEqual(status, {done: true, max: 3, value: 0});
@@ -128,7 +128,7 @@ describeModule('service:update-pusher', 'Unit | Service | UpdatePusherService', 
         var error = new Error('encodePayload threw error');
         simple.mock(sut, 'encodePayload').throwWith(error);
         
-        sut.push(properties, emailAddress, onProgress).catch((err) => {
+        sut.push(data, emailAddress, onProgress).catch((err) => {
           assert.equal(err, error);
           assert(onProgress.called, 'expected onProgress to be called');
           const status = onProgress.lastCall.arg;
