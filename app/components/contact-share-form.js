@@ -22,10 +22,15 @@ export default Ember.Component.extend({
   
   actions: {
     share() {
-      const selected = this.get('properties').filter((each) => {
-        return each.checked;
-      });
-      if (selected.length === 0) {
+      const selected = this.get('properties').reduce((result, each) => {
+        if (each.checked && each.key !== 'emailAddress$') {
+          result[each.key] = each.value;
+        }
+        return result;
+      }, {});
+      
+      console.log(selected);
+      if (Object.keys(selected).length === 0) {
         this.get('flashMessages').dangerT('share.error-no-selection');
         return;
       }

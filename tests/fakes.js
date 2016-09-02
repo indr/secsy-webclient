@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import Addressbook from 'addressbook/services/addressbook';
 import DsRecordArray from 'ember-data/-private/system/record-arrays/record-array'
+import simple from 'simple-mock';
 
 const {
   RSVP
@@ -64,6 +65,16 @@ const FakeUpdate = Ember.Object.extend({
   }
 });
 
+const FlashMessages = Ember.Object.extend({
+  dangerT: simple.spy(Ember.K)
+});
+
+const UpdatePusher = Ember.Object.extend({});
+
+const Session = Ember.Object.extend({
+  data: {authenticated: {}}
+});
+
 export {
   ArrayProxy,
   FakeAddressbook,
@@ -74,5 +85,8 @@ export {
   FakeOpenpgp,
   FakeStore,
   FakeUpdate,
-  RecordArray
+  FlashMessages,
+  RecordArray,
+  Session,
+  UpdatePusher
 };

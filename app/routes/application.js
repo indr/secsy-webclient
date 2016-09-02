@@ -13,7 +13,6 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
   session: Ember.inject.service(),
   store: Ember.inject.service(),
   crypto: Ember.inject.service(),
-  sharer: Ember.inject.service(),
   addressbook: Ember.inject.service(),
   updatePuller: Ember.inject.service('update-puller'),
   
