@@ -42,55 +42,64 @@ describeModule('route:contacts/share', 'Unit | Route | ContactsShareRoute', {
     });
     
     describe('action share', function () {
-      let properties, emailAddress, push;
+      let data, emailAddress, push;
       
       beforeEach(function () {
-        properties = {};
+        data = {};
         emailAddress = 'user@example.com';
         session.set('data.authenticated.email', emailAddress);
         push = simple.mock(updatePusher, 'push').resolveWith();
       });
       
-      it('should call updatePusher push with properties and a progress callback', function () {
-        
-        return sut.send('share', properties).then(() => {
+      it('should call updatePusher push with data and a progress callback', function () {
+        return sut.send('share', data).then(() => {
           assert(push.called, 'expected pushser.push to be called');
-          assert.equal(push.lastCall.args[0], properties);
+          assert.equal(push.lastCall.args[0], data);
           assert.equal(push.lastCall.args[1], emailAddress);
           assert.isFunction(push.lastCall.args[2]);
         });
       });
       
       it('should call updatePusher with a progress callback that sends onProgress', function () {
-        sut.send('share', properties);
-        const progressCb = push.lastCall.args[2];
+        sut.send('share', data);
+        const onProgress = push.lastCall.args[2];
         
         const status = {};
-        progressCb(status);
+        onProgress(status);
         
         assert(send.called, 'expected send to be called');
         assert.equal(send.lastCall.args[0], 'onProgress');
         assert.equal(send.lastCall.args[1], status);
       });
       
-      it('should transitions to contacts.view given push resolves', function () {
-        return sut.send('share', properties).then(() => {
-          assert(transitionTo.called, 'expected transitionTo to be called');
-          var args = transitionTo.lastCall.args;
-          assert.equal(args[0], 'contacts.view');
-          assert.equal(args[1], model);
-        });
+      it('should transitions to contacts.view', function () {
+        sut.send('share', data);
+        
+        assert(transitionTo.called, 'expected transitionTo to be called');
+        var args = transitionTo.lastCall.args;
+        assert.equal(args[0], 'contacts.view');
+        assert.equal(args[1], model);
       });
       
       it('should flash message share.unknown-error given push rejects', function () {
         simple.mock(updatePusher, 'push').rejectWith(new Error('push rejected'));
         
-        return sut.send('share', properties).then(() => {
+        return sut.send('share', data).then(() => {
           const dangerT = flashMessages.dangerT;
           assert(dangerT.called, 'expected dangerT to be called');
           assert.equal(dangerT.lastCall.args[0], 'share.unknown-error');
           assert.equal(dangerT.lastCall.args[1], 'push rejected');
         });
+      });
+      
+      it('should flash message share.unknown-error given push throws', function () {
+        simple.mock(updatePusher, 'push').throwWith(new Error('push threw'));
+        
+        sut.send('share', data);
+        const dangerT = flashMessages.dangerT;
+        assert(dangerT.called, 'expected dangerT to be called');
+        assert.equal(dangerT.lastCall.args[0], 'share.unknown-error');
+        assert.equal(dangerT.lastCall.args[1], 'push threw');
       });
     });
   }

@@ -10,18 +10,23 @@ export default Ember.Route.extend({
   },
   
   actions: {
-    share(properties) {
+    share(data) {
+      const {
+        updatePusher,
+        flashMessages
+      } = this.getProperties('updatePusher', 'flashMessages');
+      
       const emailAddress = this.get('session').get('data.authenticated.email');
-      const progressCb = this.send.bind(this, 'onProgress');
+      const onProgress = this.send.bind(this, 'onProgress');
       
       try {
-        return this.get('updatePusher').push(properties, emailAddress, progressCb).then(() => {
-          this.transitionTo('contacts.view', this.controller.get('model'));
-        }).catch((err) => {
-          this.get('flashMessages').dangerT('share.unknown-error', err.message || err);
+        var result = updatePusher.push(data, emailAddress, onProgress).catch((err) => {
+          flashMessages.dangerT('share.unknown-error', err.message || err);
         });
+        this.transitionTo('contacts.view', this.controller.get('model'));
+        return result;
       } catch (err) {
-        this.get('flashMessages').danger(err.message || err);
+        flashMessages.dangerT('share.unknown-error', err.message || err);
       }
     },
     
