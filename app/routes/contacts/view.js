@@ -1,10 +1,17 @@
 import Ember from 'ember';
 
+function debug (message) {
+  Ember.debug('[route:contacts/view] ' + message);
+}
+
 export default Ember.Route.extend({
   store: Ember.inject.service(),
   
   model(params) {
-    return this.get('store').findRecord('contact', params.id);
+    return this.get('store').findRecord('contact', params.id).then((record) => {
+      debug('Found record ' + (record.get('id') || record));
+      return record;
+    });
   },
   
   actions: {

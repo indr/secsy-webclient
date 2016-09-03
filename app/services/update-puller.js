@@ -5,7 +5,7 @@ const {
 } = Ember;
 
 function debug (message) {
-  Ember.debug('[puller] ' + message);
+  Ember.debug('[service:puller] ' + message);
 }
 
 export default Ember.Service.extend({

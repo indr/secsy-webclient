@@ -4,9 +4,12 @@ import CustomApplicationRouteMixin from '../mixins/application-route-mixin';
 
 const {
   assign,
-  debug,
   K
 } = Ember;
+
+function debug (message) {
+  Ember.debug('[route:application] ' + message);
+}
 
 export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplicationRouteMixin, {
   addressbook: Ember.inject.service(),
@@ -33,7 +36,7 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
     var localeName = ('' + language).toLowerCase().substr(0, 2);
     const names = {'en': 'en-us', 'de': 'de-de'};
     localeName = names[localeName] || 'en-us';
-    Ember.debug('Setting locale ' + localeName + ' (detected ' + language + ')');
+    debug('Setting locale ' + localeName + ' (detected ' + language + ')');
     this.get('intl').setLocale(localeName);
   },
   
@@ -105,10 +108,8 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
     
     pullUpdates(options) {
       options = assign({silent: false}, options);
-      debug('routes/application/actions#pullUpdates() / silent:' + options.silent);
-      
       const flashMessages = this.get('flashMessages');
-  
+      
       const emailAddress = this.get('session').get('data.authenticated.email');
       const onProgress = options.silent ? K : this.onProgress.bind(this);
       

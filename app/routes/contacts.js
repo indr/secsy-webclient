@@ -2,6 +2,10 @@ import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-rout
 import DecryptedRouteMixin from '../mixins/decrypted-route-mixin';
 import Ember from 'ember';
 
+function debug (message) {
+  Ember.debug('[route:contacts] ' + message);
+}
+
 export default Ember.Route.extend(AuthenticatedRouteMixin, DecryptedRouteMixin, {
   addressbook: Ember.inject.service(),
   
@@ -9,7 +13,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, DecryptedRouteMixin, 
   
   model() {
     return this.get('addressbook').findContacts({cache: false}).then((results) => {
-      Ember.debug('routes/contacts#model() loaded ' + results.get('length') + ' records');
+      debug('Found ' + results.get('length') + ' contacts');
       return results;
     });
   },
