@@ -11,6 +11,15 @@ assert('RSVP.promiseFor is already defined', RSVP.methodFor === undefined);
 
 export default RSVP;
 
+
+RSVP.Promise.prototype.delay = function (ms, value) {
+  return this.then(function (result) {
+    return new RSVP.Promise(function (resolve) {
+      run.later(resolve.bind(null, value || result), ms);
+    });
+  });
+};
+
 /**
  * Returns a new function that wraps the given function fn. The new function will always return a promise that is
  * fulfilled with the original functions return values or rejected with thrown exceptions from the original function.
