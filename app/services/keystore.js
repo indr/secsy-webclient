@@ -54,7 +54,7 @@ export default Ember.Service.extend({
    * Looks for a public key for the given email address.
    *
    * @param emailAddress
-   * @returns {Promise}
+   * @returns {Promise} Resolves with a key or undefined.
    */
   getPublicKey(emailAddress) {
     const hash = this.get('openpgp').sha256(emailAddress.toLowerCase());

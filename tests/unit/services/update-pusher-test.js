@@ -279,6 +279,16 @@ describeModule('service:update-pusher', 'Unit | Service | UpdatePusherService', 
         });
       });
       
+      it('should throw error if contact does not have a public key', function (done) {
+        simple.mock(keystore, 'getPublicKey').resolveWith(undefined);
+        
+        sut.getKey(options).catch((err) => {
+          assert.instanceOf(err, Error);
+          assert.match(err.message, /Public key not found/);
+          done();
+        });
+      });
+      
       it('should set options.key.hash and return options', function () {
         return sut.getKey(options).then((result) => {
           assert.equal(options.key.hash, 'email hash');

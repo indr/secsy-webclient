@@ -114,6 +114,12 @@ export default Ember.Service.extend({
   
   getKey(options) {
     return this.get('keystore').getPublicKey(options.contact.get('emailAddress$')).then((key) => {
+      if (!key) {
+        // TODO: Throw a custom Error object
+        // See: http://stackoverflow.com/questions/783818/how-do-i-create-a-custom-error-in-javascript
+        throw new Error('Public key not found');
+      }
+      
       const pgpKey = this.get('openpgp').key.readArmored(key.get('publicKey')).keys[0];
       options.key = {
         hash: key.get('emailSha256'),
