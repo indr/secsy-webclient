@@ -4,6 +4,10 @@ const {
   RSVP
 } = Ember;
 
+function debug (message) {
+  Ember.debug('[puller] ' + message);
+}
+
 export default Ember.Service.extend({
   addressbook: Ember.inject.service(),
   crypto: Ember.inject.service(),
@@ -33,6 +37,7 @@ export default Ember.Service.extend({
     
     const fireProgress = this.fireProgress.bind(this);
     
+    debug('Start pulling updates for ' + emailAddress);
     return RSVP.resolve(options)
       .then(this.findUpdates.bind(this))
       .then(fireProgress)
@@ -40,11 +45,13 @@ export default Ember.Service.extend({
       .then(function (options) {
         options.status.done = true;
         fireProgress(options);
+        debug('Finished pulling updates for ' + emailAddress);
         return options;
       })
       .catch(function (err) {
         options.status.done = true;
         fireProgress(options);
+        debug('Error pulling updates for ' + emailAddress);
         throw err;
       });
   },
@@ -83,6 +90,8 @@ export default Ember.Service.extend({
       options.status.value++;
       
       return self.processUpdate(options, update).catch(() => {
+        // TODO: Move the destroying of the update here?
+        // debug('Error processing update: ' + err.message);
         return options;
       }).then(self.fireProgress.bind(self));
     }, options);
@@ -91,18 +100,18 @@ export default Ember.Service.extend({
   processUpdate(options, update) {
     options.update = update;
     
-    return this.decrypt(options)
+    return RSVP.resolve(options)
+      .then(this.decrypt.bind(this))
       .then(this.decode.bind(this))
       .then(this.validate.bind(this))
       .then(this.pushToContact.bind(this))
       .then((options) => {
         return options;
       }).catch((err) => {
-        Ember.debug('Update processing threw error' + (err.message || err));
-        Ember.debug('Destroying update and rethrowing error');
+        debug('Error processing update: ' + err.message);
         update.destroyRecord().catch((err) => {
           // We don't care if this doesn't succeed.
-          Ember.debug('update.destroyRecord() threw error' + (err.message || err));
+          debug('Error destroying update: ' + err.message);
         });
         throw err;
       });
@@ -111,14 +120,14 @@ export default Ember.Service.extend({
   decrypt(options) {
     var update = options.update;
     return this.get('crypto').decrypt(update.get('encrypted_')).then((decrypted) => {
-      update.decrypted = decrypted.base64;
+      update.decrypted = decrypted;
       return options;
     });
   },
   
   decode(options) {
     var update = options.update;
-    return this.get('crypto').decodeBase64(update.get('decrypted')).then((decoded) => {
+    return this.get('crypto').decodeBase64(update.decrypted).then((decoded) => {
       update.decoded = decoded;
       return options;
     });

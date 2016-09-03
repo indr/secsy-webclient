@@ -4,6 +4,10 @@ const {
   RSVP
 } = Ember;
 
+function debug (message) {
+  Ember.debug('[pusher] ' + message);
+}
+
 export default Ember.Service.extend({
   addressbook: Ember.inject.service(),
   crypto: Ember.inject.service(),
@@ -27,6 +31,7 @@ export default Ember.Service.extend({
     
     const fireProgress = this.fireProgress.bind(this);
     
+    debug('Start pushing updates for ' + emailAddress);
     return RSVP.resolve(options)
       .then(this.encodePayload.bind(this))
       .then(this.loadContacts.bind(this))
@@ -35,11 +40,13 @@ export default Ember.Service.extend({
       .then(function (options) {
         options.status.done = true;
         fireProgress(options);
+        debug('Finished pushing updates for ' + emailAddress);
         return options;
       })
       .catch((err) => {
         options.status.done = true;
         fireProgress(options);
+        debug('Error pushing updates for ' + emailAddress);
         throw err;
       });
   },
@@ -90,7 +97,8 @@ export default Ember.Service.extend({
       var contact = options.contacts.pop();
       options.status.value++;
       
-      return self.processContact(options, contact).catch(() => {
+      return self.processContact(options, contact).catch((err) => {
+        debug('Error processing contact: ' + err.message);
         return options;
       }).then(self.fireProgress.bind(self));
     }, options);
@@ -107,8 +115,10 @@ export default Ember.Service.extend({
   getKey(options) {
     return this.get('keystore').getPublicKey(options.contact.get('emailAddress$')).then((key) => {
       const pgpKey = this.get('openpgp').key.readArmored(key.get('publicKey')).keys[0];
-      options.key = key;
-      options.key.pgpKey = pgpKey;
+      options.key = {
+        hash: key.get('emailSha256'),
+        pgpKey: pgpKey
+      };
       return options;
     });
   },
@@ -122,7 +132,7 @@ export default Ember.Service.extend({
   
   createUpdate(options) {
     return this.get('store').createRecord('update', {
-      emailSha256: options.key.emailSha256,
+      emailSha256: options.key.hash,
       encrypted_: options.encrypted
     }).save().then(() => {
       return options;

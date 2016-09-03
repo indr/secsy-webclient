@@ -291,14 +291,22 @@ describeModule('service:update-puller', 'Unit | Service | UpdatePullerService', 
     });
     
     describe('#decrypt', function () {
-      it('should ask crypto to decrypt', function () {
-        var decrypt = simple.mock(crypto, 'decrypt').resolveWith({base64: 'decrypted'});
-        var update = options.update = makeUpdate();
+      let decrypt, update;
+      beforeEach(function () {
+        decrypt = simple.mock(crypto, 'decrypt').resolveWith('decrypted');
+        update = options.update = makeUpdate();
         update.encrypted_ = 'cypher';
-        
-        return sut.decrypt(options).then((result) => {
+      });
+      
+      it('should ask crypto to decrypt', function () {
+        return sut.decrypt(options).then(() => {
           assert(decrypt.called);
           assert.equal(decrypt.lastCall.arg, 'cypher');
+        });
+      });
+      
+      it('should set update.decrypted and return options', function () {
+        return sut.decrypt(options).then((result) => {
           assert.equal(update.decrypted, 'decrypted');
           assert.equal(result, options);
         });

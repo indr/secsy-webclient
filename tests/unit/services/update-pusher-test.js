@@ -266,7 +266,7 @@ describeModule('service:update-pusher', 'Unit | Service | UpdatePusherService', 
       let key, getPublicKey, readArmored, contact;
       
       beforeEach(function () {
-        key = FakeKey.create();
+        key = FakeKey.create({emailSha256: 'email hash'});
         getPublicKey = simple.mock(keystore, 'getPublicKey').resolveWith(key);
         readArmored = simple.mock(openpgp.key, 'readArmored').returnWith({keys: ['openpgp key']});
         contact = options.contact = FakeContact.create({emailAddress$: 'user@example.com'});
@@ -279,9 +279,9 @@ describeModule('service:update-pusher', 'Unit | Service | UpdatePusherService', 
         });
       });
       
-      it('should set options.key and return options', function () {
+      it('should set options.key.hash and return options', function () {
         return sut.getKey(options).then((result) => {
-          assert.equal(options.key, key);
+          assert.equal(options.key.hash, 'email hash');
           assert.equal(result, options);
         });
       });
@@ -335,7 +335,9 @@ describeModule('service:update-pusher', 'Unit | Service | UpdatePusherService', 
         createRecord = simple.mock(store, 'createRecord');
         
         encrypted = options.encrypted = 'encrypted payload';
-        key = options.key = fakes.FakeKey.create({emailSha256: 'email sha256'});
+        key = options.key = {
+          hash: 'email hash'
+        };
       });
       
       it('should ask store to create a record', function () {
@@ -348,7 +350,7 @@ describeModule('service:update-pusher', 'Unit | Service | UpdatePusherService', 
       it('should save update with emailSha256 and encrypted_', function () {
         return sut.createUpdate(options).then(() => {
           assert(save.called, 'expected record.save to be called');
-          assert.equal(update.emailSha256, key.emailSha256);
+          assert.equal(update.emailSha256, 'email hash');
           assert.equal(update.encrypted_, encrypted);
         });
       });
