@@ -17,6 +17,15 @@ describe('Extension | RSVP', function () {
         assert.equal(result, 'value');
       });
     });
+    
+    it('should resolve after given milliseconds', function () {
+      const ms = 500;
+      const start = new Date();
+      return RSVP.resolve().delay(ms).then(() => {
+        const end = new Date();
+        assert.isAbove(end - start, ms - 1);
+      });
+    });
   });
 });
 

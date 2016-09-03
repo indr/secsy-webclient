@@ -11,10 +11,23 @@ assert('RSVP.promiseFor is already defined', RSVP.methodFor === undefined);
 
 export default RSVP;
 
+var throwToggle = false;
+RSVP.Promise.prototype.throwToggle = function () {
+  Ember.warn('You are using the throw toggler. Don\'t use this in production! Promise? ;)', false,
+    {id: 'secsy-debug.promise-throw-toggle'});
+  return this.then(function (result) {
+    throwToggle = !throwToggle;
+    if (!throwToggle) {
+      throw new Error('Throw toggle');
+    }
+    return result;
+  });
+};
 
 RSVP.Promise.prototype.delay = function (ms, value) {
   return this.then(function (result) {
     return new RSVP.Promise(function (resolve) {
+      Ember.debug('Delaying promise for ' + ms + ' ms');
       run.later(resolve.bind(null, value || result), ms);
     });
   });
