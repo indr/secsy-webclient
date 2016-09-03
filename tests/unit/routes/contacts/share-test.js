@@ -5,7 +5,7 @@ import { beforeEach, describe } from 'mocha';
 import fakes from './../../../fakes';
 import simple from 'simple-mock';
 
-describeModule('route:contacts/share', 'Unit | Route | ContactsShareRoute', {
+describeModule('route:contacts/share', 'Unit | Route | contacts/share', {
     // Specify the other units that are required for this test.
     // needs: ['controller:foo']
   },
@@ -30,7 +30,25 @@ describeModule('route:contacts/share', 'Unit | Route | ContactsShareRoute', {
       transitionTo = simple.mock(sut, 'transitionTo').returnWith();
     });
     
-    describe('action cancel', function () {
+    describe('#afterModel', function () {
+      it('should transition to contacts.view if contact.me !== true', function () {
+        const model = fakes.FakeContact.create({me: false});
+        sut.afterModel(model);
+        
+        assert(transitionTo.called, 'expected transitionTo be called');
+        assert.equal(transitionTo.lastCall.args[0], 'contacts.view');
+        assert.equal(transitionTo.lastCall.args[1], model);
+      });
+      
+      it('should not transition to contacts.view if contact.me === true', function () {
+        const model = fakes.FakeContact.create({me: true});
+        sut.afterModel(model);
+        
+        assert(!transitionTo.called, 'expected transitionTo not to be called');
+      })
+    });
+    
+    describe('action #cancel', function () {
       it('should transition to contacts.view', function () {
         
         sut.send('cancel');
@@ -41,7 +59,7 @@ describeModule('route:contacts/share', 'Unit | Route | ContactsShareRoute', {
       });
     });
     
-    describe('action share', function () {
+    describe('action #share', function () {
       let data, emailAddress, push;
       
       beforeEach(function () {
