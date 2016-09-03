@@ -49,7 +49,10 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
     debug(`onProgress done:${status.done}, max:${status.max}, value:${status.value}`);
     this.controller.set('progress.value', status.value);
     this.controller.set('progress.max', status.max);
-    if (status.value === status.max) {
+    if (status.done && status.value !== status.max) {
+      this.controller.set('progress.type', 'danger');
+      Ember.run.later(this.restoreProgress.bind(this), 1000);
+    } else if (status.done || status.value === status.max) {
       this.controller.set('progress.type', 'success');
       Ember.run.later(this.restoreProgress.bind(this), 1000);
     }
