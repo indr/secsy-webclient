@@ -147,7 +147,7 @@ describeModule('service:update-puller', 'Unit | Service | UpdatePullerService', 
       it('should ask store to query for updates with given hash', function () {
         return sut.findUpdates(options).then(() => {
           assert.equal(query.lastCall.args[0], 'update');
-          assert.deepEqual(query.lastCall.args[1], {emailSha256: 'abc123'});
+          assert.deepEqual(query.lastCall.args[1], {toEmailSha256: 'abc123'});
         })
       });
       
@@ -330,7 +330,7 @@ describeModule('service:update-puller', 'Unit | Service | UpdatePullerService', 
     describe('#validate', function () {
       it('should resolve with options given validation succeeds', function () {
         var update = options.update = makeUpdate();
-        update.from_email_sha256 = crypto.hashEmail('user@example.com');
+        update.fromEmailSha256 = crypto.hashEmail('user@example.com');
         update.decoded = {emailAddress$: 'user@example.com'};
         
         var result = sut.validate(options);
@@ -347,7 +347,7 @@ describeModule('service:update-puller', 'Unit | Service | UpdatePullerService', 
       it('should throw Invalid email hash', function () {
         simple.mock(crypto, 'hashEmail').returnWith('hashed');
         var update = options.update = makeUpdate();
-        update.from_email_sha256 = 'wrong hash';
+        update.fromEmailSha256 = 'wrong hash';
         update.decoded = {emailAddress$: 'user@example.com'};
         
         assert.throws(sut.validate.bind(sut, options), /Invalid email hash/);

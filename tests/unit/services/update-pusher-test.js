@@ -357,10 +357,10 @@ describeModule('service:update-pusher', 'Unit | Service | UpdatePusherService', 
         });
       });
       
-      it('should save update with emailSha256 and encrypted_', function () {
+      it('should save update with toEmailSha256 and encrypted_', function () {
         return sut.createUpdate(options).then(() => {
           assert(save.called, 'expected record.save to be called');
-          assert.equal(update.emailSha256, 'email hash');
+          assert.equal(update.toEmailSha256, 'email hash');
           assert.equal(update.encrypted_, encrypted);
         });
       });

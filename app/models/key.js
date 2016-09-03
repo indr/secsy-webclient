@@ -3,8 +3,13 @@ import attr from 'ember-data/attr';
 // import { belongsTo, hasMany } from 'ember-data/relationships';
 
 export default Model.extend({
-  emailSha256: attr('string'),
+  emailSha256: attr('string', {
+    readonly: true
+  }),
+  
   isPublic: attr('boolean'),
+  
   privateKey: attr('string'),
+  
   publicKey: attr('string'),
 });

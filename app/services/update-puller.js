@@ -69,7 +69,7 @@ export default Ember.Service.extend({
    * Resolves with DS.RecordArray
    */
   findUpdates(options) {
-    return this.get('store').query('update', {emailSha256: options.emailHash}).then((recordArray) => {
+    return this.get('store').query('update', {toEmailSha256: options.emailHash}).then((recordArray) => {
       options.updates = recordArray.toArray();
       options.status.max = options.updates.length;
       return options;
@@ -140,7 +140,7 @@ export default Ember.Service.extend({
     }
     
     var hash = this.get('crypto').hashEmail(update.decoded.emailAddress$);
-    if (update.get('from_email_sha256') !== hash) {
+    if (update.get('fromEmailSha256') !== hash) {
       throw new Error('Validation failed: Invalid email hash');
     }
     

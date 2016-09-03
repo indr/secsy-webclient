@@ -138,7 +138,7 @@ export default Ember.Service.extend({
   
   createUpdate(options) {
     return this.get('store').createRecord('update', {
-      emailSha256: options.key.hash,
+      toEmailSha256: options.key.hash,
       encrypted_: options.encrypted
     }).save().then(() => {
       return options;
