@@ -5,7 +5,7 @@ export default DS.Model.extend({
   username: attr('string'),
   email: attr('string'),
   password: attr('string'),
-  createdAt: attr('date'),
+  createdAt: attr('utc'),
   gravatarUrl: attr('string'),
   privateKey: attr('string'),
   publicKey: attr('string')

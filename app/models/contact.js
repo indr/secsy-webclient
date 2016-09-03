@@ -42,11 +42,11 @@ export default Model.extend(Validations, {
     this.newValuesCount = 0
   },
   
-  createdAt: attr('date', {
+  createdAt: attr('utc', {
     readonly: true
   }),
   
-  updatedAt: attr('date', {
+  updatedAt: attr('utc', {
     readonly: true
   }),
   
