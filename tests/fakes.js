@@ -66,13 +66,24 @@ const FakeUpdate = Ember.Object.extend({
 });
 
 const FlashMessages = Ember.Object.extend({
-  dangerT: simple.spy(Ember.K)
+  init() {
+    this._super(...arguments);
+    this.dangerT = simple.mock()
+  }
+});
+
+const UpdatePuller = Ember.Object.extend({
+  init() {
+    this._super(...arguments);
+    this.pull = simple.mock();
+  }
 });
 
 const UpdatePusher = Ember.Object.extend({});
 
 const Session = Ember.Object.extend({
-  data: {authenticated: {}}
+  data: {authenticated: {}},
+  on: Ember.K
 });
 
 export {
@@ -88,5 +99,6 @@ export {
   FlashMessages,
   RecordArray,
   Session,
+  UpdatePuller,
   UpdatePusher
 };

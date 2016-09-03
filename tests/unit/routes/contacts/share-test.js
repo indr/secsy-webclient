@@ -51,7 +51,7 @@ describeModule('route:contacts/share', 'Unit | Route | ContactsShareRoute', {
         push = simple.mock(updatePusher, 'push').resolveWith();
       });
       
-      it('should call updatePusher push with data and a progress callback', function () {
+      it('should call updatePusher.push with data and an onProgress callback', function () {
         return sut.send('share', data).then(() => {
           assert(push.called, 'expected pushser.push to be called');
           assert.equal(push.lastCall.args[0], data);
@@ -60,7 +60,7 @@ describeModule('route:contacts/share', 'Unit | Route | ContactsShareRoute', {
         });
       });
       
-      it('should call updatePusher with a progress callback that sends onProgress', function () {
+      it('should call updatePusher.push with an onProgress callback that sends onProgress', function () {
         sut.send('share', data);
         const onProgress = push.lastCall.args[2];
         

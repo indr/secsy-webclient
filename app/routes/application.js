@@ -9,11 +9,12 @@ const {
 } = Ember;
 
 export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplicationRouteMixin, {
+  addressbook: Ember.inject.service(),
+  crypto: Ember.inject.service(),
+  flashMessages: Ember.inject.service(),
   intl: Ember.inject.service(),
   session: Ember.inject.service(),
   store: Ember.inject.service(),
-  crypto: Ember.inject.service(),
-  addressbook: Ember.inject.service(),
   updatePuller: Ember.inject.service('update-puller'),
   
   beforeModel()  {
@@ -104,16 +105,20 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
     
     pullUpdates(options) {
       options = assign({silent: false}, options);
-      
       debug('routes/application/actions#pullUpdates() / silent:' + options.silent);
       
+      const flashMessages = this.get('flashMessages');
+  
+      const emailAddress = this.get('session').get('data.authenticated.email');
       const onProgress = options.silent ? K : this.onProgress.bind(this);
       
-      const emailAddress = this.get('session').get('data.authenticated.email');
-      debug('Start pulling updates for ' + emailAddress);
-      this.get('updatePuller').pull(emailAddress, onProgress).then(() => {
-        debug('Finished pulling updates for ' + emailAddress);
-      });
+      try {
+        return this.get('updatePuller').pull(emailAddress, onProgress).catch((err) => {
+          flashMessages.dangerT('pull-updates.unknown-error', err.message || err);
+        });
+      } catch (err) {
+        flashMessages.dangerT('pull-updates.unknown-error', err.message || err);
+      }
     },
     
     onProgress(status) {
