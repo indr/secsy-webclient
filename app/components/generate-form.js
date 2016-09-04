@@ -28,7 +28,7 @@ export default Ember.Component.extend(Validations, {
       
       flash.infoT('generate.generating', {sticky: true});
       keychain.generateKey(userId, emailAddress, passphrase).then(() => {
-        flash.successT('generate.success');
+        flash.clearMessages();
       }).catch((reason) => {
         flash.dangerT('generate.unknown-error', reason);
       });

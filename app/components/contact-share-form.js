@@ -13,7 +13,7 @@ export default Ember.Component.extend({
     
     properties.forEach((each) => {
       var key = each.key;
-      each.checked = key !== 'name$';
+      each.checked = !Ember.isBlank(each.value) && key !== 'name$';
       each.disabled = key === 'emailAddress$';
     });
     

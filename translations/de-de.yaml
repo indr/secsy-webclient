@@ -1,3 +1,6 @@
+app:
+  title: "secsy.io | sicher synchronisiert"
+
 product:
   info: '{product} will cost {price, number, USD} if ordered by {deadline, date, time}'
   title: 'Hallo Welt!'
@@ -172,8 +175,7 @@ signup:
 warnings:
   no-ssl: |
     <p><strong>Keine sichere Verbindung!</strong>
-    <p>Sie sind nicht mit SSL/https verbunden. Benutzen Sie keine realen E-Mail-Adressen und geben Sie keine
-    (ähnlichen) Passwörter ein, die Sie irgendwo sonst bereits verwenden.</p>
+    <p>Sie sind nicht mit SSL/https verbunden. Sie werden in kürze weitergeleitet...</p>
 
 errors:
   description: "Dieses Feld"
