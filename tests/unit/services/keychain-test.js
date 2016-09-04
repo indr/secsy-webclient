@@ -10,6 +10,7 @@ const {RSVP} = Ember;
 describeModule('service:keychain', 'Unit | Service | keychain', {
     // Specify the other units that are required for this test.
     needs: [
+      'service:crypto',
       'service:keystore',
       'service:openpgp']
   },

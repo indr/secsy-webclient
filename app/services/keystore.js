@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Service.extend({
+  crypto: Ember.inject.service(),
   session: Ember.inject.service(),
   store: Ember.inject.service(),
   openpgp: Ember.inject.service(),
@@ -16,11 +17,9 @@ export default Ember.Service.extend({
   save(userId, emailAddress, key) {
     const session = this.get('session');
     const store = this.get('store');
-    const openpgp = this.get('openpgp');
     
     return store.createRecord('key', {
       isPublic: true,
-      emailSha256: openpgp.sha256(emailAddress),
       publicKey: key.publicKeyArmored,
       privateKey: key.privateKeyArmored
     }).save().then(function () {
@@ -57,7 +56,7 @@ export default Ember.Service.extend({
    * @returns {Promise} Resolves with a key or undefined.
    */
   getPublicKey(emailAddress) {
-    const hash = this.get('openpgp').sha256(emailAddress.toLowerCase());
+    const hash = this.get('crypto').hashEmail(emailAddress);
     const filter = {h: hash};
     
     return this.get('store').query('key', filter).then((results) => {

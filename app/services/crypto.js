@@ -103,7 +103,7 @@ export default Ember.Service.extend({
     // This doesn't provide any security, it's
     // just to mitigate rainbow table look ups
     const salt = 'v07k2x0zgR';
-    
+    emailAddress = emailAddress.toLowerCase();
     return this.get('openpgp').sha256(salt + emailAddress);
   }
 });
