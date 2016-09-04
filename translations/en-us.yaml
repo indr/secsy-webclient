@@ -162,7 +162,7 @@ signup:
   title: "Signup"
   emailAddress: "Email address"
   password: "Password"
-  passwordRepeat: "Repeat"
+  passwordRepeat: "Confirm password"
   success: "Welcome aboard!"
   unknown-error: "Unknown error during sign up"
 

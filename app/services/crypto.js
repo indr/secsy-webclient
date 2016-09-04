@@ -100,7 +100,10 @@ export default Ember.Service.extend({
   },
   
   hashEmail(emailAddress) {
-    // TODO: Add some salt and pepper
-    return this.get('openpgp').sha256(emailAddress);
+    // This doesn't provide any security, it's
+    // just to mitigate rainbow table look ups
+    const salt = 'v07k2x0zgR';
+    
+    return this.get('openpgp').sha256(salt + emailAddress);
   }
 });

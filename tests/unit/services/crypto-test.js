@@ -81,7 +81,7 @@ describeModule('service:crypto', 'Unit | Service | CryptoService', {
     describe('#hashEmail()', function () {
       it('hashes a given email address', function () {
         var hash = sut.hashEmail('admin@example.com');
-        assert.equal(hash, '258d8dc916db8cea2cafb6c3cd0cb0246efe061421dbd83ec3a350428cabda4f');
+        assert.equal(hash, 'acc1d58b886b138d10a6c33aad693262ddf71e7170a6a2b78fdb9c1effcdd7f1');
       })
     })
   }
