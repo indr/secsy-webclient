@@ -73,7 +73,7 @@ contact:
   created-at: Created {timestamp}
   updated-at: updated {timestamp}
   edit: 'Edit contact'
-  emailAddress: 'E-Mail-Adresse'
+  emailAddress: "Email address"
   legend:
     information: Contact information
     internet: Internet
