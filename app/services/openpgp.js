@@ -1,11 +1,14 @@
 import Ember from 'ember';
+import ENV from 'addressbook/config/environment';
 import openpgp from 'openpgp';
 
 export default Ember.Service.extend({
   init() {
     this._super(...arguments);
-    
-    openpgp.initWorker({path: 'assets/openpgp.worker.min.js'});
+   
+    if (ENV.useWebWorker) {
+      openpgp.initWorker({path: 'assets/openpgp.worker.min.js'});
+    }
     
     this.decrypt = openpgp.decrypt;
     this.decryptKey = openpgp.decryptKey;

@@ -18,7 +18,9 @@ module.exports = function (environment) {
       // when it is created
       decryptionRoute: 'decrypt',
       routeAfterDecryption: 'contacts',
-      routeIfAlreadyDecrypted: 'contacts'
+      routeIfAlreadyDecrypted: 'contacts',
+      
+      useWebWorker: false
     },
 
     'seneca-auth': {
