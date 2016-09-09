@@ -1,4 +1,4 @@
-{{#bs-form action="decrypt" model=this}}
+{{#bs-form action="decrypt" model=this novalidate=true}}
     <div class="{{if isModal 'modal-body'}}">
       {{bs-form-element controlType="password" label=(t 'decrypt.passphrase') property="passphrase" autofocus=true}}
     </div>
