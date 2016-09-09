@@ -29,9 +29,10 @@ export default DS.RESTAdapter.extend({
   normalizeErrorResponse(status, headers, payload) {
     const errors = [];
     
-    if (payload && Array.isArray(payload)) {
-      for (var i = 0; i < payload.length; i++) {
-        const each = payload[i];
+    const fields = payload.fields;
+    if (fields && Array.isArray(fields)) {
+      for (var i = 0; i < fields.length; i++) {
+        const each = fields[i];
         const pointer = 'data/attributes/' + each.field;
         const validation = this.normalizeErrorAttributeValidation(each);
         errors.push({
@@ -43,7 +44,7 @@ export default DS.RESTAdapter.extend({
     
     if (errors.length === 0 || errors.message) {
       errors.push({
-        status: `${status}`,
+        status: `${payload.status || status}`,
         title: payload.message || 'The backend responded with an error',
         detail: `${payload}`
       });
