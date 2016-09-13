@@ -36,6 +36,12 @@ application:
 confirm:
   pending-unsaved: You have pending unsaved changes. Do you really want to discard them?
 
+activate:
+  title: 'Welcome to secsy!'
+  action: 'Activate your account'
+  success: 'Your new account is confirmed. You will be redirected to the login page.'
+  unknown-error: 'Unknown error during activation'
+
 login:
   title: 'Login'
   username: 'Email address'

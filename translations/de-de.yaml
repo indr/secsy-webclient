@@ -36,6 +36,12 @@ application:
 confirm:
   pending-unsaved: Sie haben ungespeicherte Änderungen. Möchten Sie diese wirklich verwerfen?
 
+activate:
+  title: 'Willkommen zu secsy!'
+  action: 'Konto aktivieren'
+  success: 'Ihr neues Konto wurde bestätigt. Sie werden nun zum Anmeldeformular weitergeleitet.'
+  unknown-error: 'Unbekannter Fehler bei der Aktivierung'
+
 login:
   title: 'Anmelden'
   username: 'E-Mail-Adresse'
