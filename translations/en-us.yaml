@@ -166,7 +166,9 @@ signup:
   emailAddress: "Email address"
   password: "Password"
   passwordRepeat: "Confirm password"
-  success: "Welcome aboard!"
+  success: |
+    <p>You're almost done! We sent an activation email to <strong>{email}</strong>. Please follow the instructions in the email to activate your account.</p>
+    <p>If it doesn't arrive, check your spam folder, or try to log in again to send another activation email.</p>
   unknown-error: "Unknown error during sign up"
 
 warnings:

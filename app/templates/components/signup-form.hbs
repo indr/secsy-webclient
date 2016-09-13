@@ -1,13 +1,24 @@
-{{#bs-form action="signup" model=this novalidate=true}}
+{{#if showSuccess}}
     <div class="{{if isModal 'modal-body'}}">
-      {{bs-form-element controlType="text" label=(t 'signup.emailAddress') property="emailAddress" autofocus=true}}
-      {{bs-form-element controlType="password" label=(t 'signup.password') property="password"}}
-      {{bs-form-element controlType="password" label=(t 'signup.passwordRepeat') property="passwordRepeat"}}
+      {{format-html-message 'signup.success' email=emailAddress}}
     </div>
     <div class="{{if isModal 'modal-footer'}}">
       {{#bs-form-group}}
-        {{#bs-button type="primary" buttonType="submit"}}{{t 'actions.signup'}}{{/bs-button}}
-        {{#link-to 'login' class="btn btn-default"}}{{t 'actions.cancel'}}{{/link-to}}
+        {{#link-to 'login' class="btn btn-link pull-left"}}{{t 'actions.login'}}{{/link-to}}
       {{/bs-form-group}}
     </div>
-{{/bs-form}}
+{{else}}
+  {{#bs-form action="signup" model=this novalidate=true}}
+      <div class="{{if isModal 'modal-body'}}">
+        {{bs-form-element controlType="text" label=(t 'signup.emailAddress') property="emailAddress" autofocus=true}}
+        {{bs-form-element controlType="password" label=(t 'signup.password') property="password"}}
+        {{bs-form-element controlType="password" label=(t 'signup.passwordRepeat') property="passwordRepeat"}}
+      </div>
+      <div class="{{if isModal 'modal-footer'}}">
+        {{#bs-form-group}}
+          {{#bs-button type="primary" buttonType="submit"}}{{t 'actions.signup'}}{{/bs-button}}
+          {{#link-to 'login' class="btn btn-default"}}{{t 'actions.cancel'}}{{/link-to}}
+        {{/bs-form-group}}
+      </div>
+  {{/bs-form}}
+{{/if}}

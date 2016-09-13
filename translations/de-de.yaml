@@ -169,7 +169,9 @@ signup:
   emailAddress: "E-Mail-Adresse"
   password: "Passwort"
   passwordRepeat: "Wiederholung"
-  success: "Willkommen an Bord!"
+  success: |
+    <p>Wir haben ein E-Mail an die Adresse <strong>{email}</strong> gesendet. Bitten folgen Sie den Anweisungen im E-Mail um Ihr Konto zu aktivieren.</p>
+    <p>Falls es nicht ankommt, überprüfen Sie Ihren Spam-Ordner oder versuchen Sie sich anzumelden damit wir Ihnen noch einmal ein E-Mail senden können.</p>
   unknown-error: "Unbekannter Fehler bei der Registrierung"
 
 warnings:

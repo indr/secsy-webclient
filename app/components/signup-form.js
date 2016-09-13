@@ -33,6 +33,8 @@ export default Ember.Component.extend(Validations, ValidationErrorsMixin, {
   password: null,
   passwordRepeat: null,
   
+  showSuccess: false,
+  
   actions: {
     signup() {
       const flash = this.get('flashMessages');
@@ -43,8 +45,7 @@ export default Ember.Component.extend(Validations, ValidationErrorsMixin, {
       model.set('password', password);
       
       model.save().then(() => {
-        flash.successT('signup.success');
-        this.sendAction('signedUp');
+        this.set('showSuccess', true)
       }).catch((err) => {
         return this.handleValidationErrors(err, {email: 'emailAddress', username: 'emailAddress'});
       }).catch((err) => {

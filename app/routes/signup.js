@@ -11,10 +11,6 @@ export default Ember.Route.extend(UnauthenticatedRouteMixin, {
   actions: {
     didTransition() {
       this.send('modalOpened');
-    },
-    
-    signedUp() {
-      this.transitionTo('login');
     }
   }
 });
