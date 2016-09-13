@@ -1,0 +1,20 @@
+{{#if showSuccess}}
+    <div class="{{if isModal 'modal-body'}}">
+      {{format-html-message 'resend.success' email=email}}
+    </div>
+    <div class="{{if isModal 'modal-footer'}}">
+      {{#bs-form-group}}
+        {{#link-to 'login' class="btn btn-link pull-left"}}{{t 'actions.login'}}{{/link-to}}
+      {{/bs-form-group}}
+    </div>
+{{else}}
+  {{#bs-form action="resend" novalidate=true}}
+      <div class="{{if isModal 'modal-body'}}">
+        {{format-html-message 'resend.text' email=email}}
+      </div>
+      <div class="{{if isModal 'modal-footer'}}">
+        {{#bs-button type="primary" buttonType="submit"}}{{t 'actions.resend'}}{{/bs-button}}
+        {{#link-to 'login' class="btn btn-default"}}{{t 'actions.cancel'}}{{/link-to}}
+      </div>
+  {{/bs-form}}
+{{/if}}

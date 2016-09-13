@@ -24,7 +24,6 @@ describeModule('service:openpgp', 'Unit | Service | openpgp', {
         assert.fail('My laptop gets hotter and hotter...');
         this.timeout(1000 * 60 * 10); // 10 Minutes?
         sut.generateKey('user@example.com', 'secret passphrase', 1, true).then((result) => {
-          console.log('test1', result);
           assert.equal(result.privateKeyArmored.indexOf('-----BEGIN PGP PRIVATE KEY BLOCK'), 0);
           assert.equal(result.publicKeyArmored.indexOf('-----BEGIN PGP PUBLIC KEY BLOCK'), 0);
           done();

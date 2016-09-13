@@ -23,6 +23,7 @@ actions:
   logout: Logout
   preferences: Preferences
   remove-coordinate: Remove coordinate
+  resend: Resend
   save: Save
   set-on-map: Set coordinate on map
   share: Share
@@ -130,6 +131,15 @@ nav:
 
 placeholders:
   query: "Search..."
+
+resend:
+  title: Resend activation email
+  text: |
+    <p>Your account has not been confirmed yet. We sent an activation email to <strong>{email}</strong>.</p>
+    <p>If it didn't arrive, check your spam folder or click 'Resend' to have us send you an email again.</p>
+  success: |
+    <p>We sent an activation email to <strong>{email}</strong>. Please follow the instructions in the email to activate your account.</p>
+    <p>If it doesn't arrive and you have checked your spam folder contact support@secsy.io.</p>
 
 review:
   title: Review your contacts update

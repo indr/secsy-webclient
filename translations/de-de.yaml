@@ -23,6 +23,7 @@ actions:
   logout: Abmelden
   preferences: Einstellungen
   remove-coordinate: Koordinate entfernen
+  resend: Erneut senden
   save: Speichern
   set-on-map: Koordinate auf der Karte setzen
   share: Teilen
@@ -133,6 +134,15 @@ nav:
 
 placeholders:
   query: "Suchen..."
+
+resend:
+  title: 'Erneuter Versand des E-Mails'
+  text: |
+    <p>Dein Konto wurde noch nicht aktiviert. Wir sandten ein E-Mail an die Adresse <strong>{email}</strong>.</p>
+    <p>Falls es nicht ankommt, überprüfen Sie Ihren Spam-Ordner oder klicken Sie auf "Erneut senden", um ein weiteres E-Mail zu erhalten.</p>
+  success: |
+    <p>Wir haben ein weiteres E-Mail an die Adresse <strong>{email}</strong> gesendet. Bitte folgen Sie den Anweisungen im E-Mail um Ihr Konto zu aktivieren.</p>
+    <p>Falls es nicht ankommt und Sie Ihren Spam-Ordner überprüft haben, kontaktieren Sie uns unter support@secsy.io.</p>
 
 review:
   title: Überprüfen der Kontaktaktualisierung

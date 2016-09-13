@@ -32,7 +32,11 @@ export default Ember.Component.extend(Validations, {
       }, (reason) => {
         reason = reason.message ? reason.message : 'invalid-username-or-password';
         
-        flash.dangerT('login.unknown-error', reason, {sticky: true});
+        if (reason === 'user-not-confirmed') {
+          this.sendAction('userNotConfirmed', emailAddress);
+        } else {
+          flash.dangerT('login.unknown-error', reason, {sticky: true});
+        }
       });
     }
   }
