@@ -216,6 +216,7 @@ errors:
   unique-username: Die E-Mail-Adresse wird bereits verwendet
   no-delete-self: Du kannst deinen eigenen Kontakt nicht löschen
   no-updates: Keine Updates für diesen Kontakt
+  user-not-confirmed: 'Die E-Mail-Adresse wurde noch nicht bestätigt'
   user-not-found: "Diese E-Mail-Adresse ist uns nicht bekannt"
   invalid-password: "Ungültiges Passwort"
   invalid-passphrase: 'Ungültige Passphrase'

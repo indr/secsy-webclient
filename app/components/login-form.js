@@ -30,9 +30,8 @@ export default Ember.Component.extend(Validations, {
       flash.clearMessages();
       this.get('session').authenticate('authenticator:local', emailAddress, password).then(() => {
       }, (reason) => {
-        if (reason === 'forbidden') {
-          reason = 'invalid-username-or-password';
-        }
+        reason = reason.message ? reason.message : 'invalid-username-or-password';
+        
         flash.dangerT('login.unknown-error', reason, {sticky: true});
       });
     }
