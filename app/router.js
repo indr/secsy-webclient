@@ -25,6 +25,7 @@ Router.map(function () {
   this.route('preferences');
   this.route('activate', {path: '/activate/:token'});
   this.route('resend');
+  this.route('forgot-password');
 });
 
 export default Router;
