@@ -25,6 +25,7 @@ actions:
   preferences: Preferences
   remove-coordinate: Remove coordinate
   resend: Resend
+  reset: Update password
   save: Save
   set-on-map: Set coordinate on map
   share: Share
@@ -58,6 +59,12 @@ forgot:
   success: |
     <p>We found an account that matches <strong>{email}</strong>, you should receive an email with instructions on how to reset your password shortly.</p>
   unknown-error: "Unknown error during password reset"
+
+reset:
+  title: 'Update password'
+  text: '<p>Please choose a new password.</p>'
+  success: 'Your password is updated. You will be redirected to the login page.'
+  unknown-error: 'Unknown error during password update'
 
 generate:
   title: Generate key

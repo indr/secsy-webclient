@@ -25,6 +25,7 @@ actions:
   preferences: Einstellungen
   remove-coordinate: Koordinate entfernen
   resend: Erneut senden
+  reset: Passwort aktualisieren
   save: Speichern
   set-on-map: Koordinate auf der Karte setzen
   share: Teilen
@@ -53,11 +54,17 @@ login:
   unknown-error: 'Unbekannter Fehler bei der Anmeldung'
 
 forgot:
-  title: 'Password zurücksetzen'
+  title: 'Passwort zurücksetzen'
   text: '<p>Geben Sie Ihre E-Mail-Adresse ein und wir werden Ihnen ein E-Mail zum Zurücksetzen des Passworts senden.</p>'
   success: |
     <p>Wir haben ein Konto mit <strong>{email}</strong> gefunden. Sie sollten in Kürze ein E-Mail mit Anweisungen zum Zurücksetzen Ihres Passworts erhalten.</p>
   unknown-error: 'Unbekannter Fehler beim Zurücksetzen des Passworts'
+
+reset:
+  title: 'Passwort aktualisieren'
+  text: '<p>Bitte wählen Sie ein neues Passwort.</p>'
+  success: 'Ihr Passwort wurde aktualisiert. Sie werden nun zum Anmeldeformular weitergeleitet.'
+  unknown-error: 'Unbekannter Fehler beim Aktualisieren des Passworts'
 
 generate:
   title: Schlüssel generieren
