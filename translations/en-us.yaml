@@ -240,6 +240,7 @@ errors:
   positive: "{description} must be positive"
   date: "{description} must be a valid date"
   email: "{description} must be a valid email address"
+  password: "Password must have at least eight characters and must consist of lower and upper case letters, a number and a special character"
   phone: "{description} must be a valid phone number"
   url: "{description} must be a valid url"
   timeout: 'The server did not respond within a reasonable time'
@@ -248,6 +249,8 @@ errors:
   no-delete-self: You can not delete your own contact
   no-updates: No updates for this contact
   email-not-found: "We don't know that email address"
+  email-token-already-confirmed: 'This token has already been confirmed'
+  email-token-expried: 'This token is already expired'
   user-not-confirmed: "Email address has not been confirmed"
   user-not-found: "We don't know that email address"
   invalid-password: "Invalid password"
@@ -255,3 +258,4 @@ errors:
   invalid-username-or-password: 'Unknown email address or wrong password'
   decryption-failed: 'Decryption error'
   save-unknown: Unknown error during save
+  token-not-found: "This token is not valid"
