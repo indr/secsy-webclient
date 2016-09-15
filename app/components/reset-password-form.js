@@ -3,34 +3,36 @@ import { validator, buildValidations } from 'ember-cp-validations';
 import ValidationErrorsMixin from '../mixins/validation-errors-mixin';
 
 const Validations = buildValidations({
-  email: {
+  password: {
     validators: [
       validator('presence', true),
-      validator('format', {type: 'email'}),
+      validator('length', {min: 8, max: 64}),
       validator('ds-error')
     ]
-  }
+  },
 });
 
 export default Ember.Component.extend(Validations, ValidationErrorsMixin, {
   ajax: Ember.inject.service(),
   
-  showSuccess: false,
-  email: null,
+  password: null,
   
   actions: {
-    resend() {
+    reset() {
       const flash = this.get('flashMessages');
-      const email = this.get('email');
+      const sendAction = this.sendAction.bind(this, 'resetted');
+      
+      const token = this.get('model').token;
+      const password = this.get('password');
       
       flash.clearMessages();
-      
-      this.get('ajax').post('/api/users/resend', {email}).then(() => {
-        this.set('showSuccess', true);
+      this.get('ajax').post('/api/users/reset-password', {token, password}).then(()=> {
+        flash.successT('reset.success');
+        Ember.run.later(sendAction, 1500);
       }).catch((error) => {
         return this.handleValidationErrors(error);
       }).catch((error) => {
-        flash.dangerT('resend.unknown-error', error.getMessage(), {sticky: true})
+        flash.dangerT('reset.unknown-error', error.getMessage(), {sticky: true});
       });
     }
   }

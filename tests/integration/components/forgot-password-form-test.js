@@ -3,7 +3,7 @@ import { describeComponent, it } from 'ember-mocha';
 import hbs from 'htmlbars-inline-precompile';
 import instanceInitializer from '../../../instance-initializers/ember-intl';
 
-describeComponent('activate-form', 'Integration: ActivateFormComponent', {
+describeComponent('forgot-password-form', 'Integration: ForgotPasswordFormComponent', {
     integration: true,
     setup() {
       // manually invoke the ember-intl initializer
@@ -18,12 +18,12 @@ describeComponent('activate-form', 'Integration: ActivateFormComponent', {
       // Handle any actions with this.on('myAction', function(val) { ... });
       // Template block usage:
       // this.render(hbs`
-      //   {{#activate-form}}
+      //   {{#forgot-password-form}}
       //     template content
-      //   {{/activate-form}}
+      //   {{/forgot-password-form}}
       // `);
       
-      this.render(hbs`{{activate-form}}`);
+      this.render(hbs`{{forgot-password-form}}`);
       expect(this.$()).to.have.length(1);
     });
   }

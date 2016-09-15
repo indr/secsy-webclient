@@ -2,6 +2,7 @@
     <div class="{{if isModal 'modal-body'}}">
       {{bs-form-element controlType="text" label=(t 'login.username') property="emailAddress" autofocus=true}}
       {{bs-form-element controlType="password" label=(t 'login.password') property="password"}}
+        <span class="help-block">{{#link-to 'forgot-password'}}{{t 'login.forgotPassword'}}{{/link-to}}</span>
     </div>
     <div class="{{if isModal 'modal-footer'}}">
       {{#bs-form-group}}

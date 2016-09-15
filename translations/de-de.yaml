@@ -15,6 +15,7 @@ actions:
   delete-all: Alle Kontakte löschen
   dismiss: Verwerfen
   edit: Bearbeiten
+  forgot: Passwort zurücksetzen
   generate: Generieren
   generate-fakes: Erzeuge ein paar zufällige Kontakte
   generate-new: Neuer Schlüssel generieren
@@ -24,6 +25,7 @@ actions:
   preferences: Einstellungen
   remove-coordinate: Koordinate entfernen
   resend: Erneut senden
+  reset: Passwort aktualisieren
   save: Speichern
   set-on-map: Koordinate auf der Karte setzen
   share: Teilen
@@ -47,8 +49,22 @@ login:
   title: 'Anmelden'
   username: 'E-Mail-Adresse'
   password: 'Passwort'
+  forgotPassword: 'Ich habe mein Passwort vergessen'
   success: 'Anmeldung erfolgreich!'
   unknown-error: 'Unbekannter Fehler bei der Anmeldung'
+
+forgot:
+  title: 'Passwort zurücksetzen'
+  text: '<p>Geben Sie Ihre E-Mail-Adresse ein und wir werden Ihnen ein E-Mail zum Zurücksetzen des Passworts senden.</p>'
+  success: |
+    <p>Wir haben ein Konto mit <strong>{email}</strong> gefunden. Sie sollten in Kürze ein E-Mail mit Anweisungen zum Zurücksetzen Ihres Passworts erhalten.</p>
+  unknown-error: 'Unbekannter Fehler beim Zurücksetzen des Passworts'
+
+reset:
+  title: 'Passwort aktualisieren'
+  text: '<p>Bitte wählen Sie ein neues Passwort.</p>'
+  success: 'Ihr Passwort wurde aktualisiert. Sie werden nun zum Anmeldeformular weitergeleitet.'
+  unknown-error: 'Unbekannter Fehler beim Aktualisieren des Passworts'
 
 generate:
   title: Schlüssel generieren
@@ -207,7 +223,7 @@ errors:
   description: "Dieses Feld"
   inclusion: "{description} is not included in the list"
   exclusion: "{description} is reserved"
-  invalid: "{description} is invalid"
+  invalid: "{description} ist ungültig"
   confirmation: "{description} stimmt nicht mit {on} überein"
   confirmation-password: "{description} stimmt nicht mit Passwort überein"
   accepted: "{description} must be accepted"
@@ -216,8 +232,8 @@ errors:
   present: "{description} must be blank"
   collection: "{description} must be a collection"
   singular: "{description} can't be a collection"
-  tooLong: "{description} is too long (maximum is {max} characters)"
-  tooShort: "{description} is too short (minimum is {min} characters)"
+  tooLong: "{description} ist zu lang (maximal {max} Zeichen)"
+  tooShort: "{description} ist zu kurz (mindestens {min} Zeichen)"
   before: "{description} must be before {before}"
   after: "{description} must be after {after}"
   wrongDateFormat: "{description} must be in the format of {format}"
@@ -235,6 +251,7 @@ errors:
   positive: "{description} must be positive"
   date: "{description} must be a valid date"
   email: "{description} muss eine gültige E-Mail-Adresse sein"
+  password: "Das Passwort muss mindestens acht Zeichen lang sein und aus Klein- und Grossbuchstaben, einer Zahl und einem Sonderzeichen bestehen"
   phone: "{description} must be a valid phone number"
   url: "{description} must be a valid url"
   timeout: 'Der Server hat nicht innerhalb einer angemessenen Zeit geantwortet'
@@ -242,6 +259,9 @@ errors:
   unique-username: Die E-Mail-Adresse wird bereits verwendet
   no-delete-self: Du kannst deinen eigenen Kontakt nicht löschen
   no-updates: Keine Updates für diesen Kontakt
+  email-not-found: 'Die E-Mail-Adresse ist uns nicht bekannt'
+  email-token-already-confirmed: 'Dieses Token wurde bereits verwendet'
+  email-token-expired: 'Dieses Token ist abgelaufen'
   user-not-confirmed: 'Die E-Mail-Adresse wurde noch nicht bestätigt'
   user-not-found: "Diese E-Mail-Adresse ist uns nicht bekannt"
   invalid-password: "Ungültiges Passwort"
@@ -249,6 +269,7 @@ errors:
   invalid-username-or-password: 'Unbekannte E-Mail-Adresse oder falsches Passwort'
   decryption-failed: 'Entschlüsselungsfehler'
   save-unknown: Unbekannter Fehler beim Speichern
+  token-not-found: 'Dieses Token ist ungültig'
   # No clue where these two guys are comming from...
   passwordConfirmation: 'dummy'
   usernameDescription: 'dummy'

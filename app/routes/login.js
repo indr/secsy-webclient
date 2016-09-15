@@ -12,6 +12,7 @@ export default Ember.Route.extend(UnauthenticatedRouteMixin, {
       // the email address to the resend route or controller.
       // Maybe we should use a proper model for the login route anyway and put
       // validation etc on that.
+      // Could also be useful for forget-password route.
       this.controller.set('model', {emailAddress: email});
       
       this.transitionTo('resend');

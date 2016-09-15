@@ -15,19 +15,21 @@ describeModule('adapter:application', 'Unit | Adapter | application', {
     
     describe('#normalizeErrorResponse', function () {
       it('should return generic error message given unrecognized payload', function () {
-        const errors = sut.normalizeErrorResponse(404, {}, {});
+        const errors = sut.normalizeErrorResponse(404, {}, 'something bad happened');
         
         assert.lengthOf(errors, 1);
         assert.equal(errors[0].status, '404');
-        assert.equal(errors[0].title, 'The backend responded with an error');
+        assert.equal(errors[0].message, 'generic-backend-error');
+        assert.equal(errors[0].detail, 'something bad happened');
       });
       
       it('should return error message and status given no fields', function () {
-        const errors = sut.normalizeErrorResponse(404, {}, {status: 500, message: 'Test message'});
+        const errors = sut.normalizeErrorResponse(404, {}, {status: 500, message: 'backend-message'});
         
         assert.lengthOf(errors, 1);
         assert.equal(errors[0].status, '500');
-        assert.equal(errors[0].title, 'Test message');
+        assert.equal(errors[0].message, 'backend-message');
+        assert.equal(errors[0].detail, '{"status":500,"message":"backend-message"}')
       });
       
       it('should return errors with detail and source', function () {
