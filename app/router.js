@@ -22,7 +22,9 @@ Router.map(function () {
   this.route('generate');
   this.route('index', {path: '/*wildcard'});
   this.route('index', {path: '/'});
-  this.route('preferences');
+  this.route('preferences', function() {
+    this.route('delete-account');
+  });
   this.route('activate', {path: '/activate/:token'});
   this.route('resend');
   this.route('forgot-password');

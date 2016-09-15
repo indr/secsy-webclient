@@ -149,7 +149,7 @@ placeholders:
   query: "Search..."
 
 profile:
-  delete-account: 'Delete your account'
+  delete-account-action: 'Delete your account'
   email-address: 'Email address'
   password: 'Password'
   preferences: 'Preferences'
@@ -158,6 +158,13 @@ profile:
   reset-email:
     success: 'Successfully sent password reset email'
     unknown-error: 'Unknown error during sending of password reset email'
+  delete-account:
+    legend: 'Delete account'
+    action: "I'm sure, delete my account"
+    warning: 'Are you sure you want to delete your account? This action can not be undone!'
+    label: 'Please tell us why you have decided to delete your account'
+    success: 'Your account has been successfully delete. You will be redirected shortly...'
+    unknown-error: 'Unknown error during account deletion'
 
 resend:
   title: Resend activation email

@@ -1,0 +1,42 @@
+{{#bs-form action='savePreferences' model=model novalidate=true formLayout='horizontal'}}
+    <fieldset>
+        <legend>Preferences</legend>
+      {{#bs-form-element controlType='text' label=(t 'profile.email-address')}}
+          <p class="form-control-static">{{model.email}}</p>
+      {{/bs-form-element}}
+
+      {{#bs-form-element controlType='text' label=(t 'profile.password')}}
+          <p class="form-control-static">{{#bs-button type='default' action='sendPasswordResetEmail'}}{{t 'profile.send-password-reset-email'}}{{/bs-button}}</p>
+      {{/bs-form-element}}
+    </fieldset>
+{{/bs-form}}
+
+{{#bs-form novalidate=true formLayout='horizontal'}}
+    <fieldset>
+        <legend>Tools</legend>
+
+      {{#bs-form-element controlType='text'}}
+          <p class="form-control-static">
+            {{#bs-button type='default' action='pullUpdates'}}{{t 'actions.get-updates'}}{{/bs-button}}
+          </p>
+      {{/bs-form-element}}
+
+      {{#bs-form-element controlType='text'}}
+          <p class="form-control-static">
+            {{#bs-button type='default' action='generateFakes'}}{{t 'actions.generate-fakes'}}{{/bs-button}}
+          </p>
+      {{/bs-form-element}}
+
+      {{#bs-form-element controlType='text'}}
+          <p class="form-control-static">
+            {{#bs-button type='default' action='deleteAll'}}{{t 'actions.delete-all'}}{{/bs-button}}
+          </p>
+      {{/bs-form-element}}
+
+      {{#bs-form-element controlType='text'}}
+          <p class="form-control-static">
+            {{#link-to 'preferences.delete-account' class='btn btn-danger'}}{{t 'profile.delete-account-action'}}{{/link-to}}
+          </p>
+      {{/bs-form-element}}
+    </fieldset>
+{{/bs-form}}
