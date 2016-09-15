@@ -46,10 +46,10 @@ export default Ember.Component.extend(Validations, ValidationErrorsMixin, {
       
       model.save().then(() => {
         this.set('showSuccess', true)
-      }).catch((err) => {
-        return this.handleValidationErrors(err, {email: 'emailAddress', username: 'emailAddress'});
-      }).catch((err) => {
-        flash.dangerT('signup.unknown-error', err.message || err);
+      }).catch((error) => {
+        return this.handleValidationErrors(error, {email: 'emailAddress', username: 'emailAddress'});
+      }).catch((error) => {
+        flash.dangerT('signup.unknown-error', error.getMessage());
       });
     }
   }

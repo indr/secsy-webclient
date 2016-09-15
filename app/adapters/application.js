@@ -43,10 +43,11 @@ export default DS.RESTAdapter.extend({
     }
     
     if (errors.length === 0 || errors.message) {
+      const detail = typeof payload === 'object' ? JSON.stringify(payload) : payload;
       errors.push({
         status: `${payload.status || status}`,
-        title: payload.message || 'The backend responded with an error',
-        detail: `${payload}`
+        message: payload.message || 'generic-backend-error',
+        detail: `${detail}`
       });
     }
     return errors;

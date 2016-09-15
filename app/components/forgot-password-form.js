@@ -19,18 +19,18 @@ export default Ember.Component.extend(Validations, ValidationErrorsMixin, {
   email: null,
   
   actions: {
-    resend() {
+    sendReset() {
       const flash = this.get('flashMessages');
       const email = this.get('email');
       
       flash.clearMessages();
       
-      this.get('ajax').post('/api/users/resend', {email}).then(() => {
+      this.get('ajax').post('/api/users/forgot-password', {email}).then(() => {
         this.set('showSuccess', true);
       }).catch((error) => {
-        return this.handleValidationErrors(error);
+        return this.handleValidationErrors(error)
       }).catch((error) => {
-        flash.dangerT('resend.unknown-error', error.getMessage(), {sticky: true})
+        flash.dangerT('forgot.unknown-error', error.getMessage(), {sticky: true});
       });
     }
   }
