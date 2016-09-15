@@ -1,40 +1,38 @@
 import Ember from 'ember';
+import { validator, buildValidations } from 'ember-cp-validations';
+import ValidationErrorsMixin from '../mixins/validation-errors-mixin';
 
-const {
-  $
-} = Ember;
+const Validations = buildValidations({
+  password: {
+    validators: [
+      validator('presence', true),
+      validator('length', {min: 8, max: 64}),
+      validator('ds-error')
+    ]
+  },
+});
 
-function debug (message) {
-  Ember.debug('[component:reset-password-form] ' + message);
-}
-
-export default Ember.Component.extend({
-  jQuery: $,
+export default Ember.Component.extend(Validations, ValidationErrorsMixin, {
+  ajax: Ember.inject.service(),
+  
+  password: null,
   
   actions: {
     reset() {
-      const model = this.get('model');
-      
-      debug('Resetting password ' + model.token);
-      
-      const options = {
-        url: '/api/users/reset-password',
-        data: JSON.stringify(model),
-        type: 'POST',
-        dataType: 'json',
-        contentType: 'application/json'
-      };
-      
       const flash = this.get('flashMessages');
       const sendAction = this.sendAction.bind(this, 'resetted');
       
+      const token = this.get('model').token;
+      const password = this.get('password');
+      
       flash.clearMessages();
-      this.jQuery.ajax(options).then(() => {
+      this.get('ajax').post('/api/users/reset-password', {token, password}).then(()=> {
         flash.successT('reset.success');
         Ember.run.later(sendAction, 1500);
-      }, function (jqXHR) {
-        const reason = jqXHR.responseJSON ? jqXHR.responseJSON.message : '';
-        flash.dangerT('reset.unknown-error', reason, {sticky: true});
+      }).catch((error) => {
+        return this.handleValidationErrors(error);
+      }).catch((error) => {
+        flash.dangerT('reset.unknown-error', error.getMessage(), {sticky: true});
       });
     }
   }

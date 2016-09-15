@@ -247,8 +247,9 @@ errors:
   unique-username: 'Email address is already taken'
   no-delete-self: You can not delete your own contact
   no-updates: No updates for this contact
-  user-not-found: "We don't know that email address"
+  email-not-found: "We don't know that email address"
   user-not-confirmed: "Email address has not been confirmed"
+  user-not-found: "We don't know that email address"
   invalid-password: "Invalid password"
   invalid-passphrase: 'Invalid passphrase'
   invalid-username-or-password: 'Unknown email address or wrong password'

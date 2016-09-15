@@ -1,35 +1,37 @@
 import Ember from 'ember';
+import { validator, buildValidations } from 'ember-cp-validations';
+import ValidationErrorsMixin from '../mixins/validation-errors-mixin';
 
-const {
-  $
-} = Ember;
+const Validations = buildValidations({
+  email: {
+    validators: [
+      validator('presence', true),
+      validator('format', {type: 'email'}),
+      validator('ds-error')
+    ]
+  }
+});
 
-export default Ember.Component.extend({
-  jQuery: $,
+export default Ember.Component.extend(Validations, ValidationErrorsMixin, {
+  ajax: Ember.inject.service(),
   
   showSuccess: false,
+  email: null,
   
   actions: {
     resend() {
-      const email = this.email;
-      
-      const options = {
-        url: '/api/users/resend',
-        data: JSON.stringify({email}),
-        type: 'POST',
-        dataType: 'json',
-        contentType: 'application/json'
-      };
-      
       const flash = this.get('flashMessages');
+      const email = this.get('email');
       
       flash.clearMessages();
-      this.jQuery.ajax(options).then(() => {
+      
+      this.get('ajax').post('/api/users/resend', {email}).then(() => {
         this.set('showSuccess', true);
-      }, function (jqXHR) {
-        const reason = jqXHR.responseJSON ? jqXHR.responseJSON.message : '';
-        flash.dangerT('resend.unknown-error', reason, {sticky: true})
-      })
+      }).catch((error) => {
+        return this.handleValidationErrors(error);
+      }).catch((error) => {
+        flash.dangerT('resend.unknown-error', error.getMessage(), {sticky: true})
+      });
     }
   }
 });

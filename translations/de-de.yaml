@@ -215,7 +215,7 @@ errors:
   description: "Dieses Feld"
   inclusion: "{description} is not included in the list"
   exclusion: "{description} is reserved"
-  invalid: "{description} is invalid"
+  invalid: "{description} ist ungültig"
   confirmation: "{description} stimmt nicht mit {on} überein"
   confirmation-password: "{description} stimmt nicht mit Passwort überein"
   accepted: "{description} must be accepted"
@@ -250,6 +250,7 @@ errors:
   unique-username: Die E-Mail-Adresse wird bereits verwendet
   no-delete-self: Du kannst deinen eigenen Kontakt nicht löschen
   no-updates: Keine Updates für diesen Kontakt
+  email-not-found: 'Die E-Mail-Adresse ist uns nicht bekannt'
   user-not-confirmed: 'Die E-Mail-Adresse wurde noch nicht bestätigt'
   user-not-found: "Diese E-Mail-Adresse ist uns nicht bekannt"
   invalid-password: "Ungültiges Passwort"
