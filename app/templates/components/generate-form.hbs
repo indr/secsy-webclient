@@ -10,7 +10,7 @@
     <div class="{{if isModal 'modal-footer'}}">
       {{#bs-form-group}}
         {{#bs-button type="primary" buttonType="submit"}}{{t 'actions.generate'}}{{/bs-button}}
-        {{#link-to 'decrypt' class="btn btn-default"}}{{t 'actions.cancel'}}{{/link-to}}
+        {{#bs-button type="default" buttonType="button" action='cancel'}}{{t 'actions.cancel'}}{{/bs-button}}
       {{/bs-form-group}}
     </div>
 {{/bs-form}}

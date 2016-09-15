@@ -49,6 +49,10 @@ export default Ember.Service.extend({
     return result.keys[0];
   },
   
+  hasPrivateKey() {
+    return !!this.get('session.data.authenticated.private_key');
+  },
+  
   /**
    * Looks for a public key for the given email address.
    *

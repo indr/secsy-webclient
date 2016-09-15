@@ -17,6 +17,10 @@ export default Ember.Component.extend(Validations, {
   passphrase: null,
   
   actions: {
+    cancel() {
+      this.sendAction('cancelled');
+    },
+    
     generate() {
       const self = this;
       const keychain = self.get('keychain');
