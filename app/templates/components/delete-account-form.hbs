@@ -1,0 +1,17 @@
+{{#bs-form action='deleteAccount' model=this novalidate=true}}
+    <fieldset>
+        <legend>{{t 'profile.delete-account.legend'}}</legend>
+      {{bs-form-element controlType='textarea' property='message' label=(t 'profile.delete-account.message') autofocus=true}}
+      {{bs-form-element controlType='password' property='password' label=(t 'profile.delete-account.password')}}
+
+      {{#bs-form-element controlType='text'}}
+          <p class="form-control-static">{{t 'profile.delete-account.warning'}}</p>
+      {{/bs-form-element}}
+      {{#bs-form-element controlType='text'}}
+          <p class="form-control-static">
+            {{#bs-button type='danger' buttonType='submit'}}{{t 'profile.delete-account.action'}}{{/bs-button}}
+            {{#link-to 'preferences' class='btn btn-default'}}{{t 'actions.cancel'}}{{/link-to}}
+          </p>
+      {{/bs-form-element}}
+    </fieldset>
+{{/bs-form}}

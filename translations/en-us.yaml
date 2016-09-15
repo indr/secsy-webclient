@@ -162,7 +162,8 @@ profile:
     legend: 'Delete account'
     action: "I'm sure, delete my account"
     warning: 'Are you sure you want to delete your account? This action can not be undone!'
-    label: 'Please tell us why you have decided to delete your account'
+    message: 'Please tell us why you have decided to delete your account'
+    password: 'Password'
     success: 'Your account has been successfully delete. You will be redirected shortly...'
     unknown-error: 'Unknown error during account deletion'
 
