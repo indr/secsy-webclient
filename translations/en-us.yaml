@@ -132,6 +132,14 @@ nav:
 placeholders:
   query: "Search..."
 
+profile:
+  delete-account: 'Delete your account'
+  email-address: 'Email address'
+  password: 'Password'
+  preferences: 'Preferences'
+  send-password-reset-email: 'Send password reset email'
+  tools: 'Tools'
+
 resend:
   title: Resend activation email
   text: |

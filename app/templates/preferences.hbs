@@ -1,7 +1,42 @@
-<p>{{#bs-button type='default' action='pullUpdates'}}Update{{/bs-button}}</p>
+{{#bs-form action='savePreferences' model=this novalidate=true formLayout='horizontal'}}
+    <fieldset>
+        <legend>Preferences</legend>
+      {{#bs-form-element controlType='text' label=(t 'profile.email-address')}}
+          <p class="form-control-static">mail@indr.ch</p>
+      {{/bs-form-element}}
 
-<p>{{#bs-button type='default' action='generateFakes'}}Generate fake contacts{{/bs-button}}</p>
+      {{#bs-form-element controlType='text' label=(t 'profile.password')}}
+          <p class="form-control-static">{{#bs-button type='default' action='sendPasswordResetEmail'}}{{t 'profile.send-password-reset-email'}}{{/bs-button}}</p>
+      {{/bs-form-element}}
+    </fieldset>
+{{/bs-form}}
 
-<p>{{#bs-button type='default' action='deleteAll'}}Delete all contacts{{/bs-button}}</p>
+{{#bs-form novalidate=true formLayout='horizontal'}}
+    <fieldset>
+        <legend>Tools</legend>
 
-{{outlet}}
+      {{#bs-form-element controlType='text'}}
+          <p class="form-control-static">
+            {{#bs-button type='default' action='pullUpdates'}}{{t 'actions.get-updates'}}{{/bs-button}}
+          </p>
+      {{/bs-form-element}}
+
+      {{#bs-form-element controlType='text'}}
+          <p class="form-control-static">
+            {{#bs-button type='default' action='generateFakes'}}{{t 'actions.generate-fakes'}}{{/bs-button}}
+          </p>
+      {{/bs-form-element}}
+
+      {{#bs-form-element controlType='text'}}
+          <p class="form-control-static">
+            {{#bs-button type='default' action='deleteAll'}}{{t 'actions.delete-all'}}{{/bs-button}}
+          </p>
+      {{/bs-form-element}}
+
+      {{#bs-form-element controlType='text'}}
+          <p class="form-control-static">
+            {{#bs-button type='danger' action='deleteAccount'}}{{t 'profile.delete-account'}}{{/bs-button}}
+          </p>
+      {{/bs-form-element}}
+    </fieldset>
+{{/bs-form}}

@@ -135,6 +135,14 @@ nav:
 placeholders:
   query: "Suchen..."
 
+profile:
+  delete-account: 'Konto löschen'
+  email-address: 'E-Mail-Adresse'
+  password: 'Passwort'
+  preferences: 'Einstellungen'
+  send-password-reset-email: 'E-Mail zum Ändern des Passworts beantragen'
+  tools: 'Tools'
+
 resend:
   title: 'Erneuter Versand des E-Mails'
   text: |
