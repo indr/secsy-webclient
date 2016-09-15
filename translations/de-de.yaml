@@ -158,6 +158,9 @@ profile:
   preferences: 'Einstellungen'
   send-password-reset-email: 'E-Mail zum Ändern des Passworts beantragen'
   tools: 'Tools'
+  reset-email:
+    success: 'Das E-Mail zum Ändern des Passworts wurde erfolgreich versendet'
+    unknown-error: 'Unbekannter Fehler beim Sendes des E-Mails'
 
 resend:
   title: 'Erneuter Versand des E-Mails'
@@ -167,6 +170,7 @@ resend:
   success: |
     <p>Wir haben ein weiteres E-Mail an die Adresse <strong>{email}</strong> gesendet. Bitte folgen Sie den Anweisungen im E-Mail um Ihr Konto zu aktivieren.</p>
     <p>Falls es nicht ankommt und Sie Ihren Spam-Ordner überprüft haben, kontaktieren Sie uns unter support@secsy.io.</p>
+  unknown-error: 'Unbekannter Fehler beim Senden des E-Mails'
 
 review:
   title: Überprüfen der Kontaktaktualisierung

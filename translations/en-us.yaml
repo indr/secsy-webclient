@@ -155,6 +155,9 @@ profile:
   preferences: 'Preferences'
   send-password-reset-email: 'Send password reset email'
   tools: 'Tools'
+  reset-email:
+    success: 'Successfully sent password reset email'
+    unknown-error: 'Unknown error during sending of password reset email'
 
 resend:
   title: Resend activation email
@@ -164,6 +167,7 @@ resend:
   success: |
     <p>We sent an activation email to <strong>{email}</strong>. Please follow the instructions in the email to activate your account.</p>
     <p>If it doesn't arrive and you have checked your spam folder contact support@secsy.io.</p>
+  unknown-error: 'Unknown error during sending reset password email'
 
 review:
   title: Review your contacts update

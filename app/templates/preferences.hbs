@@ -1,8 +1,8 @@
-{{#bs-form action='savePreferences' model=this novalidate=true formLayout='horizontal'}}
+{{#bs-form action='savePreferences' model=model novalidate=true formLayout='horizontal'}}
     <fieldset>
         <legend>Preferences</legend>
       {{#bs-form-element controlType='text' label=(t 'profile.email-address')}}
-          <p class="form-control-static">mail@indr.ch</p>
+          <p class="form-control-static">{{model.email}}</p>
       {{/bs-form-element}}
 
       {{#bs-form-element controlType='text' label=(t 'profile.password')}}
