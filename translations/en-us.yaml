@@ -250,7 +250,7 @@ errors:
   no-updates: No updates for this contact
   email-not-found: "We don't know that email address"
   email-token-already-confirmed: 'This token has already been confirmed'
-  email-token-expried: 'This token is already expired'
+  email-token-expired: 'This token is already expired'
   user-not-confirmed: "Email address has not been confirmed"
   user-not-found: "We don't know that email address"
   invalid-password: "Invalid password"
