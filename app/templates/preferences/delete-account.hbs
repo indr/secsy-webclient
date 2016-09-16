@@ -1,1 +1,3 @@
-{{delete-account-form model=model}}
+{{#modal-dialog title=(t 'profile.delete-account.title')}}
+  {{delete-account-form isModal=true model=model}}
+{{/modal-dialog}}

@@ -173,11 +173,11 @@ profile:
     success: 'Successfully sent password reset email'
     unknown-error: 'Unknown error during sending of password reset email'
   delete-account:
-    legend: 'Delete account'
+    title: 'Delete account'
     action: "I'm sure, delete my account"
     warning: 'Are you sure you want to delete your account? This action can not be undone!'
     message: 'Please tell us why you have decided to delete your account'
-    password: 'Password'
+    password: 'Login password'
     success: 'Your account has been successfully delete. You will be redirected shortly...'
     unknown-error: 'Unknown error during account deletion'
 

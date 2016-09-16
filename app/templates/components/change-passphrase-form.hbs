@@ -1,15 +1,13 @@
 {{#bs-form action='changePassphrase' model=this novalidate=true}}
-    <fieldset>
-        <legend>{{t 'profile.change-passphrase.title'}}</legend>
-
+    <div class="{{if isModal 'modal-body'}}">
       {{bs-form-element controlType='password' property='password' label=(t 'profile.change-passphrase.password')}}
       {{bs-form-element controlType='password' property='passphrase' label=(t 'profile.change-passphrase.passphrase')}}
       {{bs-form-element controlType='password' property='newPassphrase' label=(t 'profile.change-passphrase.new-passphrase')}}
       {{bs-form-element controlType='password' property='confirmPassphrase' label=(t 'profile.change-passphrase.confirm-passphrase')}}
+    </div>
 
-      {{#bs-form-element controlType='text'}}
-        {{#bs-button type='primary' buttonType='submit'}}{{t 'profile.change-passphrase.action-change-passphrase'}}{{/bs-button}}
-        {{#link-to 'preferences' class='btn btn-default'}}{{t 'actions.cancel'}}{{/link-to}}
-      {{/bs-form-element}}
-    </fieldset>
+    <div class="{{if isModal 'modal-footer'}}">
+      {{#bs-button type='primary' buttonType='submit'}}{{t 'profile.change-passphrase.action-change-passphrase'}}{{/bs-button}}
+      {{#link-to 'preferences' class='btn btn-default'}}{{t 'actions.cancel'}}{{/link-to}}
+    </div>
 {{/bs-form}}

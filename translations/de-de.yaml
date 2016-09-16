@@ -176,11 +176,11 @@ profile:
     success: 'Das E-Mail zum Ändern des Passworts wurde erfolgreich versendet'
     unknown-error: 'Unbekannter Fehler beim Sendes des E-Mails'
   delete-account:
-    legend: 'Konto löschen'
+    title: 'Konto löschen'
     action: 'Ich bin mir sicher, entfernt mein Konto'
     warning: 'Sind Sie sich sicher, dass Sie Ihr Konto entfernen möchten? Dieser Vorgang kann nicht rückgängig gemacht werden!'
     message: 'Bitten teilen Sie uns mit, warum Sie Ihr Konto entfernen möchten'
-    password: 'Passwort'
+    password: 'Anmeldepasswort'
     success: 'Ihr Konto wurde erfolgreich entfernt. Sie werden gleich weitergleitet...'
     unknown-error: 'Unbekannter Fehler beim Entfernen des Kontos'
 
