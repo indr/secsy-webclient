@@ -149,10 +149,13 @@ placeholders:
   query: "Search..."
 
 profile:
-  delete-account-action: 'Delete your account'
+  actions:
+    change-passphrase: 'Change key passphrase'
+    delete-account: 'Delete your account'
   email-address: 'Email address'
   language: 'Language'
   password: 'Password'
+  passphrase: 'Passphrase'
   preferences: 'Preferences'
   send-password-reset-email: 'Send password reset email'
   tools: 'Tools'

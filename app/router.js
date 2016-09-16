@@ -24,6 +24,7 @@ Router.map(function () {
   this.route('index', {path: '/'});
   this.route('preferences', function() {
     this.route('delete-account');
+    this.route('change-passphrase');
   });
   this.route('activate', {path: '/activate/:token'});
   this.route('resend');

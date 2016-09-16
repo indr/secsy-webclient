@@ -152,10 +152,13 @@ placeholders:
   query: "Suchen..."
 
 profile:
-  delete-account-action: 'Konto entfernen'
+  actions:
+    change-passphrase: 'Schlüssel-Passphrase ändern'
+    delete-account: 'Konto entfernen'
   email-address: 'E-Mail-Adresse'
   language: 'Sprache'
   password: 'Passwort'
+  passphrase: 'Passphrase'
   preferences: 'Einstellungen'
   send-password-reset-email: 'E-Mail zum Ändern des Passworts beantragen'
   tools: 'Tools'
