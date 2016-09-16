@@ -154,10 +154,12 @@ placeholders:
 profile:
   delete-account-action: 'Konto entfernen'
   email-address: 'E-Mail-Adresse'
+  language: 'Sprache'
   password: 'Passwort'
   preferences: 'Einstellungen'
   send-password-reset-email: 'E-Mail zum Ändern des Passworts beantragen'
   tools: 'Tools'
+  unknown-error: 'Unbekannter Fehler beim Speichern der Einstellungen'
   reset-email:
     success: 'Das E-Mail zum Ändern des Passworts wurde erfolgreich versendet'
     unknown-error: 'Unbekannter Fehler beim Sendes des E-Mails'

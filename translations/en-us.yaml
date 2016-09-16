@@ -151,10 +151,12 @@ placeholders:
 profile:
   delete-account-action: 'Delete your account'
   email-address: 'Email address'
+  language: 'Language'
   password: 'Password'
   preferences: 'Preferences'
   send-password-reset-email: 'Send password reset email'
   tools: 'Tools'
+  unknown-error: 'Unknown error during saving preferences'
   reset-email:
     success: 'Successfully sent password reset email'
     unknown-error: 'Unknown error during sending of password reset email'

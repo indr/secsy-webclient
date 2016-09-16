@@ -7,8 +7,10 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, DecryptedRouteMix, {
   
   model() {
     const email = this.get('session').get('data.authenticated.email');
+    const locale = this.get('session').get('data.authenticated.locale');
     return Ember.Object.create({
-      email
+      email,
+      locale
     });
   }
 });

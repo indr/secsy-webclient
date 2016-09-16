@@ -1,6 +1,6 @@
 {{#bs-form action='savePreferences' model=model novalidate=true formLayout='horizontal'}}
     <fieldset>
-        <legend>Preferences</legend>
+        <legend>{{t 'profile.preferences'}}</legend>
       {{#bs-form-element controlType='text' label=(t 'profile.email-address')}}
           <p class="form-control-static">{{model.email}}</p>
       {{/bs-form-element}}
@@ -8,12 +8,30 @@
       {{#bs-form-element controlType='text' label=(t 'profile.password')}}
           <p class="form-control-static">{{#bs-button type='default' action='sendPasswordResetEmail'}}{{t 'profile.send-password-reset-email'}}{{/bs-button}}</p>
       {{/bs-form-element}}
+
+      {{#bs-form-element controlType='text' label=(t 'profile.language')}}
+          <p class="form-control-static">
+              <label>
+                {{radio-button value='en-US' checked=model.locale}}
+                  English
+              </label>
+              <br>
+              <label>
+                {{radio-button value='de-DE' checked=model.locale}}
+                  Deutsch
+              </label>
+          </p>
+      {{/bs-form-element}}
+
+      {{#bs-form-element}}
+        {{#bs-button type="primary" buttonType="submit"}}{{t 'actions.save'}}{{/bs-button}}
+      {{/bs-form-element}}
     </fieldset>
 {{/bs-form}}
 
 {{#bs-form novalidate=true formLayout='horizontal'}}
     <fieldset>
-        <legend>Tools</legend>
+        <legend>{{t 'profile.tools'}}</legend>
 
       {{#bs-form-element controlType='text'}}
           <p class="form-control-static">

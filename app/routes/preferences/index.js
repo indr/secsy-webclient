@@ -9,6 +9,19 @@ export default Ember.Route.extend({
   ajax: Ember.inject.service(),
   
   actions: {
+    savePreferences() {
+      const flash = this.get('flashMessages');
+      const model = this.controller.get('model');
+      
+      flash.clearMessages();
+      
+      this.get('ajax').patch('/api/users/me', {locale: model.locale}).then(() => {
+        this.send('setLocale', model.locale)
+      }).catch((error) => {
+        flash.dangerT('profile.unknown-error', error.getMessage() || error);
+      })
+    },
+    
     generateFakes() {
       const progress = this.send.bind(this, 'onProgress');
       return this.get('addressbook').fake(progress);

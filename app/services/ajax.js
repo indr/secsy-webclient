@@ -6,7 +6,11 @@ export default Ember.Service.extend({
   },
   
   delete(url, data) {
-    return this.ajax(url, 'DELETE', data)
+    return this.ajax(url, 'DELETE', data);
+  },
+  
+  patch(url, data) {
+    return this.ajax(url, 'PATCH', data);
   },
   
   post(url, data) {
