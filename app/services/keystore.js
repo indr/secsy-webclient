@@ -66,5 +66,12 @@ export default Ember.Service.extend({
     return this.get('store').query('key', filter).then((results) => {
       return results.objectAt(0);
     });
+  },
+  
+  changePassphrase(loginPassword, oldPassphrase, newPassphrase) {
+    const key = this.getPrivateKey();
+    return this.get('openpgp').decryptKey({privateKey: key, passphrase: oldPassphrase,}).then((result) => {
+      console.log('decrypted', result)
+    });
   }
 });

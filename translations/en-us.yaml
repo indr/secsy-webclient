@@ -156,7 +156,7 @@ profile:
     title: 'Change key passphrase'
     action-change-passphrase: 'Change key passphrase'
     password: 'Login password'
-    passphrase: 'Current key passphrase'
+    passphrase: 'Current passphrase'
     new-passphrase: 'New passphrase'
     confirm-passphrase: 'Confirm new passphrase'
     success: 'Key passphrase successfully changed'
@@ -290,6 +290,7 @@ errors:
   user-not-found: "We don't know that email address"
   invalid-password: "Invalid password"
   invalid-passphrase: 'Invalid passphrase'
+  invalid-current-passphrase: 'Invalid current passphrase'
   invalid-username-or-password: 'Unknown email address or wrong password'
   decryption-failed: 'Decryption error'
   save-unknown: Unknown error during save
