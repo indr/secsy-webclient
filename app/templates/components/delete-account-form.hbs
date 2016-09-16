@@ -8,10 +8,8 @@
           <p class="form-control-static">{{t 'profile.delete-account.warning'}}</p>
       {{/bs-form-element}}
       {{#bs-form-element controlType='text'}}
-          <p class="form-control-static">
-            {{#bs-button type='danger' buttonType='submit'}}{{t 'profile.delete-account.action'}}{{/bs-button}}
-            {{#link-to 'preferences' class='btn btn-default'}}{{t 'actions.cancel'}}{{/link-to}}
-          </p>
+        {{#bs-button type='danger' buttonType='submit'}}{{t 'profile.delete-account.action'}}{{/bs-button}}
+        {{#link-to 'preferences' class='btn btn-default'}}{{t 'actions.cancel'}}{{/link-to}}
       {{/bs-form-element}}
     </fieldset>
 {{/bs-form}}

@@ -152,6 +152,15 @@ profile:
   actions:
     change-passphrase: 'Change key passphrase'
     delete-account: 'Delete your account'
+  change-passphrase:
+    title: 'Change key passphrase'
+    action-change-passphrase: 'Change key passphrase'
+    password: 'Login password'
+    passphrase: 'Current key passphrase'
+    new-passphrase: 'New passphrase'
+    confirm-passphrase: 'Confirm new passphrase'
+    success: 'Key passphrase successfully changed'
+    unknown-error: 'Unknown error changing key passphrase'
   email-address: 'Email address'
   language: 'Language'
   password: 'Password'
@@ -240,6 +249,7 @@ errors:
   invalid: "{description} is invalid"
   confirmation: "{description} doesn't match {on}"
   confirmation-password: "This field doesn't match password"
+  confirmation-new-passphrase: "{description} doesn't match new passphrase"
   accepted: "{description} must be accepted"
   empty: "{description} can't be empty"
   blank: "{description} can't be blank"

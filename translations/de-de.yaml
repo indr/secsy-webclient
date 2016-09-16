@@ -155,6 +155,15 @@ profile:
   actions:
     change-passphrase: 'Schlüssel-Passphrase ändern'
     delete-account: 'Konto entfernen'
+  change-passphrase:
+    title: 'Schlüssel-Passphrase ändern'
+    action-change-passphrase: 'Schlüssel-Passphrase ändern'
+    password: 'Anmeldepasswort'
+    passphrase: 'Aktuelle Schlüssel-Passphrase'
+    new-passphrase: 'Neue Passphrase'
+    confirm-passphrase: 'Neue Passphrase bestätigen'
+    success: 'Die Schlüssel-Passphrase wurde erfolgreich geändert'
+    unknown-error: 'Unbekannter Fehler beim Ändern der Schlüssel-Passphrase'
   email-address: 'E-Mail-Adresse'
   language: 'Sprache'
   password: 'Passwort'
@@ -243,6 +252,7 @@ errors:
   invalid: "{description} ist ungültig"
   confirmation: "{description} stimmt nicht mit {on} überein"
   confirmation-password: "{description} stimmt nicht mit Passwort überein"
+  confirmation-new-passphrase: "{description} stimmt nicht mit neuer Passphrase überein"
   accepted: "{description} must be accepted"
   empty: "{description} can't be empty"
   blank: "{description} darf nicht leer sein"
