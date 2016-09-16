@@ -28,7 +28,7 @@ export default Ember.Component.extend(Validations, {
       const {emailAddress, password} = this.getProperties('emailAddress', 'password');
       
       flash.clearMessages();
-      this.get('session').authenticate('authenticator:local', emailAddress, password).then((user) => {
+      this.get('session').authenticate('authenticator:local', emailAddress, password).then(() => {
         const locale = this.get('session').get('data.authenticated.locale');
         if (locale) {
           this.sendAction('setLocale', locale);
