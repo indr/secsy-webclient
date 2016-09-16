@@ -142,7 +142,7 @@ nav:
     contacts: Your addressbook
     map: Show contacts on the world map
     create-contact: Create a new contact
-    preferences: Tools
+    preferences: Preferences
     logout: Logout
 
 placeholders:

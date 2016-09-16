@@ -38,17 +38,9 @@
             </ul>
             <div class="nav navbar-nav navbar-right">
               {{#if session.isDecrypted}}
-                  <li class="dropdown" title="{{t 'nav.title.preferences'}}">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                         aria-haspopup="true" aria-expanded="false">
-                          <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span><span
-                              class="sr-only">{{t 'nav.title.preferences'}}</span> <span class="caret"></span>
-                      </a>
-                      <ul class="dropdown-menu">
-                          <li><a href="#" {{action 'generateFakes'}}>{{t 'actions.generate-fakes'}}</a></li>
-                          <li><a href="#" {{action 'clearContacts'}}>{{t 'actions.delete-all'}}</a></li>
-                          <li><a href="#" {{action 'pullUpdates'}}>{{t 'actions.get-updates'}}</a></li>
-                      </ul>
+                  <li title="{{t 'nav.title.preferences'}}">{{#link-to 'preferences'}}<span
+                          class="glyphicon glyphicon-wrench" aria-hidden="true"></span><span
+                          class="sr-only">{{t 'nav.title.preferences'}}</span>{{/link-to}}
                   </li>
                   <li title="{{t 'nav.title.logout'}}"><a href="#" {{action 'invalidateSession'}}><span
                           class="glyphicon glyphicon-log-out" aria-hidden="true"></span><span
