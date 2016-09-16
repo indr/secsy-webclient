@@ -7,6 +7,7 @@ export default DS.Model.extend({
   password: attr('string'),
   createdAt: attr('utc'),
   gravatarUrl: attr('string'),
+  locale: attr('string'),
   privateKey: attr('string'),
   publicKey: attr('string')
 });

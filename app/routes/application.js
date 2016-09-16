@@ -36,8 +36,8 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
     // http://stackoverflow.com/questions/8199760/how-to-get-the-browser-language-using-javascript
     var language = this.get('session').get('data.localeName') || navigator.language || navigator.userLanguage;
     var localeName = ('' + language).toLowerCase().substr(0, 2);
-    const names = {'en': 'en-us', 'de': 'de-de'};
-    localeName = names[localeName] || 'en-us';
+    const names = {'en': 'en-US', 'de': 'de-DE'};
+    localeName = names[localeName] || 'en-US';
     debug('Setting locale ' + localeName + ' (detected ' + language + ')');
     this.get('intl').setLocale(localeName);
   },
@@ -89,6 +89,7 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
     },
     
     setLocale(localeName) {
+      debug('setLocale ' + localeName);
       this.get('intl').setLocale(localeName);
       this.get('session').set('data.localeName', localeName);
     },

@@ -27,8 +27,9 @@ const Validations = buildValidations({
   }
 });
 
-
 export default Ember.Component.extend(Validations, ValidationErrorsMixin, {
+  intl: Ember.inject.service(),
+  
   emailAddress: null,
   password: null,
   passwordRepeat: null,
@@ -43,6 +44,8 @@ export default Ember.Component.extend(Validations, ValidationErrorsMixin, {
       const model = this.get('model');
       model.set('email', emailAddress);
       model.set('password', password);
+      const locale = this.get('intl').get('locale')[0];
+      model.set('locale', locale);
       
       model.save().then(() => {
         this.set('showSuccess', true)
