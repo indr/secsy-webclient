@@ -15,14 +15,12 @@ export default Ember.Service.extend({
    * @return {Promise<{Key}>}
    */
   save(userId, emailAddress, key) {
-    const session = this.get('session');
-    const store = this.get('store');
-    
-    return store.createRecord('key', {
+    return this.get('store').createRecord('key', {
       isPublic: true,
       publicKey: key.publicKeyArmored,
       privateKey: key.privateKeyArmored
     }).save().then(function () {
+      const session = this.get('session');
       session.set('data.authenticated.public_key', key.publicKeyArmored);
       session.set('data.authenticated.private_key', key.privateKeyArmored);
     }).then(() => {
@@ -68,10 +66,27 @@ export default Ember.Service.extend({
     });
   },
   
-  changePassphrase(loginPassword, oldPassphrase, newPassphrase) {
-    const key = this.getPrivateKey();
-    return this.get('openpgp').decryptKey({privateKey: key, passphrase: oldPassphrase,}).then((result) => {
-      console.log('decrypted', result)
+  changePassphrase(options) {
+    return this.get('store').findRecord('key', 'my').then((key) => {
+      const openpgp = this.get('openpgp');
+      const result = openpgp.key.readArmored(key.get('privateKey'));
+      if (result.keys.length === 0) {
+        throw new Error(result.err[0].message)
+      }
+      const privateKey = result.keys[0];
+      
+      return openpgp.decryptKey({
+        privateKey: privateKey,
+        passphrase: options.passphrase
+      }).then((result) => {
+        const key = result.key;
+        key.primaryKey.encrypt(options.newPassphrase);
+        key.subKeys[0].subKey.encrypt(options.newPassphrase);
+        return key.armor();
+      }).then((armored) => {
+        key.privateKey = armored;
+        return key.save();
+      });
     });
   }
 });
