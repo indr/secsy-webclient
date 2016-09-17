@@ -155,7 +155,6 @@ profile:
   change-passphrase:
     title: 'Change key passphrase'
     action-change-passphrase: 'Change key passphrase'
-    password: 'Login password'
     passphrase: 'Current passphrase'
     new-passphrase: 'New passphrase'
     confirm-passphrase: 'Confirm new passphrase'

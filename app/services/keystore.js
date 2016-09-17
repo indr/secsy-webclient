@@ -19,7 +19,7 @@ export default Ember.Service.extend({
       isPublic: true,
       publicKey: key.publicKeyArmored,
       privateKey: key.privateKeyArmored
-    }).save().then(function () {
+    }).save().then(() => {
       const session = this.get('session');
       session.set('data.authenticated.public_key', key.publicKeyArmored);
       session.set('data.authenticated.private_key', key.privateKeyArmored);

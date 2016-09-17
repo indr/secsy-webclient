@@ -158,7 +158,6 @@ profile:
   change-passphrase:
     title: 'Schlüssel-Passphrase ändern'
     action-change-passphrase: 'Schlüssel-Passphrase ändern'
-    password: 'Anmeldepasswort'
     passphrase: 'Aktuelle Passphrase'
     new-passphrase: 'Neue Passphrase'
     confirm-passphrase: 'Neue Passphrase bestätigen'

@@ -3,13 +3,6 @@ import { validator, buildValidations } from 'ember-cp-validations';
 import ValidationErrorsMixin from '../mixins/validation-errors-mixin';
 
 const Validations = buildValidations({
-  password: {
-    validators: [
-      validator('presence', true),
-      validator('length', {min: 8, max: 64}),
-      validator('ds-error')
-    ]
-  },
   passphrase: {
     validators: [
       validator('presence', true),
@@ -41,7 +34,7 @@ export default Ember.Component.extend(Validations, ValidationErrorsMixin, {
       
       flash.clearMessages();
       
-      this.get('keystore').changePassphrase(this.getProperties('password', 'passphrase', 'newPassphrase')).then(() => {
+      this.get('keystore').changePassphrase(this.getProperties('passphrase', 'newPassphrase')).then(() => {
         flash.success('profile.change-passphrase.success');
         this.sendAction('changed');
       }).catch((error) => {
