@@ -1,6 +1,7 @@
 @import "ember-bootstrap/bootstrap";
 @import 'bootswatch';
 @import 'variables';
+@import 'gly-spin';
 
 @grid-float-breakpoint: 1px;
 
@@ -11,6 +12,11 @@ body {
 .alert-info > a {
   color: @btn-info-color;
 }
+
+.btn .glyphicon {
+  margin-right: 5px;
+}
+
 /**
  * javascript: offsetting an html anchor to adjust for fixed header
  * http://stackoverflow.com/a/13184714
