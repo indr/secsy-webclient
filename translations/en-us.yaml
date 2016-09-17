@@ -149,10 +149,21 @@ placeholders:
   query: "Search..."
 
 profile:
-  delete-account-action: 'Delete your account'
+  actions:
+    change-passphrase: 'Change key passphrase'
+    delete-account: 'Delete your account'
+  change-passphrase:
+    title: 'Change key passphrase'
+    action-change-passphrase: 'Change key passphrase'
+    passphrase: 'Current passphrase'
+    new-passphrase: 'New passphrase'
+    confirm-passphrase: 'Confirm new passphrase'
+    success: 'Key passphrase successfully changed'
+    unknown-error: 'Unknown error changing key passphrase'
   email-address: 'Email address'
   language: 'Language'
   password: 'Password'
+  passphrase: 'Passphrase'
   preferences: 'Preferences'
   send-password-reset-email: 'Send password reset email'
   tools: 'Tools'
@@ -161,11 +172,11 @@ profile:
     success: 'Successfully sent password reset email'
     unknown-error: 'Unknown error during sending of password reset email'
   delete-account:
-    legend: 'Delete account'
+    title: 'Delete account'
     action: "I'm sure, delete my account"
     warning: 'Are you sure you want to delete your account? This action can not be undone!'
     message: 'Please tell us why you have decided to delete your account'
-    password: 'Password'
+    password: 'Login password'
     success: 'Your account has been successfully delete. You will be redirected shortly...'
     unknown-error: 'Unknown error during account deletion'
 
@@ -237,6 +248,7 @@ errors:
   invalid: "{description} is invalid"
   confirmation: "{description} doesn't match {on}"
   confirmation-password: "This field doesn't match password"
+  confirmation-new-passphrase: "{description} doesn't match new passphrase"
   accepted: "{description} must be accepted"
   empty: "{description} can't be empty"
   blank: "{description} can't be blank"
@@ -277,6 +289,7 @@ errors:
   user-not-found: "We don't know that email address"
   invalid-password: "Invalid password"
   invalid-passphrase: 'Invalid passphrase'
+  invalid-current-passphrase: 'Invalid current passphrase'
   invalid-username-or-password: 'Unknown email address or wrong password'
   decryption-failed: 'Decryption error'
   save-unknown: Unknown error during save

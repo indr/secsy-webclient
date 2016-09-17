@@ -1,0 +1,12 @@
+{{#bs-form action='changePassphrase' model=this novalidate=true}}
+    <div class="{{if isModal 'modal-body'}}">
+      {{bs-form-element controlType='password' property='passphrase' label=(t 'profile.change-passphrase.passphrase')}}
+      {{bs-form-element controlType='password' property='newPassphrase' label=(t 'profile.change-passphrase.new-passphrase')}}
+      {{bs-form-element controlType='password' property='confirmPassphrase' label=(t 'profile.change-passphrase.confirm-passphrase')}}
+    </div>
+
+    <div class="{{if isModal 'modal-footer'}}">
+      {{#bs-button type='primary' buttonType='submit'}}{{t 'profile.change-passphrase.action-change-passphrase'}}{{/bs-button}}
+      {{#link-to 'preferences' class='btn btn-default'}}{{t 'actions.cancel'}}{{/link-to}}
+    </div>
+{{/bs-form}}

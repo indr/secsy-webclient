@@ -6,7 +6,11 @@
       {{/bs-form-element}}
 
       {{#bs-form-element controlType='text' label=(t 'profile.password')}}
-          <p class="form-control-static">{{#bs-button type='default' action='sendPasswordResetEmail'}}{{t 'profile.send-password-reset-email'}}{{/bs-button}}</p>
+        {{#bs-button type='default' action='sendPasswordResetEmail'}}{{t 'profile.send-password-reset-email'}}{{/bs-button}}
+      {{/bs-form-element}}
+
+      {{#bs-form-element controlType='text' label=(t 'profile.passphrase')}}
+        {{#link-to 'preferences.change-passphrase' class='btn btn-default'}}{{t 'profile.actions.change-passphrase'}}{{/link-to}}
       {{/bs-form-element}}
 
       {{#bs-form-element controlType='text' label=(t 'profile.language')}}
@@ -34,27 +38,19 @@
         <legend>{{t 'profile.tools'}}</legend>
 
       {{#bs-form-element controlType='text'}}
-          <p class="form-control-static">
-            {{#bs-button type='default' action='pullUpdates'}}{{t 'actions.get-updates'}}{{/bs-button}}
-          </p>
+        {{#bs-button type='default' action='pullUpdates'}}{{t 'actions.get-updates'}}{{/bs-button}}
       {{/bs-form-element}}
 
       {{#bs-form-element controlType='text'}}
-          <p class="form-control-static">
-            {{#bs-button type='default' action='generateFakes'}}{{t 'actions.generate-fakes'}}{{/bs-button}}
-          </p>
+        {{#bs-button type='default' action='generateFakes'}}{{t 'actions.generate-fakes'}}{{/bs-button}}
       {{/bs-form-element}}
 
       {{#bs-form-element controlType='text'}}
-          <p class="form-control-static">
-            {{#bs-button type='default' action='deleteAll'}}{{t 'actions.delete-all'}}{{/bs-button}}
-          </p>
+        {{#bs-button type='default' action='deleteAll'}}{{t 'actions.delete-all'}}{{/bs-button}}
       {{/bs-form-element}}
 
       {{#bs-form-element controlType='text'}}
-          <p class="form-control-static">
-            {{#link-to 'preferences.delete-account' class='btn btn-danger'}}{{t 'profile.delete-account-action'}}{{/link-to}}
-          </p>
+        {{#link-to 'preferences.delete-account' class='btn btn-warning'}}{{t 'profile.actions.delete-account'}}{{/link-to}}
       {{/bs-form-element}}
     </fieldset>
 {{/bs-form}}
