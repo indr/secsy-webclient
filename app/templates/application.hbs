@@ -1,4 +1,10 @@
-{{app-navbar}}
+{{app-navbar openSearch='toggleSearch' isSearchVisible=isSearchVisible}}
+
+{{#if isSearchVisible}}
+    <div class="container search-container">
+      {{app-search close='toggleSearch' searchQuery=searchQuery}}
+    </div>
+{{/if}}
 
 <div class="container">
     <div class="flash-messages-container">

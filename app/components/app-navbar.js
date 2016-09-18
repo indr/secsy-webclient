@@ -6,6 +6,10 @@ export default Ember.Component.extend({
   actions: {
     invalidateSession() {
       this.get('session').invalidate();
+    },
+    
+    openSearch() {
+      this.sendAction('openSearch');
     }
   }
 });
