@@ -17,12 +17,13 @@ export default Ember.Mixin.create({
     setStateProperty('pending');
     return promise.then((result) => {
       setStateProperty('resolved');
+      Ember.run.later(setStateProperty.bind('default'), 1500);
       return result;
     }).catch((error) => {
       setStateProperty('rejected');
-      throw error;
-    }).finally(() => {
       Ember.run.later(setStateProperty.bind('default'), 1500);
+      throw error;
     });
+    // Better not use finally cause we might not be dealing with an RSVP promise
   }
 });
