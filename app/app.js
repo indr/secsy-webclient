@@ -12,7 +12,7 @@ Ember.RSVP.on('error', function (error) {
 });
 
 Ember.$.ajaxSetup({
-  timeout: 5000
+  timeout: 8000
 });
 
 App = Ember.Application.extend({

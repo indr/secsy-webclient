@@ -1,12 +1,13 @@
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 import DecryptedRouteMixin from '../mixins/decrypted-route-mixin';
 import Ember from 'ember';
+import TrackerMixin from './../mixins/tracker-mixin';
 
 function debug (message) {
   Ember.debug('[route:map] ' + message);
 }
 
-export default Ember.Route.extend(AuthenticatedRouteMixin, DecryptedRouteMixin, {
+export default Ember.Route.extend(AuthenticatedRouteMixin, DecryptedRouteMixin, TrackerMixin, {
   addressbook: Ember.inject.service(),
   
   model() {
@@ -44,7 +45,10 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, DecryptedRouteMixin, 
     },
     
     mapClicked(mouseEvent) {
-      this.controllerFor('map.view').set('location', mouseEvent.latlng);
+      const promise = this.controllerFor('map.view').setLocation(mouseEvent.latlng);
+      if (promise) {
+        this.track(this.controller.trackSaving.bind(this.controller), promise);
+      }
     }
   }
 });
