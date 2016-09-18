@@ -16,7 +16,7 @@
       </div>
       <div class="{{if isModal 'modal-footer'}}">
         {{#bs-form-group}}
-          {{#bs-button type="primary" buttonType="submit"}}{{t 'actions.signup'}}{{/bs-button}}
+          {{#bs-button type="primary" buttonType="submit" textState=signupState}}{{t 'actions.signup'}}{{/bs-button}}
           {{#link-to 'login' class="btn btn-default"}}{{t 'actions.cancel'}}{{/link-to}}
         {{/bs-form-group}}
       </div>

@@ -6,7 +6,7 @@
 
     <div class="{{if isModal 'modal-footer'}}">
         <p class="form-control-static">{{t 'profile.delete-account.warning'}}</p>
-      {{#bs-button type='danger' buttonType='submit'}}{{t 'profile.delete-account.action'}}{{/bs-button}}
+      {{#bs-button type='danger' buttonType='submit' textState=deleteAccountState}}{{t 'profile.delete-account.action'}}{{/bs-button}}
       {{#link-to 'preferences' class='btn btn-default'}}{{t 'actions.cancel'}}{{/link-to}}
     </div>
 {{/bs-form}}

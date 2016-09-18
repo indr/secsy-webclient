@@ -2,19 +2,34 @@ import Ember from 'ember';
 import ENV from 'addressbook/config/environment';
 import openpgp from 'openpgp';
 
+const {
+  RSVP
+} = Ember;
+
 export default Ember.Service.extend({
   init() {
     this._super(...arguments);
-   
+    
     if (ENV.useWebWorker) {
       openpgp.initWorker({path: 'assets/openpgp.worker.min.js'});
     }
     
-    this.decrypt = openpgp.decrypt;
     this.decryptKey = openpgp.decryptKey;
     this.encrypt = openpgp.encrypt;
     this.key = openpgp.key;
     this.message = openpgp.message;
+  },
+  
+  decrypt() {
+    return new RSVP.Promise((resolve, reject) => {
+      openpgp.decrypt(...arguments).then(resolve).catch(reject);
+    })
+  },
+  
+  encrypt() {
+    return new RSVP.Promise((resolve, reject) => {
+      openpgp.decrypt(...arguments).then(resolve).catch(reject);
+    })
   },
   
   /**
@@ -36,7 +51,9 @@ export default Ember.Service.extend({
     if (options.numBits < 4096) {
       console.log('Generating key with less than 4096 bits');
     }
-    return openpgp.generateKey(options);
+    return new RSVP.Promise((resolve, reject) => {
+      openpgp.generateKey(options).then(resolve).catch(reject);
+    });
   },
   
   /**

@@ -1,10 +1,11 @@
 import Ember from 'ember';
+import TrackerMixin from './../../mixins/tracker-mixin';
 
 function debug (message) {
   Ember.debug('[route:contacts/view] ' + message);
 }
 
-export default Ember.Route.extend({
+export default Ember.Route.extend(TrackerMixin, {
   store: Ember.inject.service(),
   
   model(params) {
@@ -24,7 +25,7 @@ export default Ember.Route.extend({
         return;
       }
       
-      model.destroyRecord().then(() => {
+      this.track('controller.deleteState', model.destroyRecord()).then(() => {
         this.transitionTo('contacts');
       }).catch((err) => {
         this.get('flashMessages').dangerT('errors.delete-unknown-error', err.message || err);

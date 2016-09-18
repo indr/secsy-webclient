@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import TrackerMixin from './../mixins/tracker-mixin';
 import { validator, buildValidations } from 'ember-cp-validations';
 
 const Validations = buildValidations({
@@ -10,7 +11,7 @@ const Validations = buildValidations({
   }
 });
 
-export default Ember.Component.extend(Validations, {
+export default Ember.Component.extend(TrackerMixin, Validations, {
   keychain: Ember.inject.service(),
   session: Ember.inject.service(),
   
@@ -31,11 +32,12 @@ export default Ember.Component.extend(Validations, {
       const passphrase = self.get('passphrase');
       
       flash.infoT('generate.generating', {sticky: true});
-      keychain.generateKey(userId, emailAddress, passphrase).then(() => {
+      this.track('generateState', keychain.generateKey(userId, emailAddress, passphrase)).then(() => {
         flash.clearMessages();
       }).catch((reason) => {
         flash.dangerT('generate.unknown-error', reason);
       });
     }
   }
-});
+})
+;

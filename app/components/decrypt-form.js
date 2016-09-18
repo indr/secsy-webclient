@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import TrackerMixin from './../mixins/tracker-mixin';
 import { validator, buildValidations } from 'ember-cp-validations';
 
 const Validations = buildValidations({
@@ -10,7 +11,7 @@ const Validations = buildValidations({
   }
 });
 
-export default Ember.Component.extend(Validations, {
+export default Ember.Component.extend(TrackerMixin, Validations, {
   keychain: Ember.inject.service(),
   session: Ember.inject.service(),
   
@@ -26,7 +27,7 @@ export default Ember.Component.extend(Validations, {
       const passphrase = this.get('passphrase');
       
       flash.infoT('decrypt.decrypting', {sticky: true});
-      keychain.open(userId, passphrase).then(() => {
+      this.track('decryptState', keychain.open(userId, passphrase)).then(() => {
         flash.clearMessages();
       }).catch((reason) => {
         if (reason.message.indexOf('Invalid passphrase') >= 0) {

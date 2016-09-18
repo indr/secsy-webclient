@@ -1,10 +1,11 @@
 import Ember from 'ember';
+import TrackerMixin from './../../mixins/tracker-mixin';
 
 function debug (message) {
   Ember.debug('[route:preferences/index] ' + message);
 }
 
-export default Ember.Route.extend({
+export default Ember.Route.extend(TrackerMixin, {
   addressbook: Ember.inject.service(),
   ajax: Ember.inject.service(),
   
@@ -15,21 +16,25 @@ export default Ember.Route.extend({
       
       flash.clearMessages();
       
-      this.get('ajax').patch('/api/users/me', {locale: model.locale}).then(() => {
+      this.track('controller.savePreferencesState', this.get('ajax').patch('/api/users/me', {locale: model.locale})).then(() => {
         this.send('setLocale', model.locale)
       }).catch((error) => {
         flash.dangerT('profile.unknown-error', error.getMessage() || error);
-      })
+      });
     },
     
     generateFakes() {
       const progress = this.send.bind(this, 'onProgress');
-      return this.get('addressbook').fake(progress);
+      this.track('controller.generateFakesState', this.get('addressbook').fake(progress));
     },
     
     deleteAll() {
       const progress = this.send.bind(this, 'onProgress');
-      return this.get('addressbook').clear(progress);
+      this.track('controller.deleteAllState', this.get('addressbook').clear(progress));
+    },
+    
+    sendPullUpdates() {
+      this.send('pullUpdates', {}, this.set.bind(this, 'controller.pullUpdatesState'))
     },
     
     sendPasswordResetEmail() {
@@ -40,7 +45,7 @@ export default Ember.Route.extend({
       
       flash.clearMessages();
       
-      this.get('ajax').post('/api/users/forgot-password', {email}).then(() => {
+      this.track('controller.sendPasswordResetEmailState', this.get('ajax').post('/api/users/forgot-password', {email})).then(() => {
         flash.successT('profile.reset-email.success');
       }).catch((error) => {
         flash.dangerT('profile.reset-email.unknown-error', error.getMessage() || error, {sticky: false});

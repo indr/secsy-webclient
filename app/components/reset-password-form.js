@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import TrackerMixin from './../mixins/tracker-mixin';
 import { validator, buildValidations } from 'ember-cp-validations';
 import ValidationErrorsMixin from '../mixins/validation-errors-mixin';
 
@@ -12,7 +13,7 @@ const Validations = buildValidations({
   },
 });
 
-export default Ember.Component.extend(Validations, ValidationErrorsMixin, {
+export default Ember.Component.extend(TrackerMixin, Validations, ValidationErrorsMixin, {
   ajax: Ember.inject.service(),
   
   password: null,
@@ -26,7 +27,7 @@ export default Ember.Component.extend(Validations, ValidationErrorsMixin, {
       const password = this.get('password');
       
       flash.clearMessages();
-      this.get('ajax').post('/api/users/reset-password', {token, password}).then(()=> {
+      this.track(this.get('ajax').post('/api/users/reset-password', {token, password})).then(()=> {
         flash.successT('reset.success');
         Ember.run.later(sendAction, 1500);
       }).catch((error) => {

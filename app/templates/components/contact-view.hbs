@@ -76,6 +76,6 @@
     {{#if model.me}}
       {{#link-to 'contacts.share' model class="btn btn-success"}}{{t 'actions.share'}}...{{/link-to}}
     {{else}}
-        <button {{action 'delete' model}} class="btn btn-danger">{{t 'actions.delete'}}</button>
+      {{#bs-button type='danger' action=(action 'delete' model) textState=deleteState}}{{t 'actions.delete'}}{{/bs-button}}
     {{/if}}
 {{/bs-form}}

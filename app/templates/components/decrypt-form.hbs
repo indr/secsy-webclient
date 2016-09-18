@@ -5,7 +5,7 @@
     <div class="{{if isModal 'modal-footer'}}">
       {{#bs-form-group}}
         {{#link-to 'generate' (query-params forgot=true) class="btn btn-link pull-left"}}{{t 'actions.generate-new'}}{{/link-to}}
-        {{#bs-button type="primary" buttonType="submit"}}{{t 'actions.decrypt'}}{{/bs-button}}
+        {{#bs-button type="primary" buttonType="submit" textState=decryptState}}{{t 'actions.decrypt'}}{{/bs-button}}
           <a href="#" {{action 'invalidateSession'}} class="btn btn-default">{{t 'actions.logout'}}</a>
       {{/bs-form-group}}
     </div>

@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import TrackerMixin from './../mixins/tracker-mixin';
 import { validator, buildValidations } from 'ember-cp-validations';
 import ValidationErrorsMixin from '../mixins/validation-errors-mixin';
 
@@ -12,7 +13,7 @@ const Validations = buildValidations({
   }
 });
 
-export default Ember.Component.extend(Validations, ValidationErrorsMixin, {
+export default Ember.Component.extend(TrackerMixin, Validations, ValidationErrorsMixin, {
   ajax: Ember.inject.service(),
   session: Ember.inject.service(),
   
@@ -26,11 +27,11 @@ export default Ember.Component.extend(Validations, ValidationErrorsMixin, {
       
       flash.clearMessages();
       
-      this.get('ajax').delete('/api/users/me', {message, password}).then(() => {
+      this.track('deleteAccountState', this.get('ajax').delete('/api/users/me', {message, password})).then(() => {
         flash.successT('profile.delete-account.success');
-        // Ember.run.later(() => {
-        //   this.get('session').invalidate();
-        // }, 1500);
+        Ember.run.later(() => {
+          this.get('session').invalidate();
+        }, 1500);
       }).catch((error) => {
         return this.handleValidationErrors(error);
       }).catch((error) => {

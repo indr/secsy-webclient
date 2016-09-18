@@ -6,7 +6,7 @@
     </div>
     <div class="{{if isModal 'modal-footer'}}">
       {{#bs-form-group}}
-        {{#bs-button type="primary" buttonType="submit"}}{{t 'actions.login'}}{{/bs-button}}
+        {{#bs-button type="primary" buttonType="submit" textState=loginState}}{{t 'actions.login'}}{{/bs-button}}
           <a href="/" class="btn btn-default">{{t 'actions.cancel'}}</a>
         {{#link-to 'signup' class="btn btn-link pull-left"}}{{t 'actions.signup'}}{{/link-to}}
       {{/bs-form-group}}

@@ -1,10 +1,11 @@
 import Ember from 'ember';
+import TrackerMixin from './../../mixins/tracker-mixin';
 
 function debug () {
   // Ember.debug('[route:contacts/share] ' + arguments[0]);
 }
 
-export default Ember.Route.extend({
+export default Ember.Route.extend(TrackerMixin, {
   flashMessages: Ember.inject.service(),
   session: Ember.inject.service(),
   updatePusher: Ember.inject.service(),
@@ -34,11 +35,10 @@ export default Ember.Route.extend({
       const onProgress = this.send.bind(this, 'onProgress');
       
       try {
-        var result = updatePusher.push(data, emailAddress, onProgress).catch((err) => {
+        this.track('controller.shareState', updatePusher.push(data, emailAddress, onProgress)).catch((err) => {
           flashMessages.dangerT('share.unknown-error', err.message || err);
         });
         this.transitionTo('contacts.view', this.controller.get('model'));
-        return result;
       } catch (err) {
         flashMessages.dangerT('share.unknown-error', err.message || err);
       }

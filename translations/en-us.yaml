@@ -43,7 +43,7 @@ activate:
   title: 'Welcome to secsy!'
   action: 'Activate your account'
   success: 'Your new account is confirmed. You will be redirected to the login page.'
-  unknown-error: 'Unknown error during activation'
+  unknown-error: 'Unknown error activating your account'
 
 login:
   title: 'Login'
@@ -51,27 +51,27 @@ login:
   password: 'Password'
   forgotPassword: 'I forgot my password'
   success: 'Login successful!'
-  unknown-error: 'Unknown error during login'
+  unknown-error: 'Unknown error logging in'
 
 forgot:
   title: "Reset password"
   text: "<p>Enter your email address and we'll send you a password reset email.</p>"
   success: |
     <p>We found an account that matches <strong>{email}</strong>, you should receive an email with instructions on how to reset your password shortly.</p>
-  unknown-error: "Unknown error during password reset"
+  unknown-error: "Unknown error resetting password"
 
 reset:
   title: 'Update password'
   text: '<p>Please choose a new password.</p>'
   success: 'Your password is updated. You will be redirected to the login page.'
-  unknown-error: 'Unknown error during password update'
+  unknown-error: 'Unknown error updating password'
 
 generate:
   title: Generate key
   passphrase: Passphrase
   generating: Generating new key... Please wait a moment!
   success: Key successfully generated
-  unknown-error: Unknown error during key generation
+  unknown-error: 'Unknown error generating key'
 
 generate-new:
   title: Generate new key
@@ -84,7 +84,7 @@ decrypt:
   passphrase: 'Passphrase'
   decrypting: "Decrypting addressbook"
   success: "Addressbook successfully decrypted"
-  unknown-error: "Unknown error during decryption"
+  unknown-error: 'Unknown error decrypting'
 
 contact:
   clean-text: |
@@ -167,10 +167,10 @@ profile:
   preferences: 'Preferences'
   send-password-reset-email: 'Send password reset email'
   tools: 'Tools'
-  unknown-error: 'Unknown error during saving preferences'
+  unknown-error: 'Unknown error saving preferences'
   reset-email:
     success: 'Successfully sent password reset email'
-    unknown-error: 'Unknown error during sending of password reset email'
+    unknown-error: 'Unknown error sending password reset email'
   delete-account:
     title: 'Delete account'
     action: "I'm sure, delete my account"
@@ -178,7 +178,13 @@ profile:
     message: 'Please tell us why you have decided to delete your account'
     password: 'Login password'
     success: 'Your account has been successfully delete. You will be redirected shortly...'
-    unknown-error: 'Unknown error during account deletion'
+    unknown-error: 'Unknown error deleting your account'
+
+pull-updates:
+  unknown-error: 'Unknown error pulling updates'
+
+push-updates:
+  unknown-error: 'Unknown error pushing updates'
 
 resend:
   title: Resend activation email
@@ -188,7 +194,7 @@ resend:
   success: |
     <p>We sent an activation email to <strong>{email}</strong>. Please follow the instructions in the email to activate your account.</p>
     <p>If it doesn't arrive and you have checked your spam folder contact support@secsy.io.</p>
-  unknown-error: 'Unknown error during sending reset password email'
+  unknown-error: 'Unknown error sending reset password email'
 
 review:
   title: Review your contacts update
@@ -199,9 +205,9 @@ review:
   checkbox: Update?
   error-no-selection: You must specify at least one attribute
   update-successful: Successfully updated the details
-  update-unknown-error: Unknown error during updating
+  update-unknown-error: 'Unknown error updating contact'
   dismiss-successful: Successfully dismissed updates
-  dismiss-unknown-error: Unknown error during deletion of updates
+  dismiss-unknown-error: 'Unknown error deleting updates'
 
 share:
   title: Share your details with your contacts
@@ -224,7 +230,7 @@ share:
   checkbox: Share?
   error-no-selection: You must specify at least one attribute
   successful: Successfully shared your details
-  unknown-error: Unknown error during sharing
+  unknown-error: 'Unknown error sharing your details'
 
 signup:
   title: "Signup"
@@ -234,7 +240,7 @@ signup:
   success: |
     <p>You're almost done! We sent an activation email to <strong>{email}</strong>. Please follow the instructions in the email to activate your account.</p>
     <p>If it doesn't arrive, check your spam folder, or try to log in again to send another activation email.</p>
-  unknown-error: "Unknown error during sign up"
+  unknown-error: 'Unknown error signing up'
 
 warnings:
   no-ssl: |
@@ -292,5 +298,5 @@ errors:
   invalid-current-passphrase: 'Invalid current passphrase'
   invalid-username-or-password: 'Unknown email address or wrong password'
   decryption-failed: 'Decryption error'
-  save-unknown: Unknown error during save
+  save-unknown: 'Unknown error saving'
   token-not-found: "This token is not valid"

@@ -183,6 +183,12 @@ profile:
     success: 'Ihr Konto wurde erfolgreich entfernt. Sie werden gleich weitergleitet...'
     unknown-error: 'Unbekannter Fehler beim Entfernen des Kontos'
 
+pull-updates:
+  unknown-error: 'Unbekannter Fehler beim Laden der Updates'
+
+push-updates:
+  unknown-error: 'Unbekannter fehler beim Teilen des Updates'
+
 resend:
   title: 'Erneuter Versand des E-Mails'
   text: |

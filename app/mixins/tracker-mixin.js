@@ -1,16 +1,28 @@
 import Ember from 'ember';
 
+function debug (message) {
+  Ember.debug('[mixin:tracker] ' + message)
+}
 export default Ember.Mixin.create({
-  track(stateProperty, promise) {
-    this.set(stateProperty, 'pending');
+  track(setStateProperty, promise) {
+    debug(setStateProperty ? setStateProperty.name || setStateProperty : 'undefined');
+    
+    if (!setStateProperty) {
+      // setStateProperty = Ember.K;
+      return promise;
+    } else if (typeof setStateProperty === 'string') {
+      setStateProperty = this.set.bind(this, setStateProperty);
+    }
+    
+    setStateProperty('pending');
     return promise.then((result) => {
-      this.set(stateProperty, 'resolved');
+      setStateProperty('resolved');
       return result;
     }).catch((error) => {
-      this.set(stateProperty, 'rejected');
+      setStateProperty('rejected');
       throw error;
     }).finally(() => {
-      Ember.run.later(this.set.bind(this, stateProperty, 'default'), 1500);
+      Ember.run.later(setStateProperty.bind('default'), 1500);
     });
   }
 });

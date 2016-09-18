@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import TrackerMixin from './../mixins/tracker-mixin';
 import { validator, buildValidations } from 'ember-cp-validations';
 
 const Validations = buildValidations({
@@ -16,7 +17,7 @@ const Validations = buildValidations({
   }
 });
 
-export default Ember.Component.extend(Validations, {
+export default Ember.Component.extend(TrackerMixin, Validations, {
   session: Ember.inject.service(),
   
   emailAddress: null,
@@ -28,7 +29,7 @@ export default Ember.Component.extend(Validations, {
       const {emailAddress, password} = this.getProperties('emailAddress', 'password');
       
       flash.clearMessages();
-      this.get('session').authenticate('authenticator:local', emailAddress, password).then(() => {
+      this.track('loginState', this.get('session').authenticate('authenticator:local', emailAddress, password)).then(() => {
         const locale = this.get('session').get('data.authenticated.locale');
         if (locale) {
           this.sendAction('setLocale', locale);

@@ -6,7 +6,7 @@
       {{/bs-form-element}}
 
       {{#bs-form-element controlType='text' label=(t 'profile.password')}}
-        {{#bs-button type='default' action='sendPasswordResetEmail'}}{{t 'profile.send-password-reset-email'}}{{/bs-button}}
+        {{#bs-button type='default' action='sendPasswordResetEmail' textState=sendPasswordResetEmailState}}{{t 'profile.send-password-reset-email'}}{{/bs-button}}
       {{/bs-form-element}}
 
       {{#bs-form-element controlType='text' label=(t 'profile.passphrase')}}
@@ -28,7 +28,7 @@
       {{/bs-form-element}}
 
       {{#bs-form-element}}
-        {{#bs-button type="primary" buttonType="submit"}}{{t 'actions.save'}}{{/bs-button}}
+        {{#bs-button type="primary" buttonType="submit" textState=savePreferencesState}}{{t 'actions.save'}}{{/bs-button}}
       {{/bs-form-element}}
     </fieldset>
 {{/bs-form}}
@@ -38,15 +38,15 @@
         <legend>{{t 'profile.tools'}}</legend>
 
       {{#bs-form-element controlType='text'}}
-        {{#bs-button type='default' action='pullUpdates'}}{{t 'actions.get-updates'}}{{/bs-button}}
+        {{#bs-button type='default' action='sendPullUpdates' textState=pullUpdatesState}}{{t 'actions.get-updates'}}{{/bs-button}}
       {{/bs-form-element}}
 
       {{#bs-form-element controlType='text'}}
-        {{#bs-button type='default' action='generateFakes'}}{{t 'actions.generate-fakes'}}{{/bs-button}}
+        {{#bs-button type='default' action='generateFakes' textState=generateFakesState}}{{t 'actions.generate-fakes'}}{{/bs-button}}
       {{/bs-form-element}}
 
       {{#bs-form-element controlType='text'}}
-        {{#bs-button type='default' action='deleteAll'}}{{t 'actions.delete-all'}}{{/bs-button}}
+        {{#bs-button type='default' action='deleteAll' textState=deleteAllState}}{{t 'actions.delete-all'}}{{/bs-button}}
       {{/bs-form-element}}
 
       {{#bs-form-element controlType='text'}}

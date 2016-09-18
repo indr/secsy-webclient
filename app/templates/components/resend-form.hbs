@@ -13,7 +13,7 @@
         {{format-html-message 'resend.text' email=email}}
       </div>
       <div class="{{if isModal 'modal-footer'}}">
-        {{#bs-button type="primary" buttonType="submit"}}{{t 'actions.resend'}}{{/bs-button}}
+        {{#bs-button type="primary" buttonType="submit" textState=resendState}}{{t 'actions.resend'}}{{/bs-button}}
         {{#link-to 'login' class="btn btn-default"}}{{t 'actions.cancel'}}{{/link-to}}
       </div>
   {{/bs-form}}

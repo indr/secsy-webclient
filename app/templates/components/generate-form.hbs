@@ -9,7 +9,7 @@
     </div>
     <div class="{{if isModal 'modal-footer'}}">
       {{#bs-form-group}}
-        {{#bs-button type="primary" buttonType="submit"}}{{t 'actions.generate'}}{{/bs-button}}
+        {{#bs-button type="primary" buttonType="submit" textState=generateState}}{{t 'actions.generate'}}{{/bs-button}}
         {{#bs-button type="default" buttonType="button" action='cancel'}}{{t 'actions.cancel'}}{{/bs-button}}
       {{/bs-form-group}}
     </div>

@@ -1,10 +1,11 @@
 import Ember from 'ember';
+import TrackerMixin from './../../mixins/tracker-mixin';
 
 function debug (message) {
   Ember.debug('[route:contacts/edit] ' + message);
 }
 
-export default Ember.Route.extend({
+export default Ember.Route.extend(TrackerMixin, {
   intl: Ember.inject.service(),
   store: Ember.inject.service(),
   
@@ -18,7 +19,7 @@ export default Ember.Route.extend({
   actions: {
     save() {
       const model = this.controller.get('model');
-      model.save().then(() => {
+      this.track('controller.saveState', model.save()).then(() => {
         this.transitionTo('contacts.view', model);
       }).catch((err) => {
         this.get('flashMessages').dangerT('errors.save-unknown', err.message || err);

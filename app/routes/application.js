@@ -1,6 +1,7 @@
 import Ember from 'ember';
-import SimpleAuthApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 import CustomApplicationRouteMixin from '../mixins/application-route-mixin';
+import SimpleAuthApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
+import TrackerMixin from './../mixins/tracker-mixin';
 
 const {
   assign,
@@ -11,7 +12,7 @@ function debug (message) {
   Ember.debug('[route:application] ' + message);
 }
 
-export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplicationRouteMixin, {
+export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplicationRouteMixin, TrackerMixin, {
   addressbook: Ember.inject.service(),
   crypto: Ember.inject.service(),
   flashMessages: Ember.inject.service(),
@@ -112,7 +113,7 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
       return this._super(...arguments);
     },
     
-    pullUpdates(options) {
+    pullUpdates(options, stateProperty) {
       options = assign({silent: false}, options);
       const flashMessages = this.get('flashMessages');
       
@@ -120,7 +121,7 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
       const onProgress = options.silent ? K : this.onProgress.bind(this);
       
       try {
-        return this.get('updatePuller').pull(emailAddress, onProgress).catch((err) => {
+        this.track(stateProperty, this.get('updatePuller').pull(emailAddress, onProgress)).catch((err) => {
           flashMessages.dangerT('pull-updates.unknown-error', err.message || err);
         });
       } catch (err) {

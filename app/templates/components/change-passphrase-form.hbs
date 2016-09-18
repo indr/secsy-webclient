@@ -6,7 +6,7 @@
     </div>
 
     <div class="{{if isModal 'modal-footer'}}">
-      {{#bs-button type='primary' buttonType='submit'}}{{t 'profile.change-passphrase.action-change-passphrase'}}{{/bs-button}}
+      {{#bs-button type='primary' buttonType='submit' textState=changePassphraseState}}{{t 'profile.change-passphrase.action-change-passphrase'}}{{/bs-button}}
       {{#link-to 'preferences' class='btn btn-default'}}{{t 'actions.cancel'}}{{/link-to}}
     </div>
 {{/bs-form}}

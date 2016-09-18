@@ -1,7 +1,7 @@
 {{#bs-form action="activate" model=this novalitade=true}}
     <div class="{{if isModal 'modal-footer modal-empty'}}">
       {{#bs-form-group}}
-        {{#bs-button type="primary" buttonType="submit"}}{{t 'activate.action'}}{{/bs-button}}
+        {{#bs-button type="primary" buttonType="submit" textState=activateState}}{{t 'activate.action'}}{{/bs-button}}
       {{/bs-form-group}}
     </div>
 {{/bs-form}}

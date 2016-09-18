@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import TrackerMixin from './../mixins/tracker-mixin';
 import { validator, buildValidations } from 'ember-cp-validations';
 import ValidationErrorsMixin from '../mixins/validation-errors-mixin';
 
@@ -12,7 +13,7 @@ const Validations = buildValidations({
   }
 });
 
-export default Ember.Component.extend(Validations, ValidationErrorsMixin, {
+export default Ember.Component.extend(TrackerMixin, Validations, ValidationErrorsMixin, {
   ajax: Ember.inject.service(),
   
   showSuccess: false,
@@ -25,7 +26,7 @@ export default Ember.Component.extend(Validations, ValidationErrorsMixin, {
       
       flash.clearMessages();
       
-      this.get('ajax').post('/api/users/resend', {email}).then(() => {
+      this.track('resendState', this.get('ajax').post('/api/users/resend', {email})).then(() => {
         this.set('showSuccess', true);
       }).catch((error) => {
         return this.handleValidationErrors(error);
