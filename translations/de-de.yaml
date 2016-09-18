@@ -139,6 +139,7 @@ map:
     <p>Klicke auf die Karte um den Standort von <strong>{name}</strong> zu setzen.</p>
   dragndrop-to-change: |
     <p>Ziehe und lasse eine Nadel fallen um den Standort des Kontaktes zu verändern.</p>
+  saving: Speichern...
 
 nav:
   title:

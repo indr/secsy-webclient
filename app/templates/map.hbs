@@ -21,4 +21,11 @@
     {{/if}}
   {{/each}}
 
+  {{#if stateSaving}}
+      <div class="leaflet-top leaflet-right">
+          <div class="leaflet-control-attribution">
+              <p><span class="glyphicon glyphicon-cog gly-spin"></span> {{t 'map.saving'}}</p>
+          </div>
+      </div>
+  {{/if}}
 {{/leaflet-map}}

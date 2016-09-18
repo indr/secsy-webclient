@@ -7,6 +7,7 @@ export default Ember.Controller.extend(TrackerMixin, {
   zoom: 2,
   
   showDragAndDropHint: false,
+  stateSaving: 0,
   
   // Usually, when a popup is closed, we want to leave
   // the child route map.view (/map/;id) and go to the parent.
@@ -32,6 +33,15 @@ export default Ember.Controller.extend(TrackerMixin, {
     }
   },
   
+  trackSaving(state) {
+    let stateSaving = this.get('stateSaving');
+    if (state === 'pending') {
+      this.set('stateSaving', stateSaving + 1);
+    } else if (state === 'resolved' || state === 'rejected') {
+      this.set('stateSaving', stateSaving - 1);
+    }
+  },
+  
   actions: {
     onMapClick(mouseEvent) {
       this.send('mapClicked', mouseEvent);
@@ -42,7 +52,7 @@ export default Ember.Controller.extend(TrackerMixin, {
       model.set('location_latitude$', latlng.lat);
       model.set('location_longitude$', latlng.lng);
       
-      this.track(model.save()).catch((err) => {
+      this.track(this.trackSaving.bind(this), model.save()).catch((err) => {
         // Should we tell the user that this failed?
         Ember.Logger.error('onDragEnd() model.save() failed: ' + (err.message || err));
       });
