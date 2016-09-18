@@ -9,7 +9,7 @@
 {{#leaflet-map lat=lat lng=lng zoom=zoom onClick=(action "onMapClick")}}
   {{tile-layer url="http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"}}
 
-  {{#each model as |contact|}}
+  {{#each filteredModel as |contact|}}
     {{#if contact.location}}
       {{#marker-layer location=contact.location draggable=contact.markerIsDraggable opacity=contact.markerOpacity popupOpen=contact.popupOpen
       onPopupopen=(action "popupOpened" contact) onPopupclose=(action "popupClosed" contact)

@@ -15,6 +15,7 @@ export default Ember.Service.extend({
   store: Ember.inject.service(),
   cache: {},
   
+  searchQuery: null,
   
   findContacts(options) {
     options = Ember.merge({cache: true}, options);

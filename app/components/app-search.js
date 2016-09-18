@@ -5,9 +5,11 @@ import Ember from 'ember';
 // }
 
 export default Ember.Component.extend({
+  addressbook: Ember.inject.service(),
+  
   actions: {
     close() {
-      this.set('searchQuery', null);
+      this.set('addressbook.searchQuery', null);
       this.sendAction('close');
     }
   }

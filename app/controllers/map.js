@@ -1,7 +1,10 @@
+import { computedFilterByQuery } from './../extensions/filter-by-query';
 import Ember from 'ember';
 import TrackerMixin from './../mixins/tracker-mixin';
 
 export default Ember.Controller.extend(TrackerMixin, {
+  addressbook: Ember.inject.service(),
+  
   lat: 10,
   lng: 0,
   zoom: 2,
@@ -12,6 +15,12 @@ export default Ember.Controller.extend(TrackerMixin, {
   // Usually, when a popup is closed, we want to leave
   // the child route map.view (/map/;id) and go to the parent.
   doTransitionOnClosed: true,
+  
+  searchQuery: Ember.computed('addressbook.searchQuery', function () {
+    return this.get('addressbook.searchQuery');
+  }),
+  
+  filteredModel: computedFilterByQuery('model', ['name$', 'emailAddress$'], 'searchQuery', {sort: false}),
   
   openPopup(contact) {
     contact.set('popupOpen', true);

@@ -14,8 +14,6 @@ export default Ember.Controller.extend({
   
   progress: {value: 0, max: 0, type: 'info'},
   
-  searchQuery: null,
-  
   toggleSearch() {
     this.toggleProperty('isSearchVisible');
   }
