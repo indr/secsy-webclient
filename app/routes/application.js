@@ -13,12 +13,9 @@ function debug (message) {
 }
 
 export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplicationRouteMixin, TrackerMixin, {
-  addressbook: Ember.inject.service(),
-  crypto: Ember.inject.service(),
   flashMessages: Ember.inject.service(),
   intl: Ember.inject.service(),
   session: Ember.inject.service(),
-  store: Ember.inject.service(),
   updatePuller: Ember.inject.service('update-puller'),
   
   beforeModel()  {
@@ -95,10 +92,6 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
       this.get('session').set('data.localeName', localeName);
     },
     
-    invalidateSession() {
-      this.get('session').invalidate();
-    },
-    
     modalOpened() {
       this.controller.set('isModal', true);
     },
@@ -131,14 +124,6 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
     
     onProgress(status) {
       this.onProgress(status);
-    },
-    
-    generateFakes() {
-      this.get('addressbook').fake(this.onProgress.bind(this));
-    },
-    
-    clearContacts() {
-      this.get('addressbook').clear(this.onProgress.bind(this));
     }
   }
 });
