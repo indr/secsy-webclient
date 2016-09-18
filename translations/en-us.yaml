@@ -29,6 +29,8 @@ actions:
   save: Save
   set-on-map: Set coordinate on map
   share: Share
+  share-ex: Share...
+  sharing: Sharing
   show-on-map: Show on map
   signup: Signup
   update: Update

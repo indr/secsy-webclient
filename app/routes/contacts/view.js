@@ -16,9 +16,7 @@ export default Ember.Route.extend(TrackerMixin, {
   },
   
   actions: {
-    delete() {
-      const model = this.controller.get('model');
-      
+    delete(model) {
       if (model.get('me')) {
         const flash = this.get('flashMessages');
         flash.dangerT('errors.no-delete-self');
@@ -30,6 +28,10 @@ export default Ember.Route.extend(TrackerMixin, {
       }).catch((err) => {
         this.get('flashMessages').dangerT('errors.delete-unknown-error', err.message || err);
       });
+    },
+    
+    transitionToShare(model) {
+      this.transitionTo('contacts.share', model)
     }
   }
 });

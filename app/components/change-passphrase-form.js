@@ -3,7 +3,7 @@ import TrackerMixin from './../mixins/tracker-mixin';
 import { validator, buildValidations } from 'ember-cp-validations';
 import ValidationErrorsMixin from '../mixins/validation-errors-mixin';
 
-const Validations = buildValidations(TrackerMixin, {
+const Validations = buildValidations({
   passphrase: {
     validators: [
       validator('presence', true),
@@ -26,7 +26,7 @@ const Validations = buildValidations(TrackerMixin, {
   }
 });
 
-export default Ember.Component.extend(Validations, ValidationErrorsMixin, {
+export default Ember.Component.extend(Validations, ValidationErrorsMixin, TrackerMixin, {
   keystore: Ember.inject.service(),
   
   actions: {
@@ -36,7 +36,7 @@ export default Ember.Component.extend(Validations, ValidationErrorsMixin, {
       flash.clearMessages();
       
       this.track('changePassphraseState', this.get('keystore').changePassphrase(this.getProperties('passphrase', 'newPassphrase'))).then(() => {
-        flash.success('profile.change-passphrase.success');
+        flash.successT('profile.change-passphrase.success');
         this.sendAction('changed');
       }).catch((error) => {
         if (error.message && error.message.indexOf('Invalid passphrase') >= 0) {

@@ -2,8 +2,12 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   actions: {
-    delete() {
-      this.sendAction('delete');
+    delete(model) {
+      this.sendAction('delete', model);
+    },
+    
+    share(model) {
+      this.sendAction('share', model)
     }
   }
 });

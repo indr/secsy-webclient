@@ -24,6 +24,11 @@ export default Ember.Route.extend(TrackerMixin, {
     }
   },
   
+  setUpdatePusherState(state) {
+    // Ugly as hell, but the easiest way to propagate the state to contacts.view
+    this.get('session').set('data.updatePusherState', state);
+  },
+  
   actions: {
     share(data) {
       const {
@@ -35,10 +40,11 @@ export default Ember.Route.extend(TrackerMixin, {
       const onProgress = this.send.bind(this, 'onProgress');
       
       try {
-        this.track('controller.shareState', updatePusher.push(data, emailAddress, onProgress)).catch((err) => {
+        const result = this.track(this.setUpdatePusherState.bind(this), updatePusher.push(data, emailAddress, onProgress)).catch((err) => {
           flashMessages.dangerT('share.unknown-error', err.message || err);
         });
         this.transitionTo('contacts.view', this.controller.get('model'));
+        return result;
       } catch (err) {
         flashMessages.dangerT('share.unknown-error', err.message || err);
       }

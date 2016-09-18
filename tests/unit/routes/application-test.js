@@ -34,6 +34,9 @@ describeModule('route:application', 'Unit | Route | application', {
       
       sut = this.subject();
       sut.controller = Ember.Object.create({progress: {}});
+      sut.track = function (prop, promise) {
+        return promise ? promise : prop;
+      };
     });
     
     describe('#onProgress', function () {
@@ -79,10 +82,10 @@ describeModule('route:application', 'Unit | Route | application', {
         
         assertProgressRestored(done);
       });
-  
+      
       it('should restore progress after 1 second if done:true and value !== max', function (done) {
         sut.onProgress({done: true, max: 5, value: 3});
-    
+        
         assertProgressRestored(done);
       });
     });

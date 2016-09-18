@@ -24,6 +24,9 @@ describeModule('route:contacts/share', 'Unit | Route | contacts/share', {
       
       sut = this.subject();
       sut.set('controller', Ember.Object.create());
+      sut.track = function (prop, promise) {
+        return promise ? promise : prop
+      };
       model = fakes.FakeContact.create();
       sut.controller.set('model', model);
       send = simple.mock(sut, 'send').callOriginal();
@@ -121,4 +124,5 @@ describeModule('route:contacts/share', 'Unit | Route | contacts/share', {
       });
     });
   }
-);
+)
+;
