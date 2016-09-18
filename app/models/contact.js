@@ -4,6 +4,7 @@ import Model from 'ember-data/model';
 import { validator, buildValidations } from 'ember-cp-validations';
 
 const {
+  isBlank,
   RSVP
 } = Ember;
 
@@ -74,7 +75,7 @@ export default Model.extend(Validations, {
   
   
   location: Ember.computed('location_latitude$', 'location_longitude$', function () {
-    if (!this.get('location_latitude$') || !this.get('location_longitude$')) {
+    if (isBlank(this.get('location_latitude$')) || isBlank(this.get('location_longitude$'))) {
       return null;
     }
     return [this.get('location_latitude$'), this.get('location_longitude$')];
@@ -154,5 +155,13 @@ export default Model.extend(Validations, {
         return updates;
       });
     }, updates);
-  }
+  },
+  
+  markerIsDraggable: Ember.computed('isSaving', function () {
+    return !this.get('isSaving')
+  }),
+  
+  markerOpacity: Ember.computed('isSaving', function () {
+    return this.get('isSaving') ? 0.7 : 1;
+  })
 });

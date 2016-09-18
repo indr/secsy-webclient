@@ -20,13 +20,13 @@ describeModel('contact', 'Unit | Model | ContactModel', {
     
     it('location', function () {
       let sut = this.subject();
-      assert.deepEqual(sut.get('location'), null);
+      assert.deepEqual(sut.get('location'), null, 'undefined, undefined');
       sut.set('location_latitude$', 45);
-      assert.deepEqual(sut.get('location'), null);
-      sut.set('location_longitude$', 105);
-      assert.deepEqual(sut.get('location'), [45, 105]);
+      assert.deepEqual(sut.get('location'), null, '45, undefined');
+      sut.set('location_longitude$', 0);
+      assert.deepEqual(sut.get('location'), [45, 0], '45, 0');
       sut.set('location_latitude$', null);
-      assert.deepEqual(sut.get('location'), null);
+      assert.deepEqual(sut.get('location'), null, 'null, 0');
     });
     
     describe('#pushUpdate', function () {

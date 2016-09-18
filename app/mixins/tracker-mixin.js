@@ -5,6 +5,11 @@ function debug (message) {
 }
 export default Ember.Mixin.create({
   track(setStateProperty, promise) {
+    if (arguments.length === 1) {
+      promise = setStateProperty;
+      setStateProperty = undefined;
+    }
+    
     debug(setStateProperty ? setStateProperty.name || setStateProperty : 'undefined');
     
     if (!setStateProperty) {

@@ -1,6 +1,7 @@
 import Ember from 'ember';
+import TrackerMixin from './../mixins/tracker-mixin';
 
-export default Ember.Controller.extend({
+export default Ember.Controller.extend(TrackerMixin, {
   lat: 10,
   lng: 0,
   zoom: 2,
@@ -41,7 +42,7 @@ export default Ember.Controller.extend({
       model.set('location_latitude$', latlng.lat);
       model.set('location_longitude$', latlng.lng);
       
-      model.save().catch((err) => {
+      this.track(model.save()).catch((err) => {
         // Should we tell the user that this failed?
         Ember.Logger.error('onDragEnd() model.save() failed: ' + (err.message || err));
       });
