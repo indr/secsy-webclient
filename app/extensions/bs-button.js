@@ -18,5 +18,9 @@ BsButton.reopen({
       return result;
     }
     return this.getWithDefault(`icon${Ember.String.capitalize(textState)}`, result);
+  }),
+  
+  disabled: computed('textState', function () {
+    return this._super() || (this.get('textState') === 'pending')
   })
 });
