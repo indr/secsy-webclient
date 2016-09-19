@@ -1,8 +1,8 @@
-{{app-navbar openSearch='toggleSearch' isSearchVisible=isSearchVisible}}
+{{app-navbar openSearch='openSearch' canSearch=canSearch isSearchVisible=isSearchVisible}}
 
 {{#if isSearchVisible}}
     <div class="container search-container">
-      {{app-search close='toggleSearch'}}
+      {{app-search close='closeSearch'}}
     </div>
 {{/if}}
 

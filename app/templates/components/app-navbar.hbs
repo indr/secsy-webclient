@@ -34,11 +34,11 @@
                           class="sr-only">{{t 'nav.title.create-contact'}}</span>{{/link-to}}</li>
               </ul>
               <div class="nav navbar-nav navbar-right">
-                {{#unless isSearchVisible}}
+                {{#if isSearchItemVisible}}
                     <li title="{{t 'nav.title.search'}}"><a href="#" {{action 'openSearch'}}><span
                             class="glyphicon glyphicon-search" aria-hidden="true"></span><span
                             class="sr-only">{{t 'nav.title.search'}}</span></a></li>
-                {{/unless}}
+                {{/if}}
                   <li title="{{t 'nav.title.preferences'}}">{{#link-to 'preferences'}}<span
                           class="glyphicon glyphicon-wrench" aria-hidden="true"></span><span
                           class="sr-only">{{t 'nav.title.preferences'}}</span>{{/link-to}}</li>

@@ -126,8 +126,12 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
       this.onProgress(status);
     },
     
-    toggleSearch() {
-      this.controller.toggleSearch();
+    openSearch() {
+      this.controller.openSearch();
+    },
+    
+    closeSearch() {
+      this.controller.closeSearch();
     }
   }
 });
