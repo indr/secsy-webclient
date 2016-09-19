@@ -23,6 +23,9 @@ export default Ember.Controller.extend({
   progress: {value: 0, max: 0, type: 'info'},
   
   openSearch() {
+    if (!this.get('canSearch')) {
+      return;
+    }
     this.set('isSearchOpen', true);
   },
   
