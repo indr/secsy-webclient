@@ -1,6 +1,7 @@
 import Ember from 'ember';
+import KeyboardShortcuts from 'ember-keyboard-shortcuts/mixins/component';
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(KeyboardShortcuts, {
   session: Ember.inject.service(),
   
   canSearch: false,
@@ -18,5 +19,10 @@ export default Ember.Component.extend({
     openSearch() {
       this.sendAction('openSearch');
     }
+  },
+  
+  keyboardShortcuts: {
+    'ctrl+f': 'openSearch',
+    '/': 'openSearch'
   }
 });
