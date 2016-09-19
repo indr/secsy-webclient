@@ -7,7 +7,7 @@ const {
 export default Ember.Service.extend({
   keychain: Ember.inject.service(),
   openpgp: Ember.inject.service(),
-  
+  session: Ember.inject.service(),
   
   /**
    * Encrypts `obj` with default algorithm.
@@ -100,9 +100,8 @@ export default Ember.Service.extend({
   },
   
   hashEmail(emailAddress) {
-    // This doesn't provide any security, it's
-    // just to mitigate rainbow table look ups
-    const salt = 'v07k2x0zgR';
+    const salt = this.get('session').get('data.authenticated.hash_salt');
+    console.log('salt', salt);
     emailAddress = emailAddress.toLowerCase();
     return this.get('openpgp').sha256(salt + emailAddress);
   }

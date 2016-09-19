@@ -80,6 +80,7 @@ describeModule('service:crypto', 'Unit | Service | CryptoService', {
     
     describe('#hashEmail()', function () {
       it('hashes a given email address', function () {
+        sut.get('session').set('data', {authenticated: {hash_salt: 'v07k2x0zgR'}});
         var hash = sut.hashEmail('admin@example.com');
         assert.equal(hash, 'acc1d58b886b138d10a6c33aad693262ddf71e7170a6a2b78fdb9c1effcdd7f1');
       })
