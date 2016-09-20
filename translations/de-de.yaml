@@ -242,9 +242,9 @@ share:
 
 signup:
   title: "Registrierung"
-  emailAddress: "E-Mail-Adresse"
+  email: "E-Mail-Adresse"
   password: "Passwort"
-  passwordRepeat: "Wiederholung"
+  password-confirm: "Wiederholung"
   sync-enabled: 'Aktiviere die sichere Kontaktsynchonisiation. Sie können diese Option später jederzeit in den Kontoeinstellungen ändern.'
   success: |
     <p>Wir haben ein E-Mail an die Adresse <strong>{email}</strong> gesendet. Bitten folgen Sie den Anweisungen im E-Mail um Ihr Konto zu aktivieren.</p>

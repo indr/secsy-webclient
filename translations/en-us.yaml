@@ -239,9 +239,9 @@ share:
 
 signup:
   title: "Signup"
-  emailAddress: "Email address"
+  email: "Email address"
   password: "Password"
-  passwordRepeat: "Confirm password"
+  password-confirm: "Confirm password"
   sync-enabled: 'Enable secure contact synchronization. You can later change this setting in your account preferences at any time.'
   success: |
     <p>You're almost done! We sent an activation email to <strong>{email}</strong>. Please follow the instructions in the email to activate your account.</p>

@@ -1,13 +1,18 @@
 import attr from 'ember-data/attr';
 import DS from 'ember-data';
 
-// TODO: Readonly attributes?
 export default DS.Model.extend({
-  username: attr('string'),
+  username: attr('string', {
+    readonly: true
+  }),
   
-  email: attr('string'),
+  email: attr('string', {
+    readonly: true
+  }),
   
-  password: attr('string'),
+  password: attr('string', {
+    readonly: true,
+  }),
   
   createdAt: attr('utc', {
     readonly: true

@@ -4,7 +4,7 @@ import { validator, buildValidations } from 'ember-cp-validations';
 import ValidationErrorsMixin from '../mixins/validation-errors-mixin';
 
 const Validations = buildValidations({
-  emailAddress: {
+  email: {
     validators: [
       validator('presence', true),
       validator('format', {type: 'email'}),
@@ -18,7 +18,7 @@ const Validations = buildValidations({
       validator('ds-error')
     ]
   },
-  passwordRepeat: {
+  confirmPassword: {
     validators: [
       validator('presence', true),
       validator('confirmation', {
@@ -29,11 +29,12 @@ const Validations = buildValidations({
 });
 
 export default Ember.Component.extend(TrackerMixin, Validations, ValidationErrorsMixin, {
+  ajax: Ember.inject.service(),
   intl: Ember.inject.service(),
   
-  emailAddress: null,
+  email: null,
   password: null,
-  passwordRepeat: null,
+  confirmPassword: null,
   syncEnabled: false,
   
   showSuccess: false,
@@ -41,21 +42,18 @@ export default Ember.Component.extend(TrackerMixin, Validations, ValidationError
   actions: {
     signup() {
       const flash = this.get('flashMessages');
-      const {emailAddress, password, syncEnabled} = this.getProperties('emailAddress', 'password', 'syncEnabled');
+      const data = this.getProperties('email', 'password');
+      data.sync_enabled = this.get('syncEnabled');
+      data.locale = this.get('intl').get('locale')[0];
       
-      const model = this.get('model');
-      model.set('email', emailAddress);
-      model.set('password', password);
-      const locale = this.get('intl').get('locale')[0];
-      model.set('locale', locale);
-      model.set('syncEnabled', syncEnabled);
+      flash.clearMessages();
       
-      this.track('signupState', model.save()).then(() => {
+      this.track('signupState', this.get('ajax').post('/api/users', data)).then(() => {
         this.set('showSuccess', true)
       }).catch((error) => {
-        return this.handleValidationErrors(error, {email: 'emailAddress', username: 'emailAddress'});
+        return this.handleValidationErrors(error, {username: 'email'});
       }).catch((error) => {
-        flash.dangerT('signup.unknown-error', error.getMessage());
+        flash.dangerT('signup.unknown-error', error.getMessage(), {sticky: true});
       });
     }
   }

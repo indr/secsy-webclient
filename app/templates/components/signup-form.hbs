@@ -1,6 +1,6 @@
 {{#if showSuccess}}
     <div class="{{if isModal 'modal-body'}}">
-      {{format-html-message 'signup.success' email=emailAddress}}
+      {{format-html-message 'signup.success' email=email}}
     </div>
     <div class="{{if isModal 'modal-footer'}}">
       {{#bs-form-group}}
@@ -10,9 +10,9 @@
 {{else}}
   {{#bs-form action="signup" model=this novalidate=true}}
       <div class="{{if isModal 'modal-body'}}">
-        {{bs-form-element controlType="text" label=(t 'signup.emailAddress') property="emailAddress" autofocus=true}}
+        {{bs-form-element controlType="text" label=(t 'signup.email') property="email" autofocus=true}}
         {{bs-form-element controlType="password" label=(t 'signup.password') property="password"}}
-        {{bs-form-element controlType="password" label=(t 'signup.passwordRepeat') property="passwordRepeat"}}
+        {{bs-form-element controlType="password" label=(t 'signup.password-confirm') property="confirmPassword"}}
         {{bs-form-element controlType="checkbox" label=(t 'signup.sync-enabled') property="syncEnabled"}}
       </div>
       <div class="{{if isModal 'modal-footer'}}">
