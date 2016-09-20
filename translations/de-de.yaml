@@ -245,6 +245,7 @@ signup:
   emailAddress: "E-Mail-Adresse"
   password: "Passwort"
   passwordRepeat: "Wiederholung"
+  sync-enabled: 'Aktiviere die sichere Kontaktsynchonisiation. Sie können diese Option später jederzeit in den Kontoeinstellungen ändern.'
   success: |
     <p>Wir haben ein E-Mail an die Adresse <strong>{email}</strong> gesendet. Bitten folgen Sie den Anweisungen im E-Mail um Ihr Konto zu aktivieren.</p>
     <p>Falls es nicht ankommt, überprüfen Sie Ihren Spam-Ordner oder versuchen Sie sich anzumelden damit wir Ihnen noch einmal ein E-Mail senden können.</p>

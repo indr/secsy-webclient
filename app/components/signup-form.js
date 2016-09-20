@@ -34,19 +34,21 @@ export default Ember.Component.extend(TrackerMixin, Validations, ValidationError
   emailAddress: null,
   password: null,
   passwordRepeat: null,
+  syncEnabled: false,
   
   showSuccess: false,
   
   actions: {
     signup() {
       const flash = this.get('flashMessages');
-      const {emailAddress, password} = this.getProperties('emailAddress', 'password');
+      const {emailAddress, password, syncEnabled} = this.getProperties('emailAddress', 'password', 'syncEnabled');
       
       const model = this.get('model');
       model.set('email', emailAddress);
       model.set('password', password);
       const locale = this.get('intl').get('locale')[0];
       model.set('locale', locale);
+      model.set('syncEnabled', syncEnabled);
       
       this.track('signupState', model.save()).then(() => {
         this.set('showSuccess', true)
