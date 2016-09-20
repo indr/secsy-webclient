@@ -37,9 +37,11 @@
     <fieldset>
         <legend>{{t 'profile.tools'}}</legend>
 
-      {{#bs-form-element controlType='text'}}
-        {{#bs-button type='default' action='sendPullUpdates' textState=pullUpdatesState}}{{t 'actions.get-updates'}}{{/bs-button}}
-      {{/bs-form-element}}
+      {{#if canPullUpdates}}
+        {{#bs-form-element controlType='text'}}
+          {{#bs-button type='default' action='sendPullUpdates' textState=pullUpdatesState}}{{t 'actions.get-updates'}}{{/bs-button}}
+        {{/bs-form-element}}
+      {{/if}}
 
       {{#bs-form-element controlType='text'}}
         {{#bs-button type='default' action='generateFakes' textState=generateFakesState}}{{t 'actions.generate-fakes'}}{{/bs-button}}

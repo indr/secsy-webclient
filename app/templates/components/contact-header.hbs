@@ -10,10 +10,12 @@
           {{t 'contact.updated-at' timestamp=(format-relative model.updatedAt)}} </p>
     </div>
     <div class="col-sm-6 col-lg-6">
-      {{#if model.newValuesCount}}
-        {{#bs-alert type="info"}}
-          {{#link-to 'contacts.review' model}}{{t 'contact.update-available'}}{{/link-to}}
-        {{/bs-alert}}
+      {{#if canReview}}
+        {{#if model.newValuesCount}}
+          {{#bs-alert type="info"}}
+            {{#link-to 'contacts.review' model}}{{t 'contact.update-available'}}{{/link-to}}
+          {{/bs-alert}}
+        {{/if}}
       {{/if}}
     </div>
 </div>

@@ -74,7 +74,9 @@
     {{#link-to 'contacts.edit' model class="btn btn-primary"}}{{t 'actions.edit'}}{{/link-to}}
     {{#link-to 'contacts' class="btn btn-default" active=false}}{{t 'actions.cancel'}}{{/link-to}}
     {{#if model.me}}
-      {{bs-button type='success' action=(action 'share' model) textState=shareState defaultText=(t 'actions.share-ex') pendingText=(t 'actions.sharing')}}
+      {{#if canShare}}
+        {{bs-button type='success' action=(action 'share' model) textState=shareState defaultText=(t 'actions.share-ex') pendingText=(t 'actions.sharing')}}
+      {{/if}}
     {{else}}
       {{#bs-button type='danger' action=(action 'delete' model) textState=deleteState}}{{t 'actions.delete'}}{{/bs-button}}
     {{/if}}
