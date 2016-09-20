@@ -107,6 +107,10 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
     },
     
     pullUpdates(options, stateProperty) {
+      if (!this.get('session').get('data.authenticated.sync_enabled')) {
+        return
+      }
+      
       options = assign({silent: false}, options);
       const flashMessages = this.get('flashMessages');
       

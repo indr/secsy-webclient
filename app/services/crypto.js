@@ -101,7 +101,6 @@ export default Ember.Service.extend({
   
   hashEmail(emailAddress) {
     const salt = this.get('session').get('data.authenticated.hash_salt');
-    console.log('salt', salt);
     emailAddress = emailAddress.toLowerCase();
     return this.get('openpgp').sha256(salt + emailAddress);
   }

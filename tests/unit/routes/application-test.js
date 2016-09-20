@@ -31,6 +31,7 @@ describeModule('route:application', 'Unit | Route | application', {
       updatePuller = register('service:update-puller', fakes.UpdatePuller);
       flashMessages = register('service:flash-messages', fakes.FlashMessages);
       session = register('service:session', fakes.Session);
+      session.set('data.authenticated.sync_enabled', true);
       
       sut = this.subject();
       sut.controller = Ember.Object.create({progress: {}});
@@ -95,6 +96,14 @@ describeModule('route:application', 'Unit | Route | application', {
       
       beforeEach(function () {
         session.set('data.authenticated.email', emailAddress);
+      });
+      
+      it('should not pull if enable_sync is false', function () {
+        session.set('data.authenticated.sync_enabled', false);
+        
+        sut.send('pullUpdates');
+        
+        assert.isFalse(updatePuller.pull.called);
       });
       
       it('should call updatePuller.push with emailAddress and a onProgress callback', function () {
