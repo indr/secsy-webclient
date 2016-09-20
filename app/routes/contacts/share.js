@@ -18,7 +18,7 @@ export default Ember.Route.extend(TrackerMixin, {
   },
   
   afterModel(contact/*, transition*/) {
-    if (contact.get('me') !== true) {
+    if ((contact.get('me') !== true) || (!this.get('session').get('data.authenticated.sync_enabled'))) {
       debug('Contact is not me! Transitioning to contacts.view...');
       this.transitionTo('contacts.view', contact);
     }

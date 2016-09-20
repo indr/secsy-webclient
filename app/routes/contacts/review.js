@@ -2,10 +2,17 @@ import Ember from 'ember';
 import TrackerMixin from './../../mixins/tracker-mixin';
 
 export default Ember.Route.extend(TrackerMixin, {
+  session: Ember.inject.service(),
   store: Ember.inject.service(),
   
   model(params) {
     return this.get('store').findRecord('contact', params.id);
+  },
+  
+  afterModel(contact) {
+    if (!this.get('session').get('data.authenticated.sync_enabled')) {
+      this.transitionTo('contacts.view', contact);
+    }
   },
   
   actions: {

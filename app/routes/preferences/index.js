@@ -8,6 +8,7 @@ function debug (message) {
 export default Ember.Route.extend(TrackerMixin, {
   addressbook: Ember.inject.service(),
   ajax: Ember.inject.service(),
+  session: Ember.inject.service(),
   
   actions: {
     savePreferences() {
@@ -24,7 +25,7 @@ export default Ember.Route.extend(TrackerMixin, {
         this.send('setLocale', model.locale);
         this.get('session').set('data.authenticated.sync_enabled', preferences.sync_enabled);
       }).catch((error) => {
-        flash.dangerT('profile.unknown-error', error.getMessage() || error);
+        flash.dangerT('profile.unknown-error', error.getMessage ? error.getMessage() || error : error);
       });
     },
     

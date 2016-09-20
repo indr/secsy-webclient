@@ -24,9 +24,7 @@ describeModule('route:contacts/share', 'Unit | Route | contacts/share', {
       
       sut = this.subject();
       sut.set('controller', Ember.Object.create());
-      sut.track = function (prop, promise) {
-        return promise ? promise : prop
-      };
+      sut.track = fakes.track;
       model = fakes.FakeContact.create();
       sut.controller.set('model', model);
       send = simple.mock(sut, 'send').callOriginal();
@@ -34,17 +32,30 @@ describeModule('route:contacts/share', 'Unit | Route | contacts/share', {
     });
     
     describe('#afterModel', function () {
+      beforeEach(function () {
+        model.set('me', true);
+        session.set('data.authenticated.sync_enabled', true);
+      });
+      
       it('should transition to contacts.view if contact.me !== true', function () {
-        const model = fakes.FakeContact.create({me: false});
+        model.set('me', false);
         sut.afterModel(model);
         
-        assert(transitionTo.called, 'expected transitionTo be called');
+        assert(transitionTo.called, 'expected transitionTo to be called');
         assert.equal(transitionTo.lastCall.args[0], 'contacts.view');
         assert.equal(transitionTo.lastCall.args[1], model);
       });
       
-      it('should not transition to contacts.view if contact.me === true', function () {
-        const model = fakes.FakeContact.create({me: true});
+      it('should transition to contacts.view if session.sync_enabled !== true', function () {
+        session.set('data.authenticated.sync_enabled', false);
+        sut.afterModel(model);
+        
+        assert(transitionTo.called, 'expected transitionTo to be called');
+        assert.equal(transitionTo.lastCall.args[0], 'contacts.view');
+        assert.equal(transitionTo.lastCall.args[1], model);
+      });
+      
+      it('should not transition away if contact.me === true && sync_enabled === true', function () {
         sut.afterModel(model);
         
         assert(!transitionTo.called, 'expected transitionTo not to be called');

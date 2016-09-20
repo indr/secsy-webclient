@@ -86,6 +86,10 @@ const Session = Ember.Object.extend({
   on: Ember.K
 });
 
+function track (prop, promise) {
+  return promise ? promise : prop
+}
+
 export {
   ArrayProxy,
   FakeAddressbook,
@@ -99,6 +103,7 @@ export {
   FlashMessages,
   RecordArray,
   Session,
+  track,
   UpdatePuller,
   UpdatePusher
 };
