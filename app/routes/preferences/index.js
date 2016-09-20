@@ -16,8 +16,13 @@ export default Ember.Route.extend(TrackerMixin, {
       
       flash.clearMessages();
       
-      this.track('controller.savePreferencesState', this.get('ajax').patch('/api/users/me', {locale: model.locale})).then(() => {
-        this.send('setLocale', model.locale)
+      const preferences = {
+        locale: model.locale,
+        sync_enabled: model.syncEnabled
+      };
+      this.track('controller.savePreferencesState', this.get('ajax').patch('/api/users/me', preferences)).then(() => {
+        this.send('setLocale', model.locale);
+        this.get('session').set('data.authenticated.sync_enabled', preferences.sync_enabled);
       }).catch((error) => {
         flash.dangerT('profile.unknown-error', error.getMessage() || error);
       });

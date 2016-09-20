@@ -173,6 +173,7 @@ profile:
   passphrase: 'Passphrase'
   preferences: 'Einstellungen'
   send-password-reset-email: 'E-Mail zum Ändern des Passworts beantragen'
+  sync-enabled: 'Aktiviere die sichere Kontaktsynchronisation'
   tools: 'Tools'
   unknown-error: 'Unbekannter Fehler beim Speichern der Einstellungen'
   reset-email:

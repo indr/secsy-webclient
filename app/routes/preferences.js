@@ -6,11 +6,11 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, DecryptedRouteMix, {
   session: Ember.inject.service(),
   
   model() {
-    const email = this.get('session').get('data.authenticated.email');
-    const locale = this.get('session').get('data.authenticated.locale');
+    const user = this.get('session').get('data.authenticated');
     return Ember.Object.create({
-      email,
-      locale
+      email: user.email,
+      locale: user.locale,
+      syncEnabled: user.sync_enabled
     });
   }
 });

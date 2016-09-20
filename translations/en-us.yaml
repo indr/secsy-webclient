@@ -170,6 +170,7 @@ profile:
   passphrase: 'Passphrase'
   preferences: 'Preferences'
   send-password-reset-email: 'Send password reset email'
+  sync-enabled: 'Enable secure contact synchronization'
   tools: 'Tools'
   unknown-error: 'Unknown error saving preferences'
   reset-email:

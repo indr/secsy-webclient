@@ -14,18 +14,18 @@
       {{/bs-form-element}}
 
       {{#bs-form-element controlType='text' label=(t 'profile.language')}}
-          <p class="form-control-static">
-              <label>
-                {{radio-button value='en-US' checked=model.locale}}
-                  English
-              </label>
-              <br>
-              <label>
-                {{radio-button value='de-DE' checked=model.locale}}
-                  Deutsch
-              </label>
-          </p>
+          <label>
+            {{radio-button value='en-US' checked=model.locale}}
+              English
+          </label>
+          <br>
+          <label>
+            {{radio-button value='de-DE' checked=model.locale}}
+              Deutsch
+          </label>
       {{/bs-form-element}}
+
+      {{bs-form-element controlType='checkbox' label=(t 'profile.sync-enabled') property='syncEnabled'}}
 
       {{#bs-form-element}}
         {{#bs-button type="primary" buttonType="submit" textState=savePreferencesState}}{{t 'actions.save'}}{{/bs-button}}

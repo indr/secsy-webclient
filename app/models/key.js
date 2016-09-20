@@ -7,7 +7,9 @@ export default Model.extend({
     readonly: true
   }),
   
-  isPublic: attr('boolean'),
+  isPublic: attr('boolean', {
+    readonly: true
+  }),
   
   privateKey: attr('string'),
   
