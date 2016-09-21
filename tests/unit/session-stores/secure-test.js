@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import { assert } from 'chai';
 import { describeModule, it } from 'ember-mocha';
 import { beforeEach, describe } from 'mocha';
@@ -7,10 +8,24 @@ describeModule('session-store:secure', 'Unit | Session store | secure', {},
   function () {
     let sut, adaptive, window;
     
+    const data = {p1: 'p1', p2: 'p2', o1: {p1: 1, p2: 2, o2: {p1: 5.11}}};
+    
     beforeEach(function () {
       sut = this.subject();
       adaptive = sut.get('_adaptiveStore');
       window = sut.get('_windowStore');
+    });
+    
+    describe('persist and restore', function () {
+      it('should be able to restore persited data', function (done) {
+        const expected = Ember.copy(data, true);
+        sut.persist(data).then(()=> {
+          return sut.restore();
+        }).then((restored) => {
+          assert.deepEqual(restored, expected);
+          done();
+        });
+      });
     });
     
     describe('sessionDataUpdated', function () {
@@ -49,17 +64,6 @@ describeModule('session-store:secure', 'Unit | Session store | secure', {},
         windowPersist = simple.mock(window, 'persist');
       });
       
-      const data = {
-        p1: 'p1',
-        p2: 'p2',
-        o1: {
-          p1: 1,
-          p2: 2,
-          o2: {
-            p1: 5.11
-          }
-        }
-      };
       
       it('should persist to adaptive, window store and return undefined', function (done) {
         adaptivePersist.resolveWith('adaptivePersist');
