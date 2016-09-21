@@ -51,7 +51,14 @@ describeModule('session-store:secure', 'Unit | Session store | secure', {},
       
       const data = {
         p1: 'p1',
-        p2: 'p2'
+        p2: 'p2',
+        o1: {
+          p1: 1,
+          p2: 2,
+          o2: {
+            p1: 5.11
+          }
+        }
       };
       
       it('should persist to adaptive, window store and return undefined', function (done) {
@@ -66,19 +73,19 @@ describeModule('session-store:secure', 'Unit | Session store | secure', {},
       });
       
       it('should persist secured properties to window store', function (done) {
-        sut.set('secured', ['p1', 'notExisting']);
+        sut.set('secured', ['p1', 'notExisting', 'o1.p2', 'o1.o2.p1']);
         
         sut.persist(data).then(() => {
-          assert.deepEqual(windowPersist.lastCall.arg, {p1: 'p1'});
+          assert.deepEqual(windowPersist.lastCall.arg, {p1: 'p1', o1: {p2: 2, o2: {p1: 5.11}}});
           done();
         });
       });
       
       it('should not persist secured properties to adapative store', function (done) {
-        sut.set('secured', ['p1']);
+        sut.set('secured', ['p1', 'notExisting', 'o1.p2', 'o1.o2.p1']);
         
         sut.persist(data).then(() => {
-          assert.deepEqual(adaptivePersist.lastCall.arg, {p2: 'p2'});
+          assert.deepEqual(adaptivePersist.lastCall.arg, {p2: 'p2', o1: {p1: 1, o2: {}}});
           done();
         });
       });
