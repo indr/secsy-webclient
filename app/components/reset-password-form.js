@@ -27,7 +27,7 @@ export default Ember.Component.extend(TrackerMixin, Validations, ValidationError
       const password = this.get('password');
       
       flash.clearMessages();
-      this.track(this.get('ajax').post('/api/users/reset-password', {token, password})).then(()=> {
+      this.track('resetState', this.get('ajax').post('/api/users/reset-password', {token, password})).then(()=> {
         flash.successT('reset.success');
         Ember.run.later(sendAction, 1500);
       }).catch((error) => {
