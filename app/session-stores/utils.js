@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 const {
-  get
+  get, set
 } = Ember;
 
 function del (obj, keyName) {
@@ -23,19 +23,6 @@ function has (obj, keyName) {
     keyName = keyName.substr(lastIndex + 1);
   }
   return obj && obj.hasOwnProperty(keyName);
-}
-
-
-function set (obj, keyName, value) {
-  const parts = keyName.split('.');
-  let partKey = parts[0];
-  for (var i = 1; i <= parts.length - 1; i++) {
-    if (!has(obj, partKey)) {
-      Ember.set(obj, partKey, {});
-    }
-    partKey = partKey + '.' + parts[i];
-  }
-  Ember.set(obj, keyName, value);
 }
 
 export default {

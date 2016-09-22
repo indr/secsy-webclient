@@ -13,7 +13,7 @@ function debug (message) {
 }
 
 export default Base.extend({
-  secured: null,
+  keyNames: null,
   
   init() {
     debug('init()');
@@ -27,20 +27,23 @@ export default Base.extend({
     debug('persist()');
     
     const windowData = {};
+    const adaptiveData = Ember.copy(data, true);
     
-    const secured = this.get('secured');
-    if (Array.isArray(secured)) {
-      secured.forEach((each) => {
-        if (has(data, each)) {
-          const value = get(data, each);
-          set(windowData, each, value);
-          del(data, each);
+    const keyNames = this.get('keyNames');
+    if (Array.isArray(keyNames)) {
+      keyNames.forEach((keyName) => {
+        if (has(data, keyName)) {
+          const value = get(data, keyName);
+          
+          const shares = this.split(value);
+          set(adaptiveData, keyName, shares[1]);
+          windowData[keyName] = shares[0]
         }
       });
     }
     
     return RSVP.all([
-      this.get('_adaptiveStore').persist(data),
+      this.get('_adaptiveStore').persist(adaptiveData),
       this.get('_windowStore').persist(windowData)
     ]).then(() => {
       // Don't return promise array
@@ -54,7 +57,25 @@ export default Base.extend({
       this.get('_adaptiveStore').restore(),
       this.get('_windowStore').restore(),
     ]).then((datas) => {
-      return Ember.assign({}, ...datas);
+      const adaptiveData = datas[0];
+      const windowData = datas[1];
+      
+      const result = adaptiveData;
+      const keyNames = this.get('keyNames');
+      if (Array.isArray(keyNames)) {
+        keyNames.forEach((keyName) => {
+          const share1 = windowData[keyName];
+          const share2 = get(adaptiveData, keyName);
+          
+          const merged = this.merge(share1, share2);
+          if (merged === undefined) {
+            del(result, keyName);
+          } else {
+            set(result, keyName, merged);
+          }
+        });
+      }
+      return result;
     });
   },
   
@@ -67,6 +88,21 @@ export default Base.extend({
     ]).then(() => {
       // Don't return promise array
     });
+  },
+  
+  split(value) {
+    value = JSON.stringify(value);
+    const idx = Math.ceil(value.length / 2);
+    
+    return [value.substr(0, idx), value.substr(idx)];
+  },
+  
+  merge() {
+    if (arguments[0] === undefined || arguments[1] === undefined) {
+      return undefined;
+    }
+    const value = arguments[0] + arguments[1];
+    return JSON.parse(value);
   },
   
   _createStore(storeType, options) {

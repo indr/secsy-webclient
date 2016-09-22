@@ -8,7 +8,14 @@ describeModule('session-store:secure', 'Unit | Session store | secure', {},
   function () {
     let sut, adaptive, window;
     
-    const data = {p1: 'p1', p2: 'p2', o1: {p1: 1, p2: 2, o2: {p1: 5.11}}};
+    const data = {
+      p1: 'p1',
+      p2: 'p2',
+      o1: {
+        p1: 1, p2: 2,
+        o2: {p1: 5.11}
+      }
+    };
     
     beforeEach(function () {
       sut = this.subject();
@@ -18,6 +25,8 @@ describeModule('session-store:secure', 'Unit | Session store | secure', {},
     
     describe('persist and restore', function () {
       it('should be able to restore persited data', function (done) {
+        sut.set('keyNames', ['p1', 'notExisting', 'o1.p2', 'o1.o2']);
+        
         const expected = Ember.copy(data, true);
         sut.persist(data).then(()=> {
           return sut.restore();
@@ -29,10 +38,6 @@ describeModule('session-store:secure', 'Unit | Session store | secure', {},
     });
     
     describe('sessionDataUpdated', function () {
-      beforeEach(function () {
-        
-      });
-      
       it('should fire sessionDataUpdate if adaptive store fires', function () {
         let handler = simple.mock();
         sut.on('sessionDataUpdated', handler);
@@ -76,20 +81,20 @@ describeModule('session-store:secure', 'Unit | Session store | secure', {},
         });
       });
       
-      it('should persist secured properties to window store', function (done) {
-        sut.set('secured', ['p1', 'notExisting', 'o1.p2', 'o1.o2.p1']);
+      it('should persist keyNames properties splitted to window store', function (done) {
+        sut.set('keyNames', ['p1', 'notExisting', 'o1.p2', 'o1.o2']);
         
         sut.persist(data).then(() => {
-          assert.deepEqual(windowPersist.lastCall.arg, {p1: 'p1', o1: {p2: 2, o2: {p1: 5.11}}});
+          assert.deepEqual(windowPersist.lastCall.arg, {'p1': '"p', 'o1.p2': '2', 'o1.o2': '{"p1":'});
           done();
         });
       });
       
-      it('should not persist secured properties to adapative store', function (done) {
-        sut.set('secured', ['p1', 'notExisting', 'o1.p2', 'o1.o2.p1']);
+      it('should persist keyNames properties splitted to adapative store', function (done) {
+        sut.set('keyNames', ['p1', 'notExisting', 'o1.p2', 'o1.o2']);
         
         sut.persist(data).then(() => {
-          assert.deepEqual(adaptivePersist.lastCall.arg, {p2: 'p2', o1: {p1: 1, o2: {}}});
+          assert.deepEqual(adaptivePersist.lastCall.arg, {p1: '1"', p2: 'p2', o1: {p1: 1, p2: '', o2: '5.11}'}});
           done();
         });
       });
@@ -130,11 +135,13 @@ describeModule('session-store:secure', 'Unit | Session store | secure', {},
       });
       
       it('should resolve with combined store data', function (done) {
-        adaptiveRestore.resolveWith({p1: 'p1'});
-        windowRestore.resolveWith({p2: 'p2'});
+        sut.set('keyNames', ['both', 'onlyAdaptive', 'onlyWindow']);
+        
+        adaptiveRestore.resolveWith({p1: 'p1', both: '2"', onlyAdaptive: 'oA'});
+        windowRestore.resolveWith({'both': '"p', 'onlyWindow': 'oW'});
         
         sut.restore().then((result) => {
-          assert.deepEqual(result, {p1: 'p1', p2: 'p2'});
+          assert.deepEqual(result, {p1: 'p1', both: 'p2'});
           done();
         });
       });
@@ -210,6 +217,34 @@ describeModule('session-store:secure', 'Unit | Session store | secure', {},
           assert.equal(error.message, 'windowClear');
           done();
         });
+      });
+    });
+    
+    describe('#split', function () {
+      it('should return two json parts', function () {
+        const data = {p1: 'v1'};
+        
+        const actual = sut.split(data);
+        assert.equal(actual[0] + actual[1], '{"p1":"v1"}');
+        assert.equal(actual[0], '{"p1":');
+        assert.equal(actual[1], '"v1"}');
+      })
+    });
+    
+    describe('#merge', function () {
+      it('should merge two json parts', function () {
+        const actual = sut.merge('{"p1', '":"v1"}');
+        assert.deepEqual(actual, {p1: 'v1'});
+      });
+      
+      it('should return undefined if second part is undefind', function () {
+        const actual = sut.merge('"p1"', undefined);
+        assert.isUndefined(actual);
+      });
+      
+      it('should return undefined if first part is undefined', function () {
+        const actual = sut.merge(undefined, '"p2"');
+        assert.isUndefined(actual);
       });
     });
   }
