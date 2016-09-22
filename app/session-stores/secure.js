@@ -1,19 +1,23 @@
+// https://github.com/ProtonMail/WebClient/blob/public/src/app/libraries/pmcrypto.js
+// https://github.com/ProtonMail/WebClient/blob/public/src/app/services/storage.js
+
 import Ember from 'ember';
 import Base from 'ember-simple-auth/session-stores/base';
-import Utils from './utils';
+import utils from './utils';
 
 import AdaptiveStore from 'ember-simple-auth/session-stores/adaptive';
 import WindowStore from './window';
 
-const {RSVP} = Ember;
-const {del, get, has, set} = Utils;
+const {
+  RSVP
+} = Ember;
 
 function debug (message) {
   Ember.debug('[store:secure] ' + message);
 }
 
 export default Base.extend({
-  keyNames: null,
+  keyNames: ['authenticated'],
   
   init() {
     debug('init()');
@@ -32,11 +36,11 @@ export default Base.extend({
     const keyNames = this.get('keyNames');
     if (Array.isArray(keyNames)) {
       keyNames.forEach((keyName) => {
-        if (has(data, keyName)) {
-          const value = get(data, keyName);
+        if (utils.has(data, keyName)) {
+          const value = utils.get(data, keyName);
           
           const shares = this.split(value);
-          set(adaptiveData, keyName, shares[1]);
+          utils.set(adaptiveData, keyName, shares[1]);
           windowData[keyName] = shares[0]
         }
       });
@@ -65,13 +69,13 @@ export default Base.extend({
       if (Array.isArray(keyNames)) {
         keyNames.forEach((keyName) => {
           const share1 = windowData[keyName];
-          const share2 = get(adaptiveData, keyName);
+          const share2 = utils.get(adaptiveData, keyName);
           
           const merged = this.merge(share1, share2);
           if (merged === undefined) {
-            del(result, keyName);
+            utils.del(result, keyName);
           } else {
-            set(result, keyName, merged);
+            utils.set(result, keyName, merged);
           }
         });
       }
@@ -92,17 +96,48 @@ export default Base.extend({
   
   split(value) {
     value = JSON.stringify(value);
-    const idx = Math.ceil(value.length / 2);
+    const item = utils.binaryStringToArray(value);
+    const paddedLength = Math.ceil(item.length / 256) * 256;
     
-    return [value.substr(0, idx), value.substr(idx)];
+    let share1 = utils.getRandomValues(new Uint8Array(paddedLength));
+    let share2 = new Uint8Array(share1);
+    
+    for (var i = 0; i < item.length; i++) {
+      share2[i] ^= item[i];
+    }
+    
+    return [
+      utils.encode_base64(utils.arrayToBinaryString(share1)),
+      utils.encode_base64(utils.arrayToBinaryString(share2))
+    ]
   },
   
-  merge() {
-    if (arguments[0] === undefined || arguments[1] === undefined) {
-      return undefined;
+  merge(share1, share2) {
+    if (share1 === undefined || share2 === undefined) {
+      return;
     }
-    const value = arguments[0] + arguments[1];
-    return JSON.parse(value);
+    share1 = utils.binaryStringToArray(utils.decode_base64(share1));
+    share2 = utils.binaryStringToArray(utils.decode_base64(share2));
+    
+    if (share1.length !== share2.length) {
+      return;
+    }
+    
+    let xored = new Array(share1.length);
+    
+    for (var i = 0; i < share1.length; i++) {
+      xored[i] = share1[i] ^ share2[i];
+    }
+    
+    // Strip off padding
+    let unpaddedLength = share1.length;
+    
+    while (unpaddedLength > 0 && xored[unpaddedLength - 1] === 0) {
+      unpaddedLength--;
+    }
+    
+    const result = utils.arrayToBinaryString(xored.slice(0, unpaddedLength));
+    return JSON.parse(result);
   },
   
   _createStore(storeType, options) {

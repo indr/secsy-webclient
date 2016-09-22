@@ -8,14 +8,7 @@ describeModule('session-store:secure', 'Unit | Session store | secure', {},
   function () {
     let sut, adaptive, window;
     
-    const data = {
-      p1: 'p1',
-      p2: 'p2',
-      o1: {
-        p1: 1, p2: 2,
-        o2: {p1: 5.11}
-      }
-    };
+    const base64regex = /^[a-z0-9\+\/]+==$/i;
     
     beforeEach(function () {
       sut = this.subject();
@@ -24,6 +17,15 @@ describeModule('session-store:secure', 'Unit | Session store | secure', {},
     });
     
     describe('persist and restore', function () {
+      const data = {
+        p1: 'p1',
+        p2: 'p2',
+        o1: {
+          p1: 1, p2: 2,
+          o2: {p1: 5.11}
+        }
+      };
+      
       it('should be able to restore persited data', function (done) {
         sut.set('keyNames', ['p1', 'notExisting', 'o1.p2', 'o1.o2']);
         
@@ -62,6 +64,16 @@ describeModule('session-store:secure', 'Unit | Session store | secure', {},
     });
     
     describe('#persist', function () {
+      const data = {
+        p1: 'p1',
+        p2: 'p2',
+        o1: {
+          p1: 1,
+          p2: 2,
+          o2: {p1: 5.11}
+        }
+      };
+      
       let adaptivePersist, windowPersist;
       
       beforeEach(function () {
@@ -81,20 +93,28 @@ describeModule('session-store:secure', 'Unit | Session store | secure', {},
         });
       });
       
-      it('should persist keyNames properties splitted to window store', function (done) {
+      it('should persist keyNames properties split to window store', function (done) {
         sut.set('keyNames', ['p1', 'notExisting', 'o1.p2', 'o1.o2']);
         
         sut.persist(data).then(() => {
-          assert.deepEqual(windowPersist.lastCall.arg, {'p1': '"p', 'o1.p2': '2', 'o1.o2': '{"p1":'});
+          const data = windowPersist.lastCall.arg;
+          assert.notEqual(data['p1'], 'p1');
+          assert.match(data['o1.p2'], base64regex);
+          assert.match(data['o1.o2'], base64regex);
           done();
         });
       });
       
-      it('should persist keyNames properties splitted to adapative store', function (done) {
+      it('should persist keyNames properties split to adaptive store', function (done) {
         sut.set('keyNames', ['p1', 'notExisting', 'o1.p2', 'o1.o2']);
         
         sut.persist(data).then(() => {
-          assert.deepEqual(adaptivePersist.lastCall.arg, {p1: '1"', p2: 'p2', o1: {p1: 1, p2: '', o2: '5.11}'}});
+          const data = adaptivePersist.lastCall.arg;
+          assert.match(data.p1, base64regex);
+          assert.equal(data.p2, 'p2');
+          assert.equal(data.o1.p1, 1);
+          assert.match(data.o1.p2, base64regex);
+          assert.match(data.o1.o2, base64regex);
           done();
         });
       });
@@ -128,6 +148,8 @@ describeModule('session-store:secure', 'Unit | Session store | secure', {},
     
     describe('#restore', function () {
       let adaptiveRestore, windowRestore;
+      const part1 = '9nVzF86NqzezoJLoyasmt9Q2RLokV3gYs6wAr9F9KdviH8Tivc14yy3Q+4ufmDMtaFEulFZ3jvxu/aNCcr5U+h0avZn12MR7b+JJHWAN+sdqcKA+Gvbp3XHPh83b9Ap2W7W5XjWaLsGE3kDM8wU1hzxBwoxNTwQI5335vH7wNdLDv9qJJuP4UuvYOEzvVMV4g1Td5Ytr16/zEF7LJQL+PyVCskJO4X3Sv1+8PcTFlxeZ33RXfDvt5rnq+Rj+fEz1riPW1VigFnGnRGIxBeFF7CFxqQVu+NUftPR66fgq98ARTBooTy/Y/vLl7wVTpJC04I/Rh27N6lRRHqkFH8mSTw=='
+      const part2 = 'jVcDJuy3iUGCgu/oyasmt9Q2RLokV3gYs6wAr9F9KdviH8Tivc14yy3Q+4ufmDMtaFEulFZ3jvxu/aNCcr5U+h0avZn12MR7b+JJHWAN+sdqcKA+Gvbp3XHPh83b9Ap2W7W5XjWaLsGE3kDM8wU1hzxBwoxNTwQI5335vH7wNdLDv9qJJuP4UuvYOEzvVMV4g1Td5Ytr16/zEF7LJQL+PyVCskJO4X3Sv1+8PcTFlxeZ33RXfDvt5rnq+Rj+fEz1riPW1VigFnGnRGIxBeFF7CFxqQVu+NUftPR66fgq98ARTBooTy/Y/vLl7wVTpJC04I/Rh27N6lRRHqkFH8mSTw=='
       
       beforeEach(function () {
         adaptiveRestore = simple.mock(adaptive, 'restore');
@@ -137,11 +159,11 @@ describeModule('session-store:secure', 'Unit | Session store | secure', {},
       it('should resolve with combined store data', function (done) {
         sut.set('keyNames', ['both', 'onlyAdaptive', 'onlyWindow']);
         
-        adaptiveRestore.resolveWith({p1: 'p1', both: '2"', onlyAdaptive: 'oA'});
-        windowRestore.resolveWith({'both': '"p', 'onlyWindow': 'oW'});
+        adaptiveRestore.resolveWith({p1: 'p1', both: part1, onlyAdaptive: 'oA'});
+        windowRestore.resolveWith({'both': part2, 'onlyWindow': 'oW'});
         
         sut.restore().then((result) => {
-          assert.deepEqual(result, {p1: 'p1', both: 'p2'});
+          assert.deepEqual(result, {p1: 'p1', both: {p1: 'v1'}});
           done();
         });
       });
@@ -221,29 +243,31 @@ describeModule('session-store:secure', 'Unit | Session store | secure', {},
     });
     
     describe('#split', function () {
-      it('should return two json parts', function () {
+      it('should return two base64 encoded parts', function () {
         const data = {p1: 'v1'};
         
         const actual = sut.split(data);
-        assert.equal(actual[0] + actual[1], '{"p1":"v1"}');
-        assert.equal(actual[0], '{"p1":');
-        assert.equal(actual[1], '"v1"}');
+        assert.match(actual[0], base64regex);
+        assert.match(actual[1], base64regex);
       })
     });
     
     describe('#merge', function () {
+      const part1 = '9nVzF86NqzezoJLoyasmt9Q2RLokV3gYs6wAr9F9KdviH8Tivc14yy3Q+4ufmDMtaFEulFZ3jvxu/aNCcr5U+h0avZn12MR7b+JJHWAN+sdqcKA+Gvbp3XHPh83b9Ap2W7W5XjWaLsGE3kDM8wU1hzxBwoxNTwQI5335vH7wNdLDv9qJJuP4UuvYOEzvVMV4g1Td5Ytr16/zEF7LJQL+PyVCskJO4X3Sv1+8PcTFlxeZ33RXfDvt5rnq+Rj+fEz1riPW1VigFnGnRGIxBeFF7CFxqQVu+NUftPR66fgq98ARTBooTy/Y/vLl7wVTpJC04I/Rh27N6lRRHqkFH8mSTw=='
+      const part2 = 'jVcDJuy3iUGCgu/oyasmt9Q2RLokV3gYs6wAr9F9KdviH8Tivc14yy3Q+4ufmDMtaFEulFZ3jvxu/aNCcr5U+h0avZn12MR7b+JJHWAN+sdqcKA+Gvbp3XHPh83b9Ap2W7W5XjWaLsGE3kDM8wU1hzxBwoxNTwQI5335vH7wNdLDv9qJJuP4UuvYOEzvVMV4g1Td5Ytr16/zEF7LJQL+PyVCskJO4X3Sv1+8PcTFlxeZ33RXfDvt5rnq+Rj+fEz1riPW1VigFnGnRGIxBeFF7CFxqQVu+NUftPR66fgq98ARTBooTy/Y/vLl7wVTpJC04I/Rh27N6lRRHqkFH8mSTw=='
+      
       it('should merge two json parts', function () {
-        const actual = sut.merge('{"p1', '":"v1"}');
+        const actual = sut.merge(part1, part2);
         assert.deepEqual(actual, {p1: 'v1'});
       });
       
       it('should return undefined if second part is undefind', function () {
-        const actual = sut.merge('"p1"', undefined);
+        const actual = sut.merge(part1, undefined);
         assert.isUndefined(actual);
       });
       
       it('should return undefined if first part is undefined', function () {
-        const actual = sut.merge(undefined, '"p2"');
+        const actual = sut.merge(undefined, part2);
         assert.isUndefined(actual);
       });
     });
