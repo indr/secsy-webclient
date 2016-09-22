@@ -11,5 +11,5 @@ export default Session.reopen({
    * @default false
    * @public
    */
-  isDecrypted: Ember.computed.and('isAuthenticated', 'data.isDecrypted'),
+  isDecrypted: Ember.computed.and('isAuthenticated', 'data.authenticated.decrypted'),
 });

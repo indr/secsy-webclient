@@ -45,8 +45,8 @@ export default Ember.Service.extend(Ember.Evented, {
     return this.get('openpgp').decryptKey({privateKey: key, passphrase: passphrase}).then((result) => {
       self.privateKey = result.key;
       self.publicKey = result.key;
-      self.get('session').set('data.passphrase', passphrase);
-      self.get('session').set('data.isDecrypted', true);
+      self.get('session').set('data.authenticated.passphrase', passphrase);
+      self.get('session').set('data.authenticated.decrypted', true);
       self._opened(trigger);
     });
   },
@@ -57,7 +57,7 @@ export default Ember.Service.extend(Ember.Evented, {
   restore() {
     const self = this;
     return new RSVP.Promise((resolve, reject) => {
-      const passphrase = self.get('session.data.passphrase');
+      const passphrase = self.get('session.data.authenticated.passphrase');
       if (!passphrase) {
         return reject();
       }
@@ -71,8 +71,8 @@ export default Ember.Service.extend(Ember.Evented, {
    */
   close() {
     this.set('isOpen', false);
-    this.get('session').set('data.passphrase', undefined);
-    this.get('session').set('data.isDecrypted', false);
+    this.get('session').set('data.authenticated.passphrase', undefined);
+    this.get('session').set('data.authenticated.decrypted', false);
     this.publicKey = null;
     this.privateKey = null;
     this.trigger('keychainClosed', this);
@@ -95,8 +95,8 @@ export default Ember.Service.extend(Ember.Evented, {
       return keystore.save(userId, emailAddress, result).then(() => {
         self.privateKey = result.key;
         self.publicKey = result.key;
-        self.get('session').set('data.passphrase', passphrase);
-        self.get('session').set('data.isDecrypted', true);
+        self.get('session').set('data.authenticated.passphrase', passphrase);
+        self.get('session').set('data.authenticated.decrypted', true);
         self._opened();
       });
     });
