@@ -3,6 +3,7 @@ import KeyboardShortcuts from 'ember-keyboard-shortcuts/mixins/component';
 
 export default Ember.Component.extend(KeyboardShortcuts, {
   session: Ember.inject.service(),
+  keychain: Ember.inject.service(),
   
   canSearch: false,
   isSearchVisible: false,
