@@ -52,7 +52,6 @@ export default Base.extend({
   
   persist(data) {
     debug('persist()');
-    console.log('persist', data);
     
     let volatileData = {};
     let adaptiveData = {};
@@ -115,7 +114,6 @@ export default Base.extend({
         });
       }
       
-      console.log('restored', result);
       return result;
     });
   },
