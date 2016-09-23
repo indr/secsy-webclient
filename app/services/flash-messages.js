@@ -8,16 +8,17 @@ const {
 export default FlashMessages.reopen({
   intl: Ember.inject.service(),
   
-  dangerT(key, reason, options) {
+  dangerT(key, error, options) {
     this.clearMessages();
     let message;
     const intl = this.get('intl');
     
-    if (reason) {
-      if (intl.exists('errors.' + reason)) {
-        message = intl.t('errors.' + reason);
+    if (error) {
+      const errorMessage = typeof error.getMessage === 'function' ? error.getMessage() : (error.message || error);
+      if (intl.exists('errors.' + errorMessage)) {
+        message = intl.t('errors.' + errorMessage);
       } else {
-        debug(`No error specific translation 'errors.${reason}' exists`);
+        debug(`No error specific translation 'errors.${errorMessage}' exists`);
         message = intl.t(key);
       }
     }

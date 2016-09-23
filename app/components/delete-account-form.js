@@ -35,7 +35,7 @@ export default Ember.Component.extend(TrackerMixin, Validations, ValidationError
       }).catch((error) => {
         return this.handleValidationErrors(error);
       }).catch((error) => {
-        flash.dangerT('profile.delete-account.unknown-error', error.getMessage() || error, {sticky: false});
+        flash.dangerT('profile.delete-account.unknown-error', error, {sticky: false});
       });
     }
   }

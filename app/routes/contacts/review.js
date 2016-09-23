@@ -27,7 +27,7 @@ export default Ember.Route.extend(TrackerMixin, {
         this.get('flashMessages').successT('review.update-successful');
         this.transitionTo('contacts.view', contact);
       }).catch((err) => {
-        this.get('flashMessages').dangerT('review.update-unknown-error', err.message || err);
+        this.get('flashMessages').dangerT('review.update-unknown-error', err);
       });
     },
     
@@ -37,7 +37,7 @@ export default Ember.Route.extend(TrackerMixin, {
       this.track('controller.dismissState', contact.dismissUpdates()).then(() => {
         this.transitionTo('contacts.view', contact);
       }).catch((err) => {
-        this.get('flashMessages').dangerT('review.dismiss-unknown-error', err.message || err);
+        this.get('flashMessages').dangerT('review.dismiss-unknown-error', err);
       });
     },
     

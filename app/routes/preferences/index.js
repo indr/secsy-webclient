@@ -25,7 +25,7 @@ export default Ember.Route.extend(TrackerMixin, {
         this.send('setLocale', model.locale);
         this.get('session').set('data.authenticated.sync_enabled', preferences.sync_enabled);
       }).catch((error) => {
-        flash.dangerT('profile.unknown-error', error.getMessage ? error.getMessage() || error : error);
+        flash.dangerT('profile.unknown-error', error);
       });
     },
     
@@ -54,7 +54,7 @@ export default Ember.Route.extend(TrackerMixin, {
       this.track('controller.sendPasswordResetEmailState', this.get('ajax').post('/api/users/forgot-password', {email})).then(() => {
         flash.successT('profile.reset-email.success');
       }).catch((error) => {
-        flash.dangerT('profile.reset-email.unknown-error', error.getMessage() || error, {sticky: false});
+        flash.dangerT('profile.reset-email.unknown-error', error, {sticky: false});
       });
     }
   }

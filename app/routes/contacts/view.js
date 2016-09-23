@@ -26,7 +26,7 @@ export default Ember.Route.extend(TrackerMixin, {
       this.track('controller.deleteState', model.destroyRecord()).then(() => {
         this.transitionTo('contacts');
       }).catch((err) => {
-        this.get('flashMessages').dangerT('errors.delete-unknown-error', err.message || err);
+        this.get('flashMessages').dangerT('errors.delete-unknown-error', err);
       });
     },
     

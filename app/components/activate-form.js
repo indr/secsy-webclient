@@ -15,7 +15,7 @@ export default Ember.Component.extend(TrackerMixin, {
         flash.successT('activate.success');
         Ember.run.later(sendAction, 1500);
       }).catch((error) => {
-        flash.dangerT('activate.unknown-error', error.getMessage(), {sticky: true});
+        flash.dangerT('activate.unknown-error', error, {sticky: true});
       });
     }
   }

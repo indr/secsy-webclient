@@ -43,7 +43,7 @@ export default Ember.Component.extend(Validations, ValidationErrorsMixin, Tracke
           flash.dangerT('errors.invalid-current-passphrase');
           return
         }
-        flash.dangerT('profile.change-passphrase.unknown-error', error.getMessage ? error.getMessage() || error : error);
+        flash.dangerT('profile.change-passphrase.unknown-error', error);
       });
     }
   }

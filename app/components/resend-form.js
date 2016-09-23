@@ -31,7 +31,7 @@ export default Ember.Component.extend(TrackerMixin, Validations, ValidationError
       }).catch((error) => {
         return this.handleValidationErrors(error);
       }).catch((error) => {
-        flash.dangerT('resend.unknown-error', error.getMessage(), {sticky: true})
+        flash.dangerT('resend.unknown-error', error, {sticky: true})
       });
     }
   }
