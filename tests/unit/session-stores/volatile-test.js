@@ -4,17 +4,20 @@ import { after, beforeEach, describe } from 'mocha';
 import simple from 'simple-mock';
 import utils from 'addressbook/session-stores/utils';
 
+import ENV from 'addressbook/config/environment';
+
 const globalWindow = window;
 
 describeModule('session-store:volatile', 'Unit | Session store | volatile', {},
   function () {
-    let sut, window, addEventListener, attachEvent;
+    let config, sut, window, addEventListener, attachEvent;
     
     after(function () {
       utils.window = globalWindow;
     });
     
     beforeEach(function () {
+      config = ENV['volatileStore'] = {};
       window = {name: null};
       addEventListener = simple.mock(window, 'addEventListener');
       attachEvent = simple.mock(window, 'attachEvent');
@@ -111,6 +114,18 @@ describeModule('session-store:volatile', 'Unit | Session store | volatile', {},
           done();
         });
       });
+      
+      it('should restore only whitelisted object properties', function (done) {
+        config.whitelist = ['ok1', 'obj.ok2'];
+        window.name = JSON.stringify({no1: 'no1', ok1: 'ok1'});
+        
+        sut = this.subject();
+        
+        sut.restore().then((data) => {
+          assert.deepEqual(data, {ok1: 'ok1'});
+          done();
+        });
+      });
     });
     
     describe('#persist', function () {
@@ -125,11 +140,9 @@ describeModule('session-store:volatile', 'Unit | Session store | volatile', {},
     });
     
     describe('#restore after #persist', function () {
-      beforeEach(function () {
-        sut = this.subject();
-      });
-      
       it('should be able to persist and restore a string', function (done) {
+        sut = this.subject();
+        
         sut.persist('a string').then(() => {
           return sut.restore();
         }).then((data) => {
@@ -139,6 +152,8 @@ describeModule('session-store:volatile', 'Unit | Session store | volatile', {},
       });
       
       it('should be able to persist and restore a number', function (done) {
+        sut = this.subject();
+        
         sut.persist(5.11).then(() => {
           return sut.restore();
         }).then((data) => {
@@ -148,10 +163,24 @@ describeModule('session-store:volatile', 'Unit | Session store | volatile', {},
       });
       
       it('should be able to persist and restore an object', function (done) {
+        sut = this.subject();
+        
         sut.persist({s: 's1', o1: {o1s: 'o1s', o1n: 5.11}}).then(() => {
           return sut.restore();
         }).then((data) => {
           assert.deepEqual(data, {s: 's1', o1: {o1s: 'o1s', o1n: 5.11}});
+          done();
+        });
+      });
+      
+      it('should only persist and restore whitelisted object properites', function (done) {
+        config.whitelist = ['s'];
+        sut = this.subject();
+        
+        sut.persist({s: 's1', o1: {o1s: 'o1s', o1n: 5.11}}).then(() => {
+          return sut.restore();
+        }).then((data) => {
+          assert.deepEqual(data, {s: 's1'});
           done();
         });
       });
@@ -217,6 +246,17 @@ describeModule('session-store:volatile', 'Unit | Session store | volatile', {},
         sut.persist('a string').then(() => {
           sut.flush();
           assert.equal(window.name, '"a string"');
+          done();
+        });
+      });
+      
+      it('should only save whitlisted object properites to window.name', function (done) {
+        config.whitelist = ['s'];
+        sut = this.subject();
+        
+        sut.persist({s: 's1', o1: {o1s: 'o1s', o1n: 5.11}}).then(() => {
+          sut.flush();
+          assert.equal(window.name, '{"s":"s1"}');
           done();
         });
       });

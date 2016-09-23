@@ -2,12 +2,15 @@ import Ember from 'ember';
 import Base from 'ember-simple-auth/session-stores/base';
 import utils from './utils';
 
+import ENV from 'addressbook/config/environment';
+
 const {
   RSVP
 } = Ember;
 
 export default Base.extend({
   data: {},
+  whitelist: null,
   
   init() {
     this._super(...arguments);
@@ -18,8 +21,15 @@ export default Base.extend({
       return;
     }
     
+    if (ENV['volatileStore'] && ENV['volatileStore'].whitelist) {
+      const whitelist = ENV['volatileStore'].whitelist;
+      this.whitelist = Ember.isArray(whitelist) ? whitelist : new Array(whitelist);
+    }
+    
     try {
-      this.data = JSON.parse(window.name) || {};
+      let data = JSON.parse(window.name) || {};
+      this.data = this._onlyWhitelisted(data);
+      
     } catch (error) {
       this.data = {};
     }
@@ -36,7 +46,7 @@ export default Base.extend({
   
   persist(data) {
     try {
-      this.data = Ember.copy(data, true);
+      this.data = this._onlyWhitelisted(data);
       return RSVP.resolve();
     } catch (error) {
       return RSVP.reject(error);
@@ -45,7 +55,7 @@ export default Base.extend({
   
   restore() {
     try {
-      return RSVP.resolve(Ember.copy(this.data, true));
+      return RSVP.resolve(Ember.copy(this.data));
     } catch (error) {
       return RSVP.reject(error);
     }
@@ -62,5 +72,19 @@ export default Base.extend({
   
   flush() {
     utils.window.name = JSON.stringify(this.data);
+  },
+  
+  _onlyWhitelisted(data) {
+    if (this.whitelist) {
+      let result = {};
+      this.whitelist.forEach((keyName) => {
+        if (data.hasOwnProperty(keyName)) {
+          result[keyName] = data[keyName];
+        }
+      });
+      return result;
+    } else {
+      return Ember.copy(data);
+    }
   }
 })
