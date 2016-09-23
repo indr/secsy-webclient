@@ -21,8 +21,8 @@ export default Base.extend({
       return;
     }
     
-    if (ENV['volatileStore'] && ENV['volatileStore'].whitelist) {
-      const whitelist = ENV['volatileStore'].whitelist;
+    if (ENV['volatile-store'] && ENV['volatile-store'].whitelist) {
+      const whitelist = ENV['volatile-store'].whitelist;
       this.whitelist = Ember.isArray(whitelist) ? whitelist : new Array(whitelist);
     }
     
@@ -78,9 +78,7 @@ export default Base.extend({
     if (this.whitelist) {
       let result = {};
       this.whitelist.forEach((keyName) => {
-        if (data.hasOwnProperty(keyName)) {
-          result[keyName] = data[keyName];
-        }
+        utils.set(result, keyName, utils.get(data, keyName));
       });
       return result;
     } else {

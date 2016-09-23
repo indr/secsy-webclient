@@ -4,7 +4,7 @@
 import Ember from 'ember';
 
 const {
-  get, set
+  get
 } = Ember;
 
 export default {
@@ -57,6 +57,20 @@ function has (obj, keyName) {
     keyName = keyName.substr(lastIndex + 1);
   }
   return obj && obj.hasOwnProperty(keyName);
+}
+
+function set (obj, keyName, value) {
+  const index = keyName.indexOf('.');
+  if (index === -1) {
+    return Ember.set(obj, keyName, value);
+  }
+  
+  const currentKeyName = keyName.substring(0, index);
+  let currentKeyObj = get(obj, currentKeyName);
+  if (currentKeyObj === undefined) {
+    currentKeyObj = obj[currentKeyName] = {}
+  }
+  return set(currentKeyObj, keyName.substring(index + 1), value);
 }
 
 function encode_base64 (data) {

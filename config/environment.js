@@ -12,7 +12,7 @@ module.exports = function (environment) {
         // e.g. 'with-controller': true
       }
     },
-
+    
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
@@ -22,18 +22,27 @@ module.exports = function (environment) {
       
       useWebWorker: false
     },
-
+    
+    // TODO: Remove
     'seneca-auth': {
       assignFromUser: ['privateKey']
     }
   };
-
+  
+  ENV['secure-store'] = {
+    whitelist: 'localeName'
+  };
+  
+  ENV['volatile-store'] = {
+    whitelist: 'passphrase'
+  };
+  
   ENV['ember-simple-auth'] = {
     authenticationRoute: 'login',
     routeAfterAuthentication: 'decrypt',
     routeIfAlreadyAuthenticated: 'decrypt'
   };
-
+  
   if (environment === 'development') {
     // ENV.APP.LOG_RESOLVER = true;
     // ENV.APP.LOG_ACTIVE_GENERATION = true;
@@ -41,22 +50,22 @@ module.exports = function (environment) {
     // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
     // ENV.APP.LOG_VIEW_LOOKUPS = true;
   }
-
+  
   if (environment === 'test') {
     // Testem prefers this...
     ENV.baseURL = '/';
     ENV.locationType = 'none';
-
+    
     // keep test console output quieter
     ENV.APP.LOG_ACTIVE_GENERATION = false;
     ENV.APP.LOG_VIEW_LOOKUPS = false;
-
+    
     ENV.APP.rootElement = '#ember-testing';
   }
-
+  
   if (environment === 'production') {
     ENV.baseURL = '/app/'
   }
-
+  
   return ENV;
 };

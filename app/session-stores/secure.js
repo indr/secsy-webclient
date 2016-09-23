@@ -8,6 +8,8 @@ import utils from './utils';
 import AdaptiveStore from 'ember-simple-auth/session-stores/adaptive';
 import VolatileStore from './volatile';
 
+import ENV from 'addressbook/config/environment';
+
 const {
   RSVP
 } = Ember;
@@ -17,31 +19,65 @@ function debug (message) {
 }
 
 export default Base.extend({
-  keyNames: ['authenticated'],
+  securelist: null,
+  volatilelist: null,
   
   init() {
     debug('init()');
     this._super(...arguments);
     
+    if (ENV['secure-store'] && ENV['secure-store'].whitelist) {
+      let whitelist = ENV['secure-store'].whitelist;
+      whitelist = Ember.isArray(whitelist) ? whitelist : new Array(whitelist);
+      this.securelist = whitelist;
+    }
+    
+    if (ENV['volatile-store'] && ENV['volatile-store'].whitelist) {
+      let volatilelist = ENV['volatile-store'].whitelist;
+      volatilelist = Ember.isArray(volatilelist) ? volatilelist : new Array(volatilelist);
+      if (!this.securelist) {
+        this.securelist = [];
+      }
+      volatilelist.forEach((each) => {
+        this.securelist.push(each);
+      });
+      this.volatilelist = volatilelist;
+    }
+    
+    if (this.securelist) {
+      this.securelist.push('authenticated');
+    }
     this.set('_adaptiveStore', this._createStore(AdaptiveStore));
     this.set('_volatileStore', this._createStore(VolatileStore));
   },
   
   persist(data) {
     debug('persist()');
+    console.log('persist', data);
     
-    const volatileData = {};
-    const adaptiveData = Ember.copy(data, true);
+    let volatileData = {};
+    let adaptiveData = {};
     
-    const keyNames = this.get('keyNames');
-    if (Array.isArray(keyNames)) {
-      keyNames.forEach((keyName) => {
+    const securelist = this.get('securelist');
+    if (!Array.isArray(securelist)) {
+      adaptiveData = Ember.copy(data, true);
+    } else {
+      securelist.forEach((keyName) => {
         if (utils.has(data, keyName)) {
           const value = utils.get(data, keyName);
-          
+          utils.set(adaptiveData, keyName, value);
+        }
+      });
+    }
+    
+    const volatilelist = this.get('volatilelist');
+    if (Array.isArray(volatilelist)) {
+      volatilelist.forEach((keyName) => {
+        if (utils.has(adaptiveData, keyName)) {
+          const value = utils.get(adaptiveData, keyName);
           const shares = this.split(value);
           utils.set(adaptiveData, keyName, shares[1]);
-          volatileData[keyName] = shares[0]
+          utils.set(volatileData, keyName, shares[0]);
         }
       });
     }
@@ -65,10 +101,10 @@ export default Base.extend({
       const volatileData = datas[1];
       
       const result = adaptiveData;
-      const keyNames = this.get('keyNames');
+      const keyNames = this.get('volatilelist');
       if (Array.isArray(keyNames)) {
         keyNames.forEach((keyName) => {
-          const share1 = volatileData[keyName];
+          const share1 = utils.get(volatileData, keyName);
           const share2 = utils.get(adaptiveData, keyName);
           
           const merged = this.merge(share1, share2);
@@ -79,6 +115,8 @@ export default Base.extend({
           }
         });
       }
+      
+      console.log('restored', result);
       return result;
     });
   },

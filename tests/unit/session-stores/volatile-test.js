@@ -17,7 +17,7 @@ describeModule('session-store:volatile', 'Unit | Session store | volatile', {},
     });
     
     beforeEach(function () {
-      config = ENV['volatileStore'] = {};
+      config = ENV['volatile-store'] = {};
       window = {name: null};
       addEventListener = simple.mock(window, 'addEventListener');
       attachEvent = simple.mock(window, 'attachEvent');
@@ -72,7 +72,7 @@ describeModule('session-store:volatile', 'Unit | Session store | volatile', {},
         });
       });
       
-      it('should return an empty object given window.name contains arbitray data', function (done) {
+      it('should return an empty object given window.name contains arbitrary data', function (done) {
         window.name = 'a | windows / name';
         sut = this.subject();
         
@@ -117,12 +117,19 @@ describeModule('session-store:volatile', 'Unit | Session store | volatile', {},
       
       it('should restore only whitelisted object properties', function (done) {
         config.whitelist = ['ok1', 'obj.ok2'];
-        window.name = JSON.stringify({no1: 'no1', ok1: 'ok1'});
+        window.name = JSON.stringify({
+          no1: 'no1',
+          ok1: 'ok1',
+          obj: {
+            no2: 'no2',
+            ok2: 'ok2'
+          }
+        });
         
         sut = this.subject();
         
         sut.restore().then((data) => {
-          assert.deepEqual(data, {ok1: 'ok1'});
+          assert.deepEqual(data, {ok1: 'ok1', obj: {ok2: 'ok2'}});
           done();
         });
       });
@@ -250,13 +257,13 @@ describeModule('session-store:volatile', 'Unit | Session store | volatile', {},
         });
       });
       
-      it('should only save whitlisted object properites to window.name', function (done) {
-        config.whitelist = ['s'];
+      it('should only save whitelisted object properites to window.name', function (done) {
+        config.whitelist = ['s', 'o1.o1n'];
         sut = this.subject();
         
         sut.persist({s: 's1', o1: {o1s: 'o1s', o1n: 5.11}}).then(() => {
           sut.flush();
-          assert.equal(window.name, '{"s":"s1"}');
+          assert.equal(window.name, '{"s":"s1","o1":{"o1n":5.11}}');
           done();
         });
       });
