@@ -6,7 +6,7 @@ import Base from 'ember-simple-auth/session-stores/base';
 import utils from './utils';
 
 import AdaptiveStore from 'ember-simple-auth/session-stores/adaptive';
-import WindowStore from './window';
+import VolatileStore from './volatile';
 
 const {
   RSVP
@@ -24,13 +24,13 @@ export default Base.extend({
     this._super(...arguments);
     
     this.set('_adaptiveStore', this._createStore(AdaptiveStore));
-    this.set('_windowStore', this._createStore(WindowStore));
+    this.set('_volatileStore', this._createStore(VolatileStore));
   },
   
   persist(data) {
     debug('persist()');
     
-    const windowData = {};
+    const volatileData = {};
     const adaptiveData = Ember.copy(data, true);
     
     const keyNames = this.get('keyNames');
@@ -41,14 +41,14 @@ export default Base.extend({
           
           const shares = this.split(value);
           utils.set(adaptiveData, keyName, shares[1]);
-          windowData[keyName] = shares[0]
+          volatileData[keyName] = shares[0]
         }
       });
     }
     
     return RSVP.all([
       this.get('_adaptiveStore').persist(adaptiveData),
-      this.get('_windowStore').persist(windowData)
+      this.get('_volatileStore').persist(volatileData)
     ]).then(() => {
       // Don't return promise array
     });
@@ -59,16 +59,16 @@ export default Base.extend({
     
     return RSVP.all([
       this.get('_adaptiveStore').restore(),
-      this.get('_windowStore').restore(),
+      this.get('_volatileStore').restore(),
     ]).then((datas) => {
       const adaptiveData = datas[0];
-      const windowData = datas[1];
+      const volatileData = datas[1];
       
       const result = adaptiveData;
       const keyNames = this.get('keyNames');
       if (Array.isArray(keyNames)) {
         keyNames.forEach((keyName) => {
-          const share1 = windowData[keyName];
+          const share1 = volatileData[keyName];
           const share2 = utils.get(adaptiveData, keyName);
           
           const merged = this.merge(share1, share2);
@@ -88,7 +88,7 @@ export default Base.extend({
     
     return RSVP.all([
       this.get('_adaptiveStore').clear(),
-      this.get('_windowStore').clear()
+      this.get('_volatileStore').clear()
     ]).then(() => {
       // Don't return promise array
     });

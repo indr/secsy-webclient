@@ -6,7 +6,7 @@ import utils from 'addressbook/session-stores/utils';
 
 const globalWindow = window;
 
-describeModule('session-store:window', 'Unit | Session store | window', {},
+describeModule('session-store:volatile', 'Unit | Session store | volatile', {},
   function () {
     let sut, window, addEventListener, attachEvent;
     
