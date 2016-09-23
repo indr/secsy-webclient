@@ -35,16 +35,15 @@ export default Base.extend({
     if (ENV['volatile-store'] && ENV['volatile-store'].whitelist) {
       let volatilelist = ENV['volatile-store'].whitelist;
       volatilelist = Ember.isArray(volatilelist) ? volatilelist : new Array(volatilelist);
-      if (!this.securelist) {
-        this.securelist = [];
+      if (this.securelist) {
+        volatilelist.forEach((each) => {
+          this.securelist.push(each);
+        });
       }
-      volatilelist.forEach((each) => {
-        this.securelist.push(each);
-      });
       this.volatilelist = volatilelist;
     }
     
-    if (this.securelist) {
+    if (this.securelist && this.securelist.indexOf('authenticated') === -1) {
       this.securelist.push('authenticated');
     }
     this.set('_adaptiveStore', this._createStore(AdaptiveStore));
@@ -101,9 +100,9 @@ export default Base.extend({
       const volatileData = datas[1];
       
       const result = adaptiveData;
-      const keyNames = this.get('volatilelist');
-      if (Array.isArray(keyNames)) {
-        keyNames.forEach((keyName) => {
+      const volatilelist = this.get('volatilelist');
+      if (Array.isArray(volatilelist)) {
+        volatilelist.forEach((keyName) => {
           const share1 = utils.get(volatileData, keyName);
           const share2 = utils.get(adaptiveData, keyName);
           

@@ -1,4 +1,5 @@
 import { assert } from 'chai';
+import Ember from 'ember';
 import { describeModule, it } from 'ember-mocha';
 import { beforeEach, describe } from 'mocha';
 import simple from 'simple-mock';
@@ -29,35 +30,52 @@ describeModule('session-store:secure', 'Unit | Session store | secure', {},
     describe('persist and restore', function () {
       const data = {
         p1: 'p1',
-        p2: {
-          p1: 1,
-          p2: 2,
-          o2: {p1: 5.11}
-        },
+        p2: {p1: 1, p2: 2, o2: {p1: 5.11}},
         p3: 'p3',
-        authenticated: {
-          username: 'username'
-        }
+        authenticated: {username: 'username'}
       };
       
-      it('should be able to persist and restore data', function (done) {
-        config.secureStore.whitelist = ['p1', 'p2.p2'];
-        config.volatileStore.whitelist = ['p2.o2'];
+      it('should be able to persist and restore data without whitelists', function (done) {
+        delete config.secureStore.whitelist;
+        delete config.volatileStore.whitelist;
+        const expected = Ember.copy(data);
         sut = createSut();
         
-        sut.persist(data).then(()=> {
+        sut.persist(data).then(() => {
           return sut.restore();
         }).then((restored) => {
-          const expected = {
-            p1: 'p1',
-            p2: {
-              p2: 2,
-              o2: {p1: 5.11}
-            },
-            authenticated: {
-              username: 'username'
-            }
-          };
+          assert.deepEqual(restored, expected);
+          done();
+        });
+      });
+      
+      it('should be able to persist and restore data with only a volatile whitelist', function (done) {
+        delete config.secureStore.whitelist;
+        config.volatileStore.whitelist = ['p3'];
+        const expected = Ember.copy(data);
+        sut = createSut();
+        
+        sut.persist(data).then(() => {
+          return sut.restore();
+        }).then((restored) => {
+          assert.deepEqual(restored, expected);
+          done();
+        });
+      });
+      
+      it('should be able to persist and restore data with withlists', function (done) {
+        config.secureStore.whitelist = ['p1', 'p2.p2'];
+        config.volatileStore.whitelist = ['p2.o2'];
+        const expected = {
+          p1: 'p1',
+          p2: {p2: 2, o2: {p1: 5.11}},
+          authenticated: {username: 'username'}
+        };
+        sut = createSut();
+        
+        sut.persist(data).then(() => {
+          return sut.restore();
+        }).then((restored) => {
           assert.deepEqual(restored, expected);
           done();
         });
