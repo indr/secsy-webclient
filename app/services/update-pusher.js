@@ -43,11 +43,11 @@ export default Ember.Service.extend({
         debug('Finished pushing updates for ' + emailAddress);
         return options;
       })
-      .catch((err) => {
+      .catch((error) => {
         options.status.done = true;
         fireProgress(options);
         debug('Error pushing updates for ' + emailAddress);
-        throw err;
+        throw error;
       });
   },
   
@@ -97,8 +97,8 @@ export default Ember.Service.extend({
       var contact = options.contacts.pop();
       options.status.value++;
       
-      return self.processContact(options, contact).catch((err) => {
-        debug('Error processing contact: ' + err.message);
+      return self.processContact(options, contact).catch((error) => {
+        debug('Error processing contact: ' + error.message);
         return options;
       }).then(self.fireProgress.bind(self));
     }, options);

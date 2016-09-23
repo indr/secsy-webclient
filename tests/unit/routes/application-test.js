@@ -133,13 +133,14 @@ describeModule('route:application', 'Unit | Route | application', {
       });
       
       it('should flash message pull-updates.unknown-error given pull rejects', function () {
-        updatePuller.pull.rejectWith('pull rejected');
+        updatePuller.pull.rejectWith(new Error('pull rejected'));
         
         return sut.send('pullUpdates').then(() => {
           assert(flashMessages.dangerT.called, 'expected flashMessages.dangerT to be called');
           const call = flashMessages.dangerT.lastCall;
           assert.equal(call.args[0], 'pull-updates.unknown-error');
-          assert.equal(call.args[1], 'pull rejected');
+          assert.equal(call.args[1].name, 'Error');
+          assert.equal(call.args[1].message, 'pull rejected');
         });
       });
       
@@ -151,7 +152,8 @@ describeModule('route:application', 'Unit | Route | application', {
         assert(flashMessages.dangerT.called, 'expected flashMessages.dangerT to be called');
         const call = flashMessages.dangerT.lastCall;
         assert.equal(call.args[0], 'pull-updates.unknown-error');
-        assert.equal(call.args[1], 'pull threw');
+        assert.equal(call.args[1].name, 'Error');
+        assert.equal(call.args[1].message, 'pull threw');
       })
     });
   }

@@ -125,11 +125,11 @@ describeModule('service:update-pusher', 'Unit | Service | UpdatePusherService', 
       });
       
       it('should progress with done:true and throw error', function (done) {
-        var error = new Error('encodePayload threw error');
-        simple.mock(sut, 'encodePayload').throwWith(error);
+        var expected = new Error('encodePayload threw error');
+        simple.mock(sut, 'encodePayload').throwWith(expected);
         
-        sut.push(data, emailAddress, onProgress).catch((err) => {
-          assert.equal(err, error);
+        sut.push(data, emailAddress, onProgress).catch((error) => {
+          assert.equal(error, expected);
           assert(onProgress.called, 'expected onProgress to be called');
           const status = onProgress.lastCall.arg;
           assert.isTrue(status.done);
@@ -282,9 +282,9 @@ describeModule('service:update-pusher', 'Unit | Service | UpdatePusherService', 
       it('should throw error if contact does not have a public key', function (done) {
         simple.mock(keystore, 'getPublicKey').resolveWith(undefined);
         
-        sut.getKey(options).catch((err) => {
-          assert.instanceOf(err, Error);
-          assert.match(err.message, /Public key not found/);
+        sut.getKey(options).catch((error) => {
+          assert.instanceOf(error, Error);
+          assert.match(error.message, /Public key not found/);
           done();
         });
       });

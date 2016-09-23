@@ -53,8 +53,8 @@ describeModule('service:keychain', 'Unit | Service | keychain', {
       });
       
       it('rejects with invalid passphrase', function (done) {
-        sut.open('abc123', 'invalid-passphrase').then(assert.fail).catch((err) => {
-          assert.equal(err.message, 'Error decrypting private key: Invalid passphrase');
+        sut.open('abc123', 'invalid-passphrase').then(assert.fail).catch((error) => {
+          assert.equal(error.message, 'Error decrypting private key: Invalid passphrase');
           done();
         });
       });

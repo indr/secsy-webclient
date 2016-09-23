@@ -118,11 +118,11 @@ export default Ember.Route.extend(SimpleAuthApplicationRouteMixin, CustomApplica
       const onProgress = options.silent ? K : this.onProgress.bind(this);
       
       try {
-        return this.track(stateProperty, this.get('updatePuller').pull(emailAddress, onProgress)).catch((err) => {
-          flashMessages.dangerT('pull-updates.unknown-error', err);
+        return this.track(stateProperty, this.get('updatePuller').pull(emailAddress, onProgress)).catch((error) => {
+          flashMessages.dangerT('pull-updates.unknown-error', error);
         });
-      } catch (err) {
-        flashMessages.dangerT('pull-updates.unknown-error', err);
+      } catch (error) {
+        flashMessages.dangerT('pull-updates.unknown-error', error);
       }
     },
     

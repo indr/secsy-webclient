@@ -64,9 +64,9 @@ describeModule('mixin:undecrypted-route-mixin', 'Unit | Mixin | undecrypted rout
         try {
           sut.beforeModel(transition);
           assert(false, 'Expected exception to be thrown but there was none');
-        } catch (err) {
-          assert.instanceOf(err, Error);
-          assert.match(err.message, /The route configured as/);
+        } catch (error) {
+          assert.instanceOf(error, Error);
+          assert.match(error.message, /The route configured as/);
         }
       });
       

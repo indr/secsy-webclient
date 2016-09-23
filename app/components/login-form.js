@@ -34,13 +34,12 @@ export default Ember.Component.extend(TrackerMixin, Validations, {
         if (locale) {
           this.sendAction('setLocale', locale);
         }
-      }, (reason) => {
-        reason = reason.message ? reason.message : 'invalid-username-or-password';
-        
-        if (reason === 'user-not-confirmed') {
+      }, (error) => {
+        const errorMessage = error.message ? error.message : 'invalid-username-or-password';
+        if (errorMessage === 'user-not-confirmed') {
           this.sendAction('userNotConfirmed', emailAddress);
         } else {
-          flash.dangerT('login.unknown-error', reason, {sticky: true});
+          flash.dangerT('login.unknown-error', error, {sticky: true});
         }
       });
     }

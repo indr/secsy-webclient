@@ -120,7 +120,8 @@ describeModule('route:contacts/share', 'Unit | Route | contacts/share', {
           const dangerT = flashMessages.dangerT;
           assert(dangerT.called, 'expected dangerT to be called');
           assert.equal(dangerT.lastCall.args[0], 'share.unknown-error');
-          assert.equal(dangerT.lastCall.args[1], 'push rejected');
+          assert.equal(dangerT.lastCall.args[1].name, 'Error');
+          assert.equal(dangerT.lastCall.args[1].message, 'push rejected');
         });
       });
       
@@ -131,7 +132,8 @@ describeModule('route:contacts/share', 'Unit | Route | contacts/share', {
         const dangerT = flashMessages.dangerT;
         assert(dangerT.called, 'expected dangerT to be called');
         assert.equal(dangerT.lastCall.args[0], 'share.unknown-error');
-        assert.equal(dangerT.lastCall.args[1], 'push threw');
+        assert.equal(dangerT.lastCall.args[1].name, 'Error');
+        assert.equal(dangerT.lastCall.args[1].message, 'push threw');
       });
     });
   }

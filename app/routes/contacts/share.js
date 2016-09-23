@@ -40,13 +40,13 @@ export default Ember.Route.extend(TrackerMixin, {
       const onProgress = this.send.bind(this, 'onProgress');
       
       try {
-        const result = this.track(this.setUpdatePusherState.bind(this), updatePusher.push(data, emailAddress, onProgress)).catch((err) => {
-          flashMessages.dangerT('share.unknown-error', err);
+        const result = this.track(this.setUpdatePusherState.bind(this), updatePusher.push(data, emailAddress, onProgress)).catch((error) => {
+          flashMessages.dangerT('share.unknown-error', error);
         });
         this.transitionTo('contacts.view', this.controller.get('model'));
         return result;
-      } catch (err) {
-        flashMessages.dangerT('share.unknown-error', err);
+      } catch (error) {
+        flashMessages.dangerT('share.unknown-error', error);
       }
     },
     

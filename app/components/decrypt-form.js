@@ -29,12 +29,12 @@ export default Ember.Component.extend(TrackerMixin, Validations, {
       flash.infoT('decrypt.decrypting', {sticky: true});
       this.track('decryptState', keychain.open(userId, passphrase)).then(() => {
         flash.clearMessages();
-      }).catch((reason) => {
-        if (reason.message.indexOf('Invalid passphrase') >= 0) {
+      }).catch((error) => {
+        if (error.message.indexOf('Invalid passphrase') >= 0) {
           flash.dangerT('errors.invalid-passphrase');
         }
         else {
-          flash.dangerT('decrypt.unknown-error', reason);
+          flash.dangerT('decrypt.unknown-error', error);
         }
       });
     },

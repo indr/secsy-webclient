@@ -14,8 +14,8 @@ export default Ember.Route.extend(TrackerMixin, {
       const model = this.controller.get('model');
       this.track('controller.saveState', model.save()).then(() => {
         this.transitionTo('contacts.view', model);
-      }).catch((err) => {
-        this.get('flashMessages').dangerT('errors.save-unknown', err);
+      }).catch((error) => {
+        this.get('flashMessages').dangerT('errors.save-unknown', error);
       });
     },
     

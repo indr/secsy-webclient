@@ -149,9 +149,9 @@ export default Model.extend(Validations, {
       
       return update.destroyRecord().then(() => {
         return updates;
-      }).catch((err) => {
+      }).catch((error) => {
         // We don't care
-        Ember.debug('update.destroyRecord() threw error: ' + (err.message || err));
+        Ember.debug('update.destroyRecord() threw error: ' + (error.message || error));
         return updates;
       });
     }, updates);

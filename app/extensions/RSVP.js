@@ -50,8 +50,8 @@ RSVP.Promise.method = function (fn) {
       try {
         resolve(fn(...arguments));
       }
-      catch (err) {
-        reject(err);
+      catch (error) {
+        reject(error);
       }
     });
   };

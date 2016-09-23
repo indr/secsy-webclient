@@ -48,11 +48,11 @@ export default Ember.Service.extend({
         debug('Finished pulling updates for ' + emailAddress);
         return options;
       })
-      .catch(function (err) {
+      .catch(function (error) {
         options.status.done = true;
         fireProgress(options);
         debug('Error pulling updates for ' + emailAddress);
-        throw err;
+        throw error;
       });
   },
   
@@ -91,7 +91,7 @@ export default Ember.Service.extend({
       
       return self.processUpdate(options, update).catch(() => {
         // TODO: Move the destroying of the update here?
-        // debug('Error processing update: ' + err.message);
+        // debug('Error processing update: ' + error.message);
         return options;
       }).then(self.fireProgress.bind(self));
     }, options);
@@ -107,13 +107,13 @@ export default Ember.Service.extend({
       .then(this.pushToContact.bind(this))
       .then((options) => {
         return options;
-      }).catch((err) => {
-        debug('Error processing update: ' + err.message);
-        update.destroyRecord().catch((err) => {
+      }).catch((error) => {
+        debug('Error processing update: ' + error.message);
+        update.destroyRecord().catch((error) => {
           // We don't care if this doesn't succeed.
-          debug('Error destroying update: ' + err.message);
+          debug('Error destroying update: ' + error.message);
         });
-        throw err;
+        throw error;
       });
   },
   

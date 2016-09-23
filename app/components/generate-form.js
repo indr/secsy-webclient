@@ -34,8 +34,8 @@ export default Ember.Component.extend(TrackerMixin, Validations, {
       flash.infoT('generate.generating', {sticky: true});
       this.track('generateState', keychain.generateKey(userId, emailAddress, passphrase)).then(() => {
         flash.clearMessages();
-      }).catch((reason) => {
-        flash.dangerT('generate.unknown-error', reason);
+      }).catch((error) => {
+        flash.dangerT('generate.unknown-error', error);
       });
     }
   }

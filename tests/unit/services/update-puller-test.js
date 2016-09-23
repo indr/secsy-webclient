@@ -109,11 +109,11 @@ describeModule('service:update-puller', 'Unit | Service | UpdatePullerService', 
       });
       
       it('should progress with done:true and throw error', function (done) {
-        var error = new Error('findUpdates threw error');
-        simple.mock(sut, 'findUpdates').throwWith(error);
+        var expected = new Error('findUpdates threw error');
+        simple.mock(sut, 'findUpdates').throwWith(expected);
         
-        sut.pull(emailAddress, onProgress).catch((err) => {
-          assert.equal(err, error);
+        sut.pull(emailAddress, onProgress).catch((error) => {
+          assert.equal(error, expected);
           assert(onProgress.called, 'expected onProgress to be called');
           const status = onProgress.lastCall.arg;
           assert.isTrue(status.done);
@@ -247,9 +247,9 @@ describeModule('service:update-puller', 'Unit | Service | UpdatePullerService', 
         
         return sut.processUpdate(options, update).then(() => {
           assert.fail(false, 'not rejected')
-        }).catch((err) => {
+        }).catch((error) => {
           assert(destroyRecord.called, 'expected update.destroyRecord to be called');
-          assert.equal(err.message, 'decrypt rejected');
+          assert.equal(error.message, 'decrypt rejected');
         });
       });
       
@@ -259,9 +259,9 @@ describeModule('service:update-puller', 'Unit | Service | UpdatePullerService', 
         
         return sut.processUpdate(options, update).then(() => {
           assert.fail(false, 'not rejected')
-        }).catch((err) => {
+        }).catch((error) => {
           assert(destroyRecord.called, 'expected update.destroyRecord to be called');
-          assert.equal(err.message, 'decode rejected');
+          assert.equal(error.message, 'decode rejected');
         });
       });
       
@@ -271,9 +271,9 @@ describeModule('service:update-puller', 'Unit | Service | UpdatePullerService', 
         
         return sut.processUpdate(options, update).then(() => {
           assert.fail(false, 'not rejected')
-        }).catch((err) => {
+        }).catch((error) => {
           assert(destroyRecord.called, 'expected update.destroyRecord to be called');
-          assert.equal(err.message, 'validate rejected');
+          assert.equal(error.message, 'validate rejected');
         });
       });
       
@@ -283,9 +283,9 @@ describeModule('service:update-puller', 'Unit | Service | UpdatePullerService', 
         
         return sut.processUpdate(options, update).then(() => {
           assert.fail(false, 'not rejected')
-        }).catch((err) => {
+        }).catch((error) => {
           assert(destroyRecord.called, 'expected update.destroyRecord to be called');
-          assert.equal(err.message, 'pushToContact rejected');
+          assert.equal(error.message, 'pushToContact rejected');
         });
       });
     });
@@ -376,8 +376,8 @@ describeModule('service:update-puller', 'Unit | Service | UpdatePullerService', 
         
         return sut.pushToContact(options).then(() => {
           assert.fail(false, 'not rejected');
-        }).catch((err) => {
-          assert.match(err.message, /Contact not found/);
+        }).catch((error) => {
+          assert.match(error.message, /Contact not found/);
         });
       });
     });
