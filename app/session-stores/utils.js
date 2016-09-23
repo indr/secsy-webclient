@@ -19,7 +19,9 @@ export default {
   del,
   get,
   has,
-  set
+  set,
+  
+  window
 }
 
 let crypto;
