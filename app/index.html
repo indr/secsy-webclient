@@ -8,26 +8,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- For IE 9 and below. ICO should be 32x32 pixels in size -->
-  <!--[if IE]><link rel="shortcut icon" href="/favicon.ico"><![endif]-->
+  <!--[if IE]><link rel="shortcut icon" href="{{rootURL}}favicon.ico"><![endif]-->
 
   <!-- Touch Icons - iOS and Android 2.1+ 180x180 pixels in size. -->
-  <link rel="apple-touch-icon-precomposed" href="apple-touch-icon-precomposed.png">
+  <link rel="apple-touch-icon-precomposed" href="{{rootURL}}apple-touch-icon-precomposed.png">
 
   <!-- Firefox, Chrome, Safari, IE 11+ and Opera. 196x196 pixels in size. -->
-  <link rel="icon" href="/favicon.png">
+  <link rel="icon" href="{{rootURL}}favicon.png">
 
   {{content-for "head"}}
 
-  <link rel="stylesheet" href="assets/vendor.css">
-  <link rel="stylesheet" href="assets/addressbook.css">
+  <link rel="stylesheet" href="{{rootURL}}assets/vendor.css">
+  <link rel="stylesheet" href="{{rootURL}}assets/addressbook.css">
 
   {{content-for "head-footer"}}
 </head>
 <body>
 {{content-for "body"}}
 
-<script src="assets/vendor.js"></script>
-<script src="assets/addressbook.js"></script>
+<script src="{{rootURL}}assets/vendor.js"></script>
+<script src="{{rootURL}}assets/addressbook.js"></script>
 
 {{content-for "body-footer"}}
 </body>
