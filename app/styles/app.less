@@ -2,6 +2,7 @@
 @import 'bootswatch';
 @import 'variables';
 @import 'gly-spin';
+@import 'navbar';
 
 @grid-float-breakpoint: 1px;
 
@@ -36,6 +37,7 @@ div.loading {
 
 .footer {
   margin-top: 60px;
+  font-size: 80%;
 }
 
 .search-container {
@@ -102,6 +104,12 @@ a.card-link:hover {
 
 .card .label {
   margin-right: 7px;
+}
+
+@media (max-width: @screen-xs-max) {
+  .thumbnail {
+    margin-bottom: 3px;
+  }
 }
 
 /*
