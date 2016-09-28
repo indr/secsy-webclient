@@ -20,6 +20,10 @@ export default Ember.Controller.extend({
   
   isSearchVisible: Ember.computed.and('isSearchOpen', 'canSearch'),
   
+  isProgressVisible: Ember.computed.and('progress', 'progress.max'),
+  
+  isToolbarVisible: Ember.computed.or('isSearchVisible', 'isProgressVisible'),
+  
   progress: {value: 0, max: 0, type: 'info'},
   
   openSearch() {

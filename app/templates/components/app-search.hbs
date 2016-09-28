@@ -1,13 +1,9 @@
-<div class="modal-content">
-    <div class="modal-body">
-      {{#bs-form}}
-          <div class="input-group">
-            {{bs-input type='text' value=addressbook.searchQuery placeholder='Search for contacts' autofocus=true keyUp='keyUp'}}
-              <span class="input-group-btn">
+{{#bs-form class="search-form"}}
+    <div class="input-group">
+      {{bs-input type='text' value=addressbook.searchQuery placeholder='Search for contacts' autofocus=true keyUp='keyUp'}}
+        <span class="input-group-btn">
                 {{!--{{bs-button type='primary' buttonType='submit' icon='glyphicon glyphicon-search'}}--}}
-                {{bs-button type='default' action='close' icon='glyphicon glyphicon-remove'}}
+          {{bs-button type='default' action='close' icon='glyphicon glyphicon-remove'}}
           </span>
-          </div>
-      {{/bs-form}}
     </div>
-</div>
+{{/bs-form}}

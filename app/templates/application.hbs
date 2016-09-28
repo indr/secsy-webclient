@@ -1,8 +1,19 @@
 {{app-navbar openSearch='openSearch' canSearch=canSearch isSearchVisible=isSearchVisible}}
 
-{{#if isSearchVisible}}
-    <div class="container search-container">
-      {{app-search close='closeSearch'}}
+{{#if isToolbarVisible}}
+    <div class="container toolbar-container">
+        <div class="modal-content">
+            <div class="modal-body">
+              {{#if isSearchVisible}}
+                {{app-search close='closeSearch'}}
+              {{/if}}
+              {{#if isProgressVisible}}
+                {{#bs-progress}}
+                  {{bs-progress-bar value=progress.value minValue=0 maxValue=progress.max showLabel=false type=progress.type}}
+                {{/bs-progress}}
+              {{/if}}
+            </div>
+        </div>
     </div>
 {{/if}}
 
@@ -18,13 +29,6 @@
           {{flash-message flash=flash}}
         {{/each}}
       {{/unless}}
-    </div>
-    <div class="progress-bar-container">
-      {{#if progress.max}}
-        {{#bs-progress}}
-          {{bs-progress-bar value=progress.value minValue=0 maxValue=progress.max showLabel=false type=progress.type}}
-        {{/bs-progress}}
-      {{/if}}
     </div>
   {{outlet}}
 </div>
