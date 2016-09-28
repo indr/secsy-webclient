@@ -7,9 +7,17 @@ let App;
 
 Ember.MODEL_FACTORY_INJECTIONS = true;
 
-Ember.RSVP.on('error', function (error) {
-  Ember.Logger.assert(false, error);
+Ember.onerror = function () {
+  onError('Ember.onerror', ...arguments);
+};
+
+Ember.RSVP.on('error', function () {
+  onError('RSVP.onError', ...arguments);
 });
+
+Ember.Logger.error = function () {
+  onError('Logger.error', ...arguments);
+};
 
 Ember.$.ajaxSetup({
   timeout: 8000
@@ -24,3 +32,38 @@ App = Ember.Application.extend({
 loadInitializers(App, config.modulePrefix);
 
 export default App;
+
+function onError (source) {
+  console.error(...arguments);
+  
+  try {
+    let report = {
+      occuredAt: new Date(),
+      source,
+      agent: navigator ? navigator.userAgent : null,
+      language: navigator ? navigator.language || navigator.userLanguage : null,
+    };
+    const args = Array.prototype.slice.call(arguments, 1);
+    for (var i = 0; i < args.length; i++) {
+      let each = args[i];
+      if (typeof each === 'object') {
+        report.instanceOfError = each instanceof Error;
+        report.errorName = each.name;
+        report.errorMessage = each.message;
+        report.errorStack = each.stack;
+        break;
+      }
+    }
+    
+    const options = {
+      url: '/api/error-reports',
+      type: 'POST',
+      data: JSON.stringify(report),
+      dataType: 'json',
+      contentType: 'application/json'
+    };
+    Ember.$.ajax(options);
+  } catch (error) {
+    console.error('Error reporting error', error);
+  }
+}
