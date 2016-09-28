@@ -7,6 +7,13 @@ let App;
 
 Ember.MODEL_FACTORY_INJECTIONS = true;
 
+window.onerror = function (errorMsg, url, lineNumber, column, errorObj) {
+  onError('window.onerror', {
+    message: errorMsg,
+    stack: typeof errorObj === 'object' ? errorObj.stack : errorObj
+  });
+};
+
 Ember.onerror = function () {
   onError('Ember.onerror', ...arguments);
 };
