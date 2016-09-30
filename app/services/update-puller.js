@@ -29,6 +29,7 @@ export default Ember.Service.extend({
       emailHash,
       onProgress: onProgress || Ember.K,
       status: {
+        id: Ember.generateGuid(null, 'progressStatus'),
         done: false,
         max: 0,
         value: 0

@@ -23,6 +23,7 @@ export default Ember.Service.extend({
       onProgress: onProgress || Ember.K,
       payload: data,
       status: {
+        id: Ember.generateGuid(null, 'progressStatus'),
         done: false,
         max: 0,
         value: 0

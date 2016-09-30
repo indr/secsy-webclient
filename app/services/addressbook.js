@@ -46,6 +46,7 @@ export default Ember.Service.extend({
     
     const store = this.get('store');
     var status = {
+      id: Ember.generateGuid(null, 'progressStatus'),
       max: 1,
       value: 0
     };
@@ -92,6 +93,7 @@ export default Ember.Service.extend({
     const number = number || fake.random.number(30, 50);
     
     var status = {
+      id: Ember.generateGuid(null, 'progressStatus'),
       max: number,
       value: 0
     };

@@ -95,7 +95,8 @@ describeModule('service:update-puller', 'Unit | Service | UpdatePullerService', 
         return sut.pull(emailAddress, onProgress).then(() => {
           assert(onProgress.called, 'expected onProgress to be called');
           const status = onProgress.calls[0].arg;
-          assert.deepEqual(status, {done: false, max: 5, value: 0});
+          assert.match(status.id, /^[a-z]+[0-9]+$/i);
+          assert.deepEqual(status, {id: status.id, done: false, max: 5, value: 0});
         });
       });
       
@@ -103,7 +104,8 @@ describeModule('service:update-puller', 'Unit | Service | UpdatePullerService', 
         return sut.pull(emailAddress, onProgress).then((result) => {
           assert(onProgress.called, 'expected onProgress to be called');
           const status = onProgress.lastCall.args[0];
-          assert.deepEqual(status, {done: true, max: 5, value: 0});
+          assert.match(status.id, /^[a-z]+[0-9]+$/i);
+          assert.deepEqual(status, {id: status.id, done: true, max: 5, value: 0});
           assert.equal(result, options);
         });
       });

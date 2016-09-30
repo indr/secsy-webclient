@@ -111,7 +111,8 @@ describeModule('service:update-pusher', 'Unit | Service | UpdatePusherService', 
         return sut.push(data, emailAddress, onProgress).then(() => {
           assert(onProgress.called, 'expected onProgress to be called');
           const status = onProgress.calls[0].arg;
-          assert.deepEqual(status, {done: false, max: 3, value: 0});
+          assert.match(status.id, /^[a-z]+[0-9]+$/i);
+          assert.deepEqual(status, {id: status.id, done: false, max: 3, value: 0});
         });
       });
       
@@ -119,7 +120,8 @@ describeModule('service:update-pusher', 'Unit | Service | UpdatePusherService', 
         return sut.push(data, emailAddress, onProgress).then((result) => {
           assert(onProgress.called, 'expected onProgress to be called');
           const status = onProgress.lastCall.arg;
-          assert.deepEqual(status, {done: true, max: 3, value: 0});
+          assert.match(status.id, /^[a-z]+[0-9]+$/i);
+          assert.deepEqual(status, {id: status.id, done: true, max: 3, value: 0});
           assert.equal(result, options);
         });
       });
