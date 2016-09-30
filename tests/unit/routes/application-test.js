@@ -40,57 +40,6 @@ describeModule('route:application', 'Unit | Route | application', {
       };
     });
     
-    describe('#onProgress', function () {
-      beforeEach(function () {
-        sut.controller.set('progress', {});
-      });
-      
-      function assertProgressRestored (done) {
-        Ember.run.later(() => {
-          assert.equal(sut.controller.get('progress.max'), 0);
-          assert.equal(sut.controller.get('progress.type'), 'info');
-          done();
-        }, 1050);
-      }
-      
-      it('should pass progress.value and .max to controller', function () {
-        sut.onProgress({max: 5, value: 3});
-        
-        assert.equal(sut.controller.get('progress.max'), 5);
-        assert.equal(sut.controller.get('progress.value'), 3);
-      });
-      
-      it('should set controller progress.type to success if value === max', function () {
-        sut.onProgress({max: 5, value: 5});
-        
-        assert.equal(sut.controller.get('progress.type'), 'success');
-      });
-      
-      it('should set controller progress.type to danger if done === true and value !== max', function () {
-        sut.onProgress({done: true, max: 5, value: 3});
-        
-        assert.equal(sut.controller.get('progress.type'), 'danger');
-      });
-      
-      it('should restore progress after 1 second if value === max', function (done) {
-        sut.onProgress({max: 5, value: 5});
-        
-        assertProgressRestored(done);
-      });
-      
-      it('should restore progress after 1 second if done:true and value === max', function (done) {
-        sut.onProgress({done: true, max: 5, value: 5});
-        
-        assertProgressRestored(done);
-      });
-      
-      it('should restore progress after 1 second if done:true and value !== max', function (done) {
-        sut.onProgress({done: true, max: 5, value: 3});
-        
-        assertProgressRestored(done);
-      });
-    });
-    
     describe('action#pullUpdates', function () {
       var emailAddress = 'user@example.com';
       

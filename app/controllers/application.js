@@ -20,11 +20,12 @@ export default Ember.Controller.extend({
   
   isSearchVisible: Ember.computed.and('isSearchOpen', 'canSearch'),
   
-  isProgressVisible: Ember.computed.and('progress', 'progress.max'),
+  isProgressVisible: Ember.computed.and('progresses', 'progresses.length'),
   
   isToolbarVisible: Ember.computed.or('isSearchVisible', 'isProgressVisible'),
   
-  progress: {value: 0, max: 0, type: 'info'},
+  _progresses: {},
+  progresses: Ember.A(),
   
   openSearch() {
     if (!this.get('canSearch')) {
@@ -35,5 +36,37 @@ export default Ember.Controller.extend({
   
   closeSearch() {
     this.set('isSearchOpen', false);
+  },
+  
+  onProgress(status) {
+    const id = status.id || 'default';
+    let progress = this._progresses[id];
+    
+    if (!progress) {
+      progress = Ember.Object.create();
+      progress.set('type', 'info');
+      this._progresses[id] = progress;
+      this.progresses.addObject(progress);
+    }
+    
+    progress.set('value', status.value);
+    progress.set('max', status.max);
+    if (status.done && status.value !== status.max) {
+      progress.set('type', 'danger');
+      Ember.run.later(this.removeProgress.bind(this, id), 1000);
+    } else if (status.done || status.value === status.max) {
+      progress.set('type', 'success');
+      Ember.run.later(this.removeProgress.bind(this, id), 1000);
+    }
+  },
+  
+  removeProgress(id) {
+    let progress = this._progresses[id];
+    if (!progress) {
+      return;
+    }
+    
+    this.progresses.removeObject(progress);
+    delete this._progresses[id];
   }
 });

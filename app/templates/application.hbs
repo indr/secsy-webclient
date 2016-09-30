@@ -8,9 +8,11 @@
                 {{app-search close='closeSearch'}}
               {{/if}}
               {{#if isProgressVisible}}
-                {{#bs-progress}}
-                  {{bs-progress-bar value=progress.value minValue=0 maxValue=progress.max showLabel=false type=progress.type}}
-                {{/bs-progress}}
+                {{#each progresses as |progress|}}
+                  {{#bs-progress}}
+                    {{bs-progress-bar value=progress.value minValue=0 maxValue=progress.max showLabel=false type=progress.type}}
+                  {{/bs-progress}}
+                {{/each}}
               {{/if}}
             </div>
         </div>
