@@ -3,6 +3,14 @@ import Ember from 'ember';
 function debug (message) {
   Ember.debug('[mixin:tracker] ' + message)
 }
+
+function setProperty (name, value) {
+  if (this.isDestroying || this.isDestroyed) {
+    return;
+  }
+  this.set(name, value);
+}
+
 export default Ember.Mixin.create({
   track(setStateProperty, promise) {
     if (arguments.length === 1) {
@@ -16,7 +24,7 @@ export default Ember.Mixin.create({
       // setStateProperty = Ember.K;
       return promise;
     } else if (typeof setStateProperty === 'string') {
-      setStateProperty = this.set.bind(this, setStateProperty);
+      setStateProperty = setProperty.bind(this, setStateProperty);
     }
     
     setStateProperty('pending');
