@@ -1,8 +1,8 @@
-# addressbook-webclient
+# secsy-webclient
 
-[![Build Status](https://travis-ci.org/indr/addressbook-webclient.svg?branch=master)](https://travis-ci.org/indr/addressbook-webclient)
-[![dependencies Status](https://david-dm.org/indr/addressbook-webclient/status.svg)](https://david-dm.org/indr/addressbook-webclient)
-[![devDependencies Status](https://david-dm.org/indr/addressbook-webclient/dev-status.svg)](https://david-dm.org/indr/addressbook-webclient?type=dev)
+[![Build Status](https://travis-ci.org/indr/secsy-webclient.svg?branch=master)](https://travis-ci.org/indr/secsy-webclient)
+[![dependencies Status](https://david-dm.org/indr/secsy-webclient/status.svg)](https://david-dm.org/indr/secsy-webclient)
+[![devDependencies Status](https://david-dm.org/indr/secsy-webclient/dev-status.svg)](https://david-dm.org/indr/secsy-webclient?type=dev)
 
 This README outlines the details of collaborating on this Ember application.
 A short introduction of this app could easily go here.
@@ -57,6 +57,4 @@ Specify what it takes to deploy your app.
 
 ## License
 
-[No license](http://choosealicense.com/no-license/) yet,
-
-Copyright 2016 Reto Inderbitzin
+Copyright (c) 2016 Reto Inderbitzin, [MIT](LICENSE.md) License
