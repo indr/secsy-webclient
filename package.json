@@ -2,7 +2,7 @@
   "name": "addressbook",
   "description": "Small description for addressbook goes here",
   "version": "0.0.0",
-  "license": "GPL-3.0",
+  "license": "MIT",
   "private": true,
   "author": "Reto Inderbitzin (https://github.com/indr)",
   "directories": {
