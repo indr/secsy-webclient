@@ -4,8 +4,7 @@
 [![dependencies Status](https://david-dm.org/indr/secsy-webclient/status.svg)](https://david-dm.org/indr/secsy-webclient)
 [![devDependencies Status](https://david-dm.org/indr/secsy-webclient/dev-status.svg)](https://david-dm.org/indr/secsy-webclient?type=dev)
 
-This README outlines the details of collaborating on this Ember application.
-A short introduction of this app could easily go here.
+Official Ember.js web client for secsy.io.
 
 ## Prerequisites
 
