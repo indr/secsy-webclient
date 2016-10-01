@@ -8,7 +8,7 @@
  */
 
 import Ember from 'ember';
-import ENV from 'addressbook/config/environment';
+import ENV from 'secsy-webclient/config/environment';
 
 /**
  * The `DecryptedRouteMixin` ensures that the `keychain` is open. If the keychain is closed, it will
@@ -22,7 +22,7 @@ import ENV from 'addressbook/config/environment';
  * See ember-simple-auths authenticated-route-mixins (beforeModel)[https://github.com/simplabs/ember-simple-auth/blob/1.1.0-beta.3/addon/mixins/authenticated-route-mixin.js#L36]
  *
  * @class DecryptedRouteMixin
- * @module addressbook/mixins/decrypted-route-mixin
+ * @module secsy-webclient/mixins/decrypted-route-mixin
  * @extends Ember.Mixin
  * @public
  */

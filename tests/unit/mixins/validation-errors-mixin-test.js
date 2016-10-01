@@ -11,7 +11,7 @@ import { assert } from 'chai';
 import Ember from 'ember';
 import { describeModule, it } from 'ember-mocha';
 
-import ValidationErrorsMixin from 'addressbook/mixins/validation-errors-mixin';
+import ValidationErrorsMixin from 'secsy-webclient/mixins/validation-errors-mixin';
 
 // Testing Ember.js Mixins With a Container
 // http://www.chriskrycho.com/2016/testing-emberjs-mixins-with-a-container.html

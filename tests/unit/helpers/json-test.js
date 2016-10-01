@@ -8,7 +8,7 @@
  */
 
 import { assert } from 'chai';
-import { json } from 'addressbook/helpers/json';
+import { json } from 'secsy-webclient/helpers/json';
 import { describe, it } from 'mocha';
 
 describe('Unit | Helper | json', function () {

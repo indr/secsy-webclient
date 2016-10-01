@@ -15,7 +15,7 @@ import {
   beforeEach
 } from 'mocha';
 import Ember from 'ember';
-import { initialize } from 'addressbook/initializers/load-extensions';
+import { initialize } from 'secsy-webclient/initializers/load-extensions';
 
 describe('LoadExtensionsInitializer', function() {
   let container, application;

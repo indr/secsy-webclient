@@ -14,7 +14,7 @@ import {
   it
 } from 'mocha';
 import Ember from 'ember';
-import TrackerMixinMixin from 'addressbook/mixins/tracker-mixin';
+import TrackerMixinMixin from 'secsy-webclient/mixins/tracker-mixin';
 
 describe('TrackerMixinMixin', function() {
   // Replace this with your real tests.

@@ -8,7 +8,7 @@
  */
 
 import Ember from 'ember';
-import Addressbook from 'addressbook/services/addressbook';
+import Addressbook from 'secsy-webclient/services/addressbook';
 import DsRecordArray from 'ember-data/-private/system/record-arrays/record-array'
 import simple from 'simple-mock';
 

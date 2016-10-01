@@ -10,10 +10,10 @@
 import { assert } from 'chai';
 import Ember from 'ember';
 import { describeModule, it } from 'ember-mocha';
-import ENV from 'addressbook/config/environment';
+import ENV from 'secsy-webclient/config/environment';
 import { before, beforeEach, describe } from 'mocha';
 
-import UndecryptedRouteMixin from 'addressbook/mixins/undecrypted-route-mixin';
+import UndecryptedRouteMixin from 'secsy-webclient/mixins/undecrypted-route-mixin';
 
 const {
   K,

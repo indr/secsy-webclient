@@ -17,7 +17,7 @@ import utils from './utils';
 import AdaptiveStore from 'ember-simple-auth/session-stores/adaptive';
 import VolatileStore from './volatile';
 
-import ENV from 'addressbook/config/environment';
+import ENV from 'secsy-webclient/config/environment';
 
 const {
   RSVP

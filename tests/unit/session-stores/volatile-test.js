@@ -11,9 +11,9 @@ import { assert } from 'chai';
 import { describeModule, it } from 'ember-mocha';
 import { after, beforeEach, describe } from 'mocha';
 import simple from 'simple-mock';
-import utils from 'addressbook/session-stores/utils';
+import utils from 'secsy-webclient/session-stores/utils';
 
-import ENV from 'addressbook/config/environment';
+import ENV from 'secsy-webclient/config/environment';
 
 const globalWindow = window;
 

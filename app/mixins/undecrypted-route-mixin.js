@@ -8,7 +8,7 @@
  */
 
 import Ember from 'ember';
-import ENV from 'addressbook/config/environment';
+import ENV from 'secsy-webclient/config/environment';
 
 export default Ember.Mixin.create({
   keychain: Ember.inject.service(''),

@@ -15,7 +15,7 @@ import {
   beforeEach
 } from 'mocha';
 import Ember from 'ember';
-import { initialize } from 'addressbook/initializers/reopen-classes';
+import { initialize } from 'secsy-webclient/initializers/reopen-classes';
 
 describe('ReopenClassesInitializer', function() {
   let container, application;

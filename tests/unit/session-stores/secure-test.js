@@ -13,7 +13,7 @@ import { describeModule, it } from 'ember-mocha';
 import { beforeEach, describe } from 'mocha';
 import simple from 'simple-mock';
 
-import ENV from 'addressbook/config/environment';
+import ENV from 'secsy-webclient/config/environment';
 
 describeModule('session-store:secure', 'Unit | Session store | secure', {},
   function () {

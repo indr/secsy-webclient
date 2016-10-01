@@ -10,11 +10,11 @@
 import { assert } from 'chai';
 import Ember from 'ember';
 import { describeModule, it } from 'ember-mocha';
-import ENV from 'addressbook/config/environment';
+import ENV from 'secsy-webclient/config/environment';
 import { beforeEach, describe } from 'mocha';
 import simple from 'simple-mock';
 
-import ApplicationRouteMixin from 'addressbook/mixins/application-route-mixin';
+import ApplicationRouteMixin from 'secsy-webclient/mixins/application-route-mixin';
 
 // Testing Ember.js Mixins With a Container
 // http://www.chriskrycho.com/2016/testing-emberjs-mixins-with-a-container.html

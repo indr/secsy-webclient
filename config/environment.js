@@ -11,7 +11,7 @@
 
 module.exports = function (environment) {
   var ENV = {
-    modulePrefix: 'addressbook',
+    modulePrefix: 'secsy-webclient',
     environment: environment,
     rootURL: '/',
     locationType: 'auto',

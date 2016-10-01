@@ -11,7 +11,7 @@ import Ember from 'ember';
 import Base from 'ember-simple-auth/session-stores/base';
 import utils from './utils';
 
-import ENV from 'addressbook/config/environment';
+import ENV from 'secsy-webclient/config/environment';
 
 const {
   RSVP

@@ -1,20 +1,20 @@
 {
-  "name": "addressbook",
-  "description": "Small description for addressbook goes here",
+  "name": "secsy-webclient",
   "version": "0.0.0",
+  "description": "Official Ember.js web client for secsy.io",
+  "homepage": "https://github.com/indr/secsy-webclient",
   "license": "MIT",
-  "private": true,
-  "author": "Reto Inderbitzin (https://github.com/indr)",
+  "author": "Reto Inderbitzin <mail@indr.ch>",
   "directories": {
-    "doc": "doc",
     "test": "tests"
   },
   "engines": {
     "node": ">= 0.10.0"
   },
+  "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/indr/addressbook-web-client"
+    "url": "https://github.com/indr/secsy-webclient.git"
   },
   "scripts": {
     "build": "ember build",

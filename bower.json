@@ -1,5 +1,5 @@
 {
-  "name": "addressbook",
+  "name": "secsy-webclient",
   "dependencies": {
     "ember": "~2.8.1",
     "ember-cli-shims": "0.1.3",
