@@ -41,6 +41,7 @@ actions:
   show-on-map: Auf der Karte anzeigen
   signup: Registrieren
   update: Aktualisieren
+  vcard: vCard herunterladen
 
 application:
   loading: Laden... Bitte warten Sie einen Moment!

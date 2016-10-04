@@ -41,6 +41,7 @@ actions:
   show-on-map: Show on map
   signup: Signup
   update: Update
+  vcard: Download vCard
 
 application:
   loading: Application is loading... Please wait a moment!

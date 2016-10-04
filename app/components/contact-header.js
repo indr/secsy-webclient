@@ -14,5 +14,11 @@ export default Ember.Component.extend({
   
   canReview: Ember.computed('session.data.authenticated.sync_enabled', function () {
     return this.get('session').get('data.authenticated.sync_enabled');
-  })
+  }),
+  
+  actions: {
+    downloadCard() {
+      this.sendAction('downloadCard', this.get('model'));
+    }
+  }
 });

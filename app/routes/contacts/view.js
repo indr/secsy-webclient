@@ -15,6 +15,8 @@ function debug (message) {
 }
 
 export default Ember.Route.extend(TrackerMixin, {
+  exporter: Ember.inject.service(),
+  saveAs: window.saveAs,
   store: Ember.inject.service(),
   
   model(params) {
@@ -37,6 +39,12 @@ export default Ember.Route.extend(TrackerMixin, {
       }).catch((error) => {
         this.get('flashMessages').dangerT('errors.delete-unknown-error', error);
       });
+    },
+    
+    downloadCard(model) {
+      const card = this.get('exporter').contactTovCard3(model);
+      const blob = new Blob([card], {type: "text/vcard:charset=utf-8"});
+      this.saveAs(blob, model.get('name$').replace(/ /g, '_').replace(/[^a-z0-9_]/gi, '') + '.vcf');
     },
     
     transitionToShare(model) {
