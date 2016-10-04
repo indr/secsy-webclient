@@ -13,6 +13,7 @@ import DsRecordArray from 'ember-data/-private/system/record-arrays/record-array
 import simple from 'simple-mock';
 
 const {
+  isBlank,
   RSVP
 } = Ember;
 
@@ -33,7 +34,14 @@ const FakeAddressbook = Addressbook.extend({});
 const FakeContact = Ember.Object.extend({
   getRecord(){
     return this;
-  }
+  },
+  
+  location: Ember.computed('location_latitude$', 'location_longitude$', function () {
+    if (isBlank(this.get('location_latitude$')) || isBlank(this.get('location_longitude$'))) {
+      return null;
+    }
+    return [this.get('location_latitude$'), this.get('location_longitude$')];
+  })
 });
 
 const FakeCrypto = Ember.Object.extend({
@@ -46,6 +54,12 @@ const FakeCrypto = Ember.Object.extend({
   },
   hashEmail: function () {
     return 'default hash';
+  }
+});
+
+const FakeExporter = Ember.Object.extend({
+  contactTovCard3: function () {
+    return 'BEGIN:VCARD...';
   }
 });
 
@@ -104,6 +118,7 @@ export {
   FakeAddressbook,
   FakeContact,
   FakeCrypto,
+  FakeExporter,
   FakeKey,
   FakeKeystore,
   FakeOpenpgp,
