@@ -30,7 +30,7 @@ describeModule('service:exporter', 'Unit | Service | ExporterService', {
         contact.name$ = 'Name';
         contact.emailAddress$ = 'test@example.com';
         
-        sut.contactTovCard3(contact);
+        return sut.vcard3(contact);
       });
       
       it('should return a full vcard', function () {
@@ -47,9 +47,8 @@ describeModule('service:exporter', 'Unit | Service | ExporterService', {
         contact.internet_telegram$ = '@teleHans';
         contact.internet_whatsapp$ = '@whatsHans';
         
-        let actual = sut.contactTovCard3(contact);
-        
-        const expected = `BEGIN:VCARD
+        return sut.vcard3(contact).then((actual) => {
+          const expected = `BEGIN:VCARD
 VERSION:3.0
 FN:Hans Peter Muster Tester
 N:Muster Tester;Hans;Peter;;
@@ -63,12 +62,13 @@ X-TELEGRAM:@teleHans
 X-WHATSAPP:@whatsHans
 X-LOCATION-NAME:Bern
 END:VCARD`.split('\n');
-        
-        actual = actual.split('\r\n');
-        for (var i = 0; i < expected.length; i++) {
-          assert.include(actual, expected[i], actual);
-        }
-        assert.sameDeepMembers(actual, expected);
+          
+          actual = actual.split('\r\n');
+          for (var i = 0; i < expected.length; i++) {
+            assert.include(actual, expected[i], actual);
+          }
+          assert.sameDeepMembers(actual, expected);
+        });
       });
     });
   }

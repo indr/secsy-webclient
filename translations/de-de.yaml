@@ -315,6 +315,7 @@ errors:
   invalid-current-passphrase: 'Ungültige aktuelle Passphrase'
   invalid-username-or-password: 'Unbekannte E-Mail-Adresse oder falsches Passwort'
   decryption-failed: 'Entschlüsselungsfehler'
+  download-vcard-error: 'Unbekannter Fehler beim Generieren und Herunterladen der vCard-Datei'
   save-unknown: Unbekannter Fehler beim Speichern
   token-not-found: 'Dieses Token ist ungültig'
   # No clue where these two guys are comming from...

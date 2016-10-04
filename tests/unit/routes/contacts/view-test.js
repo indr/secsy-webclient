@@ -20,36 +20,49 @@ describeModule('route:contacts/view', 'Unit | Route | contacts/view', {
   },
   function () {
     let sut, model,
-      exporter,
+      exporter, flashMessages,
       send;
     
     beforeEach(function () {
       this.register('service:exporter', fakes.FakeExporter);
       exporter = Ember.getOwner(this).lookup('service:exporter');
+      this.register('service:flash-messages', fakes.FlashMessages);
+      flashMessages = Ember.getOwner(this).lookup('service:flash-messages');
       
       sut = this.subject();
       sut.set('controller', Ember.Object.create());
+      sut.set('flashMessages', flashMessages);
       model = fakes.FakeContact.create({name$: 'Hans, Meier'});
       sut.controller.set('model', model);
+      sut.saveAs = Ember.K;
       send = simple.mock(sut, 'send').callOriginal();
-    });
-    
-    it('exists', function () {
-      assert(sut);
     });
     
     describe('action #downloadCard', function () {
       it('should window.saveAs a vcard as text/vcard', function () {
         let saveAs = simple.mock(sut, 'saveAs').returnWith(undefined);
-        simple.mock(exporter, 'contactTovCard3').returnWith('BEGIN:VCARD...');
+        simple.mock(exporter, 'vcard3').resolveWith('BEGIN:VCARD...');
         
-        sut.send('downloadCard', model);
+        return sut.send('downloadCard', model).then(() => {
+          assert.isTrue(saveAs.called);
+          
+          assert.instanceOf(saveAs.lastCall.args[0], window.Blob);
+          assert.equal(saveAs.lastCall.args[0].size, 14);
+          assert.equal(saveAs.lastCall.args[0].type, 'text/vcard:charset=utf-8');
+          assert.equal(saveAs.lastCall.args[1], 'Hans_Meier.vcf');
+        });
+      });
+      
+      it('should flash error message', function () {
+        const error = new Error('vcard3 rejected');
+        simple.mock(exporter, 'vcard3').rejectWith(error);
+        let dangerT = simple.mock(flashMessages, 'dangerT').returnWith();
         
-        assert.isTrue(saveAs.called);
-        
-        assert.instanceOf(saveAs.lastCall.args[0], window.Blob);
-        assert.equal(saveAs.lastCall.args[0].type, 'text/vcard:charset=utf-8');
-        assert.equal(saveAs.lastCall.args[1], 'Hans_Meier.vcf');
+        return sut.send('downloadCard', model).then(() => {
+          assert.isTrue(dangerT.called);
+          assert.equal(dangerT.lastCall.args[0], 'errors.download-vcard-error');
+          assert.equal(dangerT.lastCall.args[1], error);
+        });
       });
     });
   }

@@ -28,8 +28,9 @@ export default Ember.Route.extend(TrackerMixin, {
   
   actions: {
     delete(model) {
+      const flash = this.get('flashMessages');
+      
       if (model.get('me')) {
-        const flash = this.get('flashMessages');
         flash.dangerT('errors.no-delete-self');
         return;
       }
@@ -37,14 +38,19 @@ export default Ember.Route.extend(TrackerMixin, {
       this.track('controller.deleteState', model.destroyRecord()).then(() => {
         this.transitionTo('contacts');
       }).catch((error) => {
-        this.get('flashMessages').dangerT('errors.delete-unknown-error', error);
+        flash.dangerT('errors.delete-unknown-error', error);
       });
     },
     
     downloadCard(model) {
-      const card = this.get('exporter').contactTovCard3(model);
-      const blob = new Blob([card], {type: "text/vcard:charset=utf-8"});
-      this.saveAs(blob, model.get('name$').replace(/ /g, '_').replace(/[^a-z0-9_]/gi, '') + '.vcf');
+      const flash = this.get('flashMessages');
+      
+      return this.get('exporter').vcard3(model).then((card) => {
+        const blob = new Blob([card], {type: "text/vcard:charset=utf-8"});
+        this.saveAs(blob, model.get('name$').replace(/ /g, '_').replace(/[^a-z0-9_]/gi, '') + '.vcf');
+      }).catch((error) => {
+        flash.dangerT('errors.download-vcard-error', error);
+      });
     },
     
     transitionToShare(model) {
