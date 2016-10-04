@@ -41,7 +41,7 @@ describeModule('route:contacts/view', 'Unit | Route | contacts/view', {
     describe('action #downloadCard', function () {
       it('should window.saveAs a vcard as text/vcard', function () {
         let saveAs = simple.mock(sut, 'saveAs').returnWith(undefined);
-        simple.mock(exporter, 'vcard3').resolveWith('BEGIN:VCARD...');
+        simple.mock(exporter, 'toVcard').resolveWith('BEGIN:VCARD...');
         
         return sut.send('downloadCard', model).then(() => {
           assert.isTrue(saveAs.called);
@@ -54,8 +54,8 @@ describeModule('route:contacts/view', 'Unit | Route | contacts/view', {
       });
       
       it('should flash error message', function () {
-        const error = new Error('vcard3 rejected');
-        simple.mock(exporter, 'vcard3').rejectWith(error);
+        const error = new Error('toVcard rejected');
+        simple.mock(exporter, 'toVcard').rejectWith(error);
         let dangerT = simple.mock(flashMessages, 'dangerT').returnWith();
         
         return sut.send('downloadCard', model).then(() => {

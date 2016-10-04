@@ -45,7 +45,7 @@ export default Ember.Route.extend(TrackerMixin, {
     downloadCard(model) {
       const flash = this.get('flashMessages');
       
-      return this.get('exporter').vcard3(model).then((card) => {
+      return this.get('exporter').toVcard(model).then((card) => {
         const blob = new Blob([card], {type: "text/vcard:charset=utf-8"});
         this.saveAs(blob, model.get('name$').replace(/ /g, '_').replace(/[^a-z0-9_]/gi, '') + '.vcf');
       }).catch((error) => {

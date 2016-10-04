@@ -8,6 +8,7 @@
  */
 
 import { assert } from 'chai';
+import Ember from 'ember';
 import { describeModule, it } from 'ember-mocha';
 import { beforeEach, describe } from 'mocha';
 
@@ -24,13 +25,13 @@ describeModule('service:exporter', 'Unit | Service | ExporterService', {
       sut = this.subject();
     });
     
-    describe('export contact as vCard3', function () {
+    describe('#toVcard', function () {
       it('should not fail if contact has undefined values', function () {
         let contact = FakeContact.create();
         contact.name$ = 'Name';
         contact.emailAddress$ = 'test@example.com';
         
-        return sut.vcard3(contact);
+        return sut.toVcard(contact);
       });
       
       it('should return a full vcard', function () {
@@ -47,7 +48,7 @@ describeModule('service:exporter', 'Unit | Service | ExporterService', {
         contact.internet_telegram$ = '@teleHans';
         contact.internet_whatsapp$ = '@whatsHans';
         
-        return sut.vcard3(contact).then((actual) => {
+        return sut.toVcard(contact).then((actual) => {
           const expected = `BEGIN:VCARD
 VERSION:3.0
 FN:Hans Peter Muster Tester
@@ -68,6 +69,25 @@ END:VCARD`.split('\n');
             assert.include(actual, expected[i], actual);
           }
           assert.sameDeepMembers(actual, expected);
+        });
+      });
+    });
+    
+    describe('#toVcards', function () {
+      it('should return vcards in a single string', function () {
+        const contacts = Ember.A();
+        contacts.pushObject(FakeContact.create({name$: 'One'}));
+        contacts.pushObject(FakeContact.create({name$: 'Two'}));
+        contacts.pushObject(FakeContact.create({name$: 'Three'}));
+        
+        return sut.toVcards(contacts).then((result) => {
+          console.log('Actual', result);
+          assert.match(result, /^BEGIN\:VCARD/);
+          assert.match(result, /END:VCARD$/);
+          assert.equal(result.match(/BEGIN:VCARD/g).length, 3);
+          assert.match(result, /One/);
+          assert.match(result, /Two/);
+          assert.match(result, /Three/);
         });
       });
     });
