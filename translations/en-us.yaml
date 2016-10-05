@@ -22,6 +22,8 @@ actions:
   delete-all: Delete all contacts
   dismiss: Dismiss
   edit: Edit
+  export-contact: Download vCard
+  export-contacts: Export and download all contacts
   forgot: Reset password
   generate: Generate
   generate-fakes: Generate some fake contacts
@@ -41,7 +43,6 @@ actions:
   show-on-map: Show on map
   signup: Signup
   update: Update
-  vcard: Download vCard
 
 application:
   loading: Application is loading... Please wait a moment!

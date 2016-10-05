@@ -81,7 +81,6 @@ END:VCARD`.split('\n');
         contacts.pushObject(FakeContact.create({name$: 'Three'}));
         
         return sut.toVcards(contacts).then((result) => {
-          console.log('Actual', result);
           assert.match(result, /^BEGIN\:VCARD/);
           assert.match(result, /END:VCARD$/);
           assert.equal(result.match(/BEGIN:VCARD/g).length, 3);

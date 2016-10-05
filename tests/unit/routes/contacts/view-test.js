@@ -40,7 +40,7 @@ describeModule('route:contacts/view', 'Unit | Route | contacts/view', {
     
     describe('action #downloadCard', function () {
       it('should window.saveAs a vcard as text/vcard', function () {
-        let saveAs = simple.mock(sut, 'saveAs').returnWith(undefined);
+        let saveAs = simple.mock(sut, 'saveAs').returnWith();
         simple.mock(exporter, 'toVcard').resolveWith('BEGIN:VCARD...');
         
         return sut.send('downloadCard', model).then(() => {

@@ -92,7 +92,9 @@ const FlashMessages = Ember.Object.extend({
   init() {
     this._super(...arguments);
     this.dangerT = simple.mock()
-  }
+  },
+  
+  clearMessages: Ember.K
 });
 
 const UpdatePuller = Ember.Object.extend({
