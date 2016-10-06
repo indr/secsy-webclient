@@ -22,6 +22,8 @@ actions:
   delete-all: Delete all contacts
   dismiss: Dismiss
   edit: Edit
+  export-contact: Download vCard
+  export-contacts: Export and download all contacts
   forgot: Reset password
   generate: Generate
   generate-fakes: Generate some fake contacts
@@ -311,5 +313,6 @@ errors:
   invalid-current-passphrase: 'Invalid current passphrase'
   invalid-username-or-password: 'Unknown email address or wrong password'
   decryption-failed: 'Decryption error'
+  download-vcard-error: 'Unknown error generating and downloading vcard'
   save-unknown: 'Unknown error saving'
   token-not-found: "This token is not valid"

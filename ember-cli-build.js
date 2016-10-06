@@ -34,8 +34,8 @@ module.exports = function (defaults) {
   
   app.import('bower_components/bootstrap/dist/js/bootstrap.min.js');
   
-  app.import('bower_components/simple-mock/index.js');
-  app.import('vendor/shims/simple-mock.js', {
+  app.import({test: 'bower_components/simple-mock/index.js'});
+  app.import({test: 'vendor/shims/simple-mock.js'}, {
     exports: {
       'simple-mock': ['default']
     }
@@ -47,6 +47,10 @@ module.exports = function (defaults) {
       'Fakerator': ['default']
     }
   });
+  
+  app.import('vendor/Blob.js');
+  app.import('bower_components/file-saver/FileSaver.js');
+  app.import('bower_components/ical.js/build/ical.js');
   
   return app.toTree();
 };

@@ -17,9 +17,24 @@ function debug (message) {
 export default Ember.Route.extend(TrackerMixin, {
   addressbook: Ember.inject.service(),
   ajax: Ember.inject.service(),
+  exporter: Ember.inject.service(),
+  saveAs: window.saveAs,
   session: Ember.inject.service(),
   
   actions: {
+    downloadCards() {
+      this.get('flashMessages').clearMessages();
+      
+      return this.get('addressbook').findContacts().then((contacts) => {
+        return this.get('exporter').toVcards(contacts);
+      }).then((cards) => {
+        const blob = new Blob([cards], {type: "text/vcard:charset=utf-8"});
+        this.saveAs(blob, 'secsy-contacts.vcf');
+      }).catch((error) => {
+        this.get('flashMessages').dangerT('errors.download-vcard-error', error);
+      });
+    },
+    
     savePreferences() {
       const flash = this.get('flashMessages');
       const model = this.controller.get('model');
