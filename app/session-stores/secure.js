@@ -29,6 +29,8 @@ export default Base.extend({
   volatileKeys: null,
   
   init() {
+    debug('init()');
+    
     const config = ENV['secure-store'];
     
     if (config) {
@@ -48,6 +50,8 @@ export default Base.extend({
   },
   
   persist(data) {
+    debug('persist()');
+    
     const persistent = utils.pick(data, this.persistentKeys);
     const volatile = this.volatileKeys ?
       utils.pick(data, this.volatileKeys) : utils.omit(data, this.persistentKeys);
@@ -56,6 +60,20 @@ export default Base.extend({
       this._persistentStore.persist(persistent),
       this._volatileStore.persist(volatile)
     ]);
+  },
+  
+  restore() {
+    debug('restore()');
+    
+    return RSVP.all([
+      this._persistentStore.restore(),
+      this._volatileStore.restore()
+    ]).then((datas) => {
+      return Ember.assign({},
+        utils.pick(datas[0], this.persistentKeys),
+        this.volatileKeys ?
+          utils.pick(datas[1], this.volatileKeys) : utils.omit(datas[1], this.persistentKeys));
+    });
   },
   
   _createStore(storeType, options) {

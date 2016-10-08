@@ -8,7 +8,7 @@
  */
 
 import { assert } from 'chai';
-// import Ember from 'ember';
+import Ember from 'ember';
 import { describeModule, it } from 'ember-mocha';
 import { beforeEach, describe } from 'mocha';
 import simple from 'simple-mock';
@@ -69,6 +69,48 @@ describeModule('session-store:secure', 'Unit | Session store | secure', {},
         return sut.persist(data).then(() => {
           assert.deepEqual(persistentPersist.lastCall.arg, {p: 'p1'});
           assert.deepEqual(volatilePersist.lastCall.arg, {v: 'v1'});
+        });
+      });
+    });
+    
+    describe('#restore', function () {
+      const persistentData = {p: 'p1', v: 'v1', x: 'x1'};
+      const volatileData = {p: 'p2', v: 'v2', x: 'x2'};
+      let persistentRestore, volatileRestore;
+      
+      it('should restore given no whitelists', function () {
+        delete config.persistent;
+        delete config.volatile;
+        createSut();
+        persistentRestore = simple.mock(persistentStore, 'restore').resolveWith(persistentData);
+        volatileRestore = simple.mock(volatileStore, 'restore').resolveWith(volatileData);
+        
+        return sut.restore().then((data) => {
+          assert.deepEqual(data, {p: 'p2', v: 'v2', x: 'x2'});
+        });
+      });
+      
+      it('should restore given only persistent whitelist', function () {
+        config.persistent = 'p';
+        delete config.volatile;
+        createSut();
+        persistentRestore = simple.mock(persistentStore, 'restore').resolveWith(persistentData);
+        volatileRestore = simple.mock(volatileStore, 'restore').resolveWith(volatileData);
+        
+        return sut.restore().then((data) => {
+          assert.deepEqual(data, {p: 'p1', v: 'v2', x: 'x2'});
+        });
+      });
+      
+      it('should restore given both whitelists ', function () {
+        config.persistent = 'p';
+        config.volatile = 'v';
+        createSut();
+        persistentRestore = simple.mock(persistentStore, 'restore').resolveWith(persistentData);
+        volatileRestore = simple.mock(volatileStore, 'restore').resolveWith(volatileData);
+        
+        return sut.restore().then((data) => {
+          assert.deepEqual(data, {p: 'p1', v: 'v2'});
         });
       });
     });
