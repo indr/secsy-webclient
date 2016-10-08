@@ -8,7 +8,6 @@
  */
 
 import { assert } from 'chai';
-import Ember from 'ember';
 import { describeModule, it } from 'ember-mocha';
 import { beforeEach, describe } from 'mocha';
 import simple from 'simple-mock';
@@ -71,6 +70,40 @@ describeModule('session-store:secure', 'Unit | Session store | secure', {},
           assert.deepEqual(volatilePersist.lastCall.arg, {v: 'v1'});
         });
       });
+      
+      it('should resolve with undefined', function () {
+        createSut();
+        
+        return sut.persist(data).then((result) => {
+          assert.equal(result, undefined);
+        });
+      });
+      
+      it('should reject with persistent stores error', function () {
+        createSut();
+        simple.mock(persistentStore, 'persist').rejectWith(new Error('persistent restore error'));
+        simple.mock(volatileStore, 'persist').resolveWith({});
+        
+        return sut.persist(data).then(() => {
+          assert.fail();
+        }).catch((error) => {
+          assert.equal(error.name, 'Error');
+          assert.equal(error.message, 'persistent restore error');
+        });
+      });
+      
+      it('should reject with volatile stores error', function () {
+        createSut();
+        simple.mock(persistentStore, 'persist').resolveWith({});
+        simple.mock(volatileStore, 'persist').rejectWith(new Error('volatile restore error'));
+        
+        return sut.persist(data).then(() => {
+          assert.fail();
+        }).catch((error) => {
+          assert.equal(error.name, 'Error');
+          assert.equal(error.message, 'volatile restore error');
+        });
+      });
     });
     
     describe('#restore', function () {
@@ -111,6 +144,78 @@ describeModule('session-store:secure', 'Unit | Session store | secure', {},
         
         return sut.restore().then((data) => {
           assert.deepEqual(data, {p: 'p1', v: 'v2'});
+        });
+        
+      });
+      
+      it('should reject with persistent stores error', function () {
+        createSut();
+        simple.mock(persistentStore, 'restore').rejectWith(new Error('persistent restore error'));
+        simple.mock(volatileStore, 'restore').resolveWith({});
+        
+        return sut.restore().then(() => {
+          assert.fail();
+        }).catch((error) => {
+          assert.equal(error.name, 'Error');
+          assert.equal(error.message, 'persistent restore error');
+        });
+      });
+      
+      it('should reject with volatile stores error', function () {
+        createSut();
+        simple.mock(persistentStore, 'restore').resolveWith({});
+        simple.mock(volatileStore, 'restore').rejectWith(new Error('volatile restore error'));
+        
+        return sut.restore().then(() => {
+          assert.fail();
+        }).catch((error) => {
+          assert.equal(error.name, 'Error');
+          assert.equal(error.message, 'volatile restore error');
+        });
+      });
+    });
+    
+    describe('#clear', function () {
+      let persistentClear, volatileClear;
+      
+      beforeEach(function () {
+        createSut();
+        persistentClear = simple.mock(persistentStore, 'clear');
+        volatileClear = simple.mock(volatileStore, 'clear');
+      });
+      
+      it('should clear persistent and volatile store and return undefined', function () {
+        persistentClear.resolveWith();
+        volatileClear.resolveWith();
+        
+        return sut.clear().then((result) => {
+          assert.isTrue(persistentClear.called);
+          assert.isTrue(volatileClear.called);
+          assert.equal(result, undefined);
+        });
+      });
+      
+      it('should reject with persistent stores error', function () {
+        persistentClear.rejectWith(new Error('persistent clear error'));
+        volatileClear.resolveWith();
+        
+        return sut.clear().then(() => {
+          assert.fail();
+        }).catch((error) => {
+          assert.equal(error.name, 'Error');
+          assert.equal(error.message, 'persistent clear error');
+        });
+      });
+      
+      it('should reject with volatile stores error', function () {
+        persistentClear.resolveWith();
+        volatileClear.rejectWith(new Error('volatile clear error'));
+        
+        return sut.clear().then(() => {
+          assert.fail();
+        }).catch((error) => {
+          assert.equal(error.name, 'Error');
+          assert.equal(error.message, 'volatile clear error');
         });
       });
     });

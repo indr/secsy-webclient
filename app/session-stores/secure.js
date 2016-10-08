@@ -59,7 +59,9 @@ export default Base.extend({
     return RSVP.all([
       this._persistentStore.persist(persistent),
       this._volatileStore.persist(volatile)
-    ]);
+    ]).then(() => {
+      // Don't return promise array
+    });
   },
   
   restore() {
@@ -73,6 +75,17 @@ export default Base.extend({
         utils.pick(datas[0], this.persistentKeys),
         this.volatileKeys ?
           utils.pick(datas[1], this.volatileKeys) : utils.omit(datas[1], this.persistentKeys));
+    });
+  },
+  
+  clear() {
+    debug('clear()');
+    
+    return RSVP.all([
+      this._persistentStore.clear(),
+      this._volatileStore.clear()
+    ]).then(() => {
+      // Don't return promise array
     });
   },
   
