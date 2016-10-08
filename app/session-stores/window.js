@@ -49,7 +49,7 @@ export default Base.extend({
     } else if (window.attachEvent) {
       window.attachEvent('onunload', this.flush.bind(this));
     } else {
-      Ember.debug('[session-store:voltaile] Unable to listen to window.unload or attach to window.onunload');
+      Ember.debug('[session-store:window] Unable to listen to window.unload or attach to window.onunload');
     }
   },
   

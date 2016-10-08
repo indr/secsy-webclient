@@ -15,7 +15,7 @@ import Base from 'ember-simple-auth/session-stores/base';
 import utils from './utils';
 
 import AdaptiveStore from 'ember-simple-auth/session-stores/adaptive';
-import VolatileStore from './volatile';
+import WindowStore from './window';
 
 import ENV from 'secsy-webclient/config/environment';
 
@@ -56,13 +56,13 @@ export default Base.extend({
       this.securelist.push('authenticated');
     }
     this.set('_adaptiveStore', this._createStore(AdaptiveStore));
-    this.set('_volatileStore', this._createStore(VolatileStore));
+    this.set('_windowStore', this._createStore(WindowStore));
   },
   
   persist(data) {
     debug('persist()');
     
-    let volatileData = {};
+    let windowData = {};
     let adaptiveData = {};
     
     const securelist = this.get('securelist');
@@ -84,14 +84,14 @@ export default Base.extend({
           const value = utils.get(adaptiveData, keyName);
           const shares = this.split(value);
           utils.set(adaptiveData, keyName, shares[1]);
-          utils.set(volatileData, keyName, shares[0]);
+          utils.set(windowData, keyName, shares[0]);
         }
       });
     }
     
     return RSVP.all([
       this.get('_adaptiveStore').persist(adaptiveData),
-      this.get('_volatileStore').persist(volatileData)
+      this.get('_windowStore').persist(windowData)
     ]).then(() => {
       // Don't return promise array
     });
@@ -102,16 +102,16 @@ export default Base.extend({
     
     return RSVP.all([
       this.get('_adaptiveStore').restore(),
-      this.get('_volatileStore').restore(),
+      this.get('_windowStore').restore(),
     ]).then((datas) => {
       const adaptiveData = datas[0];
-      const volatileData = datas[1];
+      const windowData = datas[1];
       
       const result = adaptiveData;
       const volatilelist = this.get('volatilelist');
       if (Array.isArray(volatilelist)) {
         volatilelist.forEach((keyName) => {
-          const share1 = utils.get(volatileData, keyName);
+          const share1 = utils.get(windowData, keyName);
           const share2 = utils.get(adaptiveData, keyName);
           
           const merged = this.merge(share1, share2);
@@ -132,7 +132,7 @@ export default Base.extend({
     
     return RSVP.all([
       this.get('_adaptiveStore').clear(),
-      this.get('_volatileStore').clear()
+      this.get('_windowStore').clear()
     ]).then(() => {
       // Don't return promise array
     });

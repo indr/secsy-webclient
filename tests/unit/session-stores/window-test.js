@@ -17,7 +17,7 @@ import ENV from 'secsy-webclient/config/environment';
 
 const globalWindow = window;
 
-describeModule('session-store:volatile', 'Unit | Session store | volatile', {},
+describeModule('session-store:window', 'Unit | Session store | window', {},
   function () {
     let config, sut, window, addEventListener, attachEvent;
     

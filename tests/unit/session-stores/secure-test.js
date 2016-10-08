@@ -17,7 +17,7 @@ import ENV from 'secsy-webclient/config/environment';
 
 describeModule('session-store:secure', 'Unit | Session store | secure', {},
   function () {
-    let config, createSut, sut, adaptive, volatile;
+    let config, createSut, sut, adaptive, windowStore;
     
     const base64regex = /^[a-z0-9\+\/]+==$/i;
     
@@ -31,7 +31,7 @@ describeModule('session-store:secure', 'Unit | Session store | secure', {},
       createSut = function () {
         sut = this.subject();
         adaptive = sut.get('_adaptiveStore');
-        volatile = sut.get('_volatileStore');
+        windowStore = sut.get('_windowStore');
         return sut;
       }.bind(this);
     });
@@ -107,12 +107,12 @@ describeModule('session-store:secure', 'Unit | Session store | secure', {},
         assert.equal(handler.lastCall.arg, data);
       });
       
-      it('should fire sessionDataUpdate if volatile store fires', function () {
+      it('should fire sessionDataUpdate if window store fires', function () {
         let handler = simple.mock();
         sut.on('sessionDataUpdated', handler);
         
         const data = {};
-        volatile.trigger('sessionDataUpdated', data);
+        windowStore.trigger('sessionDataUpdated', data);
         
         assert.isTrue(handler.called);
         assert.equal(handler.lastCall.arg, data);
@@ -130,31 +130,31 @@ describeModule('session-store:secure', 'Unit | Session store | secure', {},
         }
       };
       
-      let adaptivePersist, volatilePersist;
+      let adaptivePersist, windowPersist;
       
       beforeEach(function () {
         config.secureStore.whitelist = ['p2', 'o1.p1', 'invalid1'];
         config.volatileStore.whitelist = ['p1', 'o1.p2', 'o1.o2', 'invalid2'];
         createSut();
         adaptivePersist = simple.mock(adaptive, 'persist');
-        volatilePersist = simple.mock(volatile, 'persist');
+        windowPersist = simple.mock(windowStore, 'persist');
       });
       
-      it('should persist to adaptive, volatile store and return undefined', function (done) {
+      it('should persist to adaptive, window store and return undefined', function (done) {
         adaptivePersist.resolveWith('adaptivePersist');
-        volatilePersist.resolveWith('volatilePersist');
+        windowPersist.resolveWith('windowPersist');
         
         sut.persist(data).then((result) => {
           assert.isTrue(adaptivePersist.called);
-          assert.isTrue(volatilePersist.called);
+          assert.isTrue(windowPersist.called);
           assert.isUndefined(result);
           done();
         });
       });
       
-      it('should persist properties split to volatile store', function (done) {
+      it('should persist properties split to window store', function (done) {
         sut.persist(data).then(() => {
-          const data = volatilePersist.lastCall.arg;
+          const data = windowPersist.lastCall.arg;
           assert.notEqual(data.p1, 'p1');
           assert.match(data.o1.p2, base64regex);
           assert.match(data.o1.o2, base64regex);
@@ -176,7 +176,7 @@ describeModule('session-store:secure', 'Unit | Session store | secure', {},
       
       it('should reject with adaptive stores Error', function (done) {
         adaptivePersist.rejectWith(new Error('adaptivePersist'));
-        volatilePersist.resolveWith();
+        windowPersist.resolveWith();
         
         sut.persist({}).then(() => {
           assert.fail();
@@ -187,35 +187,35 @@ describeModule('session-store:secure', 'Unit | Session store | secure', {},
         });
       });
       
-      it('should reject with volatile stores Error', function (done) {
+      it('should reject with window stores Error', function (done) {
         adaptivePersist.resolveWith();
-        volatilePersist.rejectWith(new Error('volatilePersist'));
+        windowPersist.rejectWith(new Error('windowPersist'));
         
         sut.persist({}).then(() => {
           assert.fail();
         }).catch((error) => {
           assert.equal(error.name, 'Error');
-          assert.equal(error.message, 'volatilePersist');
+          assert.equal(error.message, 'windowPersist');
           done();
         });
       });
     });
     
     describe('#restore', function () {
-      let adaptiveRestore, volatileRestore;
+      let adaptiveRestore, windowRestore;
       const part1 = '9nVzF86NqzezoJLoyasmt9Q2RLokV3gYs6wAr9F9KdviH8Tivc14yy3Q+4ufmDMtaFEulFZ3jvxu/aNCcr5U+h0avZn12MR7b+JJHWAN+sdqcKA+Gvbp3XHPh83b9Ap2W7W5XjWaLsGE3kDM8wU1hzxBwoxNTwQI5335vH7wNdLDv9qJJuP4UuvYOEzvVMV4g1Td5Ytr16/zEF7LJQL+PyVCskJO4X3Sv1+8PcTFlxeZ33RXfDvt5rnq+Rj+fEz1riPW1VigFnGnRGIxBeFF7CFxqQVu+NUftPR66fgq98ARTBooTy/Y/vLl7wVTpJC04I/Rh27N6lRRHqkFH8mSTw=='
       const part2 = 'jVcDJuy3iUGCgu/oyasmt9Q2RLokV3gYs6wAr9F9KdviH8Tivc14yy3Q+4ufmDMtaFEulFZ3jvxu/aNCcr5U+h0avZn12MR7b+JJHWAN+sdqcKA+Gvbp3XHPh83b9Ap2W7W5XjWaLsGE3kDM8wU1hzxBwoxNTwQI5335vH7wNdLDv9qJJuP4UuvYOEzvVMV4g1Td5Ytr16/zEF7LJQL+PyVCskJO4X3Sv1+8PcTFlxeZ33RXfDvt5rnq+Rj+fEz1riPW1VigFnGnRGIxBeFF7CFxqQVu+NUftPR66fgq98ARTBooTy/Y/vLl7wVTpJC04I/Rh27N6lRRHqkFH8mSTw=='
       
       beforeEach(function () {
         createSut();
         adaptiveRestore = simple.mock(adaptive, 'restore');
-        volatileRestore = simple.mock(volatile, 'restore');
+        windowRestore = simple.mock(windowStore, 'restore');
       });
       
       it('should resolve with combined store data', function (done) {
         sut.set('volatilelist', ['both', 'onlyAdaptive', 'onlyVolatile']);
         adaptiveRestore.resolveWith({p1: 'p1', both: part1, onlyAdaptive: 'oA'});
-        volatileRestore.resolveWith({'both': part2, 'onlyVolatile': 'oW'});
+        windowRestore.resolveWith({'both': part2, 'onlyVolatile': 'oW'});
         
         sut.restore().then((result) => {
           assert.deepEqual(result, {p1: 'p1', both: {p1: 'v1'}});
@@ -225,7 +225,7 @@ describeModule('session-store:secure', 'Unit | Session store | secure', {},
       
       it('should reject with adaptive stores Error', function (done) {
         adaptiveRestore.rejectWith(new Error('adaptiveRestore'));
-        volatileRestore.resolveWith();
+        windowRestore.resolveWith();
         
         sut.restore().then(() => {
           assert.fail();
@@ -236,36 +236,36 @@ describeModule('session-store:secure', 'Unit | Session store | secure', {},
         });
       });
       
-      it('should reject with volatile stores Error', function (done) {
+      it('should reject with window stores Error', function (done) {
         adaptiveRestore.resolveWith();
-        volatileRestore.rejectWith(new Error('volatileRestore'));
+        windowRestore.rejectWith(new Error('windowRestore'));
         
         sut.restore().then(() => {
           assert.fail();
         }).catch((error) => {
           assert.equal(error.name, 'Error');
-          assert.equal(error.message, 'volatileRestore');
+          assert.equal(error.message, 'windowRestore');
           done();
         });
       });
     });
     
     describe('#clear', function () {
-      let adaptiveClear, volatileClear;
+      let adaptiveClear, windowClear;
       
       beforeEach(function () {
         createSut();
         adaptiveClear = simple.mock(adaptive, 'clear');
-        volatileClear = simple.mock(volatile, 'clear');
+        windowClear = simple.mock(windowStore, 'clear');
       });
       
-      it('should clear adaptive, volatile store and return undefined', function (done) {
+      it('should clear adaptive, window store and return undefined', function (done) {
         adaptiveClear.resolveWith('result 1');
-        volatileClear.resolveWith('result 2');
+        windowClear.resolveWith('result 2');
         
         sut.clear().then((result) => {
           assert.isTrue(adaptiveClear.called);
-          assert.isTrue(volatileClear.called);
+          assert.isTrue(windowClear.called);
           assert.isUndefined(result);
           done();
         });
@@ -273,7 +273,7 @@ describeModule('session-store:secure', 'Unit | Session store | secure', {},
       
       it('should reject with adaptive stores Error', function (done) {
         adaptiveClear.rejectWith(new Error('adaptiveClear'));
-        volatileClear.resolveWith();
+        windowClear.resolveWith();
         
         sut.clear().then(() => {
           assert.fail();
@@ -284,15 +284,15 @@ describeModule('session-store:secure', 'Unit | Session store | secure', {},
         });
       });
       
-      it('should reject with volatile stores Error', function (done) {
+      it('should reject with window stores Error', function (done) {
         adaptiveClear.resolveWith();
-        volatileClear.rejectWith(new Error('volatileClear'));
+        windowClear.rejectWith(new Error('windowClear'));
         
         sut.clear().then(() => {
           assert.fail();
         }).catch((error) => {
           assert.equal(error.name, 'Error');
-          assert.equal(error.message, 'volatileClear');
+          assert.equal(error.message, 'windowClear');
           done();
         });
       });
