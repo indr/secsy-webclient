@@ -45,8 +45,8 @@ export default Base.extend({
         null;
     }
     
-    this._persistentStore = this._createStore(AdaptiveStore);
-    this._volatileStore = this._createStore(VolatileStore);
+    this._persistentStore = this._createPersistentStore();
+    this._volatileStore = VolatileStore.create();
   },
   
   persist(data) {
@@ -89,15 +89,27 @@ export default Base.extend({
     });
   },
   
-  _createStore(storeType, options) {
-    const store = storeType.create(options);
+  _createPersistentStore() {
+    const store = AdaptiveStore.create({
+      cookieName: 'ember_simple_auth:persistent',
+      localStorageKey: 'ember_simple_auth:persistent'
+    });
     
     store.on('sessionDataUpdated', (data) => {
       debug('event on sessionDataUpdated');
+      // this.trigger('sessionDataUpdated', data);
       
-      // TODO: Merge data from other store
-      this.trigger('sessionDataUpdated', data);
+      // TODO: Use `data` and merge with volatile stores data via restore()?
+      
+      debug('data (event): ' + JSON.stringify(data));
+      this.restore().then((data) => {
+        debug('data (restored): ' + JSON.stringify(data));
+        
+        debug('triggering on sessionDataUpdated');
+        this.trigger('sessionDataUpdated', data);
+      });
     });
+    
     return store;
   }
-})
+});

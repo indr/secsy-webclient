@@ -28,6 +28,20 @@ describeModule('session-store:secure', 'Unit | Session store | secure', {},
       }.bind(this);
     });
     
+    describe('#init', function () {
+      it('should set persistent stores local storage key', function () {
+        createSut();
+        
+        assert.equal(persistentStore.localStorageKey, 'ember_simple_auth:persistent');
+      });
+      
+      it('should set persistent stores cookie name', function () {
+        createSut();
+        
+        assert.equal(persistentStore.cookieName, 'ember_simple_auth:persistent');
+      });
+    });
+    
     describe('#persist', function () {
       const data = {p: 'p1', v: 'v1', x: 'x1'};
       let persistentPersist, volatilePersist;
@@ -217,6 +231,33 @@ describeModule('session-store:secure', 'Unit | Session store | secure', {},
           assert.equal(error.name, 'Error');
           assert.equal(error.message, 'volatile clear error');
         });
+      });
+    });
+    
+    describe('event sessionDataUpdated', function () {
+      beforeEach(function () {
+        config.persistent = 'p';
+        config.volatile = 'v';
+        createSut();
+        
+        return sut.persist({p: 'p1', v: 'v1'});
+      });
+      
+      it('should trigger if persistent store triggers', function (done) {
+        sut.on('sessionDataUpdated', (data) => {
+          assert.deepEqual(data, {p: 'p1', v: 'v1'});
+          done();
+        });
+        
+        persistentStore.trigger('sessionDataUpdated', {u: 'u1'});
+      });
+      
+      it('should not trigger if volatile store triggers', function () {
+        sut.on('sessionDataUpdated', () => {
+          assert.fail('sessionDataUpdated was triggered');
+        });
+        
+        volatileStore.trigger('sessionDataUpdated', {u: 'u1'});
       });
     });
   }
