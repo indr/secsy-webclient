@@ -30,6 +30,7 @@ export default Base.extend({
   
   init() {
     debug('init()');
+    this._super(...arguments);
     
     const config = ENV['secure-store'];
     

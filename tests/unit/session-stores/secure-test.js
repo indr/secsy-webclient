@@ -89,7 +89,7 @@ describeModule('session-store:secure', 'Unit | Session store | secure', {},
         createSut();
         
         return sut.persist(data).then((result) => {
-          assert.equal(result, undefined);
+          assert.isUndefined(result);
         });
       });
       
@@ -123,9 +123,10 @@ describeModule('session-store:secure', 'Unit | Session store | secure', {},
     describe('#restore', function () {
       const persistentData = {p: 'p1', v: 'v1', x: 'x1'};
       const volatileData = {p: 'p2', v: 'v2', x: 'x2'};
+      
       let persistentRestore, volatileRestore;
       
-      it('should restore given no whitelists', function () {
+      it('should resolve given no whitelists', function () {
         delete config.persistent;
         delete config.volatile;
         createSut();
@@ -137,7 +138,7 @@ describeModule('session-store:secure', 'Unit | Session store | secure', {},
         });
       });
       
-      it('should restore given only persistent whitelist', function () {
+      it('should resolve given only persistent whitelist', function () {
         config.persistent = 'p';
         delete config.volatile;
         createSut();
@@ -149,7 +150,7 @@ describeModule('session-store:secure', 'Unit | Session store | secure', {},
         });
       });
       
-      it('should restore given both whitelists ', function () {
+      it('should resolve given both whitelists ', function () {
         config.persistent = 'p';
         config.volatile = 'v';
         createSut();
@@ -205,7 +206,7 @@ describeModule('session-store:secure', 'Unit | Session store | secure', {},
         return sut.clear().then((result) => {
           assert.isTrue(persistentClear.called);
           assert.isTrue(volatileClear.called);
-          assert.equal(result, undefined);
+          assert.isUndefined(result);
         });
       });
       
