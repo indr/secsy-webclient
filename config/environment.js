@@ -34,11 +34,7 @@ module.exports = function (environment) {
   };
   
   ENV['secure-store'] = {
-    whitelist: 'localeName'
-  };
-  
-  ENV['volatile-store'] = {
-    whitelist: 'passphrase'
+    persistent: 'localeName'
   };
   
   ENV['ember-simple-auth'] = {
