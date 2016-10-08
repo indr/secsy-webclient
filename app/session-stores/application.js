@@ -7,6 +7,6 @@
  * the LICENSE file that was distributed with this source code.
  */
 
-import SecureStore from './secure';
+import SecureStore from './volatile';
 
 export default SecureStore.extend();

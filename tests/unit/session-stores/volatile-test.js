@@ -15,7 +15,7 @@ import simple from 'simple-mock';
 
 import ENV from 'secsy-webclient/config/environment';
 
-describeModule('session-store:secure', 'Unit | Session store | secure', {},
+describeModule('session-store:volatile', 'Unit | Session store | volatile', {},
   function () {
     let config, createSut, sut, adaptive, windowStore;
     

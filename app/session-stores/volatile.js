@@ -24,7 +24,7 @@ const {
 } = Ember;
 
 function debug (message) {
-  Ember.debug('[store:secure] ' + message);
+  Ember.debug('[store:volatile] ' + message);
 }
 
 export default Base.extend({
