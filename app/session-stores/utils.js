@@ -30,6 +30,9 @@ export default {
   has,
   set,
   
+  omit,
+  pick,
+  
   window
 }
 
@@ -80,6 +83,33 @@ function set (obj, keyName, value) {
     currentKeyObj = obj[currentKeyName] = {}
   }
   return set(currentKeyObj, keyName.substring(index + 1), value);
+}
+
+function omit (obj, keys) {
+  const result = Ember.copy(obj);
+  if (!keys || keys.length === 0) {
+    return result;
+  }
+  
+  for (var i = 0, l = keys.length; i < l; i++) {
+    delete result[keys[i]];
+  }
+  return result;
+}
+
+function pick (obj, keys) {
+  const result = {};
+  if (!keys || keys.length === 0) {
+    return result;
+  }
+  
+  for (var i = 0, l = keys.length; i < l; i++) {
+    const key = keys[i];
+    if (obj.hasOwnProperty(key)) {
+      result[key] = obj[key];
+    }
+  }
+  return result;
 }
 
 function encode_base64 (data) {
