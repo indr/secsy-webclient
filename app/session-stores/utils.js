@@ -12,10 +12,6 @@
 
 import Ember from 'ember';
 
-const {
-  get
-} = Ember;
-
 export default {
   getRandomValues,
   
@@ -24,11 +20,6 @@ export default {
   
   arrayToBinaryString,
   binaryStringToArray,
-  
-  del,
-  get,
-  has,
-  set,
   
   omit,
   pick,
@@ -48,41 +39,6 @@ function getRandomValues (arr) {
     throw new Error('Browser does not support getRandomValues()');
   }
   return crypto.getRandomValues(arr);
-}
-
-function del (obj, keyName) {
-  const lastIndex = keyName.lastIndexOf('.');
-  if (lastIndex > -1) {
-    obj = get(obj, keyName.substring(0, lastIndex));
-    keyName = keyName.substr(lastIndex + 1);
-  }
-  
-  if (obj) {
-    delete obj[keyName];
-  }
-}
-
-function has (obj, keyName) {
-  const lastIndex = keyName.lastIndexOf('.');
-  if (lastIndex > -1) {
-    obj = get(obj, keyName.substring(0, lastIndex));
-    keyName = keyName.substr(lastIndex + 1);
-  }
-  return obj && obj.hasOwnProperty(keyName);
-}
-
-function set (obj, keyName, value) {
-  const index = keyName.indexOf('.');
-  if (index === -1) {
-    return Ember.set(obj, keyName, value);
-  }
-  
-  const currentKeyName = keyName.substring(0, index);
-  let currentKeyObj = get(obj, currentKeyName);
-  if (currentKeyObj === undefined) {
-    currentKeyObj = obj[currentKeyName] = {}
-  }
-  return set(currentKeyObj, keyName.substring(index + 1), value);
 }
 
 function omit (obj, keys) {

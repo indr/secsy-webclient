@@ -42,26 +42,6 @@ export default Base.extend({
         config.volatile : new Array(config.volatile);
     }
     
-    // if (ENV['secure-store'] && ENV['secure-store'].whitelist) {
-    //   let whitelist = ENV['secure-store'].whitelist;
-    //   whitelist = Ember.isArray(whitelist) ? whitelist : new Array(whitelist);
-    //   this.securelist = whitelist;
-    // }
-    //
-    // if (ENV['volatile-store'] && ENV['volatile-store'].whitelist) {
-    //   let volatilelist = ENV['volatile-store'].whitelist;
-    //   volatilelist = Ember.isArray(volatilelist) ? volatilelist : new Array(volatilelist);
-    //   if (this.securelist) {
-    //     volatilelist.forEach((each) => {
-    //       this.securelist.push(each);
-    //     });
-    //   }
-    //   this.volatilelist = volatilelist;
-    // }
-    //
-    // if (this.securelist && this.securelist.indexOf('authenticated') === -1) {
-    //   this.securelist.push('authenticated');
-    // }
     this._adaptiveStore = this._createStore(AdaptiveStore, {
       cookieName: 'ember_simple_auth:volatile',
       localStorageKey: 'ember_simple_auth:volatile'
@@ -82,31 +62,6 @@ export default Base.extend({
       adaptiveData[each] = shares[1];
       windowData[each] = shares[0];
     });
-    
-    // const securelist = this.get('securelist');
-    // if (!Array.isArray(securelist)) {
-    //   adaptiveData = Ember.copy(data, true);
-    // } else {
-    //   securelist.forEach((keyName) => {
-    //     if (utils.has(data, keyName)) {
-    //       const value = utils.get(data, keyName);
-    //       utils.set(adaptiveData, keyName, value);
-    //     }
-    //   });
-    // }
-    
-    // const volatilelist = this.get('volatilelist');
-    // if (Array.isArray(volatilelist)) {
-    //   volatilelist.forEach((keyName) => {
-    //     if (utils.has(adaptiveData, keyName)) {
-    //       const value = utils.get(adaptiveData, keyName);
-    //       const shares = this.split(value);
-    //       utils.set(adaptiveData, keyName, shares[1]);
-    //       utils.set(windowData, keyName, shares[0]);
-    //     }
-    //   });
-    // }
-    
     
     return RSVP.all([
       this.get('_adaptiveStore').persist(adaptiveData),
@@ -141,22 +96,6 @@ export default Base.extend({
           result[each] = merged;
         }
       });
-      
-      // const result = adaptiveData;
-      // const volatilelist = this.get('volatilelist');
-      // if (Array.isArray(volatilelist)) {
-      //   volatilelist.forEach((keyName) => {
-      //     const share1 = utils.get(windowData, keyName);
-      //     const share2 = utils.get(adaptiveData, keyName);
-      //
-      //     const merged = this.merge(share1, share2);
-      //     if (merged === undefined) {
-      //       utils.del(result, keyName);
-      //     } else {
-      //       utils.set(result, keyName, merged);
-      //     }
-      //   });
-      // }
       
       return result;
     });
