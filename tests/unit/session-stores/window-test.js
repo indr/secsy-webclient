@@ -26,7 +26,7 @@ describeModule('session-store:window', 'Unit | Session store | window', {},
     });
     
     beforeEach(function () {
-      config = ENV['volatile-store'] = {};
+      config = ENV['secure-store'] = {};
       window = {name: null};
       addEventListener = simple.mock(window, 'addEventListener');
       attachEvent = simple.mock(window, 'attachEvent');
@@ -125,20 +125,13 @@ describeModule('session-store:window', 'Unit | Session store | window', {},
       });
       
       it('should restore only whitelisted object properties', function (done) {
-        config.whitelist = ['ok1', 'obj.ok2'];
-        window.name = JSON.stringify({
-          no1: 'no1',
-          ok1: 'ok1',
-          obj: {
-            no2: 'no2',
-            ok2: 'ok2'
-          }
-        });
+        config.volatile = 'ok1';
+        window.name = JSON.stringify({no1: 'no1', ok1: 'ok1',});
         
         sut = this.subject();
         
         sut.restore().then((data) => {
-          assert.deepEqual(data, {ok1: 'ok1', obj: {ok2: 'ok2'}});
+          assert.deepEqual(data, {ok1: 'ok1'});
           done();
         });
       });
@@ -190,7 +183,7 @@ describeModule('session-store:window', 'Unit | Session store | window', {},
       });
       
       it('should only persist and restore whitelisted object properites', function (done) {
-        config.whitelist = ['s'];
+        config.volatile = ['s'];
         sut = this.subject();
         
         sut.persist({s: 's1', o1: {o1s: 'o1s', o1n: 5.11}}).then(() => {
@@ -267,12 +260,12 @@ describeModule('session-store:window', 'Unit | Session store | window', {},
       });
       
       it('should only save whitelisted object properites to window.name', function (done) {
-        config.whitelist = ['s', 'o1.o1n'];
+        config.volatile = 's';
         sut = this.subject();
         
         sut.persist({s: 's1', o1: {o1s: 'o1s', o1n: 5.11}}).then(() => {
           sut.flush();
-          assert.equal(window.name, '{"s":"s1","o1":{"o1n":5.11}}');
+          assert.equal(window.name, '{"s":"s1"}');
           done();
         });
       });

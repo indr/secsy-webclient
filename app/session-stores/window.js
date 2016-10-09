@@ -17,28 +17,33 @@ const {
   RSVP
 } = Ember;
 
+function debug (message) {
+  Ember.debug('[store:window] ' + message);
+}
+
 export default Base.extend({
   data: {},
   whitelist: null,
   
   init() {
+    debug('init()');
     this._super(...arguments);
     
     const window = utils.window;
     if (!window) {
-      Ember.debug('window is undefined');
+      debug('window is undefined');
       return;
     }
     
-    if (ENV['volatile-store'] && ENV['volatile-store'].whitelist) {
-      const whitelist = ENV['volatile-store'].whitelist;
-      this.whitelist = Ember.isArray(whitelist) ? whitelist : new Array(whitelist);
+    const config = ENV['secure-store'];
+    if (config && config.volatile) {
+      this.whitelist = Ember.isArray(config.volatile) ?
+        config.volatile : new Array(config.volatile);
     }
     
     try {
       let data = JSON.parse(window.name) || {};
-      this.data = this._onlyWhitelisted(data);
-      
+      this.data = this.whitelist ? utils.pick(data, this.whitelist) : data;
     } catch (error) {
       this.data = {};
     }
@@ -49,13 +54,15 @@ export default Base.extend({
     } else if (window.attachEvent) {
       window.attachEvent('onunload', this.flush.bind(this));
     } else {
-      Ember.debug('[session-store:window] Unable to listen to window.unload or attach to window.onunload');
+      debug('Unable to listen to window.unload or attach to window.onunload');
     }
   },
   
   persist(data) {
+    debug('persist()');
+    
     try {
-      this.data = this._onlyWhitelisted(data);
+      this.data = this.whitelist ? utils.pick(data, this.whitelist) : data;
       return RSVP.resolve();
     } catch (error) {
       return RSVP.reject(error);
@@ -63,6 +70,8 @@ export default Base.extend({
   },
   
   restore() {
+    debug('restore()');
+    
     try {
       return RSVP.resolve(Ember.copy(this.data));
     } catch (error) {
@@ -71,6 +80,8 @@ export default Base.extend({
   },
   
   clear() {
+    debug('clear()');
+    
     try {
       this.data = {};
       return RSVP.resolve();
@@ -81,17 +92,5 @@ export default Base.extend({
   
   flush() {
     utils.window.name = JSON.stringify(this.data);
-  },
-  
-  _onlyWhitelisted(data) {
-    if (this.whitelist) {
-      let result = {};
-      this.whitelist.forEach((keyName) => {
-        utils.set(result, keyName, utils.get(data, keyName));
-      });
-      return result;
-    } else {
-      return Ember.copy(data);
-    }
   }
 })
