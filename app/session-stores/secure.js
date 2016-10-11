@@ -96,16 +96,10 @@ export default Base.extend({
       localStorageKey: 'ember_simple_auth:persistent'
     });
     
-    store.on('sessionDataUpdated', (data) => {
+    store.on('sessionDataUpdated', () => {
       debug('event on sessionDataUpdated');
-      // this.trigger('sessionDataUpdated', data);
       
-      // TODO: Use `data` and merge with volatile stores data via restore()?
-      
-      debug('data (event): ' + JSON.stringify(data));
       this.restore().then((data) => {
-        debug('data (restored): ' + JSON.stringify(data));
-        
         debug('triggering on sessionDataUpdated');
         this.trigger('sessionDataUpdated', data);
       });
