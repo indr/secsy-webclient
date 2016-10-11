@@ -8,119 +8,78 @@
  */
 
 import { assert } from 'chai';
-import Ember from 'ember';
 import { describeModule, it } from 'ember-mocha';
 import { beforeEach, describe } from 'mocha';
 import simple from 'simple-mock';
+import utils from 'secsy-webclient/session-stores/utils';
 
 import ENV from 'secsy-webclient/config/environment';
 
 const base64regex = /^[a-z0-9\+\/]+==$/i;
 
+const gWindow = window;
+
 describeModule('session-store:volatile', 'Unit | Session store | volatile', {},
   function () {
-    let config, createSut, sut, adaptiveStore, windowStore;
+    const key = 'ember_simple_auth:volatile';
+    
+    let config, createSut, sut,
+      addEventListener, attachEvent,
+      storage, window;
     
     beforeEach(function () {
+      window = {
+        name: null,
+        localStorage: gWindow.localStorage
+      };
+      addEventListener = simple.mock(window, 'addEventListener');
+      attachEvent = simple.mock(window, 'attachEvent');
+      storage = window.localStorage;
+      utils.window = window;
+      
       ENV['secure-store'] = config = {};
       createSut = function () {
         sut = this.subject();
-        adaptiveStore = sut.get('_adaptiveStore');
-        windowStore = sut.get('_windowStore');
         return sut;
       }.bind(this);
     });
     
     describe('#init', function () {
-      it('should set adaptive stores local storage key', function () {
+      it('should clear window.name', function () {
+        window.name = 'windows name';
         createSut();
         
-        assert.equal(adaptiveStore.localStorageKey, 'ember_simple_auth:volatile');
+        assert.equal(window.name, '');
       });
       
-      it('should set adaptive stores cookie name', function () {
+      it('should clear localStorage', function () {
+        storage.setItem(key, 'items value');
         createSut();
         
-        assert.equal(adaptiveStore.cookieName, 'ember_simple_auth:volatile');
-      });
-    });
-    
-    describe('#persist', function () {
-      const data = {p1: 'p1', p2: 'p2'};
-      let adaptivePersist, windowPersist;
-      
-      it('should persist given no whitelist', function () {
-        delete config.volatile;
-        createSut();
-        adaptivePersist = simple.mock(adaptiveStore, 'persist');
-        windowPersist = simple.mock(windowStore, 'persist');
-        
-        return sut.persist(data).then(() => {
-          let arg = adaptivePersist.lastCall.arg;
-          assert.sameMembers(Object.keys(arg), ['p1', 'p2']);
-          assert.match(arg.p1, base64regex);
-          assert.match(arg.p2, base64regex);
-          
-          arg = windowPersist.lastCall.arg;
-          assert.sameMembers(Object.keys(arg), ['p1', 'p2']);
-          assert.match(arg.p1, base64regex);
-          assert.match(arg.p2, base64regex);
-        });
+        assert.isNull(storage.getItem(key));
       });
       
-      it('should persist given whitelist', function () {
-        config.volatile = 'p1';
-        createSut();
-        adaptivePersist = simple.mock(adaptiveStore, 'persist');
-        windowPersist = simple.mock(windowStore, 'persist');
+      it('should add event listener to unload', function () {
+        this.subject();
         
-        return sut.persist(data).then(() => {
-          let arg = adaptivePersist.lastCall.arg;
-          assert.sameMembers(Object.keys(arg), ['p1']);
-          assert.match(arg.p1, base64regex);
-          
-          arg = windowPersist.lastCall.arg;
-          assert.sameMembers(Object.keys(arg), ['p1']);
-          assert.match(arg.p1, base64regex);
-        });
+        assert.isTrue(addEventListener.called);
+        const args = addEventListener.lastCall.args;
+        assert.equal(args[0], 'unload');
+        assert.equal(args[1].name, 'flush');
+        assert.equal(args[2], false);
       });
       
-      it('should resolve with undefined', function () {
-        createSut();
+      it('should attach event given addEventListener is undefined', function () {
+        delete window.addEventListener;
         
-        return sut.persist(data).then((result) => {
-          assert.isUndefined(result);
-        });
+        this.subject();
+        
+        assert.isTrue(attachEvent.called);
+        const args = attachEvent.lastCall.args;
+        assert.equal(args[0], 'onunload');
+        assert.equal(args[1].name, 'flush');
       });
       
-      it('should reject with adaptive stores Error', function () {
-        createSut();
-        simple.mock(adaptiveStore, 'persist').rejectWith(new Error('adaptive persist error'))
-        simple.mock(windowStore, 'persist').resolveWith();
-        
-        return sut.persist({}).then(() => {
-          assert.fail();
-        }).catch((error) => {
-          assert.equal(error.name, 'Error');
-          assert.equal(error.message, 'adaptive persist error');
-        });
-      });
-      
-      it('should reject with window stores Error', function () {
-        createSut();
-        simple.mock(adaptiveStore, 'persist').resolveWith();
-        simple.mock(windowStore, 'persist').rejectWith(new Error('window persist error'))
-        
-        return sut.persist({}).then(() => {
-          assert.fail();
-        }).catch((error) => {
-          assert.equal(error.name, 'Error');
-          assert.equal(error.message, 'window persist error');
-        });
-      });
-    });
-    
-    describe('#restore', function () {
       const p1s1 = 'e+s9mnuVGDptGAJR3YICVyc7jCoecrtGKfoA7FqbzHa52OvI5+HF0jQqB91adunKQB9PTCsrlI5xnDaqcsWOx03LETsDsJV72bdn4q25AxRgveLuVDbvPu46cu6ZABMQExcthjK3jcLWELBCuTVGANxoI48Tea26uOvx2lTZknFRl3Ds+LHy/kRE/2p0QCl4HWap3zy4JzlsBx4M9vcOCjSXkAc8ziVjgdq1dx9qae0FS5EQiuzaU43VU9yg+Wgrfo6OXkoeaHGX3ABA+t+KXA2LeT3yr2Iniv9UMfKGEZAGvBFLlP006BXuaZfq2quREv1rMn9mhN+xINt08JWHPg==';
       const p1s2 = 'WZsMuHuVGDptGAJR3YICVyc7jCoecrtGKfoA7FqbzHa52OvI5+HF0jQqB91adunKQB9PTCsrlI5xnDaqcsWOx03LETsDsJV72bdn4q25AxRgveLuVDbvPu46cu6ZABMQExcthjK3jcLWELBCuTVGANxoI48Tea26uOvx2lTZknFRl3Ds+LHy/kRE/2p0QCl4HWap3zy4JzlsBx4M9vcOCjSXkAc8ziVjgdq1dx9qae0FS5EQiuzaU43VU9yg+Wgrfo6OXkoeaHGX3ABA+t+KXA2LeT3yr2Iniv9UMfKGEZAGvBFLlP006BXuaZfq2quREv1rMn9mhN+xINt08JWHPg==';
       const p2s1 = 'ZDAUvnKD5E4Zte3+xZ7xb+vNa77fAZGvCozPvDrnL5dIBCLiH+PAssB4wbj9VR9POR6BRZ93Za3H9LGLJwFZJ6KQoL+8CXILSeEOMUfDiNxagyWBkQn/DKzSYigwoKDZP3d8+/KlOCiI7iY4B5BJxCuX9we2DrQDGVpFuifeeKX/zNyIDcOFdLKQkzkEI3NpVmmdQtFRwoZbFdP70uxeuA+e/199lk/FmmaVVDiiTm9sdmLT5HpVSqOUGV+sqUrgWUDRC08LujTtp923Ds+f/Os41JAWy9fvww8Fr7OMcv1mZTPLakeBQq2cz72d+u2boxa2+Z5j4fiPBOp1jkw5gA==';
@@ -128,97 +87,112 @@ describeModule('session-store:volatile', 'Unit | Session store | volatile', {},
       const data1 = {p1: p1s1, p2: p2s1};
       const data2 = {p1: p1s2, p2: p2s2};
       
-      it('should resolve given no whitelist', function () {
+      it('should load data given no whitelist', function () {
+        delete config.volatile;
+        window.name = JSON.stringify(data1);
+        storage.setItem(key, JSON.stringify(data2));
+        createSut();
+        
+        assert.deepEqual(sut.data, {p1: 'p1', p2: 'p2'});
+      });
+      
+      it('should load data only whitelisted properties', function () {
+        config.volatile = 'p1';
+        window.name = JSON.stringify(data1);
+        storage.setItem(key, JSON.stringify(data2));
+        createSut();
+        
+        assert.deepEqual(sut.data, {p1: 'p1'});
+      });
+    });
+    
+    describe('#persist', function () {
+      const data = {p1: 'p1', p2: 'p2'};
+      
+      it('should set data given no whitelist', function () {
         delete config.volatile;
         createSut();
-        simple.mock(adaptiveStore, 'restore').resolveWith(data1);
-        simple.mock(windowStore, 'restore').resolveWith(data2);
         
-        return sut.restore((data) => {
-          assert.deepEqual(data, {p1: 'p1', p2: 'p2'});
+        return sut.persist(data).then(() => {
+          assert.deepEqual(sut.data, data);
         });
       });
       
-      it('should resolve only whitelisted properties', function () {
+      it('should set data given whitelist', function () {
         config.volatile = 'p1';
         createSut();
-        simple.mock(adaptiveStore, 'restore').resolveWith(data1);
-        simple.mock(windowStore, 'restore').resolveWith(data2);
         
-        return sut.restore((data) => {
-          assert.deepEqual(data, {p1: 'p1'});
+        return sut.persist(data).then(() => {
+          assert.deepEqual(sut.data, {p1: 'p1'});
         });
       });
       
-      it('should reject with adaptive stores error', function () {
+      it('should resolve undefined', function () {
         createSut();
-        simple.mock(adaptiveStore, 'restore').rejectWith(new Error('adaptive restore error'));
-        simple.mock(windowStore, 'restore').resolveWith({});
         
-        return sut.restore().then(() => {
-          assert.fail();
-        }).catch((error) => {
-          assert.equal(error.name, 'Error');
-          assert.equal(error.message, 'adaptive restore error');
+        return sut.persist(data).then((result) => {
+          assert.isUndefined(result);
         });
       });
-      
-      it('should reject with window stores error', function () {
+    });
+    
+    describe('#restore', function () {
+      it('should resolve data', function () {
         createSut();
-        simple.mock(adaptiveStore, 'restore').resolveWith({});
-        simple.mock(windowStore, 'restore').rejectWith(new Error('window restore error'));
+        sut.data = {p1: 'p1', p2: 'p2'};
         
-        return sut.restore().then(() => {
-          assert.fail();
-        }).catch((error) => {
-          assert.equal(error.name, 'Error');
-          assert.equal(error.message, 'window restore error');
+        return sut.restore().then((result) => {
+          assert.deepEqual(result, {p1: 'p1', p2: 'p2'});
         });
       });
     });
     
     describe('#clear', function () {
-      let adaptiveClear, windowClear;
-      
-      beforeEach(function () {
+      it('should clear data', function () {
         createSut();
-        adaptiveClear = simple.mock(adaptiveStore, 'clear');
-        windowClear = simple.mock(windowStore, 'clear');
-      });
-      
-      it('should clear adaptive, window store and return undefined', function () {
-        adaptiveClear.resolveWith('result 1');
-        windowClear.resolveWith('result 2');
-        
-        return sut.clear().then((result) => {
-          assert.isTrue(adaptiveClear.called);
-          assert.isTrue(windowClear.called);
-          assert.isUndefined(result);
-        });
-      });
-      
-      it('should reject with adaptive stores Error', function () {
-        adaptiveClear.rejectWith(new Error('adaptive clear error'));
-        windowClear.resolveWith();
         
         return sut.clear().then(() => {
-          assert.fail();
-        }).catch((error) => {
-          assert.equal(error.name, 'Error');
-          assert.equal(error.message, 'adaptive clear error');
+          assert.deepEqual(sut.data, {});
         });
       });
+    });
+    
+    describe('#flush', function () {
+      const data = {p1: 'p1', p2: 'p2'};
       
-      it('should reject with window stores Error', function () {
-        adaptiveClear.resolveWith();
-        windowClear.rejectWith(new Error('window clear error'));
+      it('should not throw given localStorage is unavailable', function () {
+        createSut();
         
-        return sut.clear().then(() => {
-          assert.fail();
-        }).catch((error) => {
-          assert.equal(error.name, 'Error');
-          assert.equal(error.message, 'window clear error');
-        });
+        delete sut.window.localStorage;
+        
+        sut.flush();
+      });
+      
+      it('should not throw given window is unavailable', function () {
+        createSut();
+        
+        delete sut.window;
+        
+        sut.flush();
+      });
+      
+      it('should store parts to storage and window.name', function () {
+        createSut();
+        
+        sut.data = data;
+        sut.flush();
+        
+        let value1 = JSON.parse(storage.getItem(sut.key));
+        assert.sameMembers(Object.keys(value1), ['p1', 'p2']);
+        assert.match(value1.p1, base64regex);
+        assert.match(value1.p2, base64regex);
+        
+        let value2 = JSON.parse(window.name);
+        assert.sameMembers(Object.keys(value2), ['p1', 'p2']);
+        assert.match(value2.p1, base64regex);
+        assert.match(value2.p2, base64regex);
+        
+        assert.notEqual(value1.p1, value2.p1);
       });
     });
     
@@ -260,34 +234,26 @@ describeModule('session-store:volatile', 'Unit | Session store | volatile', {},
       });
     });
     
-    describe('event sessionDataUpdated', function () {
-      beforeEach(function () {
+    describe('flush on window unload', function () {
+      it('should flush when window.unload is fired', function () {
+        window.name = null;
         createSut();
+        
+        addEventListener.lastCall.args[1]();
+        
+        assert.notEqual(window.name, null);
       });
       
-      // TODO: Should not trigger?
-      it('should fire sessionDataUpdate if adaptive store fires', function () {
-        let handler = simple.mock();
-        sut.on('sessionDataUpdated', handler);
+      it('should flush when window.onunload is fired', function () {
+        window.name = null;
+        delete window.addEventListener;
+        createSut();
         
-        const data = {};
-        adaptiveStore.trigger('sessionDataUpdated', data);
+        attachEvent.lastCall.args[1]();
         
-        assert.isTrue(handler.called);
-        assert.equal(handler.lastCall.arg, data);
-      });
-      
-      // TODO: Should not trigger?
-      it('should fire sessionDataUpdate if window store fires', function () {
-        let handler = simple.mock();
-        sut.on('sessionDataUpdated', handler);
-        
-        const data = {};
-        windowStore.trigger('sessionDataUpdated', data);
-        
-        assert.isTrue(handler.called);
-        assert.equal(handler.lastCall.arg, data);
+        assert.notEqual(window.name, null);
       });
     });
   }
-);
+)
+;
