@@ -9,43 +9,54 @@
 
 import { assert } from 'chai';
 import { describeModule, it } from 'ember-mocha';
-import { after, beforeEach, describe } from 'mocha';
+import { beforeEach, describe } from 'mocha';
 import simple from 'simple-mock';
 import utils from 'secsy-webclient/session-stores/utils';
 
 import ENV from 'secsy-webclient/config/environment';
 
-const globalWindow = window;
+const base64regex = /^[a-z0-9\+\/]+==$/i;
+
+const gWindow = window;
 
 describeModule('session-store:volatile', 'Unit | Session store | volatile', {},
   function () {
-    let config, sut, window, addEventListener, attachEvent;
+    const key = 'ember_simple_auth:volatile';
     
-    after(function () {
-      utils.window = globalWindow;
-    });
+    let config, createSut, sut,
+      addEventListener, attachEvent,
+      storage, window;
     
     beforeEach(function () {
-      config = ENV['volatile-store'] = {};
-      window = {name: null};
+      window = {
+        name: null,
+        localStorage: gWindow.localStorage
+      };
       addEventListener = simple.mock(window, 'addEventListener');
       attachEvent = simple.mock(window, 'attachEvent');
+      storage = window.localStorage;
       utils.window = window;
+      
+      ENV['secure-store'] = config = {};
+      createSut = function () {
+        sut = this.subject();
+        return sut;
+      }.bind(this);
     });
     
     describe('#init', function () {
       it('should clear window.name', function () {
-        window.name = '"a string"';
+        window.name = 'windows name';
+        createSut();
         
-        sut = this.subject();
-        
-        assert.isNull(window.name);
+        assert.equal(window.name, '');
       });
       
-      it('should not throw if window is not available', function () {
-        utils.window = undefined;
+      it('should clear localStorage', function () {
+        storage.setItem(key, 'items value');
+        createSut();
         
-        this.subject();
+        assert.isNull(storage.getItem(key));
       });
       
       it('should add event listener to unload', function () {
@@ -68,220 +79,165 @@ describeModule('session-store:volatile', 'Unit | Session store | volatile', {},
         assert.equal(args[0], 'onunload');
         assert.equal(args[1].name, 'flush');
       });
-    });
-    
-    describe('#restore after #init', function () {
-      it('should return an empty object given window.name is null', function (done) {
-        window.name = null;
-        sut = this.subject();
+      
+      const p1s1 = 'e+s9mnuVGDptGAJR3YICVyc7jCoecrtGKfoA7FqbzHa52OvI5+HF0jQqB91adunKQB9PTCsrlI5xnDaqcsWOx03LETsDsJV72bdn4q25AxRgveLuVDbvPu46cu6ZABMQExcthjK3jcLWELBCuTVGANxoI48Tea26uOvx2lTZknFRl3Ds+LHy/kRE/2p0QCl4HWap3zy4JzlsBx4M9vcOCjSXkAc8ziVjgdq1dx9qae0FS5EQiuzaU43VU9yg+Wgrfo6OXkoeaHGX3ABA+t+KXA2LeT3yr2Iniv9UMfKGEZAGvBFLlP006BXuaZfq2quREv1rMn9mhN+xINt08JWHPg==';
+      const p1s2 = 'WZsMuHuVGDptGAJR3YICVyc7jCoecrtGKfoA7FqbzHa52OvI5+HF0jQqB91adunKQB9PTCsrlI5xnDaqcsWOx03LETsDsJV72bdn4q25AxRgveLuVDbvPu46cu6ZABMQExcthjK3jcLWELBCuTVGANxoI48Tea26uOvx2lTZknFRl3Ds+LHy/kRE/2p0QCl4HWap3zy4JzlsBx4M9vcOCjSXkAc8ziVjgdq1dx9qae0FS5EQiuzaU43VU9yg+Wgrfo6OXkoeaHGX3ABA+t+KXA2LeT3yr2Iniv9UMfKGEZAGvBFLlP006BXuaZfq2quREv1rMn9mhN+xINt08JWHPg==';
+      const p2s1 = 'ZDAUvnKD5E4Zte3+xZ7xb+vNa77fAZGvCozPvDrnL5dIBCLiH+PAssB4wbj9VR9POR6BRZ93Za3H9LGLJwFZJ6KQoL+8CXILSeEOMUfDiNxagyWBkQn/DKzSYigwoKDZP3d8+/KlOCiI7iY4B5BJxCuX9we2DrQDGVpFuifeeKX/zNyIDcOFdLKQkzkEI3NpVmmdQtFRwoZbFdP70uxeuA+e/199lk/FmmaVVDiiTm9sdmLT5HpVSqOUGV+sqUrgWUDRC08LujTtp923Ds+f/Os41JAWy9fvww8Fr7OMcv1mZTPLakeBQq2cz72d+u2boxa2+Z5j4fiPBOp1jkw5gA==';
+      const p2s2 = 'RkAmnHKD5E4Zte3+xZ7xb+vNa77fAZGvCozPvDrnL5dIBCLiH+PAssB4wbj9VR9POR6BRZ93Za3H9LGLJwFZJ6KQoL+8CXILSeEOMUfDiNxagyWBkQn/DKzSYigwoKDZP3d8+/KlOCiI7iY4B5BJxCuX9we2DrQDGVpFuifeeKX/zNyIDcOFdLKQkzkEI3NpVmmdQtFRwoZbFdP70uxeuA+e/199lk/FmmaVVDiiTm9sdmLT5HpVSqOUGV+sqUrgWUDRC08LujTtp923Ds+f/Os41JAWy9fvww8Fr7OMcv1mZTPLakeBQq2cz72d+u2boxa2+Z5j4fiPBOp1jkw5gA==';
+      const data1 = {p1: p1s1, p2: p2s1};
+      const data2 = {p1: p1s2, p2: p2s2};
+      
+      it('should load data given no whitelist', function () {
+        delete config.volatile;
+        window.name = JSON.stringify(data1);
+        storage.setItem(key, JSON.stringify(data2));
+        createSut();
         
-        sut.restore().then((data) => {
-          assert.deepEqual(data, {});
-          done();
-        });
+        assert.deepEqual(sut.data, {p1: 'p1', p2: 'p2'});
       });
       
-      it('should return an empty object given window.name contains arbitrary data', function (done) {
-        window.name = 'a | windows / name';
-        sut = this.subject();
+      it('should load data only whitelisted properties', function () {
+        config.volatile = 'p1';
+        window.name = JSON.stringify(data1);
+        storage.setItem(key, JSON.stringify(data2));
+        createSut();
         
-        sut.restore().then((data) => {
-          assert.deepEqual(data, {});
-          done();
-        });
-      });
-      
-      it('should be able to restore a string', function (done) {
-        window.name = '"a string"';
-        
-        sut = this.subject();
-        
-        sut.restore().then((data) => {
-          assert.equal(data, 'a string');
-          done();
-        });
-      });
-      
-      it('should be able to restore a number', function (done) {
-        window.name = '5.11';
-        
-        sut = this.subject();
-        
-        sut.restore().then((data) => {
-          assert.equal(data, 5.11);
-          done();
-        });
-      });
-      
-      it('should be able to restore an object', function (done) {
-        window.name = JSON.stringify({s: 's1', o1: {o1s: 'o1s', o1n: 5.11}});
-        
-        sut = this.subject();
-        
-        sut.restore().then((data) => {
-          assert.deepEqual(data, {s: 's1', o1: {o1s: 'o1s', o1n: 5.11}});
-          done();
-        });
-      });
-      
-      it('should restore only whitelisted object properties', function (done) {
-        config.whitelist = ['ok1', 'obj.ok2'];
-        window.name = JSON.stringify({
-          no1: 'no1',
-          ok1: 'ok1',
-          obj: {
-            no2: 'no2',
-            ok2: 'ok2'
-          }
-        });
-        
-        sut = this.subject();
-        
-        sut.restore().then((data) => {
-          assert.deepEqual(data, {ok1: 'ok1', obj: {ok2: 'ok2'}});
-          done();
-        });
+        assert.deepEqual(sut.data, {p1: 'p1'});
       });
     });
     
     describe('#persist', function () {
-      it('should not touch window.name', function (done) {
-        window.name = 'untouched';
+      const data = {p1: 'p1', p2: 'p2'};
+      
+      it('should set data given no whitelist', function () {
+        delete config.volatile;
+        createSut();
         
-        sut.persist('a string').then(() => {
-          assert.equal(window.name, 'untouched');
-          done();
+        return sut.persist(data).then(() => {
+          assert.deepEqual(sut.data, data);
+        });
+      });
+      
+      it('should set data given whitelist', function () {
+        config.volatile = 'p1';
+        createSut();
+        
+        return sut.persist(data).then(() => {
+          assert.deepEqual(sut.data, {p1: 'p1'});
+        });
+      });
+      
+      it('should resolve undefined', function () {
+        createSut();
+        
+        return sut.persist(data).then((result) => {
+          assert.isUndefined(result);
         });
       });
     });
     
-    describe('#restore after #persist', function () {
-      it('should be able to persist and restore a string', function (done) {
-        sut = this.subject();
+    describe('#restore', function () {
+      it('should resolve data', function () {
+        createSut();
+        sut.data = {p1: 'p1', p2: 'p2'};
         
-        sut.persist('a string').then(() => {
-          return sut.restore();
-        }).then((data) => {
-          assert.equal(data, 'a string');
-          done();
-        });
-      });
-      
-      it('should be able to persist and restore a number', function (done) {
-        sut = this.subject();
-        
-        sut.persist(5.11).then(() => {
-          return sut.restore();
-        }).then((data) => {
-          assert.equal(data, 5.11);
-          done();
-        });
-      });
-      
-      it('should be able to persist and restore an object', function (done) {
-        sut = this.subject();
-        
-        sut.persist({s: 's1', o1: {o1s: 'o1s', o1n: 5.11}}).then(() => {
-          return sut.restore();
-        }).then((data) => {
-          assert.deepEqual(data, {s: 's1', o1: {o1s: 'o1s', o1n: 5.11}});
-          done();
-        });
-      });
-      
-      it('should only persist and restore whitelisted object properites', function (done) {
-        config.whitelist = ['s'];
-        sut = this.subject();
-        
-        sut.persist({s: 's1', o1: {o1s: 'o1s', o1n: 5.11}}).then(() => {
-          return sut.restore();
-        }).then((data) => {
-          assert.deepEqual(data, {s: 's1'});
-          done();
+        return sut.restore().then((result) => {
+          assert.deepEqual(result, {p1: 'p1', p2: 'p2'});
         });
       });
     });
     
     describe('#clear', function () {
-      it('should set not touch window.name', function (done) {
-        window.name = 'untouched';
+      it('should clear data', function () {
+        createSut();
         
-        sut.clear().then(() => {
-          assert.equal(window.name, 'untouched');
-          done();
-        });
-      });
-    });
-    
-    describe('#restore after #clear', function () {
-      it('should clear values loaded with #init', function (done) {
-        window.name = '"a string"';
-        sut = this.subject();
-        
-        sut.restore().then((data) => {
-          assert.equal(data, 'a string');
-          return sut.clear();
-        }).then(() => {
-          return sut.restore();
-        }).then((data) => {
-          assert.deepEqual(data, {});
-          done();
-        });
-      });
-      
-      it('should clear values loaded with #persist', function (done) {
-        sut = this.subject();
-        
-        sut.persist('a string').then(() => {
-          return sut.clear();
-        }).then(() => {
-          return sut.restore();
-        }).then((data) => {
-          assert.deepEqual(data, {});
-          done();
+        return sut.clear().then(() => {
+          assert.deepEqual(sut.data, {});
         });
       });
     });
     
     describe('#flush', function () {
-      it('should reject with TypeError given window is not available', function () {
-        sut = this.subject();
-        utils.window = null;
+      const data = {p1: 'p1', p2: 'p2'};
+      
+      it('should not throw given localStorage is unavailable', function () {
+        createSut();
         
-        try {
-          sut.flush();
-          assert.fail();
-        } catch (error) {
-          assert.equal(error.name, 'TypeError');
-        }
+        delete sut.window.localStorage;
+        
+        sut.flush();
       });
       
-      it('should save data to window.name', function (done) {
-        sut = this.subject();
+      it('should not throw given window is unavailable', function () {
+        createSut();
         
-        sut.persist('a string').then(() => {
-          sut.flush();
-          assert.equal(window.name, '"a string"');
-          done();
-        });
+        delete sut.window;
+        
+        sut.flush();
       });
       
-      it('should only save whitelisted object properites to window.name', function (done) {
-        config.whitelist = ['s', 'o1.o1n'];
-        sut = this.subject();
+      it('should store parts to storage and window.name', function () {
+        createSut();
         
-        sut.persist({s: 's1', o1: {o1s: 'o1s', o1n: 5.11}}).then(() => {
-          sut.flush();
-          assert.equal(window.name, '{"s":"s1","o1":{"o1n":5.11}}');
-          done();
-        });
+        sut.data = data;
+        sut.flush();
+        
+        let value1 = JSON.parse(storage.getItem(sut.key));
+        assert.sameMembers(Object.keys(value1), ['p1', 'p2']);
+        assert.match(value1.p1, base64regex);
+        assert.match(value1.p2, base64regex);
+        
+        let value2 = JSON.parse(window.name);
+        assert.sameMembers(Object.keys(value2), ['p1', 'p2']);
+        assert.match(value2.p1, base64regex);
+        assert.match(value2.p2, base64regex);
+        
+        assert.notEqual(value1.p1, value2.p1);
+      });
+    });
+    
+    describe('#split', function () {
+      beforeEach(function () {
+        createSut();
+      });
+      
+      it('should return two base64 encoded parts', function () {
+        const data = {p1: 'v1'};
+        
+        const actual = sut.split(data);
+        assert.match(actual[0], base64regex);
+        assert.match(actual[1], base64regex);
+      })
+    });
+    
+    describe('#merge', function () {
+      const part1 = '9nVzF86NqzezoJLoyasmt9Q2RLokV3gYs6wAr9F9KdviH8Tivc14yy3Q+4ufmDMtaFEulFZ3jvxu/aNCcr5U+h0avZn12MR7b+JJHWAN+sdqcKA+Gvbp3XHPh83b9Ap2W7W5XjWaLsGE3kDM8wU1hzxBwoxNTwQI5335vH7wNdLDv9qJJuP4UuvYOEzvVMV4g1Td5Ytr16/zEF7LJQL+PyVCskJO4X3Sv1+8PcTFlxeZ33RXfDvt5rnq+Rj+fEz1riPW1VigFnGnRGIxBeFF7CFxqQVu+NUftPR66fgq98ARTBooTy/Y/vLl7wVTpJC04I/Rh27N6lRRHqkFH8mSTw=='
+      const part2 = 'jVcDJuy3iUGCgu/oyasmt9Q2RLokV3gYs6wAr9F9KdviH8Tivc14yy3Q+4ufmDMtaFEulFZ3jvxu/aNCcr5U+h0avZn12MR7b+JJHWAN+sdqcKA+Gvbp3XHPh83b9Ap2W7W5XjWaLsGE3kDM8wU1hzxBwoxNTwQI5335vH7wNdLDv9qJJuP4UuvYOEzvVMV4g1Td5Ytr16/zEF7LJQL+PyVCskJO4X3Sv1+8PcTFlxeZ33RXfDvt5rnq+Rj+fEz1riPW1VigFnGnRGIxBeFF7CFxqQVu+NUftPR66fgq98ARTBooTy/Y/vLl7wVTpJC04I/Rh27N6lRRHqkFH8mSTw=='
+      
+      beforeEach(function () {
+        createSut();
+      });
+      
+      it('should merge two json parts', function () {
+        const actual = sut.merge(part1, part2);
+        assert.deepEqual(actual, {p1: 'v1'});
+      });
+      
+      it('should return undefined if second part is undefind', function () {
+        const actual = sut.merge(part1, undefined);
+        assert.isUndefined(actual);
+      });
+      
+      it('should return undefined if first part is undefined', function () {
+        const actual = sut.merge(undefined, part2);
+        assert.isUndefined(actual);
       });
     });
     
     describe('flush on window unload', function () {
       it('should flush when window.unload is fired', function () {
         window.name = null;
-        this.subject();
+        createSut();
         
         addEventListener.lastCall.args[1]();
         
@@ -291,7 +247,7 @@ describeModule('session-store:volatile', 'Unit | Session store | volatile', {},
       it('should flush when window.onunload is fired', function () {
         window.name = null;
         delete window.addEventListener;
-        this.subject();
+        createSut();
         
         attachEvent.lastCall.args[1]();
         
@@ -299,4 +255,5 @@ describeModule('session-store:volatile', 'Unit | Session store | volatile', {},
       });
     });
   }
-);
+)
+;

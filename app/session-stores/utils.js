@@ -12,10 +12,6 @@
 
 import Ember from 'ember';
 
-const {
-  get
-} = Ember;
-
 export default {
   getRandomValues,
   
@@ -25,10 +21,8 @@ export default {
   arrayToBinaryString,
   binaryStringToArray,
   
-  del,
-  get,
-  has,
-  set,
+  omit,
+  pick,
   
   window
 }
@@ -47,39 +41,31 @@ function getRandomValues (arr) {
   return crypto.getRandomValues(arr);
 }
 
-function del (obj, keyName) {
-  const lastIndex = keyName.lastIndexOf('.');
-  if (lastIndex > -1) {
-    obj = get(obj, keyName.substring(0, lastIndex));
-    keyName = keyName.substr(lastIndex + 1);
+function omit (obj, keys) {
+  const result = Ember.copy(obj);
+  if (!keys || keys.length === 0) {
+    return result;
   }
   
-  if (obj) {
-    delete obj[keyName];
+  for (var i = 0, l = keys.length; i < l; i++) {
+    delete result[keys[i]];
   }
+  return result;
 }
 
-function has (obj, keyName) {
-  const lastIndex = keyName.lastIndexOf('.');
-  if (lastIndex > -1) {
-    obj = get(obj, keyName.substring(0, lastIndex));
-    keyName = keyName.substr(lastIndex + 1);
-  }
-  return obj && obj.hasOwnProperty(keyName);
-}
-
-function set (obj, keyName, value) {
-  const index = keyName.indexOf('.');
-  if (index === -1) {
-    return Ember.set(obj, keyName, value);
+function pick (obj, keys) {
+  const result = {};
+  if (!keys || keys.length === 0) {
+    return result;
   }
   
-  const currentKeyName = keyName.substring(0, index);
-  let currentKeyObj = get(obj, currentKeyName);
-  if (currentKeyObj === undefined) {
-    currentKeyObj = obj[currentKeyName] = {}
+  for (var i = 0, l = keys.length; i < l; i++) {
+    const key = keys[i];
+    if (obj.hasOwnProperty(key)) {
+      result[key] = obj[key];
+    }
   }
-  return set(currentKeyObj, keyName.substring(index + 1), value);
+  return result;
 }
 
 function encode_base64 (data) {
