@@ -7,9 +7,6 @@
  * the LICENSE file that was distributed with this source code.
  */
 
-// https://github.com/ProtonMail/WebClient/blob/public/src/app/libraries/pmcrypto.js
-// https://github.com/ProtonMail/WebClient/blob/public/src/app/services/storage.js
-
 import Ember from 'ember';
 import Base from 'ember-simple-auth/session-stores/base';
 import utils from './utils';
@@ -28,70 +25,41 @@ function debug (message) {
 }
 
 export default Base.extend({
-  securelist: null,
-  volatilelist: null,
+  persistentKeys: null,
+  volatileKeys: null,
   
   init() {
     debug('init()');
     this._super(...arguments);
     
-    if (ENV['secure-store'] && ENV['secure-store'].whitelist) {
-      let whitelist = ENV['secure-store'].whitelist;
-      whitelist = Ember.isArray(whitelist) ? whitelist : new Array(whitelist);
-      this.securelist = whitelist;
+    const config = ENV['secure-store'];
+    
+    if (config) {
+      this.persistentKeys = config.persistent ?
+        Ember.isArray(config.persistent) ?
+          config.persistent : new Array(config.persistent) :
+        null;
+      
+      this.volatileKeys = config.volatile ?
+        Ember.isArray(config.volatile) ?
+          config.volatile : new Array(config.volatile) :
+        null;
     }
     
-    if (ENV['volatile-store'] && ENV['volatile-store'].whitelist) {
-      let volatilelist = ENV['volatile-store'].whitelist;
-      volatilelist = Ember.isArray(volatilelist) ? volatilelist : new Array(volatilelist);
-      if (this.securelist) {
-        volatilelist.forEach((each) => {
-          this.securelist.push(each);
-        });
-      }
-      this.volatilelist = volatilelist;
-    }
-    
-    if (this.securelist && this.securelist.indexOf('authenticated') === -1) {
-      this.securelist.push('authenticated');
-    }
-    this.set('_adaptiveStore', this._createStore(AdaptiveStore));
-    this.set('_volatileStore', this._createStore(VolatileStore));
+    this._persistentStore = this._createPersistentStore();
+    this._volatileStore = VolatileStore.create();
   },
   
   persist(data) {
     debug('persist()');
     
-    let volatileData = {};
-    let adaptiveData = {};
-    
-    const securelist = this.get('securelist');
-    if (!Array.isArray(securelist)) {
-      adaptiveData = Ember.copy(data, true);
-    } else {
-      securelist.forEach((keyName) => {
-        if (utils.has(data, keyName)) {
-          const value = utils.get(data, keyName);
-          utils.set(adaptiveData, keyName, value);
-        }
-      });
-    }
-    
-    const volatilelist = this.get('volatilelist');
-    if (Array.isArray(volatilelist)) {
-      volatilelist.forEach((keyName) => {
-        if (utils.has(adaptiveData, keyName)) {
-          const value = utils.get(adaptiveData, keyName);
-          const shares = this.split(value);
-          utils.set(adaptiveData, keyName, shares[1]);
-          utils.set(volatileData, keyName, shares[0]);
-        }
-      });
-    }
+    const persistent = utils.pick(data, this.persistentKeys);
+    const volatile = this.volatileKeys ?
+      utils.pick(data, this.volatileKeys) : utils.omit(data, this.persistentKeys);
     
     return RSVP.all([
-      this.get('_adaptiveStore').persist(adaptiveData),
-      this.get('_volatileStore').persist(volatileData)
+      this._persistentStore.persist(persistent),
+      this._volatileStore.persist(volatile)
     ]).then(() => {
       // Don't return promise array
     });
@@ -101,29 +69,13 @@ export default Base.extend({
     debug('restore()');
     
     return RSVP.all([
-      this.get('_adaptiveStore').restore(),
-      this.get('_volatileStore').restore(),
+      this._persistentStore.restore(),
+      this._volatileStore.restore()
     ]).then((datas) => {
-      const adaptiveData = datas[0];
-      const volatileData = datas[1];
-      
-      const result = adaptiveData;
-      const volatilelist = this.get('volatilelist');
-      if (Array.isArray(volatilelist)) {
-        volatilelist.forEach((keyName) => {
-          const share1 = utils.get(volatileData, keyName);
-          const share2 = utils.get(adaptiveData, keyName);
-          
-          const merged = this.merge(share1, share2);
-          if (merged === undefined) {
-            utils.del(result, keyName);
-          } else {
-            utils.set(result, keyName, merged);
-          }
-        });
-      }
-      
-      return result;
+      return Ember.assign({},
+        utils.pick(datas[0], this.persistentKeys),
+        this.volatileKeys ?
+          utils.pick(datas[1], this.volatileKeys) : utils.omit(datas[1], this.persistentKeys));
     });
   },
   
@@ -131,66 +83,28 @@ export default Base.extend({
     debug('clear()');
     
     return RSVP.all([
-      this.get('_adaptiveStore').clear(),
-      this.get('_volatileStore').clear()
+      this._persistentStore.clear(),
+      this._volatileStore.clear()
     ]).then(() => {
       // Don't return promise array
     });
   },
   
-  split(value) {
-    value = JSON.stringify(value);
-    const item = utils.binaryStringToArray(value);
-    const paddedLength = Math.ceil(item.length / 256) * 256;
-    
-    let share1 = utils.getRandomValues(new Uint8Array(paddedLength));
-    let share2 = new Uint8Array(share1);
-    
-    for (var i = 0; i < item.length; i++) {
-      share2[i] ^= item[i];
-    }
-    
-    return [
-      utils.encode_base64(utils.arrayToBinaryString(share1)),
-      utils.encode_base64(utils.arrayToBinaryString(share2))
-    ]
-  },
-  
-  merge(share1, share2) {
-    if (share1 === undefined || share2 === undefined) {
-      return;
-    }
-    share1 = utils.binaryStringToArray(utils.decode_base64(share1));
-    share2 = utils.binaryStringToArray(utils.decode_base64(share2));
-    
-    if (share1.length !== share2.length) {
-      return;
-    }
-    
-    let xored = new Array(share1.length);
-    
-    for (var i = 0; i < share1.length; i++) {
-      xored[i] = share1[i] ^ share2[i];
-    }
-    
-    // Strip off padding
-    let unpaddedLength = share1.length;
-    
-    while (unpaddedLength > 0 && xored[unpaddedLength - 1] === 0) {
-      unpaddedLength--;
-    }
-    
-    const result = utils.arrayToBinaryString(xored.slice(0, unpaddedLength));
-    return JSON.parse(result);
-  },
-  
-  _createStore(storeType, options) {
-    const store = storeType.create(options);
-    
-    store.on('sessionDataUpdated', (data) => {
-      debug('event on sessionDataUpdated');
-      this.trigger('sessionDataUpdated', data);
+  _createPersistentStore() {
+    const store = AdaptiveStore.create({
+      cookieName: 'ember_simple_auth:persistent',
+      localStorageKey: 'ember_simple_auth:persistent'
     });
+    
+    store.on('sessionDataUpdated', () => {
+      debug('event on sessionDataUpdated');
+      
+      this.restore().then((data) => {
+        debug('triggering on sessionDataUpdated');
+        this.trigger('sessionDataUpdated', data);
+      });
+    });
+    
     return store;
   }
-})
+});

@@ -8,7 +8,6 @@
  */
 
 import { assert } from 'chai';
-import Ember from 'ember';
 import { describeModule, it } from 'ember-mocha';
 import { beforeEach, describe } from 'mocha';
 import simple from 'simple-mock';
@@ -17,322 +16,249 @@ import ENV from 'secsy-webclient/config/environment';
 
 describeModule('session-store:secure', 'Unit | Session store | secure', {},
   function () {
-    let config, createSut, sut, adaptive, volatile;
-    
-    const base64regex = /^[a-z0-9\+\/]+==$/i;
+    let config, createSut, sut, persistentStore, volatileStore;
     
     beforeEach(function () {
-      ENV['secure-store'] = {};
-      ENV['volatile-store'] = {};
-      config = {
-        secureStore: ENV['secure-store'],
-        volatileStore: ENV['volatile-store']
-      };
+      ENV['secure-store'] = config = {};
       createSut = function () {
         sut = this.subject();
-        adaptive = sut.get('_adaptiveStore');
-        volatile = sut.get('_volatileStore');
+        persistentStore = sut.get('_persistentStore');
+        volatileStore = sut.get('_volatileStore');
         return sut;
       }.bind(this);
     });
     
-    describe('persist and restore', function () {
-      const data = {
-        p1: 'p1',
-        p2: {p1: 1, p2: 2, o2: {p1: 5.11}},
-        p3: 'p3',
-        authenticated: {username: 'username'}
-      };
-      
-      it('should be able to persist and restore data without whitelists', function (done) {
-        delete config.secureStore.whitelist;
-        delete config.volatileStore.whitelist;
-        const expected = Ember.copy(data);
-        sut = createSut();
-        
-        sut.persist(data).then(() => {
-          return sut.restore();
-        }).then((restored) => {
-          assert.deepEqual(restored, expected);
-          done();
-        });
-      });
-      
-      it('should be able to persist and restore data with only a volatile whitelist', function (done) {
-        delete config.secureStore.whitelist;
-        config.volatileStore.whitelist = ['p3'];
-        const expected = Ember.copy(data);
-        sut = createSut();
-        
-        sut.persist(data).then(() => {
-          return sut.restore();
-        }).then((restored) => {
-          assert.deepEqual(restored, expected);
-          done();
-        });
-      });
-      
-      it('should be able to persist and restore data with withlists', function (done) {
-        config.secureStore.whitelist = ['p1', 'p2.p2'];
-        config.volatileStore.whitelist = ['p2.o2'];
-        const expected = {
-          p1: 'p1',
-          p2: {p2: 2, o2: {p1: 5.11}},
-          authenticated: {username: 'username'}
-        };
-        sut = createSut();
-        
-        sut.persist(data).then(() => {
-          return sut.restore();
-        }).then((restored) => {
-          assert.deepEqual(restored, expected);
-          done();
-        });
-      });
-    });
-    
-    describe('sessionDataUpdated', function () {
-      beforeEach(function () {
+    describe('#init', function () {
+      it('should set persistent stores local storage key', function () {
         createSut();
+        
+        assert.equal(persistentStore.localStorageKey, 'ember_simple_auth:persistent');
       });
       
-      it('should fire sessionDataUpdate if adaptive store fires', function () {
-        let handler = simple.mock();
-        sut.on('sessionDataUpdated', handler);
+      it('should set persistent stores cookie name', function () {
+        createSut();
         
-        const data = {};
-        adaptive.trigger('sessionDataUpdated', data);
-        
-        assert.isTrue(handler.called);
-        assert.equal(handler.lastCall.arg, data);
-      });
-      
-      it('should fire sessionDataUpdate if volatile store fires', function () {
-        let handler = simple.mock();
-        sut.on('sessionDataUpdated', handler);
-        
-        const data = {};
-        volatile.trigger('sessionDataUpdated', data);
-        
-        assert.isTrue(handler.called);
-        assert.equal(handler.lastCall.arg, data);
+        assert.equal(persistentStore.cookieName, 'ember_simple_auth:persistent');
       });
     });
     
     describe('#persist', function () {
-      const data = {
-        p1: 'p1',
-        p2: 'p2',
-        o1: {
-          p1: 1,
-          p2: 2,
-          o2: {p1: 5.11}
-        }
-      };
+      const data = {p: 'p1', v: 'v1', x: 'x1'};
+      let persistentPersist, volatilePersist;
       
-      let adaptivePersist, volatilePersist;
-      
-      beforeEach(function () {
-        config.secureStore.whitelist = ['p2', 'o1.p1', 'invalid1'];
-        config.volatileStore.whitelist = ['p1', 'o1.p2', 'o1.o2', 'invalid2'];
+      it('should persist given no whitelists', function () {
+        delete config.persistent;
+        delete config.volatile;
         createSut();
-        adaptivePersist = simple.mock(adaptive, 'persist');
-        volatilePersist = simple.mock(volatile, 'persist');
+        persistentPersist = simple.mock(persistentStore, 'persist').resolveWith();
+        volatilePersist = simple.mock(volatileStore, 'persist').resolveWith();
+        
+        return sut.persist(data).then(() => {
+          assert.deepEqual(persistentPersist.lastCall.arg, {});
+          assert.deepEqual(volatilePersist.lastCall.arg, {p: 'p1', v: 'v1', x: 'x1'});
+        });
       });
       
-      it('should persist to adaptive, volatile store and return undefined', function (done) {
-        adaptivePersist.resolveWith('adaptivePersist');
-        volatilePersist.resolveWith('volatilePersist');
+      it('should persist given only persistent whitelist', function () {
+        config.persistent = 'p';
+        delete config.volatile;
+        createSut();
+        persistentPersist = simple.mock(persistentStore, 'persist').resolveWith();
+        volatilePersist = simple.mock(volatileStore, 'persist').resolveWith();
         
-        sut.persist(data).then((result) => {
-          assert.isTrue(adaptivePersist.called);
-          assert.isTrue(volatilePersist.called);
+        return sut.persist(data).then(() => {
+          assert.deepEqual(persistentPersist.lastCall.arg, {p: 'p1'});
+          assert.deepEqual(volatilePersist.lastCall.arg, {v: 'v1', x: 'x1'});
+        });
+      });
+      
+      it('should persist given both whitelists ', function () {
+        config.persistent = 'p';
+        config.volatile = 'v';
+        createSut();
+        persistentPersist = simple.mock(persistentStore, 'persist').resolveWith();
+        volatilePersist = simple.mock(volatileStore, 'persist').resolveWith();
+        
+        return sut.persist(data).then(() => {
+          assert.deepEqual(persistentPersist.lastCall.arg, {p: 'p1'});
+          assert.deepEqual(volatilePersist.lastCall.arg, {v: 'v1'});
+        });
+      });
+      
+      it('should resolve with undefined', function () {
+        createSut();
+        
+        return sut.persist(data).then((result) => {
           assert.isUndefined(result);
-          done();
         });
       });
       
-      it('should persist properties split to volatile store', function (done) {
-        sut.persist(data).then(() => {
-          const data = volatilePersist.lastCall.arg;
-          assert.notEqual(data.p1, 'p1');
-          assert.match(data.o1.p2, base64regex);
-          assert.match(data.o1.o2, base64regex);
-          done();
-        });
-      });
-      
-      it('should persist properties split to adaptive store', function (done) {
-        sut.persist(data).then(() => {
-          const data = adaptivePersist.lastCall.arg;
-          assert.match(data.p1, base64regex);
-          assert.equal(data.p2, 'p2');
-          assert.equal(data.o1.p1, 1);
-          assert.match(data.o1.p2, base64regex);
-          assert.match(data.o1.o2, base64regex);
-          done();
-        });
-      });
-      
-      it('should reject with adaptive stores Error', function (done) {
-        adaptivePersist.rejectWith(new Error('adaptivePersist'));
-        volatilePersist.resolveWith();
+      it('should reject with persistent stores error', function () {
+        createSut();
+        simple.mock(persistentStore, 'persist').rejectWith(new Error('persistent restore error'));
+        simple.mock(volatileStore, 'persist').resolveWith({});
         
-        sut.persist({}).then(() => {
+        return sut.persist(data).then(() => {
           assert.fail();
         }).catch((error) => {
           assert.equal(error.name, 'Error');
-          assert.equal(error.message, 'adaptivePersist');
-          done();
+          assert.equal(error.message, 'persistent restore error');
         });
       });
       
-      it('should reject with volatile stores Error', function (done) {
-        adaptivePersist.resolveWith();
-        volatilePersist.rejectWith(new Error('volatilePersist'));
+      it('should reject with volatile stores error', function () {
+        createSut();
+        simple.mock(persistentStore, 'persist').resolveWith({});
+        simple.mock(volatileStore, 'persist').rejectWith(new Error('volatile restore error'));
         
-        sut.persist({}).then(() => {
+        return sut.persist(data).then(() => {
           assert.fail();
         }).catch((error) => {
           assert.equal(error.name, 'Error');
-          assert.equal(error.message, 'volatilePersist');
-          done();
+          assert.equal(error.message, 'volatile restore error');
         });
       });
     });
     
     describe('#restore', function () {
-      let adaptiveRestore, volatileRestore;
-      const part1 = '9nVzF86NqzezoJLoyasmt9Q2RLokV3gYs6wAr9F9KdviH8Tivc14yy3Q+4ufmDMtaFEulFZ3jvxu/aNCcr5U+h0avZn12MR7b+JJHWAN+sdqcKA+Gvbp3XHPh83b9Ap2W7W5XjWaLsGE3kDM8wU1hzxBwoxNTwQI5335vH7wNdLDv9qJJuP4UuvYOEzvVMV4g1Td5Ytr16/zEF7LJQL+PyVCskJO4X3Sv1+8PcTFlxeZ33RXfDvt5rnq+Rj+fEz1riPW1VigFnGnRGIxBeFF7CFxqQVu+NUftPR66fgq98ARTBooTy/Y/vLl7wVTpJC04I/Rh27N6lRRHqkFH8mSTw=='
-      const part2 = 'jVcDJuy3iUGCgu/oyasmt9Q2RLokV3gYs6wAr9F9KdviH8Tivc14yy3Q+4ufmDMtaFEulFZ3jvxu/aNCcr5U+h0avZn12MR7b+JJHWAN+sdqcKA+Gvbp3XHPh83b9Ap2W7W5XjWaLsGE3kDM8wU1hzxBwoxNTwQI5335vH7wNdLDv9qJJuP4UuvYOEzvVMV4g1Td5Ytr16/zEF7LJQL+PyVCskJO4X3Sv1+8PcTFlxeZ33RXfDvt5rnq+Rj+fEz1riPW1VigFnGnRGIxBeFF7CFxqQVu+NUftPR66fgq98ARTBooTy/Y/vLl7wVTpJC04I/Rh27N6lRRHqkFH8mSTw=='
+      const persistentData = {p: 'p1', v: 'v1', x: 'x1'};
+      const volatileData = {p: 'p2', v: 'v2', x: 'x2'};
       
-      beforeEach(function () {
+      let persistentRestore, volatileRestore;
+      
+      it('should resolve given no whitelists', function () {
+        delete config.persistent;
+        delete config.volatile;
         createSut();
-        adaptiveRestore = simple.mock(adaptive, 'restore');
-        volatileRestore = simple.mock(volatile, 'restore');
-      });
-      
-      it('should resolve with combined store data', function (done) {
-        sut.set('volatilelist', ['both', 'onlyAdaptive', 'onlyVolatile']);
-        adaptiveRestore.resolveWith({p1: 'p1', both: part1, onlyAdaptive: 'oA'});
-        volatileRestore.resolveWith({'both': part2, 'onlyVolatile': 'oW'});
+        persistentRestore = simple.mock(persistentStore, 'restore').resolveWith(persistentData);
+        volatileRestore = simple.mock(volatileStore, 'restore').resolveWith(volatileData);
         
-        sut.restore().then((result) => {
-          assert.deepEqual(result, {p1: 'p1', both: {p1: 'v1'}});
-          done();
+        return sut.restore().then((data) => {
+          assert.deepEqual(data, {p: 'p2', v: 'v2', x: 'x2'});
         });
       });
       
-      it('should reject with adaptive stores Error', function (done) {
-        adaptiveRestore.rejectWith(new Error('adaptiveRestore'));
-        volatileRestore.resolveWith();
+      it('should resolve given only persistent whitelist', function () {
+        config.persistent = 'p';
+        delete config.volatile;
+        createSut();
+        persistentRestore = simple.mock(persistentStore, 'restore').resolveWith(persistentData);
+        volatileRestore = simple.mock(volatileStore, 'restore').resolveWith(volatileData);
         
-        sut.restore().then(() => {
-          assert.fail();
-        }).catch((error) => {
-          assert.equal(error.name, 'Error');
-          assert.equal(error.message, 'adaptiveRestore');
-          done();
+        return sut.restore().then((data) => {
+          assert.deepEqual(data, {p: 'p1', v: 'v2', x: 'x2'});
         });
       });
       
-      it('should reject with volatile stores Error', function (done) {
-        adaptiveRestore.resolveWith();
-        volatileRestore.rejectWith(new Error('volatileRestore'));
+      it('should resolve given both whitelists ', function () {
+        config.persistent = 'p';
+        config.volatile = 'v';
+        createSut();
+        persistentRestore = simple.mock(persistentStore, 'restore').resolveWith(persistentData);
+        volatileRestore = simple.mock(volatileStore, 'restore').resolveWith(volatileData);
         
-        sut.restore().then(() => {
+        return sut.restore().then((data) => {
+          assert.deepEqual(data, {p: 'p1', v: 'v2'});
+        });
+        
+      });
+      
+      it('should reject with persistent stores error', function () {
+        createSut();
+        simple.mock(persistentStore, 'restore').rejectWith(new Error('persistent restore error'));
+        simple.mock(volatileStore, 'restore').resolveWith({});
+        
+        return sut.restore().then(() => {
           assert.fail();
         }).catch((error) => {
           assert.equal(error.name, 'Error');
-          assert.equal(error.message, 'volatileRestore');
-          done();
+          assert.equal(error.message, 'persistent restore error');
+        });
+      });
+      
+      it('should reject with volatile stores error', function () {
+        createSut();
+        simple.mock(persistentStore, 'restore').resolveWith({});
+        simple.mock(volatileStore, 'restore').rejectWith(new Error('volatile restore error'));
+        
+        return sut.restore().then(() => {
+          assert.fail();
+        }).catch((error) => {
+          assert.equal(error.name, 'Error');
+          assert.equal(error.message, 'volatile restore error');
         });
       });
     });
     
     describe('#clear', function () {
-      let adaptiveClear, volatileClear;
+      let persistentClear, volatileClear;
       
       beforeEach(function () {
         createSut();
-        adaptiveClear = simple.mock(adaptive, 'clear');
-        volatileClear = simple.mock(volatile, 'clear');
+        persistentClear = simple.mock(persistentStore, 'clear');
+        volatileClear = simple.mock(volatileStore, 'clear');
       });
       
-      it('should clear adaptive, volatile store and return undefined', function (done) {
-        adaptiveClear.resolveWith('result 1');
-        volatileClear.resolveWith('result 2');
-        
-        sut.clear().then((result) => {
-          assert.isTrue(adaptiveClear.called);
-          assert.isTrue(volatileClear.called);
-          assert.isUndefined(result);
-          done();
-        });
-      });
-      
-      it('should reject with adaptive stores Error', function (done) {
-        adaptiveClear.rejectWith(new Error('adaptiveClear'));
+      it('should clear persistent and volatile store and return undefined', function () {
+        persistentClear.resolveWith();
         volatileClear.resolveWith();
         
-        sut.clear().then(() => {
-          assert.fail();
-        }).catch((error) => {
-          assert.equal(error.name, 'Error');
-          assert.equal(error.message, 'adaptiveClear');
-          done();
+        return sut.clear().then((result) => {
+          assert.isTrue(persistentClear.called);
+          assert.isTrue(volatileClear.called);
+          assert.isUndefined(result);
         });
       });
       
-      it('should reject with volatile stores Error', function (done) {
-        adaptiveClear.resolveWith();
-        volatileClear.rejectWith(new Error('volatileClear'));
+      it('should reject with persistent stores error', function () {
+        persistentClear.rejectWith(new Error('persistent clear error'));
+        volatileClear.resolveWith();
         
-        sut.clear().then(() => {
+        return sut.clear().then(() => {
           assert.fail();
         }).catch((error) => {
           assert.equal(error.name, 'Error');
-          assert.equal(error.message, 'volatileClear');
-          done();
+          assert.equal(error.message, 'persistent clear error');
+        });
+      });
+      
+      it('should reject with volatile stores error', function () {
+        persistentClear.resolveWith();
+        volatileClear.rejectWith(new Error('volatile clear error'));
+        
+        return sut.clear().then(() => {
+          assert.fail();
+        }).catch((error) => {
+          assert.equal(error.name, 'Error');
+          assert.equal(error.message, 'volatile clear error');
         });
       });
     });
     
-    describe('#split', function () {
+    describe('event sessionDataUpdated', function () {
       beforeEach(function () {
+        config.persistent = 'p';
+        config.volatile = 'v';
         createSut();
-      });
-      
-      it('should return two base64 encoded parts', function () {
-        const data = {p1: 'v1'};
         
-        const actual = sut.split(data);
-        assert.match(actual[0], base64regex);
-        assert.match(actual[1], base64regex);
-      })
-    });
-    
-    describe('#merge', function () {
-      const part1 = '9nVzF86NqzezoJLoyasmt9Q2RLokV3gYs6wAr9F9KdviH8Tivc14yy3Q+4ufmDMtaFEulFZ3jvxu/aNCcr5U+h0avZn12MR7b+JJHWAN+sdqcKA+Gvbp3XHPh83b9Ap2W7W5XjWaLsGE3kDM8wU1hzxBwoxNTwQI5335vH7wNdLDv9qJJuP4UuvYOEzvVMV4g1Td5Ytr16/zEF7LJQL+PyVCskJO4X3Sv1+8PcTFlxeZ33RXfDvt5rnq+Rj+fEz1riPW1VigFnGnRGIxBeFF7CFxqQVu+NUftPR66fgq98ARTBooTy/Y/vLl7wVTpJC04I/Rh27N6lRRHqkFH8mSTw=='
-      const part2 = 'jVcDJuy3iUGCgu/oyasmt9Q2RLokV3gYs6wAr9F9KdviH8Tivc14yy3Q+4ufmDMtaFEulFZ3jvxu/aNCcr5U+h0avZn12MR7b+JJHWAN+sdqcKA+Gvbp3XHPh83b9Ap2W7W5XjWaLsGE3kDM8wU1hzxBwoxNTwQI5335vH7wNdLDv9qJJuP4UuvYOEzvVMV4g1Td5Ytr16/zEF7LJQL+PyVCskJO4X3Sv1+8PcTFlxeZ33RXfDvt5rnq+Rj+fEz1riPW1VigFnGnRGIxBeFF7CFxqQVu+NUftPR66fgq98ARTBooTy/Y/vLl7wVTpJC04I/Rh27N6lRRHqkFH8mSTw=='
-      
-      beforeEach(function () {
-        createSut();
+        return sut.persist({p: 'p1', v: 'v1'});
       });
       
-      it('should merge two json parts', function () {
-        const actual = sut.merge(part1, part2);
-        assert.deepEqual(actual, {p1: 'v1'});
+      it('should trigger if persistent store triggers', function (done) {
+        sut.on('sessionDataUpdated', (data) => {
+          assert.deepEqual(data, {p: 'p1', v: 'v1'});
+          done();
+        });
+        
+        persistentStore.trigger('sessionDataUpdated', {u: 'u1'});
       });
       
-      it('should return undefined if second part is undefind', function () {
-        const actual = sut.merge(part1, undefined);
-        assert.isUndefined(actual);
-      });
-      
-      it('should return undefined if first part is undefined', function () {
-        const actual = sut.merge(undefined, part2);
-        assert.isUndefined(actual);
+      it('should not trigger if volatile store triggers', function () {
+        sut.on('sessionDataUpdated', () => {
+          assert.fail('sessionDataUpdated was triggered');
+        });
+        
+        volatileStore.trigger('sessionDataUpdated', {u: 'u1'});
       });
     });
   }

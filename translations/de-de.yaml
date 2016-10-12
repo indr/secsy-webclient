@@ -192,7 +192,7 @@ profile:
     title: 'Konto löschen'
     action: 'Ich bin mir sicher, entfernt mein Konto'
     warning: 'Sind Sie sich sicher, dass Sie Ihr Konto entfernen möchten? Dieser Vorgang kann nicht rückgängig gemacht werden!'
-    message: 'Bitten teilen Sie uns mit, warum Sie Ihr Konto entfernen möchten'
+    message: 'Bitte teilen Sie uns mit, warum Sie Ihr Konto entfernen möchten'
     password: 'Anmeldepasswort'
     success: 'Ihr Konto wurde erfolgreich entfernt. Sie werden gleich weitergleitet...'
     unknown-error: 'Unbekannter Fehler beim Entfernen des Kontos'
@@ -256,7 +256,7 @@ signup:
   password-confirm: "Wiederholung"
   sync-enabled: 'Aktiviere die sichere Kontaktsynchonisiation. Sie können diese Option später jederzeit in den Kontoeinstellungen ändern.'
   success: |
-    <p>Wir haben ein E-Mail an die Adresse <strong>{email}</strong> gesendet. Bitten folgen Sie den Anweisungen im E-Mail um Ihr Konto zu aktivieren.</p>
+    <p>Wir haben ein E-Mail an die Adresse <strong>{email}</strong> gesendet. Bitte folgen Sie den Anweisungen im E-Mail um Ihr Konto zu aktivieren.</p>
     <p>Falls es nicht ankommt, überprüfen Sie Ihren Spam-Ordner oder versuchen Sie sich anzumelden damit wir Ihnen noch einmal ein E-Mail senden können.</p>
   unknown-error: "Unbekannter Fehler bei der Registrierung"
 
