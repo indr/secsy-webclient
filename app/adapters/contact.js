@@ -23,6 +23,10 @@ function isObject(value) {
 export default ApplicationAdapter.extend({
   crypto: Ember.inject.service(),
   
+  shouldBackgroundReloadAll(/* store, snapshotsArray */) {
+    return true;
+  },
+  
   ajax(url, type, options) {
     const self = this;
     const _super = this._super;
