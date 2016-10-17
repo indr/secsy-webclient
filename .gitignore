@@ -9,7 +9,8 @@
 /bower_components
 
 # misc
-/.idea
+.idea/tasks.xml
+.idea/workspace.xml
 /.sass-cache
 /connect.lock
 /coverage/*
