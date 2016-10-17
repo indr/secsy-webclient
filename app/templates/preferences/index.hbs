@@ -53,7 +53,11 @@ the LICENSE file that was distributed with this source code.
       {{/if}}
 
       {{#bs-form-element controlType='text'}}
-        {{#bs-button type='default' action='downloadCards' textState=downloadCardsState}}{{t 'actions.export-contacts'}}{{/bs-button}}
+        {{#bs-button type='default' action='exportContacts' textState=exportContactsState}}{{t 'actions.export-contacts'}}{{/bs-button}}
+      {{/bs-form-element}}
+
+      {{#bs-form-element controlType='text'}}
+        {{#bs-file-button action='importContacts' textState=importContactsState}}{{t 'actions.import-contacts'}}{{/bs-file-button}}
       {{/bs-form-element}}
 
       {{#bs-form-element controlType='text'}}

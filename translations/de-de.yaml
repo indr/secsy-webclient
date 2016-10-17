@@ -29,6 +29,7 @@ actions:
   generate-fakes: Erzeuge ein paar zufällige Kontakte
   generate-new: Neuer Schlüssel generieren
   get-updates: Lade die geteilten Informationen neu
+  import-contacts: Datei auswählen und Kontakte importieren
   login: Anmelden
   logout: Abmelden
   preferences: Einstellungen

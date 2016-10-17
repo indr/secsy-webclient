@@ -10,7 +10,7 @@
 import Ember from 'ember';
 import TrackerMixin from './../../mixins/tracker-mixin';
 
-function debug (message) {
+function debug(message) {
   Ember.debug('[route:preferences/index] ' + message);
 }
 
@@ -22,17 +22,34 @@ export default Ember.Route.extend(TrackerMixin, {
   session: Ember.inject.service(),
   
   actions: {
-    downloadCards() {
+    exportContacts() {
       this.get('flashMessages').clearMessages();
       
       return this.get('addressbook').findContacts().then((contacts) => {
         return this.get('exporter').toVcards(contacts);
       }).then((cards) => {
-        const blob = new Blob([cards], {type: "text/vcard:charset=utf-8"});
+        const blob = new Blob([cards], { type: "text/vcard:charset=utf-8" });
         this.saveAs(blob, 'secsy-contacts.vcf');
       }).catch((error) => {
         this.get('flashMessages').dangerT('errors.download-vcard-error', error);
       });
+    },
+    
+    importContacts(files) {
+      this.get('flashMessages').clearMessages();
+      
+      // https://www.html5rocks.com/en/tutorials/file/dndfiles/
+      const reader = new FileReader();
+      
+      // Closure to capture the file information.
+      reader.onload = function (file, event) {
+        console.log('file', file);
+        console.log('event', event);
+        console.log('content', event.target.result);
+      }.bind(this, files[0]);
+      
+      // Read in the image file as a data URL.
+      reader.readAsText(files[0]);
     },
     
     savePreferences() {
@@ -75,10 +92,10 @@ export default Ember.Route.extend(TrackerMixin, {
       
       flash.clearMessages();
       
-      this.track('controller.sendPasswordResetEmailState', this.get('ajax').post('/api/users/forgot-password', {email})).then(() => {
+      this.track('controller.sendPasswordResetEmailState', this.get('ajax').post('/api/users/forgot-password', { email })).then(() => {
         flash.successT('profile.reset-email.success');
       }).catch((error) => {
-        flash.dangerT('profile.reset-email.unknown-error', error, {sticky: false});
+        flash.dangerT('profile.reset-email.unknown-error', error, { sticky: false });
       });
     }
   }

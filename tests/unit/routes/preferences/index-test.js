@@ -36,13 +36,13 @@ describeModule('route:preferences/index', 'Unit | Route | preferences/index', {
       sut.saveAs = Ember.K;
     });
     
-    describe('action #downloadCards', function () {
+    describe('action #exportContacts', function () {
       it('should window.saveAs vcards as text/vcard', function () {
         let saveAs = simple.mock(sut, 'saveAs').returnWith();
         simple.mock(addressbook, 'findContacts').resolveWith(Ember.A());
         let toVcards = simple.mock(exporter, 'toVcards').resolveWith('BEGIN:VCARD...');
         
-        return sut.send('downloadCards').then(() => {
+        return sut.send('exportContacts').then(() => {
           assert.isTrue(toVcards.called);
           assert.isTrue(saveAs.called);
           
@@ -58,7 +58,7 @@ describeModule('route:preferences/index', 'Unit | Route | preferences/index', {
         simple.mock(addressbook, 'findContacts').rejectWith(error);
         let dangerT = simple.mock(flashMessages, 'dangerT').returnWith();
         
-        return sut.send('downloadCards').then(() => {
+        return sut.send('exportContacts').then(() => {
           assert.isTrue(dangerT.called);
           assert.equal(dangerT.lastCall.args[0], 'errors.download-vcard-error');
           assert.equal(dangerT.lastCall.args[1], error);
@@ -71,7 +71,7 @@ describeModule('route:preferences/index', 'Unit | Route | preferences/index', {
         simple.mock(exporter, 'toVcards').rejectWith(error);
         let dangerT = simple.mock(flashMessages, 'dangerT').returnWith();
         
-        return sut.send('downloadCards').then(() => {
+        return sut.send('exportContacts').then(() => {
           assert.isTrue(dangerT.called);
           assert.equal(dangerT.lastCall.args[0], 'errors.download-vcard-error');
           assert.equal(dangerT.lastCall.args[1], error);

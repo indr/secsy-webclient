@@ -29,6 +29,7 @@ actions:
   generate-fakes: Generate some fake contacts
   generate-new: Generate new key
   get-updates: Reload shared updates
+  import-contacts: Choose file and import contacts
   login: Login
   logout: Logout
   preferences: Preferences
