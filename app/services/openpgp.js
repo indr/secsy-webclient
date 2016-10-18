@@ -15,11 +15,16 @@ const {
   RSVP
 } = Ember;
 
+function debug(message) {
+  Ember.debug('[service:openpgp] ' + message);
+}
+
 export default Ember.Service.extend({
   init() {
     this._super(...arguments);
     
-    if (ENV.useWebWorker) {
+    debug('Using web worker: ' + ENV.APP.useWebWorker);
+    if (ENV.APP.useWebWorker) {
       openpgp.initWorker({path: 'assets/openpgp.worker.min.js'});
     }
     
@@ -51,14 +56,15 @@ export default Ember.Service.extend({
    * { key:String, privateKeyArmored:String, publicKeyArmored: String }
    */
   generateKey(emailAddress, passphrase, numBits, unlocked) {
+    const defaultNumBits = 512;
     const options = {
       userIds: [{email: emailAddress}],
       passphrase: passphrase,
-      numBits: numBits || 4096,
+      numBits: numBits || defaultNumBits,
       unlocked: unlocked
     };
-    if (options.numBits < 4096) {
-      console.log('Generating key with less than 4096 bits');
+    if (options.numBits < defaultNumBits) {
+      console.log('Generating key with less than ' + defaultNumBits + ' bits');
     }
     return new RSVP.Promise((resolve, reject) => {
       openpgp.generateKey(options).then(resolve).catch(reject);

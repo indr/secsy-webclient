@@ -29,7 +29,7 @@ module.exports = function (environment) {
       routeAfterDecryption: 'contacts',
       routeIfAlreadyDecrypted: 'contacts',
       
-      useWebWorker: false
+      useWebWorker: true
     }
   };
   
