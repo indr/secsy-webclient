@@ -23,7 +23,7 @@ export default FlashMessages.reopen({
     const intl = this.get('intl');
     
     if (error) {
-      const errorMessage = typeof error.getMessage === 'function' ? error.getMessage() : (error.message || error);
+      const errorMessage = typeof error.getMessage === 'function' ? error.getMessage() : (error.message || error.name || error);
       if (intl.exists('errors.' + errorMessage)) {
         message = intl.t('errors.' + errorMessage);
       } else {
