@@ -29,9 +29,15 @@ const RecordArray = {
   }
 };
 
+const FakeModel = Ember.Object.extend({
+  save() {
+    return RSVP.reject();
+  }
+});
+
 const FakeAddressbook = Addressbook.extend({});
 
-const FakeContact = Ember.Object.extend({
+const FakeContact = FakeModel.extend({
   getRecord(){
     return this;
   },
@@ -77,6 +83,7 @@ const FakeOpenpgp = Ember.Object.extend({
 });
 
 const FakeStore = Ember.Object.extend({
+  createRecord: function () { return FakeModel.create(); },
   findAll: RSVP.reject,
   query: RSVP.reject
 });
@@ -86,6 +93,10 @@ const FakeUpdate = Ember.Object.extend({
   getRecord() {
     return this;
   }
+});
+
+const FileReader = Ember.Object.extend({
+  
 });
 
 const FlashMessages = Ember.Object.extend({
@@ -127,6 +138,7 @@ export {
   FakeStore,
   FakeUpdate,
   FlashMessages,
+  FileReader,
   RecordArray,
   Session,
   track,

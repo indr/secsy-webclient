@@ -18,6 +18,7 @@ export default Ember.Route.extend(TrackerMixin, {
   addressbook: Ember.inject.service(),
   ajax: Ember.inject.service(),
   exporter: Ember.inject.service(),
+  importer: Ember.inject.service(),
   saveAs: window.saveAs,
   session: Ember.inject.service(),
   
@@ -38,18 +39,12 @@ export default Ember.Route.extend(TrackerMixin, {
     importContacts(files) {
       this.get('flashMessages').clearMessages();
       
-      // https://www.html5rocks.com/en/tutorials/file/dndfiles/
-      const reader = new FileReader();
-      
-      // Closure to capture the file information.
-      reader.onload = function (file, event) {
-        console.log('file', file);
-        console.log('event', event);
-        console.log('content', event.target.result);
-      }.bind(this, files[0]);
-      
-      // Read in the image file as a data URL.
-      reader.readAsText(files[0]);
+      return this.get('importer').import(files).then((result) => {
+        this.get('flashMessages').success('OK');
+        console.log('result', result);
+      }).catch((error) => {
+        this.get('flashMessages').dangerT('errors.import-vcard-error', error);
+      });
     },
     
     savePreferences() {
